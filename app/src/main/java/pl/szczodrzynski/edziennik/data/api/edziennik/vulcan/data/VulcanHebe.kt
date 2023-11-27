@@ -406,6 +406,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             HebeFilterType.BY_MESSAGEBOX -> {
                 query["box"] = messageBox ?: data.messageBoxKey ?: ""
             }
+
+            null -> TODO()
         }
 
         if (dateFrom != null)

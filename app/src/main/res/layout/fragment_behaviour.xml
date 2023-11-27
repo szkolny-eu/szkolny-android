@@ -11,80 +11,95 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="8dp">
+            android:layout_margin="8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            android:gravity="center_horizontal">
 
-            <TextView
-                android:id="@+id/noticesSummaryTitle"
-                style="@style/Widget.AppCompat.Spinner"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/semester1"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/notices_summary_title_loading_format"
-                android:textSize="20sp" />
+                android:text="Semestr 1" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/semester2"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Semestr 2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allYear"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cały rok" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="?colorPrimary"
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     android:text="@string/notices_praises_title" />
-
                 <TextView
                     android:id="@+id/noticesPraisesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    tools:text="342525"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="32dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="?colorPrimary"
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     android:text="@string/notices_warnings_title" />
-
                 <TextView
                     android:id="@+id/noticesWarningsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    tools:text="53535353"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="?colorPrimary"
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     android:text="@string/notices_other_title" />
-
                 <TextView
                     android:id="@+id/noticesOtherCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
+                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    tools:text="3331"/>
             </LinearLayout>
-
         </LinearLayout>
 
         <FrameLayout
@@ -118,11 +133,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="?textAppearanceBodyMedium"
                     android:gravity="center"
-                    android:text="@string/notices_no_data"
-                    android:textSize="18sp"
-                    android:textStyle="italic" />
+                    android:text="@string/notices_no_data" />
 
             </LinearLayout>
         </FrameLayout>

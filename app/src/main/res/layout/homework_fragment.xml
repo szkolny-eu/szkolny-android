@@ -20,11 +20,11 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorSurface_6dp"
+                android:background="?colorSurfaceContainerLow"
                 app:tabIndicatorColor="?colorPrimary"
                 app:tabMode="auto"
                 app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextColor="?android:textColorPrimary" />
+                app:tabTextColor="?colorOnBackground" />
 
             <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"

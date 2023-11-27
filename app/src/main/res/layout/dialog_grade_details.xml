@@ -53,7 +53,7 @@
                     android:id="@+id/gradeName"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
-                    android:background="@drawable/bg_rounded_16dp"
+                    android:background="@drawable/bg_circle"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@{grade.name}"
@@ -85,30 +85,31 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@{@string/dialog_grade_details_semester_format(grade.semester)}"
-                            android:textAppearance="@style/NavView.TextView.Helper"
+                            android:textAppearance="?textAppearanceLabelLarge"
+
                             android:textIsSelectable="true"
                             tools:text="semestr 1" />
-                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/gradeSubjectName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{grade.subjectLongName}"
-                        android:textAppearance="@style/NavView.TextView.Title"
-                        android:textIsSelectable="true"
-                        tools:text="pracownia urządzeń techniki komputerowej" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/gradeWeight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{weightText}"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:textAppearance="?textAppearanceLabelLarge"
                         android:textIsSelectable="true"
                         android:visibility="@{weightText != null ? View.VISIBLE : View.GONE}"
                         tools:text="waga 3"
                         tools:visibility="visible" />
+                    <TextView
+                        android:id="@+id/gradeSubjectName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{grade.subjectLongName}"
+                        android:textAppearance="?textAppearanceTitleLarge"
+                        android:textIsSelectable="true"
+                        tools:text="pracownia urządzeń techniki komputerowej" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -126,7 +127,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/dialog_grade_details_teacher"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary" />
 
             <TextView
                 android:id="@+id/teacherName"
@@ -142,7 +145,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_category"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -157,7 +162,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_description"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,7 +180,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_class_average"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:visibility="@{grade.classAverage != null &amp;&amp; grade.classAverage != -1 ? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -189,7 +199,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_comment"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:visibility="@{commentVisible ? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -205,7 +217,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_value"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:visibility="@{gradeValue != -1 ? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -222,7 +236,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_added_date"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -237,7 +253,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_id"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:visibility="@{devMode ? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -254,7 +272,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_improved"
-                android:textAppearance="@style/NavView.TextView.Small"
+                android:textAppearance="@style/NavView.TextView.LabelLarge"
+                android:textColor="?colorSecondary"
                 android:visibility="@{grade.parentId instanceof Long ? View.VISIBLE : View.GONE}" />
 
             <TextView
@@ -262,13 +281,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_history"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodyLarge"
                 android:visibility="@{historyVisible ? View.VISIBLE : View.GONE}" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/gradeHistoryNest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="-8dp"
                 android:visibility="@{historyVisible ? View.VISIBLE : View.GONE}">
 
@@ -309,7 +329,7 @@
 
                 <Button
                     android:id="@+id/customValueButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
@@ -323,6 +343,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:text="@string/notes_button" />
         </LinearLayout>
     </ScrollView>

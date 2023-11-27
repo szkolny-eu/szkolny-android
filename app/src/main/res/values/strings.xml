@@ -144,6 +144,7 @@
     <string name="configure">Konfiguruj</string>
     <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="copy_to_clipboard">Skopiuj do schowka</string>
+    <string name="counter_activity">Odliczanie</string>
     <string name="counter_activity_sync">Synchronizuj</string>
     <string name="crash_advice_info">Jeśli aplikacja nie chce się uruchomić, możesz spróbować ponownie pobrać dane. Kliknij na przycisk, a następnie Restartuj aplikację.</string>
     <string name="crash_details">Szczegóły błędu</string>
@@ -510,8 +511,8 @@
     <string name="hint_save_in_calendar">Zapisz do kalendarza</string>
     <string name="home_configure_add_remove">Dodaj/usuń karty</string>
     <string name="home_configure_notice">Możesz usunąć karty przesuwając w lewo lub zmienić ich kolejność, przytrzymując na kartę.</string>
-    <string name="home_lucky_number_details">%s • Numer w dzienniku to %d</string>
-    <string name="home_lucky_number_details_click_to_set">%s • Kliknij, aby ustawić swój numerek.</string>
+    <string name="home_lucky_number_details">Numer w dzienniku to %s</string>
+    <string name="home_lucky_number_details_click_to_set">Kliknij, aby ustawić swój numerek.</string>
     <string name="home_lucky_number_later">Dnia %s szczęśliwy numerek to %d.</string>
     <string name="home_lucky_number_no_info">Brak informacji o szczęśliwym numerku.</string>
     <string name="home_lucky_number_no_number">Nie ma dzisiaj szczęśliwego numerka.</string>
@@ -535,7 +536,7 @@
     <string name="home_timetable_no_timetable_sync">Pobierz</string>
     <string name="home_timetable_no_timetable_text">Plan lekcji na tydzień %s nie został jeszcze pobrany.</string>
     <string name="home_timetable_not_public">Brak planu lekcji</string>
-    <string name="home_timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.\n\nSkontaktuj się z wychowawcą.</string>
+    <string name="home_timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę. Skontaktuj się z wychowawcą.</string>
     <string name="home_timetable_today">Dzisiaj</string>
     <string name="home_timetable_tomorrow">Jutro (%1$s)</string>
     <string name="homework_edit">Edytuj</string>
@@ -737,7 +738,7 @@
     <string name="messages_compose_text_hint">Napisz wiadomość…</string>
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
-    <string name="messages_date_time_format" translatable="false">%s\n%s</string>
+    <string name="messages_date_time_format" translatable="false">%s • %s</string>
     <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
     <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>

@@ -36,6 +36,8 @@ android {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
+            correctErrorTypes true
+
         }
     }
 
@@ -110,6 +112,8 @@ android {
     lint {
         checkReleaseBuilds false
     }
+    namespace 'pl.szczodrzynski.edziennik'
+
 }
 
 tasks.whenTaskAdded { task ->
@@ -140,11 +144,12 @@ tasks.whenTaskAdded { task ->
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+    debugImplementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     // Language cores
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation files('libs/navlib-debug.aar')
+    implementation files('libs/navlib-font-debug.aar')
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
     // Android Jetpack
@@ -160,7 +165,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.3"
 
     // Google design libs
-    implementation "com.google.android.material:material:1.6.1"
+    implementation "com.google.android.material:material:1.11.0-beta01"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
     // Play Services/Firebase
@@ -181,16 +186,16 @@ dependencies {
 
     // Szkolny.eu libraries/forks
     implementation "eu.szkolny:android-snowfall:1ca9ea2da3"
-    implementation "eu.szkolny:agendacalendarview:1.0.4"
+    // implementation "eu.szkolny:agendacalendarview:1.0.4"
     implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny.fslogin:lib:2.0.0"
-    implementation "eu.szkolny:material-about-library:1d5ebaf47c"
+    // implementation "eu.szkolny:material-about-library:1d5ebaf47c"
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
     officialImplementation "eu.szkolny:ssl-provider:1.0.0"
     unofficialImplementation "eu.szkolny:ssl-provider:1.0.0"
-    implementation "pl.szczodrzynski:navlib:0.8.0"
+    // implementation "pl.szczodrzynski:navlib:0.8.0"
     implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
     implementation "pl.szczodrzynski:recyclertablayout:700f980584"
     implementation "pl.szczodrzynski:tachyon:551943a6b5"
@@ -200,6 +205,7 @@ dependencies {
     implementation "com.mikepenz:iconics-core:5.3.2"
     implementation "com.mikepenz:iconics-views:5.3.2"
     implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
+    implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar'
     implementation "eu.szkolny:szkolny-font:77e33acc2a"
 
     // Other dependencies
@@ -227,4 +233,28 @@ dependencies {
 
     // Debug-only dependencies
     debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6"
+
+    // NavLib required dependencies
+    debugImplementation "com.mikepenz:iconics-views:5.3.2"
+    debugImplementation "com.mikepenz:iconics-typeface-api:5.3.2"
+    debugImplementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
+    debugImplementation "com.balysv:material-ripple:1.0.2"
+    debugApi "com.mikepenz:materialize:1.2.1"
+    debugApi "com.mikepenz:materialdrawer:9.0.1"
+    debugApi "com.mikepenz:iconics-core:5.3.2"
+    debugApi "com.mikepenz:itemanimators:1.1.0"
+
+    // agencacalendarview required dependencies
+
+    debugApi 'eu.szkolny:StickyListHeaders:2.7.1'
+    debugImplementation 'io.reactivex:rxjava:1.1.1'
+
+    // material-about-library required dependencies
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0-alpha04', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    debugImplementation 'net.yslibrary.licenseadapter:licenseadapter:3.0.0'
+
+    testImplementation 'junit:junit:4.13'
 }

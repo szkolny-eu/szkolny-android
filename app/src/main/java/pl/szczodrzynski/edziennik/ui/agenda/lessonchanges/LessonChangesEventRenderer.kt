@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.agenda.lessonchanges
 import android.view.View
 import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
+import com.google.android.material.color.MaterialColors
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaCounterItemBinding
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedCounterBinding
@@ -18,10 +19,11 @@ class LessonChangesEventRenderer : EventRenderer<LessonChangesEvent>() {
 
     override fun render(view: View, event: LessonChangesEvent) {
         val b = AgendaWrappedCounterBinding.bind(view).item
-        val textColor = Colors.legibleTextColor(event.color)
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(view.context, event.color)
+        val textColor = Colors.legibleTextColor(harmonizedColor)
 
-        b.card.foreground.setTintColor(event.color)
-        b.card.background.setTintColor(event.color)
+        b.card.foreground.setTintColor(harmonizedColor)
+        b.card.background.setTintColor(harmonizedColor)
         b.name.setText(R.string.agenda_lesson_changes)
         b.name.setTextColor(textColor)
         b.count.text = event.count.toString()
@@ -35,10 +37,10 @@ class LessonChangesEventRenderer : EventRenderer<LessonChangesEvent>() {
     }
 
     fun render(b: AgendaCounterItemBinding, event: LessonChangesEvent) {
-        val textColor = Colors.legibleTextColor(event.color)
-
-        b.card.foreground.setTintColor(event.color)
-        b.card.background.setTintColor(event.color)
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(b.root.context, event.color)
+        val textColor = Colors.legibleTextColor(harmonizedColor)
+        b.card.foreground.setTintColor(harmonizedColor)
+        b.card.background.setTintColor(harmonizedColor)
         b.name.setText(R.string.agenda_lesson_changes)
         b.name.setTextColor(textColor)
         b.count.text = event.count.toString()

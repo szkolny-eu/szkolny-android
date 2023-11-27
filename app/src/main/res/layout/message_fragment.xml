@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-12.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,45 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorSurface_6dp"
-            android:minHeight="?attr/actionBarSize"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/closeButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="2dp"
-                android:background="?android:attr/actionBarItemBackground"
-                app:srcCompat="@android:drawable/ic_delete" />
-
-            <TextView
-                android:id="@+id/subject"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:animateLayoutChanges="true"
-                android:background="?selectableItemBackground"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:padding="16dp"
-                android:textAppearance="@style/NavView.TextView.Title"
-                tools:ignore="HardcodedText"
-                tools:text="mobiDziennik - raport dzienny." />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@drawable/shadow_top" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -72,11 +32,28 @@
                 android:orientation="vertical"
                 android:paddingBottom="40dp">
 
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:animateLayoutChanges="true"
+                    android:layout_marginVertical="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:textSize="19sp"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/NavView.TextView.TitleLarge"
+                    tools:ignore="HardcodedText"
+                    tools:text="mobiDziennik - raport dzienny." />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -85,9 +62,11 @@
 
                         <ImageView
                             android:id="@+id/profileBackground"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:padding="12dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
                             app:srcCompat="@drawable/bg_circle" />
 
                         <TextView
@@ -111,25 +90,49 @@
                             tools:srcCompat="@tools:sample/avatars[0]" />
                     </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/sender"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="?selectableItemBackground"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:minHeight="64dp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="8dp"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
-                        tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/sender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackground"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:paddingHorizontal="8dp"
+                            android:textAppearance="@style/NavView.TextView.BodyMedium"
+                            android:textStyle="bold"
+                            tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:textAppearance="@style/NavView.TextView.LabelSmall"
+                            tools:text="20 lis 2021 • 14:26" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/closeButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="?android:attr/actionBarItemBackground"
+                        app:srcCompat="@android:drawable/ic_delete" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/messageStar"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="8dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="4dp"
                         app:iiv_color="?android:textColorSecondary"
@@ -137,15 +140,6 @@
                         app:iiv_size="24dp"
                         tools:background="@android:drawable/star_off" />
 
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="8dp"
-                        android:gravity="center_horizontal"
-                        android:textAppearance="@style/NavView.TextView.Small"
-                        tools:text="20 lis 2021\n14:26" />
                 </LinearLayout>
 
                 <TextView
@@ -153,121 +147,124 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
-                    android:minHeight="200dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="32dp"
+                    android:textAppearance="@style/NavView.TextView.BodyMedium"
                     android:textIsSelectable="true"
                     tools:text="To jest treść wiadomości.\n\nZazwyczaj ma wiele linijek.\n\nTak" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/deleteButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_delete"
+                        android:drawableTint="?colorSecondary"
+                        android:text="@string/message_delete"
+                        android:textAllCaps="false"
+                        android:textColor="?colorSecondary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/forwardButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_forward"
+                        android:drawableTint="?colorSecondary"
+                        android:text="@string/message_forward"
+                        android:textAllCaps="false"
+                        android:textColor="?colorSecondary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/replyButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_reply"
+                        android:drawableTint="?colorSecondary"
+                        android:text="@string/message_reply"
+                        android:textAllCaps="false"
+                        android:textColor="?colorSecondary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/notesButton"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notes_button" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/downloadButton"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/message_download"
+                        android:textAllCaps="false"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?colorControlHighlight" />
+                    android:background="?colorOutlineVariant" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="Odbiorcy wiadomości:"
-                    android:textAppearance="@style/NavView.TextView.Subtitle" />
+                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
 
                 <TextView
                     android:id="@+id/recipients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/NavView.TextView.BodyMedium"
                     tools:text=" - Jan Kowalski, przeczytano: nie\n - Adam Dodatkowy, przeczytano: 20 marca, 17:35" />
 
                 <TextView
                     android:id="@+id/attachmentsTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Załączniki:"
-                    android:textAppearance="@style/NavView.TextView.Subtitle" />
+                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
 
                 <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                     android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible"
-                    tools:visibility="visible">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/replyButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/message_reply"
-                        android:textAllCaps="false"
-                        tools:drawableTop="@android:drawable/sym_action_email" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/forwardButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/message_forward"
-                        android:textAllCaps="false"
-                        tools:drawableTop="@android:drawable/stat_sys_phone_call_forward" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/deleteButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/message_delete"
-                        android:textAllCaps="false"
-                        tools:drawableTop="@android:drawable/ic_menu_delete" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/downloadButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/message_download"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        tools:drawableTop="@android:drawable/stat_sys_download" />
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/notesButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/notes_button" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

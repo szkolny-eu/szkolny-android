@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-15.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,91 +17,98 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginRight="8dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_weight="7"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <View
-                android:id="@+id/typeColor"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/unread_red_circle" />
-
-            <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/attachmentIcon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                app:iiv_color="?android:textColorSecondary"
-                app:iiv_icon="cmd-attachment"
-                tools:background="@tools:sample/avatars[4]" />
-
-            <TextView
-                android:id="@+id/details"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:textSize="16sp"
-                tools:text="sprawdzian • 9:05 • historia i społeczeństwo" />
+                android:gravity="center_vertical">
 
-            <View
-                android:id="@+id/unread"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginHorizontal="4dp"
-                android:background="@drawable/unread_red_circle"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </LinearLayout>
+                <View
+                    android:id="@+id/typeColor"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/unread_red_circle" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/attachmentIcon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_icon="cmd-attachment"
+                    tools:background="@tools:sample/avatars[4]" />
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:textAppearance="@style/NavView.TextView.BodyMedium"
+                    android:textColor="?colorPrimary"
+                    tools:text="sprawdzian • 9:05 • historia i społeczeństwo" />
+
+                <View
+                    android:id="@+id/unread"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@drawable/unread_red_circle"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/topic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:textAppearance="@style/NavView.TextView.BodyMedium"
+                    tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
+                <!-- cmd_pencil_outline -->
+            </LinearLayout>
 
             <com.mikepenz.iconics.view.IconicsTextView
-                android:id="@+id/topic"
-                android:layout_width="0dp"
+                android:id="@+id/addedBy"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:textAppearance="@style/NavView.TextView.Medium"
-                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
-            <!-- cmd_pencil_outline -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/editButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:fontFamily="@font/community_material_font_v5_8_55"
-                android:minWidth="0dp"
-                android:text="\uf2f4"
-                android:textSize="20sp"
-                tools:visibility="visible" />
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"
+                tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
         </LinearLayout>
-
-        <com.mikepenz.iconics.view.IconicsTextView
-            android:id="@+id/addedBy"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"
-            tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
+            android:layout_weight="1"
+            android:fontFamily="@font/community_material_font_v5_8_55"
+            android:text="\uf2f4"
+            android:textSize="20sp"
+            tools:visibility="visible" />
     </LinearLayout>
 </layout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -112,7 +113,7 @@ class EventViewHolder(
 
         b.attachmentIcon.isVisible = item.hasAttachments
 
-        b.typeColor.background?.setTintColor(item.eventColor)
+        b.typeColor.background?.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, item.eventColor))
         b.typeColor.isVisible = adapter.showType && adapter.showColor
 
         b.editButton.isVisible = !adapter.simpleMode

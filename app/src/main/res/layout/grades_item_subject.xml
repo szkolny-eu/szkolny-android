@@ -11,12 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginLeft="8dp"
         android:background="?selectableItemBackground">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/divider"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,10 +26,9 @@
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif"
                 android:maxLines="2"
+                android:textAppearance="@style/NavView.TextView.TitleMedium"
                 android:textColor="?android:textColorPrimary"
-                android:textSize="20sp"
                 tools:text="systemy operacyjne" />
 
             <View
@@ -103,7 +98,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:textAppearance="@style/NavView.TextView.LabelSmall"
                     android:visibility="gone"
                     tools:text="Cały rok: 6 ocen • punkty: 34.20/40 (87.5%)"
                     tools:text1="Cały rok: 3 oceny • suma: 320 pkt"

@@ -39,6 +39,7 @@ class LibrusRecaptchaHelper(
     private var timedOut = false
 
     inner class WebViewClient : android.webkit.WebViewClient() {
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             timeout?.cancel()
             if (!timedOut) {

@@ -22,7 +22,7 @@
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,18 +46,18 @@
                     android:background="@drawable/unread_red_circle" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{event.typeName}"
+                        android:textAppearance="?textAppearanceTitleLarge"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Title"
                         android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"
                         tools:text="sprawdzian" />
 
@@ -65,41 +65,80 @@
                         android:id="@+id/lessonDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
                         android:text="@{details}"
+                        android:textAppearance="?textAppearanceBodyMedium"
+                        android:textIsSelectable="true"
                         android:visibility="@{details == null ? View.GONE : View.VISIBLE}"
                         tools:text="język angielski • 2B3T a2"
                         tools:visibility="visible" />
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+                        <!-- cmd_pencil_outline -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/editButton"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:fontFamily="@font/community_material_font_v5_8_55"
+                            android:minWidth="0dp"
+                            android:text="\uf2f4"
+                            android:textSize="20sp" />
+                        <!-- cmd_calendar_export -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveInCalendarButton"
+                            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/community_material_font_v5_8_55"
+                            android:minWidth="0dp"
+                            android:text="\uf97a"
+                            android:textSize="20sp" />
+
+                        <!-- cmd_cursor_default_click_outline -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/goToTimetableButton"
+                            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/community_material_font_v5_8_55"
+                            android:minWidth="0dp"
+                            android:text="\ufc90"
+                            android:textSize="20sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="right"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
-                        tools:text="14:50"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
                         android:text="@{Integer.toString(event.date.day)}"
-                        android:textSize="36sp"
+                        android:textAppearance="?textAppearanceHeadlineLarge"
+                        android:textColor="?colorOnSurface"
                         tools:text="14" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{monthName}"
+                        android:textAppearance="@style/NavView.TextView.LabelLarge"
                         tools:text="listopada" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
+                        android:textAppearance="@style/NavView.TextView.LabelLarge"
+                        tools:text="14:50" />
 
                 </LinearLayout>
 
@@ -122,7 +161,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:text="@string/dialog_event_details_teacher"
                 android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
             <TextView
@@ -138,7 +179,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:text="@string/dialog_event_details_added_by"/>
             <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/addedBy"
@@ -157,7 +200,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
                 android:text="@string/dialog_event_details_topic"/>
 
             <TextView
@@ -174,7 +219,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_body"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary" />
 
             <ProgressBar
                 android:id="@+id/bodyProgressBar"
@@ -189,7 +236,7 @@
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
@@ -199,94 +246,56 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_attachments"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium" />
 
             <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                 android:id="@+id/attachmentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/divider"/>
-
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:flexWrap="wrap"
-                app:justifyContent="flex_end">
+                app:justifyContent="center">
 
                 <!-- cmd_eye_check_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkDoneButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="4dp"
                     android:checkable="true"
                     android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
                     android:text="\uf4df"
                     android:textSize="20sp" />
 
-                <!-- cmd_pencil_outline -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/editButton"
+                    android:id="@+id/notesButton"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="0dp"
-                    android:text="\uf2f4"
-                    android:textSize="20sp" />
-
-                <!-- cmd_calendar_export -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/saveInCalendarButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="0dp"
-                    android:text="\uf97a"
-                    android:textSize="20sp" />
-
-                <!-- cmd_cursor_default_click_outline -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/goToTimetableButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="0dp"
-                    android:text="\ufc90"
-                    android:textSize="20sp" />
+                    android:layout_margin="4dp"
+                    android:textColor="?colorOnBackground"
+                    tools:text="@string/notes_button" />
 
                 <!-- cmd_download_outline -->
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/downloadButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="4dp"
                     android:fontFamily="@font/community_material_font_v5_8_55"
+                    android:textColor="?colorOnBackground"
                     android:minWidth="0dp"
                     android:text="\uf436"
                     android:textSize="20sp" />
             </com.google.android.flexbox.FlexboxLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/notesButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/notes_button" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

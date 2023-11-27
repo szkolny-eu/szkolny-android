@@ -7,50 +7,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:layout_margin="8dp">
-
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="8dp"
+                app:srcCompat="@drawable/ic_archive" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/home_archive_title"
-                android:textAppearance="@style/NavView.TextView.Title" />
+                android:textAppearance="@style/NavView.TextView.TitleMedium" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homeArchiveText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center_horizontal"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 android:text="@string/home_archive_text"
-                android:textSize="16sp"
                 tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeArchiveClose"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button"
+                android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_archive_close" />
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:srcCompat="@drawable/ic_archive" />
-    </LinearLayout>
 </layout>

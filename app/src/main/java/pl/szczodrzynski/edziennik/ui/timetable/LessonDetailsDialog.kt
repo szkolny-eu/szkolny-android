@@ -49,6 +49,7 @@ class LessonDetailsDialog(
         DialogLessonDetailsBinding.inflate(layoutInflater)
 
     override fun getPositiveButtonText() = R.string.close
+    override fun getNegativeButtonText() = R.string.notes_button
     override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
@@ -67,7 +68,6 @@ class LessonDetailsDialog(
         ).show()
         return NO_DISMISS
     }
-
     override suspend fun onShow() {
         if (App.devMode)
             b.lessonId.visibility = View.VISIBLE
@@ -240,6 +240,7 @@ class LessonDetailsDialog(
 
         lesson.displayTeacherName?.let { name ->
             lesson.displayTeacherId ?: return@let
+            /*
             BetterLink.attach(
                 b.teacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
@@ -250,8 +251,9 @@ class LessonDetailsDialog(
                 teachers = mapOf(lesson.displayTeacherId!! to name),
                 onActionSelected = dialog::dismiss
             )
+            */
         }
-
+/*
         b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
@@ -262,5 +264,6 @@ class LessonDetailsDialog(
         b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(lesson, b.legend)
+*/
     }
 }

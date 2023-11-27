@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.messages.list
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.navlib.getColorFromAttr
 
 class MessageViewHolder(
     inflater: LayoutInflater,
@@ -44,15 +46,19 @@ class MessageViewHolder(
         b.messageBody.text = item.bodyHtml?.take(200)
 
         val isRead = item.isSent || item.isDraft || item.seen
+
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
-        val style = if (isRead) R.style.NavView_TextView_Small else R.style.NavView_TextView_Normal
+        val textColor = if (isRead) getColorFromAttr(b.root.context, R.attr.colorOnSurfaceVariant) else getColorFromAttr(b.root.context, R.attr.colorOnSurface)
+
         // set text styles
-        b.messageSender.setTextAppearance(activity, style)
         b.messageSender.typeface = typeface
-        b.messageSubject.setTextAppearance(activity, style)
+        b.messageSender.setTextColor(textColor)
+
         b.messageSubject.typeface = typeface
-        b.messageDate.setTextAppearance(activity, style)
+        b.messageSubject.setTextColor(textColor)
+
         b.messageDate.typeface = typeface
+        b.messageDate.setTextColor(textColor)
 
         if (adapter.onStarClick == null) {
             b.messageStar.isVisible = false

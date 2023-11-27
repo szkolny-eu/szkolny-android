@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.utils.managers
 
 import android.content.Context
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -125,7 +126,7 @@ class GradesManager(val app: App) : CoroutineScope {
         return grade.weight
     }
 
-    fun getGradeColor(grade: Grade): Int {
+    fun getGradeColor(context: Context, grade: Grade): Int {
         val type = grade.type
         val defColor = colorMode == COLOR_MODE_DEFAULT
         val valueMax = grade.valueMax ?: 0f
@@ -173,7 +174,7 @@ class GradesManager(val app: App) : CoroutineScope {
             }
             else -> grade.color and 0xffffff
         }
-        return color or 0xff000000.toInt()
+        return MaterialColors.harmonizeWithPrimary(context, color or 0xff000000.toInt())
     }
 
     /**

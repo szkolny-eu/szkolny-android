@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -110,7 +111,7 @@ class EventDetailsDialog(
 
         manager.setLegendText(b.legend, event, showNotes)
 
-        b.typeColor.background?.setTintColor(event.eventColor)
+        b.typeColor.background?.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, event.eventColor))
 
         b.details = mutableListOf(
                 event.subjectLongName,

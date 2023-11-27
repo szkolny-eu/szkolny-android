@@ -5,6 +5,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:background="?selectableItemBackground"
         android:orientation="vertical"
         android:padding="8dp">
@@ -23,31 +24,32 @@
                 tools:background="@android:drawable/ic_menu_more" />
 
             <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:textAppearance="@style/NavView.TextView.Medium"
-                tools:text="Dzisiaj 1 to szczęśliwy numerek" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/profileDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Władca Androida • 22 listopada" />
-
-            <TextView
                 android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textColor="?colorPrimary"
                 tools:text="Szczęśliwy numerek" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/NavView.TextView.BodyMedium"
+            tools:text="Dzisiaj 1 to szczęśliwy numerek" />
+        <TextView
+            android:id="@+id/profileDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceLabelMedium"
+            tools:text="Władca Androida • 22 listopada" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/divider"/>
     </LinearLayout>
 </layout>
