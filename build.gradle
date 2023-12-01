@@ -5,8 +5,8 @@ buildscript {
         kotlin_version = '1.6.10'
 
         release = [
-                versionName: "4.13.5",
-                versionCode: 4130599
+                versionName: "4.13.6",
+                versionCode: 4130699
         ]
 
         setup = [
@@ -21,7 +21,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.14'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
