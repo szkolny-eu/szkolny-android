@@ -11,4 +11,6 @@ class ProfileConfigAttendance(base: ProfileConfig) {
     var groupConsecutiveDays by base.config<Boolean>(true)
     var showPresenceInMonth by base.config<Boolean>(false)
     var useSymbols by base.config<Boolean>(false)
+    var showDifference by base.config<Boolean>(false)
+    var sortedDescending by base.config<Boolean>(false)
 }

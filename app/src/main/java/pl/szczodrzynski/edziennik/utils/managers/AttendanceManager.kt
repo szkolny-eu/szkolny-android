@@ -25,6 +25,10 @@ class AttendanceManager(val app: App) : CoroutineScope {
 
     val useSymbols
         get() = app.profile.config.attendance.useSymbols
+    val showDifference
+        get() = app.profile.config.attendance.showDifference
+    val sortedDescending
+        get() = app.profile.config.attendance.sortedDescending
 
     fun getTypeShort(baseType: Int): String {
         return when (baseType) {

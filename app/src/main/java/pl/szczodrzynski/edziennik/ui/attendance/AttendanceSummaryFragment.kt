@@ -215,6 +215,8 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
             totalCountSum += totalCount
             presenceCountSum += presenceCount
 
+            subject.presenceDifference = presenceCount - (totalCount-presenceCount);
+
             subject.percentage = if (totalCount == 0)
                 0f
             else
@@ -286,7 +288,11 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
             }
         }
 
-        return items.toMutableList()
+        if(manager.sortedDescending){
+            return items.sortedByDescending { it.percentage }.toMutableList();
+        } else {
+            return items.toMutableList()
+        }
     }
 
     private fun animatePercentageIndicator(targetProgress: Double) {
