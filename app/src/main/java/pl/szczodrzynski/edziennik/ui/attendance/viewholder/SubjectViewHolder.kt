@@ -50,7 +50,7 @@ class SubjectViewHolder(
         else {
             b.percentage.setText(R.string.attendance_percentage_format, item.percentage)
 
-            if(manager.showDifference && item.presenceDifference < 10){
+            if(manager.showDifference){
                 val differenceText = if(item.presenceDifference > 0)
                     "+" + item.presenceDifference
                 else
