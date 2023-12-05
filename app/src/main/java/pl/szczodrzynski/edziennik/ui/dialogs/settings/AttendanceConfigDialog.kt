@@ -11,7 +11,11 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AttendanceConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setOnSelectedListener
 import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_ALPHABET
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_HIGHEST
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_LOWEST
 
 class AttendanceConfigDialog(
     activity: AppCompatActivity,
@@ -36,7 +40,13 @@ class AttendanceConfigDialog(
         b.groupConsecutiveDays.isChecked = app.profile.config.attendance.groupConsecutiveDays
         b.showPresenceInMonth.isChecked = app.profile.config.attendance.showPresenceInMonth
         b.showDifference.isChecked = app.profile.config.attendance.showDifference
-        b.sortedDescending.isChecked = app.profile.config.attendance.sortedDescending
+
+        when (app.profile.config.attendance.orderBy) {
+            SORTED_BY_ALPHABET -> b.sortAttendanceByAlphabet
+            SORTED_BY_LOWEST -> b.sortAttendanceByLowest
+            SORTED_BY_HIGHEST -> b.sortAttendanceByHighest
+            else -> null
+        }?.isChecked = true
     }
 
     override fun initView() {
@@ -52,9 +62,10 @@ class AttendanceConfigDialog(
         b.showDifference.onChange { _, isChecked ->
             app.profile.config.attendance.showDifference = isChecked
         }
-        b.sortedDescending.onChange { _, isChecked ->
-            app.profile.config.attendance.sortedDescending = isChecked
-        }
+
+        b.sortAttendanceByAlphabet.setOnSelectedListener { app.profile.config.attendance.orderBy = SORTED_BY_ALPHABET }
+        b.sortAttendanceByHighest.setOnSelectedListener { app.profile.config.attendance.orderBy = SORTED_BY_HIGHEST }
+        b.sortAttendanceByLowest.setOnSelectedListener { app.profile.config.attendance.orderBy = SORTED_BY_LOWEST }
 
         b.showDifferenceHelp.onClick {
             MaterialAlertDialogBuilder(activity)

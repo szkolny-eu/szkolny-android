@@ -56,7 +56,6 @@ abstract class AttendanceDao : BaseDao<Attendance, AttendanceFull> {
     // GET ALL - LIVE DATA
     fun getAll(profileId: Int) =
             getRaw("$QUERY WHERE attendances.profileId = $profileId $ORDER_BY")
-
     // GET ALL - NOW
     fun getAllNow(profileId: Int) =
             getRawNow("$QUERY WHERE attendances.profileId = $profileId $ORDER_BY")

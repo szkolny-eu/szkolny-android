@@ -32,6 +32,9 @@ import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment.Companion.VIE
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceSubject
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_ALPHABET
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_HIGHEST
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_LOWEST
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.text.DecimalFormat
 import kotlin.coroutines.CoroutineContext
@@ -288,10 +291,10 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
             }
         }
 
-        if(manager.sortedDescending){
-            return items.sortedByDescending { it.percentage }.toMutableList();
-        } else {
-            return items.toMutableList()
+        return when(manager.orderBy){
+            SORTED_BY_HIGHEST -> items.sortedByDescending { it.percentage }.toMutableList()
+            SORTED_BY_LOWEST -> items.sortedBy { it.percentage }.toMutableList()
+            else -> items.sortedBy { it.subjectName.lowercase() }.toMutableList()
         }
     }
 

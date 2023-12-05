@@ -1433,5 +1433,9 @@
     <string name="menu_agenda_config">Agenda settings</string>
     <string name="registration_config_note_sharing_title">Share notes</string>
     <string name="home_timetable_all_lessons">All lessons:</string>
-    <string name="attendace_config_show_difference">Display attendance differences</string>
+    <string name="attendance_config_show_difference">Display attendance differences</string>
+    <string name="menu_attendance_sort_mode">Sort attendance</string>
+    <string name="attendance_config_dialog_sort_by_alphabet">Alphabetically</string>
+    <string name="attendance_config_dialog_sort_by_highest">From the highest</string>
+    <string name="attendance_config_dialog_sort_by_lowest">from the lowest</string>
 </resources>

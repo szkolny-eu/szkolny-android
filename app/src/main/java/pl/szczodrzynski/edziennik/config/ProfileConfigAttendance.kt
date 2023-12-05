@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager.Companion.SORTED_BY_ALPHABET
+
 @Suppress("RemoveExplicitTypeArguments")
 class ProfileConfigAttendance(base: ProfileConfig) {
 
@@ -12,5 +14,5 @@ class ProfileConfigAttendance(base: ProfileConfig) {
     var showPresenceInMonth by base.config<Boolean>(false)
     var useSymbols by base.config<Boolean>(false)
     var showDifference by base.config<Boolean>(false)
-    var sortedDescending by base.config<Boolean>(false)
+    var orderBy by base.config<Int>(SORTED_BY_ALPHABET)
 }

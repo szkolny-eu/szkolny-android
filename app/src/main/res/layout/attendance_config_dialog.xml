@@ -32,34 +32,6 @@
                 android:minHeight="32dp"
                 android:text="@string/attendance_config_use_symbols" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="@string/attendance_config_use_symbols_hint"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:textSize="12sp"
-                android:textStyle="italic" />
-
-            <CheckBox
-                android:id="@+id/groupConsecutiveDays"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_group_consecutive_days" />
-
-            <CheckBox
-                android:id="@+id/showPresenceInMonth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_show_presence_in_month" />
-            <CheckBox
-                android:id="@+id/sortedDescending"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_sorted_descending"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,6 +57,62 @@
                     tools:src="@android:drawable/ic_menu_help" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/attendance_config_use_symbols_hint"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/groupConsecutiveDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/attendance_config_group_consecutive_days" />
+
+            <CheckBox
+                android:id="@+id/showPresenceInMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/attendance_config_show_presence_in_month" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_attendance_sort_mode"/>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByAlphabet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_alphabet" />
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByLowest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_lowest"/>
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByHighest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_highest"/>
+
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 </layout>
