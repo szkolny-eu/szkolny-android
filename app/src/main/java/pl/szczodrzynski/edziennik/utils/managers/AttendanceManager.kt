@@ -19,12 +19,20 @@ import kotlin.coroutines.CoroutineContext
 
 class AttendanceManager(val app: App) : CoroutineScope {
 
+    companion object {
+        const val SORTED_BY_ALPHABET = 0
+        const val SORTED_BY_HIGHEST = 1
+        const val SORTED_BY_LOWEST = 2
+    }
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
-
     val useSymbols
         get() = app.profile.config.attendance.useSymbols
+    val showDifference
+        get() = app.profile.config.attendance.showDifference
+    val orderBy
+        get() = app.profile.config.attendance.orderBy
 
     fun getTypeShort(baseType: Int): String {
         return when (baseType) {

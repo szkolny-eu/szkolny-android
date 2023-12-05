@@ -23,4 +23,5 @@ data class AttendanceSubject(
 
     var typeCountMap: Map<AttendanceType, Int> = mapOf()
     var percentage: Float = 0f
+    var presenceDifference: Int = 0
 }
