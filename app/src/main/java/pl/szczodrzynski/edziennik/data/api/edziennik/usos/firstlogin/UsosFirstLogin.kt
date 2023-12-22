@@ -69,7 +69,7 @@ class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {
                     ),
                 ).also {
                     val studentNumWithoutNonDigits = json.getString("student_number")?.replace(Regex("[^0-9]"), "")
-                    if (studentNumWithoutNonDigits != null) {
+                    if (studentNumWithoutNonDigits != null && studentNumWithoutNonDigits != "") {
                         it.studentNumber = studentNumWithoutNonDigits.toInt()
                     }else{
                         it.studentNumber = -1
