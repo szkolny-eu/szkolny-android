@@ -68,7 +68,12 @@ class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {
                         "studentId" to json.getInt("id"),
                     ),
                 ).also {
-                    it.studentNumber = json.getInt("student_number", -1)
+                    val studentNumWithoutNonDigits = json.getString("student_number")?.replace(Regex("[^0-9]"), "")
+                    if (studentNumWithoutNonDigits != null) {
+                        it.studentNumber = studentNumWithoutNonDigits.toInt()
+                    }else{
+                        it.studentNumber = -1
+                    }
                     it.studentClassName = programmes.getJsonObject(0).getJsonObject("programme").getString("id")
                 }
 
