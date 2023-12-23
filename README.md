@@ -10,9 +10,9 @@
 [![Najnowsza wersja](https://img.shields.io/github/v/release/szkolny-eu/szkolny-android?color=%2344CC11&include_prereleases&logo=github&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/releases/latest)
 ![Licencja](https://img.shields.io/github/license/szkolny-eu/szkolny-android?color=blue&logo=github&logoColor=white&style=for-the-badge)
 
-[![Release build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20official?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-apk.yml)
-[![Play build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20Google%20Play%20%5BAAB%5D?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-aab-play.yml)
-[![Nightly build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Nightly%20build?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-nightly-apk.yml)
+[![Release build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-release-apk.yml?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-apk.yml)
+[![Play build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-release-aab-play.yml?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-aab-play.yml)
+[![Nightly build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-nightly-apk.yml?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-nightly-apk.yml)
 
 </div>
 
