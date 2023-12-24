@@ -12,7 +12,6 @@ import android.os.Build.VERSION_CODES
 import android.provider.Settings
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
@@ -128,7 +127,15 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
         ) {
             NotificationFilterDialog(activity).show()
         },
-
+        util.createPropertyItem(
+            text = R.string.settings_lucky_number_only_me_text,
+            subText = R.string.settings_lucky_number_only_me_descryption,
+            icon = CommunityMaterial.Icon.cmd_bell_cancel,
+            value = configGlobal.sync.luckyNumberOnlyMe
+        ) { _, it ->
+            configGlobal.sync.luckyNumberOnlyMe = it
+            UpdateWorker.rescheduleNext(app)
+        },
         util.createPropertyActionItem(
             text = R.string.settings_sync_quiet_hours_text,
             subText = R.string.settings_sync_quiet_hours_subtext_disabled,
@@ -166,7 +173,6 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
             configGlobal.sync.notifyAboutUpdates = it
             UpdateWorker.rescheduleNext(app)
         },
-
         if (SDK_INT >= VERSION_CODES.KITKAT)
             util.createActionItem(
                 text = R.string.settings_sync_notifications_settings_text,
