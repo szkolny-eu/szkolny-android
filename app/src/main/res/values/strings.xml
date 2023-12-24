@@ -1553,4 +1553,7 @@
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
     <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
     <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
+    <string name="settings_lucky_number_only_me_text">Szczęśliwy Numerek tylko dla Ciebie</string>
+    <string name="settings_lucky_number_only_me_descryption">Wysyła powiadomienia o Szczęśliwym Numerku jedynie gdy Ty zostaniesz wybrany</string>
+
 </resources>
