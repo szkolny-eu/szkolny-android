@@ -26,7 +26,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
     )
 
     override fun getItems(card: MaterialAboutCard) = listOfNotNull(
-        if (Date.getToday().month % 11 == 1) // cool math games
+        if (Date.getToday().month / 3 % 4 == 0) // cool math games
             util.createPropertyItem(
                 text = R.string.settings_theme_snowfall_text,
                 subText = R.string.settings_theme_snowfall_subtext,
