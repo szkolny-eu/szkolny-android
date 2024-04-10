@@ -179,7 +179,7 @@ public class Time implements Comparable<Time> {
         if (hour < 0) {
             return "";
         }
-        return hour +":"+(minute < 10 ? "0" : "")+ minute;
+        return (hour < 10 ? " " : "") + hour +":"+(minute < 10 ? "0" : "")+ minute + (hour < 10 ? " " : "");
     }
     public String getStringH_M()
     {

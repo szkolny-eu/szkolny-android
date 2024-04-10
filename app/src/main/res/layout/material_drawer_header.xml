@@ -68,9 +68,9 @@
         android:focusable="true"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        app:materialDrawerSelectorOnPress="#80ffffff"
         app:layout_constraintEnd_toStartOf="@id/material_drawer_account_header_small_second"
-        app:layout_constraintTop_toBottomOf="@+id/material_drawer_statusbar_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/material_drawer_statusbar_guideline"
+        app:materialDrawerSelectorOnPress="#80ffffff" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_first_badge"
