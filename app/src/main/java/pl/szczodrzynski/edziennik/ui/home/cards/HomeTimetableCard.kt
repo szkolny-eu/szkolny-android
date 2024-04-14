@@ -334,7 +334,7 @@ class HomeTimetableCard(
 
         for (lesson in nextLessons) {
             text += listOf(
-                    lesson.displayStartTime?.stringHM,
+                    adjustTimeWidth(lesson.displayStartTime?.stringHM),
                     lesson.subjectSpannable
             ).concat(" ")
         }
@@ -342,6 +342,19 @@ class HomeTimetableCard(
             text += activity.getString(R.string.home_timetable_later_no_lessons)
         b.nextLessons.text = text.concat("\n")
     }}
+
+    private fun adjustTimeWidth(time: String?): String {
+        if (time != null) {
+            //compared to 4 because when hour is less than 10 there are 4 chars (hour, colon and minutes)
+            if(time.length == 4) {
+                return " $time  "
+            } else {
+                return "$time "
+            }
+        } else {
+            return ""
+        }
+    }
 
     private val LessonFull?.subjectSpannable: CharSequence
         get() = if (this == null) "?" else when {
