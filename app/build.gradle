@@ -148,8 +148,8 @@ dependencies {
     // Language cores
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation files('libs/navlib-debug.aar')
-    implementation files('libs/navlib-font-debug.aar')
+//    implementation files('libs/navlib-debug.aar')
+//    implementation files('libs/navlib-font-debug.aar')
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
     // Android Jetpack
@@ -188,15 +188,16 @@ dependencies {
     // Szkolny.eu libraries/forks
     implementation project(":navlib")
     implementation "eu.szkolny:android-snowfall:1ca9ea2da3"
-    // implementation "eu.szkolny:agendacalendarview:1.0.4"
+    implementation "eu.szkolny:agendacalendarview:1.0.4"
     implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny.fslogin:lib:2.0.0"
-    // implementation "eu.szkolny:material-about-library:1d5ebaf47c"
+    implementation "eu.szkolny:material-about-library:1d5ebaf47c"
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
     officialImplementation "eu.szkolny:ssl-provider:1.0.0"
     unofficialImplementation "eu.szkolny:ssl-provider:1.0.0"
+
     implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
     implementation "pl.szczodrzynski:recyclertablayout:700f980584"
     implementation "pl.szczodrzynski:tachyon:551943a6b5"

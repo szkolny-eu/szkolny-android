@@ -44,7 +44,6 @@ class SettingsUtil(
             .title(titleRes ?: 0)
             .cardColor(backgroundColor ?: 0)
             .theme(theme ?: 0)
-            .outline(false)
             .build()
         card.items.addAll(items(card))
 

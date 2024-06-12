@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.9.10'
+        kotlin_version = '1.9.24'
 
         release = [
                 versionName: "4.13.6",
@@ -11,7 +11,7 @@ buildscript {
 
         setup = [
                 compileSdk: 34,
-                minSdk    : 16,
+                minSdk    : 21,
                 targetSdk : 34
         ]
     }
@@ -21,7 +21,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath 'com.android.tools.build:gradle:8.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.14'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
