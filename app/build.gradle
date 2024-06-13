@@ -89,6 +89,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        buildConfig true
     }
     compileOptions {
         coreLibraryDesugaringEnabled = true
@@ -191,14 +192,14 @@ dependencies {
     implementation "eu.szkolny:material-about-library:1d5ebaf47c"
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
-    implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
+    implementation "eu.szkolny.selective-dao:annotation:6a337f9"
     officialImplementation "eu.szkolny:ssl-provider:1.0.0"
     unofficialImplementation "eu.szkolny:ssl-provider:1.0.0"
 
     implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
     implementation "pl.szczodrzynski:recyclertablayout:700f980584"
     implementation "pl.szczodrzynski:tachyon:551943a6b5"
-    kapt "eu.szkolny.selective-dao:codegen:27f8f3f194"
+    kapt "eu.szkolny.selective-dao:codegen:6a337f9"
 
     // Iconics & related
     implementation "com.mikepenz:iconics-core:5.3.2"
