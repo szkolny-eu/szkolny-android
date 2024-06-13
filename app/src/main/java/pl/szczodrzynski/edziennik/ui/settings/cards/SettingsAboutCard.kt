@@ -47,9 +47,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
             items = listOf(),
             itemsMore = listOf(),
             backgroundColor = R.attr.colorPrimaryContainer.resolveAttr(activity)
-        ).also {
-            it.items.addAll(getItems(it))
-        }
+        )
 
     private val versionDetailsItem by lazy {
         util.createActionItem(
