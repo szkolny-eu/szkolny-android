@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -791,7 +792,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
-        registerReceiver(intentReceiver, filter)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            registerReceiver(intentReceiver, filter, RECEIVER_NOT_EXPORTED)
+        else
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            registerReceiver(intentReceiver, filter)
+
         EventBus.getDefault().register(this)
         super.onResume()
     }
