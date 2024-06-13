@@ -1191,8 +1191,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
-    private val targetPopToHomeList = arrayListOf<Int>()
-    private var targetHomeId: Int = -1
+    @SuppressLint("MissingSuperCall")
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (App.config.ui.openDrawerOnBackPressed) {
