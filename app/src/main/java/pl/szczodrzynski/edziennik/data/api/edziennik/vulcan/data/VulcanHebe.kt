@@ -391,7 +391,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     fun apiGetList(
         tag: String,
         endpoint: String,
-        filterType: HebeFilterType = HebeFilterType.BY_PUPIL,
+        filterType: HebeFilterType? = null,
         dateFrom: Date? = null,
         dateTo: Date? = null,
         lastSync: Long? = null,
@@ -424,6 +424,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             HebeFilterType.BY_MESSAGEBOX -> {
                 query["box"] = messageBox ?: data.messageBoxKey ?: ""
             }
+            else -> {}
         }
 
         if (dateFrom != null)
