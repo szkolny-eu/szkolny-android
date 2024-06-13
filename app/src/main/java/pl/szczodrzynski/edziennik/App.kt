@@ -124,7 +124,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
+
+    override val workManagerConfiguration: Configuration = Configuration.Builder()
             .setMinimumLoggingLevel(Log.VERBOSE)
             .build()
 

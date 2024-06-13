@@ -23,20 +23,24 @@ object WorkerUtils {
     inline fun scheduleNext(app: App, rescheduleIfFailedFound: Boolean = true, crossinline onReschedule: () -> Unit) {
         AsyncTask.execute {
             val workManager = WorkManager.getInstance(app) as WorkManagerImpl
-            val scheduledWork = workManager.workDatabase.workSpecDao().scheduledWork
+            val scheduledWork = workManager.workDatabase.workSpecDao().getScheduledWork() as MutableList;
+
             scheduledWork.forEach {
-                Utils.d("WorkerUtils", "Work: ${it.id} at ${(it.periodStartTime + it.initialDelay).formatDate()}. State = ${it.state} (finished = ${it.state.isFinished})")
+                Utils.d("WorkerUtils", "Work: ${it.id} at ${it.calculateNextRunTime().formatDate()}. State = ${it.state} (finished = ${it.state.isFinished})")
             }
+
             // remove finished work and other than SyncWorker
             scheduledWork.removeAll { it.workerClassName != SyncWorker::class.java.canonicalName || it.isPeriodic || it.state.isFinished }
             Utils.d("WorkerUtils", "Found ${scheduledWork.size} unfinished work")
+
             // remove all enqueued work that had to (but didn't) run at some point in the past (at least 1min ago)
-            val failedWork = scheduledWork.filter { it.state == WorkInfo.State.ENQUEUED && it.periodStartTime + it.initialDelay < System.currentTimeMillis() - 1 * MINUTE * 1000 }
+            val failedWork = scheduledWork.filter { it.state == WorkInfo.State.ENQUEUED && it.calculateNextRunTime() < System.currentTimeMillis() - 1 * MINUTE * 1000 }
             Utils.d("WorkerUtils", "${failedWork.size} work requests failed to start (out of ${scheduledWork.size} requests)")
+
             if (rescheduleIfFailedFound) {
                 if (failedWork.isNotEmpty()) {
                     Utils.d("WorkerUtils", "App Manager detected!")
-                    EventBus.getDefault().postSticky(AppManagerDetectedEvent(failedWork.map { it.periodStartTime + it.initialDelay }))
+                    EventBus.getDefault().postSticky(AppManagerDetectedEvent(failedWork.map { it.calculateNextRunTime() }))
                 }
                 if (scheduledWork.size - failedWork.size < 1) {
                     Utils.d("WorkerUtils", "No pending work found, scheduling next:")

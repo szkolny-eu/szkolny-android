@@ -144,7 +144,7 @@ class ConfigDelegate<T>(
             java.lang.Float::class.java -> value.toFloatOrNull()
             // enums, maps & collections
             else -> when {
-                Enum::class.java.isAssignableFrom(type) -> value.toIntOrNull()?.toEnum(type) as Enum<*>
+                Enum::class.java.isAssignableFrom(type) -> value.toIntOrNull()?.toEnum(type) as Enum
                 Collection::class.java.isAssignableFrom(type) -> {
                     val array = value.toJsonArray()
                     val genericType = getGenericType()

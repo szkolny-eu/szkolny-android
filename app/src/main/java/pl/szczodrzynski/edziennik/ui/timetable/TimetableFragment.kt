@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.ui.timetable
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,8 +92,16 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
     override fun onResume() {
         super.onResume()
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE ),
+                Context.RECEIVER_NOT_EXPORTED)
+            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES),
+                Context.RECEIVER_NOT_EXPORTED)
+        } else @Suppress("UnspecifiedRegisterReceiverFlag") {
+            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
+            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
+        }
     }
     override fun onPause() {
         super.onPause()

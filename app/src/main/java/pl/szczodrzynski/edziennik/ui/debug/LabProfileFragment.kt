@@ -129,7 +129,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                         is String -> input
                                         is Long -> input.toLong()
                                         is Double -> input.toDouble()
-                                        is Enum<*> -> input.toInt().toEnum(objVal::class.java)
+                                        is Enum<*> -> input.toInt().toEnum(objVal::class.java) as Enum
                                         else -> input
                                     }
                                     field.set(parent, newVal)
