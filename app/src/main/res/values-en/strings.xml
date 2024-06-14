@@ -1434,4 +1434,6 @@
     <string name="menu_agenda_config">Agenda settings</string>
     <string name="registration_config_note_sharing_title">Share notes</string>
     <string name="home_timetable_all_lessons">All lessons:</string>
+    <string name="settings_ui_lock_layout_text">Lock home screen layout</string>
+    <string name="settings_ui_lock_layout_subtext">You will not be able to edit items on the home screen</string>
 </resources>

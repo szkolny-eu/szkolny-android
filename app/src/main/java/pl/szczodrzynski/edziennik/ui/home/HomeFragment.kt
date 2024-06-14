@@ -136,6 +136,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )
+
         b.configureCards.onClick {
             HomeConfigDialog(activity, reloadOnDismiss = true).show()
         }
@@ -168,56 +169,78 @@ class HomeFragment : Fragment(), CoroutineScope {
                 else -> null
             } as HomeCard?
         }
+
         //if (App.devMode)
         //    items += HomeDebugCard(100, app, activity, this, app.profile)
         if (app.profile.archived)
             items.add(0, HomeArchiveCard(101, app, activity, this, app.profile))
 
         val status = app.availabilityManager.check(app.profile, cacheOnly = true)?.status
+        val lockLayout = app.config.ui.lockLayout
         val update = app.config.update
+
         if (update != null && update.versionCode > BuildConfig.VERSION_CODE || status?.userMessage != null) {
             items.add(0, HomeAvailabilityCard(102, app, activity, this, app.profile))
         }
 
         val adapter = HomeCardAdapter(items)
-        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
-        adapter.itemTouchHelper = itemTouchHelper
-        b.list.layoutManager = LinearLayoutManager(activity)
         b.list.adapter = adapter
-        b.list.setAccessibilityDelegateCompat(object : RecyclerViewAccessibilityDelegate(b.list) {
-            override fun getItemDelegate(): AccessibilityDelegateCompat {
-                return object : ItemDelegate(this) {
-                    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
-                        super.onInitializeAccessibilityNodeInfo(host, info)
-                        val position: Int = b.list.getChildLayoutPosition(host)
-                        if (position != 0) {
-                            info.addAction(AccessibilityActionCompat(
-                                    R.id.move_card_up_action,
-                                    host.resources.getString(R.string.card_action_move_up)
-                            ))
-                        }
-                        if (position != adapter.itemCount - 1) {
-                            info.addAction(AccessibilityActionCompat(
-                                    R.id.move_card_down_action,
-                                    host.resources.getString(R.string.card_action_move_down)
-                            ))
-                        }
-                    }
+        b.list.layoutManager = LinearLayoutManager(activity)
 
-                    override fun performAccessibilityAction(host: View, action: Int, args: Bundle?): Boolean {
-                        val fromPosition: Int = b.list.getChildLayoutPosition(host)
-                        if (action == R.id.move_card_down_action) {
-                            swapCards(fromPosition, fromPosition + 1, adapter)
-                            return true
-                        } else if (action == R.id.move_card_up_action) {
-                            swapCards(fromPosition, fromPosition - 1, adapter)
-                            return true
+        val itemTouchHelper =
+            ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
+
+        adapter.itemTouchHelper = itemTouchHelper
+
+        if (!lockLayout) {
+            b.list.setAccessibilityDelegateCompat(object :
+                RecyclerViewAccessibilityDelegate(b.list) {
+                override fun getItemDelegate(): AccessibilityDelegateCompat {
+                    return object : ItemDelegate(this) {
+                        override fun onInitializeAccessibilityNodeInfo(
+                            host: View,
+                            info: AccessibilityNodeInfoCompat
+                        ) {
+                            super.onInitializeAccessibilityNodeInfo(host, info)
+                            val position: Int = b.list.getChildLayoutPosition(host)
+                            if (position != 0) {
+                                info.addAction(
+                                    AccessibilityActionCompat(
+                                        R.id.move_card_up_action,
+                                        host.resources.getString(R.string.card_action_move_up)
+                                    )
+                                )
+                            }
+                            if (position != adapter.itemCount - 1) {
+                                info.addAction(
+                                    AccessibilityActionCompat(
+                                        R.id.move_card_down_action,
+                                        host.resources.getString(R.string.card_action_move_down)
+                                    )
+                                )
+                            }
                         }
-                        return super.performAccessibilityAction(host, action, args)
+
+                        override fun performAccessibilityAction(
+                            host: View,
+                            action: Int,
+                            args: Bundle?
+                        ): Boolean {
+                            val fromPosition: Int = b.list.getChildLayoutPosition(host)
+                            if (action == R.id.move_card_down_action) {
+                                swapCards(fromPosition, fromPosition + 1, adapter)
+                                return true
+                            } else if (action == R.id.move_card_up_action) {
+                                swapCards(fromPosition, fromPosition - 1, adapter)
+                                return true
+                            }
+                            return super.performAccessibilityAction(host, action, args)
+                        }
                     }
                 }
-            }
-        })
-        itemTouchHelper.attachToRecyclerView(b.list)
+            })
+
+            itemTouchHelper.attachToRecyclerView(b.list)
+        }
     }
 }

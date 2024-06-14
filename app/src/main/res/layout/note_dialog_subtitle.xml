@@ -29,7 +29,7 @@
             android:drawablePadding="8dp"
             android:text="@{text}"
             android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
-            app:drawableStartCompat="@drawable/ic_note"
+            app:drawableStartCompat="@drawable/ic_note_legacy"
             tools:layout_height="28sp"
             tools:text="@string/notes_list_dialog_title" />
 

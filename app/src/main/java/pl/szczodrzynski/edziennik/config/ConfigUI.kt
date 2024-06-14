@@ -15,6 +15,7 @@ class ConfigUI(base: Config) {
     var appBackground by base.config<String?>("appBg", null)
     var headerBackground by base.config<String?>("headerBg", null)
 
+    var lockLayout by base.config<Boolean>(false)
     var miniMenuVisible by base.config<Boolean>(false)
     var miniMenuButtons by base.config<Set<NavTarget>> {
         setOf(

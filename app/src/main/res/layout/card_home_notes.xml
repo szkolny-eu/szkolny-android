@@ -18,7 +18,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.Material3.Button.IconButton.Filled"
-            app:icon="@drawable/ic_note"
+            app:icon="@drawable/ic_note_legacy"
             app:iconTint="?colorOnPrimaryContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
