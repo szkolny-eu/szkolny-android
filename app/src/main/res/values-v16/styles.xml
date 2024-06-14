@@ -76,7 +76,7 @@
         <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialog.BodyText</item>
     </style>
     <style name="AppTheme.MaterialAlertDialog.TitleText" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="android:textAppearance">@style/NavView.TextView.HeadlineSmall</item>
+        <item name="android:textSize">20sp</item>
     </style>
     <style name="AppTheme.MaterialAlertDialog.BodyText">
         <item name="android:textAppearance">@style/NavView.TextView.BodyMedium</item>
