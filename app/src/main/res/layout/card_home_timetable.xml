@@ -243,11 +243,13 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/classroomHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Sala"
                             android:textAppearance="@style/NavView.TextView.BodyMedium"
                             android:textStyle="bold"
+                            android:visibility="gone"
                             android:textColor="?colorPrimary" />
 
                         <TextView

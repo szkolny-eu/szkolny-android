@@ -261,9 +261,11 @@ class HomeTimetableCard(
                 R.string.home_timetable_lesson_not_started
             b.lessonBig.setText(lessonRes, firstLesson.subjectSpannable)
             firstLesson?.displayClassroom?.let {
+                b.classroomHeading.visibility = View.VISIBLE
                 b.classroom.visibility = View.VISIBLE
                 b.classroom.text = it
             } ?: run {
+                b.classroomHeading.visibility = View.GONE
                 b.classroom.visibility = View.GONE
             }
 
@@ -305,9 +307,11 @@ class HomeTimetableCard(
             b.counter.visibility = View.VISIBLE
             b.counter.text = firstLesson?.displayStartTime?.stringHM
             firstLesson?.displayClassroom?.let {
+                b.classroomHeading.visibility = View.VISIBLE
                 b.classroom.visibility = View.VISIBLE
                 b.classroom.text = it
             } ?: run {
+                b.classroomHeading.visibility = View.GONE
                 b.classroom.visibility = View.GONE
             }
 
