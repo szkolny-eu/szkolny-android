@@ -161,11 +161,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="@string/dialog_grade_details_code"
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{Utils.ns(@string/dialog_grade_details_no_code, grade.code)}"
+                android:textIsSelectable="true"
+                tools:text="@string/dialog_grade_details_no_code" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_description"
                 android:textAppearance="@style/NavView.TextView.BodyMedium"
                 android:textStyle="bold"
-                android:textColor="?colorPrimary"
-                />
+                android:textColor="?colorPrimary" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -81,7 +81,8 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     semester = semester,
                     teacherId = teacherId,
                     subjectId = subjectId,
-                    addedDate = addedDate
+                    addedDate = addedDate,
+                    code = null
             )
 
             if (data.profile?.empty == true) {

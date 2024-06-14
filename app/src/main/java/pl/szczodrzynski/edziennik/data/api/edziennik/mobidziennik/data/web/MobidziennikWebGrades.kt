@@ -128,7 +128,8 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                         semester = gradeSemester,
                                         teacherId = teacherId,
                                         subjectId = subjectId,
-                                        addedDate = gradeAddedDateMillis
+                                        addedDate = gradeAddedDateMillis,
+                                        code = null
                                 )
 
                                 gradeObject.classAverage = gradeClassAverage

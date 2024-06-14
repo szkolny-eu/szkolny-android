@@ -1229,4 +1229,6 @@
     <string name="edziennik_progress_endpoint_addressbook">Addressbuch herunterladen…</string>
     <string name="settings_ui_lock_layout_text">Sperren des Startbildschirm-Layouts</string>
     <string name="settings_ui_lock_layout_subtext">Sie können keine Elemente auf dem Startbildschirm bearbeiten</string>
+    <string name="dialog_grade_details_code">Notenspaltencode</string>
+    <string name="dialog_grade_details_no_code">(kein Notenspaltencode)</string>
 </resources>

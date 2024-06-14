@@ -58,7 +58,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         semester = 1,
                         teacherId = -1,
                         subjectId = 1,
-                        addedDate = profile.getSemesterStart(1).inMillis
+                        addedDate = profile.getSemesterStart(1).inMillis,
+                        code = null
                 )
 
                 data.gradeList.add(semester1StartGradeObject)
@@ -86,7 +87,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         semester = 2,
                         teacherId = -1,
                         subjectId = 1,
-                        addedDate = profile.getSemesterStart(2).inMillis
+                        addedDate = profile.getSemesterStart(2).inMillis,
+                        code = null
                 )
 
                 data.gradeList.add(semester2StartGradeObject)
@@ -158,7 +160,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         semester = semester,
                         teacherId = teacherId,
                         subjectId = 1,
-                        addedDate = addedDate
+                        addedDate = addedDate,
+                        code = null
                 ).apply {
                     valueMax = valueTo
                 }

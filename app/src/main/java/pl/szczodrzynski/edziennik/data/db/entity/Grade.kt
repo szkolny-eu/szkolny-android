@@ -29,6 +29,12 @@ open class Grade(
         @ColumnInfo(name = "gradeColor")
         var color: Int,
 
+        /**
+         * Applies only for Vulcan (i think)
+         */
+        @ColumnInfo(name = "code")
+        var code: String?,
+
         @ColumnInfo(name = "gradeCategory")
         var category: String?,
         @ColumnInfo(name = "gradeDescription")

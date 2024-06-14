@@ -1436,4 +1436,6 @@
     <string name="home_timetable_all_lessons">All lessons:</string>
     <string name="settings_ui_lock_layout_text">Lock home screen layout</string>
     <string name="settings_ui_lock_layout_subtext">You will not be able to edit items on the home screen</string>
+    <string name="dialog_grade_details_code">Grade column code</string>
+    <string name="dialog_grade_details_no_code">(no column code)</string>
 </resources>
