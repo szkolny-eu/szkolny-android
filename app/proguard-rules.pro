@@ -55,6 +55,7 @@
 #-printmapping mapping.txt
 
 -keep class okhttp3.** { *; }
+-keep class retrofit.** { *; }
 
 -keep class com.google.android.material.tabs.** {*;}
 
