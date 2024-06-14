@@ -62,15 +62,6 @@
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
 
-# Exclude Retrofit2
--keepattributes Signature, InnerClasses, EnclosingMethod
--keepclassmembers,allowshrinking,allowobfuscation interface * {
-    @retrofit2.http.* <methods>;
-}
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn javax.annotation.**
--dontwarn kotlin.Unit
-
 # Most of volatile fields are updated with AFU and should not be mangled
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
@@ -82,9 +73,36 @@
 
 -keep class pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing { public final byte[] pleaseStopRightNow(java.lang.String, long); }
 
+-keepclassmembers class pl.szczodrzynski.edziennik.ui.login.qr.* { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
 -keepclassmembernames class pl.szczodrzynski.edziennik.ui.login.LoginInfo$Platform { *; }
 
 -keepclassmembernames class pl.szczodrzynski.fslogin.realm.RealmData { *; }
 -keepclassmembernames class pl.szczodrzynski.fslogin.realm.RealmData$Type { *; }
+
+# Exclude Retrofit2
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keepattributes AnnotationDefault
+
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn javax.annotation.**
+-dontwarn kotlin.Unit
+-dontwarn retrofit2.KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions$*
+
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface <1>
+
+-if interface * { @retrofit2.http.* <methods>; }
+-keep,allowobfuscation interface * extends <1>
+
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-if interface * { @retrofit2.http.* public *** *(...); }
+-keep,allowoptimization,allowshrinking,allowobfuscation class <3>
+-keep,allowobfuscation,allowshrinking class retrofit2.Response

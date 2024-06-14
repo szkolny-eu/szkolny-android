@@ -228,7 +228,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         val qrDecoderClass = credential.qrDecoderClass ?: return
         app.permissionManager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
             QrScannerDialog(activity, onCodeScanned = { code ->
-                val decoder = qrDecoderClass.newInstance()
+                val decoder = qrDecoderClass.getDeclaredConstructor().newInstance()
                 val values = decoder.decode(code)
                 if (values == null) {
                     Toast.makeText(activity, R.string.login_qr_decoding_error, Toast.LENGTH_SHORT).show()
