@@ -120,6 +120,7 @@ android {
 tasks.whenTaskAdded { task ->
     if (!task.name.endsWith("Release") && !task.name.endsWith("ReleaseWithR8"))
         return
+
     def renameTaskName = "rename${task.name.capitalize()}"
 
     def flavor = ""
@@ -130,16 +131,20 @@ tasks.whenTaskAdded { task ->
     if (task.name.startsWith("minify"))
         flavor = task.name.substring("minify".length(), task.name.indexOf("Release")).uncapitalize()
 
+    def taskName = "package${flavor.capitalize()}Release"
+
     if (flavor != "") {
-        tasks.create(renameTaskName, Copy) {
+        tasks.register(renameTaskName, Copy) {
+            dependsOn(taskName)
             from file("${projectDir}/${flavor}/release/"),
-                    file("${buildDir}/outputs/mapping/${flavor}Release/"),
-                    file("${buildDir}/outputs/apk/${flavor}/release/"),
-                    file("${buildDir}/outputs/bundle/${flavor}Release/")
+                    file("${layout.buildDirectory}/outputs/mapping/${flavor}Release/"),
+                    file("${layout.buildDirectory}/outputs/apk/${flavor}/release/"),
+                    file("${layout.buildDirectory}/outputs/bundle/${flavor}Release/")
             include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
             destinationDir file("${projectDir}/release/")
             rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'
         }
+
         task.finalizedBy(renameTaskName)
     }
 }

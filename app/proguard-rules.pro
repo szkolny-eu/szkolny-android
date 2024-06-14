@@ -19,7 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
 -keep class android.support.v7.widget.** { *; }
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
 
 -keep class pl.szczodrzynski.edziennik.utils.models.** { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.enums.* { *; }

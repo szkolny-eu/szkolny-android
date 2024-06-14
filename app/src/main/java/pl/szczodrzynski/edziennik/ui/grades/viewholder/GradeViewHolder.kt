@@ -40,7 +40,7 @@ class GradeViewHolder(
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, "")
                 else
-                    grade.category
+                    ""
         } else {
             b.gradeDescription.text =
                 grade.getNoteSubstituteText(adapter.showNotes) ?: grade.description
