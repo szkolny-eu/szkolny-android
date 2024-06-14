@@ -1556,6 +1556,4 @@
     <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
     <string name="settings_ui_lock_layout_text">Zablokuj układ ekranu głównego</string>
     <string name="settings_ui_lock_layout_subtext">Nie będzie można edytować przedmiotów na ekranie głównym</string>
-    <string name="dialog_grade_details_code">Kod oceny</string>
-    <string name="dialog_grade_details_no_code">(brak kodu)</string>
 </resources>

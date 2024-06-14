@@ -66,8 +66,7 @@ class VulcanHebeGradeSummary(
                         semester = data.studentSemesterNumber,
                         teacherId = -1,
                         subjectId = subjectId,
-                        addedDate = addedDate,
-                        code = null
+                        addedDate = addedDate
                     )
 
                     data.gradeList.add(gradeObject)

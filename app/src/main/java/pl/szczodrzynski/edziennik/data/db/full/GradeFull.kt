@@ -10,12 +10,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 
 class GradeFull(
         profileId: Int, id: Long, name: String, type: Int,
-        value: Float, weight: Float, color: Int, code: String?,
+        value: Float, weight: Float, color: Int,
         category: String?, description: String?, comment: String?,
         semester: Int, teacherId: Long, subjectId: Long, addedDate: Long = System.currentTimeMillis()
 ) : Grade(
         profileId, id, name, type,
-        value, weight, color, code,
+        value, weight, color,
         category, description, comment,
         semester, teacherId, subjectId, addedDate
 ), Noteable {

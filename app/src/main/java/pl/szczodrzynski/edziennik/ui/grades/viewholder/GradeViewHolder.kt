@@ -30,11 +30,6 @@ class GradeViewHolder(
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override fun onBind(activity: AppCompatActivity, app: App, grade: GradeFull, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
-        val gradeCategoryText: String = when {
-            grade.category != null && grade.code != null -> "${grade.code} - ${grade.category}"
-            grade.code != null -> grade.code!!
-            else -> grade.category!!
-        }
 
         b.gradeName.setGrade(grade, manager, bigView = true)
 
@@ -45,15 +40,15 @@ class GradeViewHolder(
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, "")
                 else
-                    if (grade.code != null) gradeCategoryText else null
+                    grade.category
         } else {
             b.gradeDescription.text =
                 grade.getNoteSubstituteText(adapter.showNotes) ?: grade.description
             b.gradeCategory.text =
                 if (grade.isImprovement)
-                    app.getString(R.string.grades_improvement_category_format, gradeCategoryText)
+                    app.getString(R.string.grades_improvement_category_format, grade.category)
                 else
-                    gradeCategoryText
+                    grade.category
         }
 
         if (adapter.showNotes)

@@ -91,6 +91,12 @@ class VulcanHebeGrades(
                 else
                     columnColor
 
+                val categoryFormattedText: String = when {
+                    code != null && category != null -> "$code - $categoryText"
+                    code != null -> code
+                    else -> categoryText ?: ""
+                }
+
                 val gradeObject = Grade(
                     profileId = profileId,
                     id = id,
@@ -99,8 +105,7 @@ class VulcanHebeGrades(
                     value = value ?: 0.0f,
                     weight = weight,
                     color = color,
-                    category = categoryText,
-                    code = code,
+                    category = categoryFormattedText,
                     description = finalDescription,
                     comment = null,
                     semester = getSemester(column),

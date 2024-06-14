@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 100,
-    "identityHash": "26b54e8e64642eb693587f983aaf3adc",
+    "identityHash": "4c141460d807d32d00faad4fb3c12522",
     "entities": [
       {
         "tableName": "grades",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileId` INTEGER NOT NULL, `gradeId` INTEGER NOT NULL, `gradeName` TEXT NOT NULL, `gradeType` INTEGER NOT NULL, `gradeValue` REAL NOT NULL, `gradeWeight` REAL NOT NULL, `gradeColor` INTEGER NOT NULL, `code` TEXT, `gradeCategory` TEXT, `gradeDescription` TEXT, `gradeComment` TEXT, `gradeSemester` INTEGER NOT NULL, `teacherId` INTEGER NOT NULL, `subjectId` INTEGER NOT NULL, `addedDate` INTEGER NOT NULL, `gradeValueMax` REAL, `gradeClassAverage` REAL, `gradeParentId` INTEGER, `gradeIsImprovement` INTEGER NOT NULL, `keep` INTEGER NOT NULL, PRIMARY KEY(`profileId`, `gradeId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileId` INTEGER NOT NULL, `gradeId` INTEGER NOT NULL, `gradeName` TEXT NOT NULL, `gradeType` INTEGER NOT NULL, `gradeValue` REAL NOT NULL, `gradeWeight` REAL NOT NULL, `gradeColor` INTEGER NOT NULL, `gradeCategory` TEXT, `gradeDescription` TEXT, `gradeComment` TEXT, `gradeSemester` INTEGER NOT NULL, `teacherId` INTEGER NOT NULL, `subjectId` INTEGER NOT NULL, `addedDate` INTEGER NOT NULL, `gradeValueMax` REAL, `gradeClassAverage` REAL, `gradeParentId` INTEGER, `gradeIsImprovement` INTEGER NOT NULL, `keep` INTEGER NOT NULL, PRIMARY KEY(`profileId`, `gradeId`))",
         "fields": [
           {
             "fieldPath": "profileId",
@@ -49,12 +49,6 @@
             "columnName": "gradeColor",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "code",
-            "columnName": "code",
-            "affinity": "TEXT",
-            "notNull": false
           },
           {
             "fieldPath": "category",
@@ -2320,7 +2314,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '26b54e8e64642eb693587f983aaf3adc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4c141460d807d32d00faad4fb3c12522')"
     ]
   }
 }

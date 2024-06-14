@@ -68,8 +68,7 @@ class LibrusApiDescriptiveGrades(override val data: DataLibrus,
                         semester = semester,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        addedDate = addedDate,
-                        code = null
+                        addedDate = addedDate
                 )
 
                 data.gradeList.add(gradeObject)

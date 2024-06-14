@@ -57,8 +57,7 @@ class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>)
                     semester = semester,
                     teacherId = -1,
                     subjectId = subject.id,
-                    addedDate = addedDate,
-                    code = null
+                    addedDate = addedDate
             )
 
             data.gradeList.add(gradeObject)
@@ -95,8 +94,7 @@ class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>)
                         semester = semester,
                         teacherId = -1,
                         subjectId = subject.id,
-                        addedDate = addedDate,
-                        code = null
+                        addedDate = addedDate
                 )
 
                 data.gradeList.add(proposedGradeObject)
