@@ -58,6 +58,17 @@
 
 -keep class com.google.android.material.tabs.** {*;}
 
+# Exclude AgendaCalendarView
+# Preserve generic type information for EventRenderer and its subclasses
+-keepclassmembers class * extends com.github.tibolte.agendacalendarview.render.EventRenderer {
+    <fields>;
+    <methods>;
+}
+
+# Keep the EventRenderer class itself and all its subclasses
+-keep class com.github.tibolte.agendacalendarview.render.EventRenderer
+-keep class * extends com.github.tibolte.agendacalendarview.render.EventRenderer
+
 # ServiceLoader support
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
