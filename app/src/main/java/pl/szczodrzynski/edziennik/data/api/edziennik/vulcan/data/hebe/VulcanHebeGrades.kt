@@ -38,7 +38,7 @@ class VulcanHebeGrades(
                 val column = grade.getJsonObject("Column")
                 val category = column.getJsonObject("Category")
                 val categoryText = category.getString("Name")
-                val code = column.getString("Code").orNullIfEmpty()
+                val code = column.getString("Code").takeValue()
 
                 val teacherId = getTeacherId(grade, "Creator") ?: -1
                 val subjectId = getSubjectId(column, "Subject") ?: -1

@@ -141,8 +141,6 @@ fun String.fixWhiteSpaces() = buildString(length) {
     }
 }.trimEnd()
 
-fun String?.orNullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
-
 fun CharSequence?.asColoredSpannable(colorInt: Int): Spannable {
     val spannable = SpannableString(this)
     spannable.setSpan(ForegroundColorSpan(colorInt), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
