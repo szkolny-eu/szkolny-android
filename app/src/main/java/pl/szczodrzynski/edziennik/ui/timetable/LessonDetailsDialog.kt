@@ -49,8 +49,6 @@ class LessonDetailsDialog(
         DialogLessonDetailsBinding.inflate(layoutInflater)
 
     override fun getPositiveButtonText() = R.string.close
-    override fun getNegativeButtonText() = R.string.notes_button
-    override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
     private val manager
@@ -58,7 +56,7 @@ class LessonDetailsDialog(
     private val attendanceManager
         get() = app.attendanceManager
 
-    override suspend fun onNeutralClick(): Boolean {
+    fun openAddEventDialog(): Boolean {
         EventManualDialog(
             activity,
             lesson.profileId,
@@ -68,6 +66,7 @@ class LessonDetailsDialog(
         ).show()
         return NO_DISMISS
     }
+
     override suspend fun onShow() {
         if (App.devMode)
             b.lessonId.visibility = View.VISIBLE
@@ -227,6 +226,8 @@ class LessonDetailsDialog(
                     addItemDecoration(SimpleDividerItemDecoration(context))
                 }
             }
+
+            @Suppress("NotifyDataSetChanged")
             adapter.notifyDataSetChanged()
 
             if (events != null && events.isNotEmpty()) {
@@ -240,7 +241,6 @@ class LessonDetailsDialog(
 
         lesson.displayTeacherName?.let { name ->
             lesson.displayTeacherId ?: return@let
-            /*
             BetterLink.attach(
                 b.teacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
@@ -251,9 +251,9 @@ class LessonDetailsDialog(
                 teachers = mapOf(lesson.displayTeacherId!! to name),
                 onActionSelected = dialog::dismiss
             )
-            */
         }
-/*
+
+        b.addEventButton.onClick { openAddEventDialog() }
         b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
@@ -261,9 +261,9 @@ class LessonDetailsDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+
         b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(lesson, b.legend)
-*/
     }
 }
