@@ -42,7 +42,6 @@
                                                                     |___/ -->
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -135,7 +134,6 @@
             android:theme="@style/DeadTheme" />
         <activity android:name=".ui.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
             android:exported="false"
             android:theme="@style/Theme.Intro" />
         <activity android:name=".ui.login.LoginActivity"
@@ -148,7 +146,6 @@
             android:theme="@style/AppTheme.Black" />
         <activity android:name=".ui.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.settings.SettingsLicenseActivity"

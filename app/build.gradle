@@ -1,3 +1,5 @@
+import android.annotation.SuppressLint
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -20,8 +22,9 @@ android {
 
         buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
         buildConfigField "String", "VERSION_BASE", "\"${release.versionName}\""
+
         manifestPlaceholders = [
-                buildTimestamp: String.valueOf(System.currentTimeMillis())
+            buildTimestamp: String.valueOf(System.currentTimeMillis())
         ]
 
         multiDexEnabled = true
@@ -36,8 +39,8 @@ android {
             arguments {
                 arg("room.schemaLocation", "$projectDir/schemas")
             }
-            correctErrorTypes true
 
+            correctErrorTypes true
         }
     }
 
@@ -45,10 +48,12 @@ android {
         debug {
             getIsDefault().set(true)
             minifyEnabled = false
+            applicationIdSuffix ".debug"
             manifestPlaceholders = [
-                    buildTimestamp: 0
+                buildTimestamp: 0
             ]
         }
+
         release {
             minifyEnabled = true
             shrinkResources = true
@@ -56,28 +61,35 @@ android {
             proguardFiles fileTree('proguard').asList().toArray()
         }
     }
-    flavorDimensions "platform"
+
+    flavorDimensions += "platform"
+
     productFlavors {
         unofficial {
             getIsDefault().set(true)
             versionName "${release.versionName}-${gitInfo.versionSuffix}"
         }
+
         official {}
         play {}
     }
+
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         setIgnore(variant.buildType.name == "debug" && !flavors.contains("unofficial") || flavors.contains("main"))
     }
+
     sourceSets {
         unofficial {
             java.srcDirs = ["src/main/java", "src/play-not/java"]
             manifest.srcFile("src/play-not/AndroidManifest.xml")
         }
+
         official {
             java.srcDirs = ["src/main/java", "src/play-not/java"]
             manifest.srcFile("src/play-not/AndroidManifest.xml")
         }
+
         play {
             java.srcDirs = ["src/main/java", "src/play/java"]
         }
@@ -86,35 +98,41 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
+
     buildFeatures {
         dataBinding = true
         viewBinding = true
-        buildConfig true
+        buildConfig = true
     }
+
     compileOptions {
         coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     packagingOptions {
         resources {
             excludes += ['META-INF/library-core_release.kotlin_module']
         }
     }
+
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.10.2"
         }
     }
+
     lint {
         checkReleaseBuilds false
     }
-    namespace 'pl.szczodrzynski.edziennik'
 
+    namespace 'pl.szczodrzynski.edziennik'
 }
 
 tasks.whenTaskAdded { task ->
