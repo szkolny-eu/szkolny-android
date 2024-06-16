@@ -945,16 +945,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
         drawer.close()
+
         if (drawer.getSelection() != navTarget.id)
             drawer.setSelection(navTarget.id, fireOnClick = false)
-        navView.toolbar.setTitle(navTarget.titleRes ?: navTarget.nameRes)
+
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
+        navView.toolbarLayout.setTitle((navTarget.titleRes ?: navTarget.nameRes).resolveString(applicationContext))
 
         d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
 
-        val fragment = navTarget.fragmentClass?.newInstance() ?: return
+        val fragment = navTarget.fragmentClass?.getDeclaredConstructor()?.newInstance() ?: return
         fragment.arguments = arguments
         val transaction = fragmentManager.beginTransaction()
 
@@ -1063,7 +1065,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun navigateUp(skipBeforeNavigate: Boolean = false) {
         if (!popBackStack(skipBeforeNavigate)) {
-            super.onBackPressed()
+            super.onBackPressedDispatcher.onBackPressed()
         }
     }
 
