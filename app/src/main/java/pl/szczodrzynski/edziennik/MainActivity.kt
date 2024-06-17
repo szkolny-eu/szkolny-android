@@ -153,10 +153,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
         val versionBadge = app.buildManager.versionBadge
-        b.nightlyText.isVisible = versionBadge != null
-        b.nightlyText.text = versionBadge
+        navView.nightlyText.isVisible = versionBadge != null
+        navView.nightlyText.text = versionBadge
         if (versionBadge != null) {
-            b.nightlyText.background.setTintColor(0xa0ff0000.toInt())
+            navView.nightlyText.background.setTintColor(0xa0ff0000.toInt())
         }
 
         navLoading = true
