@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="transparent">#00FFFFFF</color>
 
     <!-- Material 3 theme builder light colors -->
     <color name="seed">#2196f3</color>
