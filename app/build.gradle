@@ -258,8 +258,11 @@ dependencies {
     implementation("com.heinrichreimersoftware:material-intro") { version { strictly "1.5.8" } }
     implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
 
+    // NavLib dependencies
+    // TODO: try to move these dependencies to NavLib build.gradle file
     implementation "com.balysv:material-ripple:1.0.2"
     implementation "com.mikepenz:materialize:1.2.1"
+    implementation "com.mikepenz:itemanimators:1.1.0"
 
     testImplementation 'junit:junit:4.13.2'
 }
