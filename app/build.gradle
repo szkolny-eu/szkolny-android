@@ -167,6 +167,10 @@ tasks.whenTaskAdded { task ->
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation files('libs/navlib-debug.aar')
+    implementation files('libs/navlib-font-debug.aar')
+
     // Language cores
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.multidex:multidex:2.0.1"
@@ -225,11 +229,13 @@ dependencies {
     // Iconics & related
     implementation "com.mikepenz:iconics-core:5.3.2"
     implementation "com.mikepenz:iconics-views:5.3.2"
+    implementation "com.mikepenz:materialdrawer:9.0.1"
     implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
     implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar'
     implementation "eu.szkolny:szkolny-font:77e33acc2a"
 
     // Other dependencies
+    debugApi "com.mikepenz:materialize:1.2.1" // required for all R.color.md_* colors
     implementation "cat.ereza:customactivityoncrash:2.3.0"
     implementation "com.android.volley:volley:1.2.1"
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
@@ -251,6 +257,31 @@ dependencies {
     implementation "org.greenrobot:eventbus:3.2.0"
     implementation("com.heinrichreimersoftware:material-intro") { version { strictly "1.5.8" } }
     implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
+
+    // Debug-only dependencies
+    debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6"
+
+    // NavLib required dependencies
+    debugImplementation "com.mikepenz:iconics-views:5.3.2"
+    debugImplementation "com.mikepenz:iconics-typeface-api:5.3.2"
+    debugImplementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
+    debugImplementation "com.balysv:material-ripple:1.0.2"
+    debugApi "com.mikepenz:materialize:1.2.1"
+    debugApi "com.mikepenz:materialdrawer:9.0.1"
+    debugApi "com.mikepenz:iconics-core:5.3.2"
+    debugApi "com.mikepenz:itemanimators:1.1.0"
+
+    // agendacalendarview required dependencies
+
+    debugApi 'eu.szkolny:StickyListHeaders:2.7.1'
+    debugImplementation 'io.reactivex:rxjava:1.1.1'
+
+    // material-about-library required dependencies
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0-alpha04', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    debugImplementation 'net.yslibrary.licenseadapter:licenseadapter:3.0.0'
 
     testImplementation 'junit:junit:4.13.2'
 }

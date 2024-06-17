@@ -149,8 +149,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         setContentView(b.root)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
@@ -165,38 +163,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         b.navView.apply {
             drawer.init(this@MainActivity)
-
-            /*
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                SystemBarsUtil(this@MainActivity).run {
-                    //paddingByKeyboard = b.navView
-                    appFullscreen = false
-                    statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
-                    statusBarDarker = false
-                    statusBarFallbackLight = COLOR_HALF_TRANSPARENT
-                    statusBarFallbackGradient = COLOR_HALF_TRANSPARENT
-                    navigationBarTransparent = false
-
-                    b.navView.configSystemBarsUtil(this)
-
-                    // fix for setting status bar color to window color, outside of navlib
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        window.statusBarColor = statusBarColor
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                        && ColorUtils.calculateLuminance(statusBarColor) > 0.6
-                    ) {
-                        @Suppress("deprecation")
-                        window.decorView.systemUiVisibility =
-                            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    }
-
-                    // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
-
-                    commit()
-                }
-            }
-            */
 
             bottomBar.apply {
                 fabEnable = false
@@ -952,7 +918,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
-        navView.toolbarLayout.setTitle((navTarget.titleRes ?: navTarget.nameRes).resolveString(applicationContext))
+
+        navView.toolbar.setTitle(navTarget.titleRes ?: navTarget.nameRes)
 
         d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
 

@@ -144,7 +144,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_third_badge"
-        android:layout_width="wrap_content"
+        android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:fontFamily="sans-serif"
