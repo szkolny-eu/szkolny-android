@@ -50,7 +50,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bs_textInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"

@@ -6,23 +6,31 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Outline
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
+import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
+import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.customview.widget.ViewDragHelper
 import androidx.drawerlayout.widget.DrawerLayout
-import com.mikepenz.fastadapter.IAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator
-import com.mikepenz.materialdrawer.*
 import com.mikepenz.materialdrawer.holder.BadgeStyle
 import com.mikepenz.materialdrawer.holder.ColorHolder
 import com.mikepenz.materialdrawer.holder.StringHolder
@@ -37,7 +45,6 @@ import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import com.mikepenz.materialdrawer.widget.MiniDrawerSliderView
 import com.mikepenz.materialize.util.UIUtils
 import pl.szczodrzynski.navlib.*
-import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 
 class NavDrawer(
@@ -69,7 +76,7 @@ class NavDrawer(
 
     lateinit var badgeStyle: BadgeStyle
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
     fun init(activity: Activity) {
         this.activity = activity
 
@@ -98,9 +105,9 @@ class NavDrawer(
         })
 
         accountHeader = AccountHeaderView(context).apply {
+            dividerBelowHeader = false
             headerBackground = ImageHolder(R.drawable.header)
             displayBadgesOnSmallProfileImages = true
-
             onAccountHeaderListener = { view, profile, current ->
                 if (profile is ProfileSettingDrawerItem) {
                     drawerProfileSettingClickListener?.invoke(profile.identifier.toInt(), view) ?: false
@@ -119,7 +126,6 @@ class NavDrawer(
                     }
                 }
             }
-
             onAccountHeaderItemLongClickListener = { view, profile, current ->
                 if (profile is ProfileSettingDrawerItem) {
                     drawerProfileSettingLongClickListener?.invoke(profile.identifier.toInt(), view) ?: true
@@ -139,7 +145,6 @@ class NavDrawer(
             accountHeader = this@NavDrawer.accountHeader
             itemAnimator = AlphaCrossFadeAnimator()
             //hasStableIds = true
-
             onDrawerItemClickListener = { _, drawerItem, position ->
                 if (drawerItem.identifier.toInt() == selection) {
                     false
@@ -168,6 +173,19 @@ class NavDrawer(
             }
         }
 
+        setOnApplyWindowInsetsListener(drawer) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. Here the system is setting
+            // only the bottom, left, and right dimensions, but apply whichever insets are
+            // appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            view.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+
+            // Return CONSUMED if you don't want want the window insets to keep being
+            // passed down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
+
         miniDrawer = MiniDrawerSliderView(context).apply {
             drawer = this@NavDrawer.drawer
             includeSecondaryDrawerItems = false
@@ -185,10 +203,12 @@ class NavDrawer(
             } catch (_: Exception) { }
         }
 
-        updateMiniDrawer()
 
         toolbar.profileImageClickListener = {
             profileSelectionOpen()
+            open()
+        }
+        toolbar.drawerClickListener = {
             open()
         }
 
@@ -671,8 +691,8 @@ class NavDrawer(
         }
         updateMiniDrawer()
 
-        if (bottomBar.navigationIcon is LayerDrawable) {
-            (bottomBar.navigationIcon as LayerDrawable?)?.apply {
+        if (toolbar.navigationIcon is LayerDrawable) {
+            (toolbar.navigationIcon as LayerDrawable?)?.apply {
                 findDrawableByLayerId(R.id.ic_badge)
                     .takeIf { it is BadgeDrawable }
                     ?.also { badge ->
@@ -681,21 +701,6 @@ class NavDrawer(
                         setDrawableByLayerId(R.id.ic_badge, badge)
                     }
             }
-        }
-
-        if (totalCount == 0) {
-            toolbar.subtitle = resources.getString(
-                toolbar.subtitleFormat ?: return,
-                currentProfileObj?.name ?: ""
-            )
-        }
-        else {
-            toolbar.subtitle = resources.getQuantityString(
-                toolbar.subtitleFormatWithUnread ?: toolbar.subtitleFormat ?: return,
-                totalCount,
-                currentProfileObj?.name ?: "",
-                totalCount
-            )
         }
     }
 

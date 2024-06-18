@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion setup.compileSdk
@@ -9,12 +8,14 @@ android {
     defaultConfig {
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
-        versionCode release.versionCode
-        versionName release.versionName
 
         consumerProguardFiles 'consumer-rules.pro'
-
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     buildTypes {
@@ -26,30 +27,34 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 
     packagingOptions {
-        exclude 'META-INF/library-core_release.kotlin_module'
+        resources {
+            excludes += ['META-INF/library-core_release.kotlin_module']
+        }
     }
-}
+
+    namespace 'pl.szczodrzynski.navlib'
+} 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.core:core-ktx:1.3.2"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "com.google.android.material:material:1.3.0"
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.core:core-ktx:1.13.1"
+    implementation "androidx.recyclerview:recyclerview:1.3.2"
+    implementation "com.google.android.material:material:1.12.0"
+    implementation 'com.android.support:multidex:1.0.3'
 
     api "com.mikepenz:materialize:1.2.1"
-    api "com.mikepenz:materialdrawer:8.3.3"
-    api "com.mikepenz:iconics-core:5.3.0-b01"
+    api "com.mikepenz:materialdrawer:9.0.1"
+    api "com.mikepenz:iconics-core:5.3.2"
     api "com.mikepenz:itemanimators:1.1.0"
 
     compileOnly "pl.droidsonroids.gif:android-gif-drawable:1.2.15"
-
-    implementation "com.balysv:material-ripple:1.0.2"
 
     implementation project(":navlib-font")
 }

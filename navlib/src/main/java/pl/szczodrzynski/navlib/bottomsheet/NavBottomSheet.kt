@@ -17,6 +17,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -129,6 +131,18 @@ class NavBottomSheet : CoordinatorLayout {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        ViewCompat.setOnApplyWindowInsetsListener(list) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply the insets as a margin to the view. Here the system is setting
+            // only the bottom, left, and right dimensions, but apply whichever insets are
+            // appropriate to your layout. You can also update the view padding
+            // if that's more appropriate.
+            view.setPadding(insets.left, 0, insets.right, insets.bottom)
+            // Return CONSUMED if you don't want want the window insets to keep being
+            // passed down to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
 
         scrimView.setOnTouchListener { _, event ->
             if (!scrimViewTapToClose)

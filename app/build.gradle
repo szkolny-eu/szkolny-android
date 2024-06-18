@@ -168,9 +168,6 @@ tasks.whenTaskAdded { task ->
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation files('libs/navlib-debug.aar')
-    implementation files('libs/navlib-font-debug.aar')
-
     // Language cores
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.multidex:multidex:2.0.1"

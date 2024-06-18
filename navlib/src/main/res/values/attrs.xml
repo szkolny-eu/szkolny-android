@@ -2,7 +2,7 @@
 <resources>
     <attr name="actionBarBackground" format="color" />
     <attr name="navigationBarBackground" format="color" />
-    <attr name="colorFab" format="color" />
-    <attr name="colorFabIcon" format="color" />
-    <attr name="colorOnFab" format="color" />
+    <attr name="colorCard" format="color" />
+    <attr name="colorDrawer" format="color" />
+    <attr name="colorOutlineVariant" format="color" />
 </resources>
