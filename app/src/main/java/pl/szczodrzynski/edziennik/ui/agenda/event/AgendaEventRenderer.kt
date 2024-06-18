@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
 import com.google.android.material.color.MaterialColors
 import com.mikepenz.iconics.view.IconicsTextView
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventBinding
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventCompactBinding
@@ -55,16 +56,24 @@ class AgendaEventRenderer(
         else
             event.time!!.stringHM
 
+        val agendaSubjectImportant = App.profile.config.ui.agendaSubjectImportant
         val eventSubtitle = listOfNotNull(
             timeText,
-            event.subjectLongName,
+            event.subjectLongName.takeIf { !agendaSubjectImportant },
+            event.typeName.takeIf { agendaSubjectImportant },
             event.teacherName,
             event.teamName
         ).join(", ")
 
         card.foreground.setTintColor(harmonizedColor)
         card.background.setTintColor(harmonizedColor)
-        manager.setEventTopic(title, event, doneIconColor = textColor)
+        manager.setEventTopic(
+            title = title,
+            event = event,
+            doneIconColor = textColor,
+            showType = !agendaSubjectImportant,
+            showSubject = agendaSubjectImportant,
+        )
         title.setTextColor(textColor)
         subtitle?.text = eventSubtitle
         subtitle?.setTextColor(textColor)

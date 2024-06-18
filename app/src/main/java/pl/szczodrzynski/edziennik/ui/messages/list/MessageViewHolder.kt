@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.messages.list
 
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -46,19 +45,15 @@ class MessageViewHolder(
         b.messageBody.text = item.bodyHtml?.take(200)
 
         val isRead = item.isSent || item.isDraft || item.seen
-
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
         val textColor = if (isRead) getColorFromAttr(b.root.context, R.attr.colorOnSurfaceVariant) else getColorFromAttr(b.root.context, R.attr.colorOnSurface)
-
         // set text styles
-        b.messageSender.typeface = typeface
         b.messageSender.setTextColor(textColor)
-
-        b.messageSubject.typeface = typeface
+        b.messageSender.typeface = typeface
         b.messageSubject.setTextColor(textColor)
-
-        b.messageDate.typeface = typeface
+        b.messageSubject.typeface = typeface
         b.messageDate.setTextColor(textColor)
+        b.messageDate.typeface = typeface
 
         if (adapter.onStarClick == null) {
             b.messageStar.isVisible = false

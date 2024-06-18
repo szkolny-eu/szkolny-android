@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.timetable
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,6 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -92,9 +93,9 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
     override fun onResume() {
         super.onResume()
-
+        // TODO this is a mess
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE ),
+            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE),
                 Context.RECEIVER_NOT_EXPORTED)
             activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES),
                 Context.RECEIVER_NOT_EXPORTED)
@@ -187,6 +188,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
         val selectedDate = arguments?.getString("timetableDate", "")?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
 
+        // TODO bring back RecyclerTabLayout
         b.tabLayout.setupWithViewPager(b.viewPager)
         b.viewPager.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 

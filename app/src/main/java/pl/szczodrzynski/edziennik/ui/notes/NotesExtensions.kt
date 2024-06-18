@@ -26,8 +26,16 @@ fun MaterialButton.setupNotesButton(
 ) {
     if (!isVisible)
         return
-
+    // TODO replace with modern notes icon
+    icon = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_playlist_edit)
     setText(R.string.notes_button)
+    iconPadding = 8.dp
+    iconSize = 24.dp
+
+    updateLayoutParams<LinearLayout.LayoutParams> {
+        gravity = Gravity.CENTER_HORIZONTAL
+    }
+    updatePadding(left = 12.dp)
 
     onClick {
         NoteListDialog(

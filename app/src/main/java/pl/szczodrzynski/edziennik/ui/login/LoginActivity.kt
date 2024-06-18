@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        // TODO fix deprecation
         val destination = nav.currentDestination ?: run {
             nav.navigateUp()
             return
@@ -87,7 +88,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme_Dark)
+        setTheme(R.style.AppTheme_Light)
 
         navOptionsBuilder = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)

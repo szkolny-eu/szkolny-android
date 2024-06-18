@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.getColorFromAttr
 
 class NoticesAdapter//getting the context and product list with constructor
 (private val context: Context, var noticeList: List<NoticeFull>) : RecyclerView.Adapter<NoticesAdapter.ViewHolder>() {
@@ -45,19 +44,9 @@ class NoticesAdapter//getting the context and product list with constructor
 
         if (app.data.uiConfig.enableNoticePoints && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
-            if (notice.teacherName != null || notice.points != null) {
-                holder.noticesItemTeacherName.visibility = View.VISIBLE
-                holder.noticesItemTeacherName.text = app.getString(
-                    R.string.notices_points_format,
-                    notice.teacherName,
-                    if (notice.points ?: 0f > 0) "+" + notice.points else notice.points
-                )
-            }} else {
+            holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherName, if (notice.points ?: 0f > 0) "+" + notice.points else notice.points)
+        } else {
             holder.noticesItemReason.text = notice.text
-            if (notice.teacherName != null) {
-                holder.noticesItemTeacherName.visibility = View.VISIBLE
-                holder.noticesItemTeacherName.text = notice.teacherName
-            }
             holder.noticesItemTeacherName.text = notice.teacherName
         }
         holder.noticesItemAddedDate.text = Date.fromMillis(notice.addedDate).formattedString

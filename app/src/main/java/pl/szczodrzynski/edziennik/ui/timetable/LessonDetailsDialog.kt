@@ -48,6 +48,7 @@ class LessonDetailsDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogLessonDetailsBinding.inflate(layoutInflater)
 
+    // TODO put the "add" button in layout for other dialogs as well
     override fun getPositiveButtonText() = R.string.close
 
     private lateinit var adapter: EventListAdapter
@@ -226,8 +227,6 @@ class LessonDetailsDialog(
                     addItemDecoration(SimpleDividerItemDecoration(context))
                 }
             }
-
-            @Suppress("NotifyDataSetChanged")
             adapter.notifyDataSetChanged()
 
             if (events != null && events.isNotEmpty()) {
@@ -261,7 +260,6 @@ class LessonDetailsDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
-
         b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(lesson, b.legend)

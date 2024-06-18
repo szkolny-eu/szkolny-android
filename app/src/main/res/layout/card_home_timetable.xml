@@ -248,9 +248,9 @@
                             android:layout_height="wrap_content"
                             android:text="Sala"
                             android:textAppearance="@style/NavView.TextView.BodyMedium"
+                            android:textColor="?colorPrimary"
                             android:textStyle="bold"
-                            android:visibility="gone"
-                            android:textColor="?colorPrimary" />
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/classroom"

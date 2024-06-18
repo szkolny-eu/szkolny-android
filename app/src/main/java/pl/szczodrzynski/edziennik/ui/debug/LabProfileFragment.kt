@@ -121,6 +121,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true
+                                    @Suppress("USELESS_CAST")
                                     val newVal = when (objVal) {
                                         is Int -> input.toInt()
                                         is Boolean -> input.toBoolean()

@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -95,6 +94,7 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.sender.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
+        // TODO bring back iconics to reply/forward buttons - add modern icons to SzkolnyFont
 
         b.messageStar.onClick {
             launch {

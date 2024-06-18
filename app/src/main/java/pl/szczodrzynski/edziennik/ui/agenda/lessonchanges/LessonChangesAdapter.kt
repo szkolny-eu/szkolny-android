@@ -63,9 +63,7 @@ class LessonChangesAdapter(
             lesson.teacherName ?: "?"
         else
             mutableListOf<CharSequence>().apply {
-                if (lesson.teacherName == null)
-                    lesson.oldTeacherName?.let { add(it) }
-                else lesson.oldTeacherName?.let { add(it.asStrikethroughSpannable()) }
+                lesson.oldTeacherName?.let { add(it.asStrikethroughSpannable()) }
                 lesson.teacherName?.let { add(it) }
             }.concat(arrowRight)
 
@@ -74,9 +72,7 @@ class LessonChangesAdapter(
             lesson.teamName ?: "?"
         else
             mutableListOf<CharSequence>().apply {
-                if (lesson.teamName == null)
-                    lesson.oldTeamName?.let { add(it) }
-                else lesson.oldTeamName?.let { add(it.asStrikethroughSpannable()) }
+                lesson.oldTeamName?.let { add(it.asStrikethroughSpannable()) }
                 lesson.teamName?.let { add(it) }
             }.concat(arrowRight)
 
@@ -85,9 +81,7 @@ class LessonChangesAdapter(
             lesson.classroom ?: "?"
         else
             mutableListOf<CharSequence>().apply {
-                if (lesson.classroom == null)
-                    lesson.oldClassroom?.let { add(it) }
-                else lesson.oldClassroom?.let { add(it.asStrikethroughSpannable()) }
+                lesson.oldClassroom?.let { add(it.asStrikethroughSpannable()) }
                 lesson.classroom?.let { add(it) }
             }.concat(arrowRight)
 
