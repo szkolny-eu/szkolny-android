@@ -124,11 +124,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "gradeId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -197,11 +197,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "teacherId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -278,11 +278,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "teacherAbsenceId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -321,11 +321,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "teacherAbsenceTypeId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -366,11 +366,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "subjectId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -441,11 +441,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "noticeId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -502,11 +502,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "teamId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -619,11 +619,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "attendanceId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -770,11 +770,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "eventId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -843,11 +843,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "eventType"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -882,10 +882,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "loginStoreId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1046,10 +1046,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1084,11 +1084,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "luckyNumberDate"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1159,11 +1159,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "announcementId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -1238,12 +1238,12 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "categoryId",
             "type"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1308,10 +1308,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
           "columnNames": [
             "messageId"
-          ]
+          ],
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -1400,11 +1400,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "messageId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -1456,12 +1456,12 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "messageRecipientId",
             "messageId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1484,10 +1484,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
           "columnNames": [
             "id"
-          ]
+          ],
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -1528,11 +1528,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "endpointId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1567,11 +1567,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "lessonRangeNumber"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1648,10 +1648,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
           "columnNames": [
             "id"
-          ]
+          ],
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -1680,11 +1680,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "id"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1713,11 +1713,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "id"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1770,11 +1770,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "id"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -1923,11 +1923,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "id"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -1979,11 +1979,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "key"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -2024,11 +2024,11 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "profileId",
             "lessonId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -2127,10 +2127,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
           "columnNames": [
             "id"
-          ]
+          ],
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -2228,10 +2228,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
           "columnNames": [
             "noteId"
-          ]
+          ],
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -2290,10 +2290,10 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
           "columnNames": [
             "metadataId"
-          ]
+          ],
+          "autoGenerate": true
         },
         "indices": [
           {

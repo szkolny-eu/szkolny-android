@@ -26,8 +26,7 @@ class PodlasieApiGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
             val weight = grade.getFloat("Weight") ?: 0f
             val includeToAverage = grade.getInt("IncludeToAverage") != 0
             val color = grade.getString("Color")?.let { Color.parseColor(it) } ?: -1
-            val category = grade.getString("Category")
-            val code = grade.getString("Code")
+            val category = grade.getString("Category") ?: ""
             val comment = grade.getString("Comment") ?: ""
             val semester = grade.getString("TermShortcut")?.length ?: data.currentSemester
 
@@ -41,12 +40,6 @@ class PodlasieApiGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
             val addedDate = grade.getString("ReceivedDate")?.let { Date.fromY_m_d(it).inMillis }
                     ?: System.currentTimeMillis()
 
-            val categoryText: String = when {
-                code != null && category != null -> "$code - $category"
-                code != null -> code
-                else -> category ?: ""
-            }
-
             val gradeObject = Grade(
                     profileId = data.profileId,
                     id = id,
@@ -55,7 +48,7 @@ class PodlasieApiGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
                     value = value,
                     weight = if (includeToAverage) weight else 0f,
                     color = color,
-                    category = categoryText,
+                    category = category,
                     description = null,
                     comment = comment,
                     semester = semester,

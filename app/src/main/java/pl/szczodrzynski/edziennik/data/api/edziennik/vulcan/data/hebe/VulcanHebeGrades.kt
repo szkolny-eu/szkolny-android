@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_GRADES
@@ -38,7 +39,6 @@ class VulcanHebeGrades(
                 val column = grade.getJsonObject("Column")
                 val category = column.getJsonObject("Category")
                 val categoryText = category.getString("Name")
-                val code = column.getString("Code").takeValue()
 
                 val teacherId = getTeacherId(grade, "Creator") ?: -1
                 val subjectId = getSubjectId(column, "Subject") ?: -1
@@ -91,12 +91,6 @@ class VulcanHebeGrades(
                 else
                     columnColor
 
-                val categoryFormattedText: String = when {
-                    code != null && category != null -> "$code - $categoryText"
-                    code != null -> code
-                    else -> categoryText ?: ""
-                }
-
                 val gradeObject = Grade(
                     profileId = profileId,
                     id = id,
@@ -105,7 +99,7 @@ class VulcanHebeGrades(
                     value = value ?: 0.0f,
                     weight = weight,
                     color = color,
-                    category = categoryFormattedText,
+                    category = categoryText,
                     description = finalDescription,
                     comment = null,
                     semester = getSemester(column),

@@ -188,7 +188,7 @@ abstract class AppDb : RoomDatabase() {
                 Migration97(),
                 Migration98(),
                 Migration99(),
-                Migration100()
+                Migration100(),
         ).allowMainThreadQueries().build()
     }
 }
