@@ -1,0 +1,1 @@
+-keep class androidx.drawerlayout.widget.DrawerLayout { *; }

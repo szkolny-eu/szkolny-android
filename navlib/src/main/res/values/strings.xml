@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NavLib</string>
+    <string name="toolbar_subtitle">%1$s</string>
+</resources>

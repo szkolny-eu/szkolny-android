@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="10dp"
+        tools:targetApi="lollipop">
+
+        <View
+            android:id="@+id/bs_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99000000"
+            android:visibility="invisible"
+            tools:visibility="gone" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/bs_view"
+            style="@style/width_max_600dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="auto"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/bs_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_sheet_background"
+                android:paddingHorizontal="8dp"
+                tools:paddingBottom="48dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/bs_dragBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:srcCompat="@drawable/bottom_sheet_control_bar"
+                    tools:ignore="ContentDescription" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bs_textInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="?boxBackgroundColor"
+                    app:endIconMode="clear_text"
+                    tools:startIconDrawable="@drawable/ic_android"
+                    tools:helperText="0 messages found"
+                    tools:hint="Search">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/bs_textInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        tools:text="John" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/bs_toggleGroupContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/bs_toggleGroupTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Sorting order" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/bs_toggleGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bs_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    tools:minHeight="50dp"
+                    tools:listitem="@layout/nav_bs_item_primary"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

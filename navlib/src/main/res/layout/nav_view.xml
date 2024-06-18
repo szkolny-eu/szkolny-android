@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:parentTag="FrameLayout">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nv_drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/nv_statusBarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:background="?android:windowBackground"
+                tools:layout_height="25dp" />
+
+            <LinearLayout
+                android:id="@+id/nv_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                tools:paddingTop="24dp"
+                tools:paddingBottom="48dp">
+
+                <FrameLayout
+                    android:id="@+id/nv_drawerContainerLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorSurface_4dp"
+                    tools:layout_width="72dp" />
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/nv_coordinator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <pl.szczodrzynski.navlib.NavToolbar
+                        android:id="@+id/nv_toolbar"
+                        style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?actionBarBackground"
+                        android:clipToPadding="false"
+                        android:elevation="4dp"
+                        android:minHeight="?attr/actionBarSize"
+                        app:title="@string/app_name"
+                        app:titleMargin="0dp"
+                        tools:targetApi="lollipop">
+
+                        <com.mikepenz.materialdrawer.view.BezelImageView
+                            android:id="@+id/nv_toolbar_image"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginEnd="13dp"
+                            android:layout_marginRight="13dp"
+                            android:scaleType="centerCrop"
+                            app:materialDrawerSelectorOnPress="#80ffffff"
+                            tools:src="@tools:sample/backgrounds/scenic" />
+
+                    </pl.szczodrzynski.navlib.NavToolbar>
+
+                    <View
+                        android:id="@+id/nv_toolbarElevation"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="?actionBarSize"
+                        android:layout_weight="1"
+                        android:background="@drawable/shadow_bottom" />
+
+                    <LinearLayout
+                        android:id="@+id/nv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="?actionBarSize"
+                        android:layout_marginBottom="?actionBarSize"
+                        android:orientation="horizontal" >
+
+                        <FrameLayout
+                            android:id="@+id/nv_miniDrawerContainerPortrait"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorSurface_4dp"
+                            tools:layout_width="72dp" /><!--tools:layout_width="72dp"-->
+
+                        <View
+                            android:id="@+id/nv_miniDrawerElevation"
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shadow_right" />
+
+                    </LinearLayout>
+
+                    <pl.szczodrzynski.navlib.NavBottomBar
+                        android:id="@+id/nv_bottomBar"
+                        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="start"
+                        android:visibility="visible"
+                        app:fabAlignmentMode="center"
+                        app:fabAnimationMode="scale" />
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/ripple"
+                        android:layout_width="100dp"
+                        android:layout_height="?actionBarSize"
+                        android:layout_gravity="bottom|end"
+                        android:enabled="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        app:mrl_rippleFadeDuration="200"
+                        app:mrl_rippleDuration="350"
+                        app:mrl_rippleColor="?colorOnBackground"
+                        app:mrl_rippleAlpha="0.3">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:enabled="false"
+                            android:focusableInTouchMode="false"
+                            android:focusable="false"
+                            android:visibility="invisible"/>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/nv_extendedFloatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text=""
+                        android:visibility="visible"
+                        app:backgroundTint="?colorFab"
+                        app:layout_anchor="@+id/nv_bottomBar"
+                        app:layout_anchorGravity="center|top"
+                        tools:icon="@android:drawable/ic_menu_edit" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/nv_floatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:visibility="gone"
+                        app:backgroundTint="?colorFab"
+                        app:layout_anchor="@id/nv_bottomBar"
+                        tools:srcCompat="@android:drawable/ic_menu_edit" />
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/nv_navigationBarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:background="?navigationBarBackground"
+                tools:layout_height="48dp" />
+
+        </FrameLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <View
+        android:id="@+id/nv_statusBarDarker"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:background="#44000000"
+        android:visibility="gone"
+        tools:layout_height="25dp"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/nv_navigationBarDarker"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:background="#44000000"
+        android:visibility="gone"
+        tools:layout_height="48dp"
+        tools:visibility="visible" />
+
+    <pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
+        android:id="@+id/nv_bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</merge>
