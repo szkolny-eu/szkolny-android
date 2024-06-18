@@ -5,28 +5,22 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.App.Companion.profileId
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding
-import pl.szczodrzynski.edziennik.ui.behaviour.NoticesAdapter
 import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 class BehaviourFragment : Fragment() {
 
@@ -55,7 +49,7 @@ class BehaviourFragment : Fragment() {
                 .withOnClickListener { v3: View? ->
                     activity.bottomSheet.close()
                     AsyncTask.execute {
-                        App.db.metadataDao().setAllSeen(profileId, Metadata.TYPE_NOTICE, true)
+                        App.db.metadataDao().setAllSeen(profileId, MetadataType.NOTICE, true)
                     }
                     Toast.makeText(
                         activity,
@@ -97,7 +91,7 @@ class BehaviourFragment : Fragment() {
                 }
             }
         })
-        App.db.noticeDao().getAll(profileId).observe(this) { notices: List<NoticeFull>? ->
+        App.db.noticeDao().getAll(profileId).observe(viewLifecycleOwner) { notices: List<NoticeFull>? ->
             if (app == null || activity == null || b == null || !isAdded) return@observe
             if (notices == null) {
                 b.noticesView.visibility = View.GONE

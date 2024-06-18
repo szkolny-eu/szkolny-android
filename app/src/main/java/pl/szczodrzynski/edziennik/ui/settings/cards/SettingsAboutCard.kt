@@ -44,8 +44,8 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
     override fun buildCard(): MaterialAboutCard =
         util.createCard(
             null,
-            items = listOf(),
-            itemsMore = listOf(),
+            items = ::getItems,
+            itemsMore = ::getItemsMore,
             backgroundColor = R.attr.colorPrimaryContainer.resolveAttr(activity)
         )
 

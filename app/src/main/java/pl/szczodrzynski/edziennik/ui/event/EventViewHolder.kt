@@ -114,7 +114,7 @@ class EventViewHolder(
         b.attachmentIcon.isVisible = item.hasAttachments
 
         b.typeColor.background?.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, item.eventColor))
-        b.typeColor.isVisible = adapter.showType && adapter.showColor
+        b.typeColor.isVisible = adapter.showTypeColor
 
         b.editButton.isVisible = !adapter.simpleMode
                 && item.addedManually

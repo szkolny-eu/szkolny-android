@@ -381,6 +381,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.subjectName.text = lessonText?.let {
                 if (lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
                     it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
+                else if (subjectTextPrimary != null)
+                    it.asColoredSpannable(subjectTextPrimary.toInt())
                 else
                     it
             }

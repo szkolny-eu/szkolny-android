@@ -5,10 +5,27 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:drawablePadding="16dp"
-    android:text="@string/timetable_no_lessons_title"
-    android:textAppearance="@style/NavView.TextView.BodyLarge"
-    app:drawableTopCompat="@drawable/ic_timetable" />
+    android:id="@+id/noTimetableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/timetable_no_lessons_title"
+        android:textAppearance="@style/NavView.TextView.BodyLarge"
+        android:textSize="24sp"
+        app:drawableTopCompat="@drawable/ic_timetable" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/noLessonsSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/refresh" />
+</LinearLayout>

@@ -36,21 +36,21 @@
             tools:layout_height="90dp">
 
             <LinearLayout
-                android:id="@+id/subjectContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingBottom="8dp"
                 tools:layout_height="90dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:paddingTop="4dp"
-                    android:paddingHorizontal="8dp">
+            <LinearLayout
+                android:id="@+id/subjectContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:paddingHorizontal="8dp">
                     <!--tools:background="@drawable/timetable_subject_color_rounded"-->
 
                     <com.mikepenz.iconics.view.IconicsTextView

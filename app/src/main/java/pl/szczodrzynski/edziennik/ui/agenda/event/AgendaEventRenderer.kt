@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
 import com.google.android.material.color.MaterialColors
 import com.mikepenz.iconics.view.IconicsTextView
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventBinding
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventCompactBinding
@@ -56,11 +55,9 @@ class AgendaEventRenderer(
         else
             event.time!!.stringHM
 
-        val agendaSubjectImportant = App.profile.config.ui.agendaSubjectImportant
         val eventSubtitle = listOfNotNull(
             timeText,
-            event.subjectLongName.takeIf { !agendaSubjectImportant },
-            event.typeName.takeIf { agendaSubjectImportant },
+            event.subjectLongName,
             event.teacherName,
             event.teamName
         ).join(", ")

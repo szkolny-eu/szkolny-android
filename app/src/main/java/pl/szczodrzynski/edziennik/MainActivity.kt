@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
@@ -17,8 +16,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.ColorUtils
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
@@ -44,7 +41,6 @@ import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
@@ -71,19 +67,16 @@ import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.*
-import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import java.io.IOException
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -475,8 +468,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Type.NO_API_ACCESS -> {
                 Toast.makeText(this, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
             }
-
-            null -> TODO()
+            else -> {}
         }
 
         swipeRefreshLayout.isRefreshing = true
@@ -525,6 +517,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {
         swipeRefreshLayout.isRefreshing = true
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitle = getString(R.string.toolbar_subtitle_syncing)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -535,9 +532,31 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         finish()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitle = if (event.progress < 0f)
+                    event.progressText ?: ""
+                else
+                    getString(
+                        R.string.toolbar_subtitle_syncing_format,
+                        event.progress.roundToInt(),
+                        event.progressText ?: "",
+                    )
+
+            }
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitle = "Gotowe"
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -553,6 +572,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (event.error.profileId != App.profileId)
                 return
             ErrorDetailsDialog(this, listOf(event.error)).show()
+        }
+        navView.toolbar.apply {
+            subtitle = "Gotowe"
         }
         mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
@@ -990,19 +1012,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         transaction.commitAllowingStateLoss()
 
         // TASK DESCRIPTION
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
 
-            @Suppress("deprecation")
-            val taskDesc = ActivityManager.TaskDescription(
-                if (navTarget == NavTarget.HOME)
-                    getString(R.string.app_name)
-                else
-                    getString(R.string.app_task_format, getString(navTarget.nameRes)),
-                bm,
-            )
-            setTaskDescription(taskDesc)
-        }
+        @Suppress("deprecation")
+        val taskDesc = ActivityManager.TaskDescription(
+            if (navTarget == NavTarget.HOME)
+                getString(R.string.app_name)
+            else
+                getString(R.string.app_task_format, getString(navTarget.nameRes)),
+            bm,
+            getColorFromAttr(this, R.attr.colorSurface)
+        )
+        setTaskDescription(taskDesc)
         return
     }
 
