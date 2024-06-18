@@ -130,7 +130,6 @@ class ConfigDelegate<T>(
         if (value == null)
             return null
 
-        @Suppress("TYPE_MISMATCH_WARNING")
         return when (type) {
             String::class.java -> value
             Date::class.java -> Date.fromY_m_d(value)
