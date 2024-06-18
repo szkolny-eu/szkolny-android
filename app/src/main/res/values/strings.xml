@@ -1554,6 +1554,4 @@
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
     <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
     <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
-    <string name="settings_ui_lock_layout_text">Zablokuj układ ekranu głównego</string>
-    <string name="settings_ui_lock_layout_subtext">Nie będzie można edytować przedmiotów na ekranie głównym</string>
 </resources>

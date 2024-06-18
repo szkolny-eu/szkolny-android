@@ -74,16 +74,6 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
         ) { _, it ->
             configGlobal.ui.miniMenuVisible = it
             activity.navView.drawer.miniDrawerVisiblePortrait = it
-        },
-
-        util.createPropertyItem(
-            text = R.string.settings_ui_lock_layout_text,
-            subText = R.string.settings_ui_lock_layout_subtext,
-            icon = CommunityMaterial.Icon.cmd_axis_lock,
-            value = configGlobal.ui.lockLayout
-        ) { _, it ->
-            configGlobal.ui.lockLayout = it
-            activity.recreate()
         }
     )
 
