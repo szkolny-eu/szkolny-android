@@ -321,6 +321,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
         luckyNumbers.removeAll { it.date < today }
         luckyNumbers.forEach { luckyNumber ->
             val profile = profiles.singleOrNull { it.id == luckyNumber.profileId } ?: return@forEach
+            if(app.config.sync.luckyNumberOnlyMe && profile.studentNumber != luckyNumber.number) return@forEach
             val text = when (profile.studentNumber != -1 && profile.studentNumber == luckyNumber.number) {
                 true -> when (luckyNumber.date.value) {
                     todayValue -> R.string.notification_lucky_number_yours_format

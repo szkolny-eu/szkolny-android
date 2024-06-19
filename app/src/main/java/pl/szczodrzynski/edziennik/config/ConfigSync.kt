@@ -27,6 +27,8 @@ class ConfigSync(base: Config) {
     var quietHoursEnd by base.config<Time?>(null)
     var quietDuringLessons by base.config<Boolean>(false)
 
+    var luckyNumberOnlyMe by base.config<Boolean>(false)
+
     // FCM Tokens
     var tokenApp by base.config<String?>(null)
     var tokenMobidziennik by base.config<String?>(null)
