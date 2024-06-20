@@ -93,16 +93,18 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
     override fun onResume() {
         super.onResume()
-        // TODO this is a mess
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE),
-                Context.RECEIVER_NOT_EXPORTED)
-            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES),
-                Context.RECEIVER_NOT_EXPORTED)
-        } else @Suppress("UnspecifiedRegisterReceiverFlag") {
-            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
-            activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
-        }
+        ContextCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_SCROLL_TO_DATE),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        ContextCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_RELOAD_PAGES),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
     }
     override fun onPause() {
         super.onPause()

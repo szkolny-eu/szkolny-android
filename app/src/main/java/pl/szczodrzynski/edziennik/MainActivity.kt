@@ -16,6 +16,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
@@ -780,13 +781,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            registerReceiver(intentReceiver, filter, RECEIVER_NOT_EXPORTED)
-        else
-            @Suppress("UnspecifiedRegisterReceiverFlag")
-            registerReceiver(intentReceiver, filter)
-
+        ContextCompat.registerReceiver(
+            this,
+            intentReceiver,
+            filter,
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
         EventBus.getDefault().register(this)
         super.onResume()
     }
@@ -813,7 +813,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         handleIntent(intent?.extras)
     }
 
-    @Deprecated("Deprecated in Java")
     @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -933,15 +932,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
         drawer.close()
-
         if (drawer.getSelection() != navTarget.id)
             drawer.setSelection(navTarget.id, fireOnClick = false)
-
+        navView.toolbar.setTitle(navTarget.titleRes ?: navTarget.nameRes)
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
-
-        navView.toolbar.setTitle(navTarget.titleRes ?: navTarget.nameRes)
 
         d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
 
@@ -1012,18 +1008,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         transaction.commitAllowingStateLoss()
 
         // TASK DESCRIPTION
-        val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_v5)
 
-        @Suppress("deprecation")
-        val taskDesc = ActivityManager.TaskDescription(
-            if (navTarget == NavTarget.HOME)
-                getString(R.string.app_name)
-            else
-                getString(R.string.app_task_format, getString(navTarget.nameRes)),
-            bm,
-            getColorFromAttr(this, R.attr.colorSurface)
-        )
-        setTaskDescription(taskDesc)
+            @Suppress("deprecation")
+            val taskDesc = ActivityManager.TaskDescription(
+                if (navTarget == NavTarget.HOME)
+                    getString(R.string.app_name)
+                else
+                    getString(R.string.app_task_format, getString(navTarget.nameRes)),
+                bm,
+                getColorFromAttr(this, R.attr.colorSurface)
+            )
+            setTaskDescription(taskDesc)
+        }
         return
     }
 
@@ -1053,7 +1051,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun navigateUp(skipBeforeNavigate: Boolean = false) {
         if (!popBackStack(skipBeforeNavigate)) {
-            super.onBackPressedDispatcher.onBackPressed()
+            super.onBackPressed()
         }
     }
 
@@ -1181,8 +1179,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (App.config.ui.openDrawerOnBackPressed) {
             if (drawer.isOpen)

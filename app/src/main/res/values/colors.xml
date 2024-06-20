@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <color name="transparent">#00FFFFFF</color>
-
+<resources>
     <!-- Material 3 theme builder light colors -->
     <color name="seed">#2196f3</color>
     <color name="md_theme_light_primary">#6750A4</color>
@@ -76,7 +74,9 @@
     <color name="primaryTextDark">#fff3f3f3</color>
     <color name="secondaryTextLight">#ffaaaaaa</color>
     <color name="secondaryTextDark">#ffb2b2b2</color>
+
     <color name="dividerColor">#3e7f7f7f</color>
+
     <!-- LIGHT THEME -->
     <color name="windowBackgroundLight">#ffffffff</color>
     <color name="colorSurfaceLight">#ffffffff</color>

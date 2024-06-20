@@ -9,11 +9,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-
     <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
     <uses-sdk
         tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core, com.mikepenz:materialdrawer, com.mikepenz.iconics.typeface.library.navlibfont, androidx.appcompat.resources, androidx.appcompat, com.google.android.gms.wearable, com.google.android.gms.base, com.google.firebase.crashlytics, com.google.firebase.sessions, com.google.firebase.ktx, com.google.firebase, com.google.android.gms.tasks, com.google.android.gms.common, com.google.firebase.components" />
