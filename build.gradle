@@ -11,7 +11,7 @@ buildscript {
 
         setup = [
                 compileSdk: 34,
-                minSdk    : 21,
+                minSdk    : 19,
                 targetSdk : 34
         ]
     }
