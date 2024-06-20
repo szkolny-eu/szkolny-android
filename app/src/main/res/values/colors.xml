@@ -133,4 +133,7 @@
     <color name="colorSurfaceLightGreen">#fff2fbd9</color>
 
     <color name="black">#000000</color>
+
+    <color name="ic_launcher_v1_background">#2196f3</color>
+    <color name="ic_launcher_v5_background">#77B2FD</color>
 </resources>

@@ -106,7 +106,7 @@
             <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@mipmap/ic_splash" />
+                app:srcCompat="@mipmap/ic_splash_v5" />
 
         </LinearLayout>
     </ScrollView>
