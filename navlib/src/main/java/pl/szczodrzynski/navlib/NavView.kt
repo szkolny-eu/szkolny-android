@@ -3,7 +3,6 @@ package pl.szczodrzynski.navlib
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Point
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,90 +14,64 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.databinding.NavViewBinding
 import pl.szczodrzynski.navlib.drawer.NavDrawer
-
 
 class NavView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
 ) : FrameLayout(context, attrs, defStyle) {
-    companion object {
-        const val SOURCE_OTHER = 0
-        const val SOURCE_DRAWER = 1
-        const val SOURCE_BOTTOM_SHEET = 1
-    }
 
+    private val b = NavViewBinding.inflate(LayoutInflater.from(context), this)
     private var contentView: LinearLayout? = null
-    private val statusBarBackground: View
-    private val navigationBarBackground: View
-    private val mainView: LinearLayout
-    private val floatingActionButton: FloatingActionButton
-    private val extendedFloatingActionButton: ExtendedFloatingActionButton
-
-    val coordinator: CoordinatorLayout
     val drawer: NavDrawer
-    val toolbar: NavToolbar
+
+    val coordinator
+        get() = b.nvCoordinator
+    val toolbar
+        get() = b.nvToolbar
     val bottomBar: NavBottomBar
+        get() = b.nvBottomBar
     val nightlyText: TextView
+        get() = b.nvNightlyText
     val bottomSheet: NavBottomSheet
+        get() = b.nvBottomSheet
 
     init {
-        val layoutInflater = LayoutInflater.from(context)
-        layoutInflater.inflate(R.layout.nav_view, this)
+        contentView = b.nvContent
 
-        contentView = findViewById(R.id.nv_content)
-        statusBarBackground = findViewById(R.id.nv_statusBarBackground)
-        navigationBarBackground = findViewById(R.id.nv_navigationBarBackground)
-        mainView = findViewById(R.id.nv_main)
-        floatingActionButton = findViewById(R.id.nv_floatingActionButton)
-        extendedFloatingActionButton = findViewById(R.id.nv_extendedFloatingActionButton)
-
-        coordinator = findViewById(R.id.nv_coordinator)
         drawer = NavDrawer(
             context,
-            findViewById(R.id.nv_drawerLayout),
-            findViewById(R.id.nv_drawerContainerLandscape),
-            findViewById(R.id.nv_miniDrawerContainerPortrait),
-            findViewById(R.id.nv_miniDrawerElevation)
+            b.nvDrawerLayout,
+            b.nvDrawerContainerLandscape,
+            b.nvMiniDrawerContainerPortrait,
+            b.nvMiniDrawerElevation,
         )
 
-        toolbar = findViewById(R.id.nv_toolbar)
-        bottomBar = findViewById(R.id.nv_bottomBar)
-        nightlyText = findViewById(R.id.nv_nightlyText)
-        bottomSheet = findViewById(R.id.nv_bottomSheet)
+        drawer.toolbar = b.nvToolbar
+        drawer.bottomBar = b.nvBottomBar
 
-        drawer.toolbar = toolbar
-        drawer.bottomBar = bottomBar
+        b.nvToolbar.navView = this
+        b.nvToolbar.bottomSheet = b.nvBottomSheet
+        b.nvToolbar.toolbarImage = b.nvToolbarImage
 
-        toolbar.navView = this
-        toolbar.bottomSheet = bottomSheet
-        toolbar.toolbarImage = findViewById(R.id.nv_toolbar_image)
-
-        bottomBar.navView = this
-        bottomBar.bottomSheet = bottomSheet
-        bottomBar.fabView = floatingActionButton
-        bottomBar.fabExtendedView = extendedFloatingActionButton
-
-        //bottomSheetBehavior.peekHeight = displayHeight
+        b.nvBottomBar.navView = this
+        b.nvBottomBar.bottomSheet = b.nvBottomSheet
+        b.nvBottomBar.fabView = b.nvFloatingActionButton
+        b.nvBottomBar.fabExtendedView = b.nvExtendedFloatingActionButton
     }
 
     fun configSystemBarsUtil(systemBarsUtil: SystemBarsUtil) {
         this.systemBarsUtil = systemBarsUtil.apply {
-            this.statusBarBgView = statusBarBackground
-            this.navigationBarBgView = navigationBarBackground
-            //this.statusBarDarkView = nv_statusBarDarker
-            //this.navigationBarDarkView = navigationBarBackground
-            //this.insetsListener = nv_drawerLayout
-            this.marginBySystemBars = mainView
+            this.statusBarBgView = b.nvStatusBarBackground
+            this.navigationBarBgView = b.nvNavigationBarBackground
+            this.statusBarDarkView = b.nvStatusBarDarker
+            this.navigationBarDarkView = b.nvNavigationBarBackground
+            this.insetsListener = b.nvDrawerLayout
+            this.marginBySystemBars = b.nvMain
         }
     }
 
@@ -113,11 +86,11 @@ class NavView @JvmOverloads constructor(
 
     internal fun setContentMargins() {
         contentView?.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-            topMargin =  if (toolbar.enable) {
+            topMargin = if (toolbar.enable) {
                 toolbar.measure(MATCH_PARENT, WRAP_CONTENT)
                 toolbar.measuredHeight
             } else 0
-            bottomMargin =  if (bottomBar.enable) {
+            bottomMargin = if (bottomBar.enable) {
                 bottomBar.measure(MATCH_PARENT, WRAP_CONTENT)
                 bottomBar.measuredHeight
             } else 0
@@ -158,6 +131,5 @@ class NavView @JvmOverloads constructor(
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) =
-        contentView?.addView(child, index, params)
-            ?: super.addView(child, index, params)
+        contentView?.addView(child, index, params) ?: super.addView(child, index, params)
 }
