@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
@@ -158,11 +159,31 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.navView.apply {
             drawer.init(this@MainActivity)
 
+            val statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
+            // fix for setting status bar color to window color, outside of navlib
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor = statusBarColor
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ColorUtils.calculateLuminance(statusBarColor) > 0.6
+            ) {
+                @Suppress("deprecation")
+                window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+
+            toolbar.apply {
+                enable = true
+                enableMenuControls = true
+            }
+
             bottomBar.apply {
+                enable = false
+                enableMenuControls = false
                 fabEnable = false
                 fabExtendable = true
                 fabExtended = false
-                fabGravity = Gravity.RIGHT
+                fabGravity = Gravity.END
             }
 
             bottomSheet.apply {

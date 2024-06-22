@@ -317,11 +317,30 @@ class SystemBarsUtil(private val activity: Activity) {
                         statusBarSize = resources.getDimensionPixelSize(statusBarRes)
                     }
 
+
+                    var navigationBarSize = 0
+                    if (hasNavigationBar(activity) && targetAppFullscreen) {
+                        val orientation = resources.configuration.orientation
+
+                        val navigationBarRes = when {
+                            orientation == ORIENTATION_PORTRAIT ->
+                                resources.getIdentifier("navigation_bar_height", "dimen", "android")
+                            isTablet(activity) ->
+                                resources.getIdentifier("navigation_bar_height_landscape", "dimen", "android")
+                            else ->
+                                resources.getIdentifier("navigation_bar_width", "dimen", "android")
+                        }
+
+                        if (navigationBarRes > 0) {
+                            navigationBarSize = resources.getDimensionPixelSize(navigationBarRes)
+                        }
+                    }
+
                     applyPadding(
                         0,
                         statusBarSize,
                         0,
-                        0
+                        navigationBarSize
                     )
                 }
             }

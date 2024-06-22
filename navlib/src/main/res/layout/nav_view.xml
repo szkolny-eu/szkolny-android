@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="horizontal"
-       tools:parentTag="FrameLayout">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:parentTag="FrameLayout">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/nv_drawerLayout"
@@ -48,49 +48,53 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.appbar.AppBarLayout
+                    <pl.szczodrzynski.navlib.NavToolbar
+                        android:id="@+id/nv_toolbar"
+                        style="@style/Widget.Material3.Toolbar.Surface"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <pl.szczodrzynski.navlib.NavToolbar
-                            android:id="@+id/nv_toolbar"
-                            style="@style/Widget.Material3.Toolbar.Surface"
-                            android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?actionBarBackground"
+                        android:clipToPadding="false"
+                        android:elevation="4dp"
+                        app:title="@string/app_name"
+                        app:titleMargin="0dp"
+                        tools:targetApi="lollipop">
+
+                        <TextView
+                            android:id="@+id/nv_nightlyText"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:elevation="4dp"
-                            android:minHeight="?attr/actionBarSize"
-                            app:title="@string/app_name"
-                            app:titleMargin="0dp"
-                            tools:targetApi="lollipop">
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:background="@drawable/nightly_text_rounded"
+                            android:fontFamily="sans-serif-light"
+                            android:padding="4dp"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            tools:backgroundTint="#a0ff0000"
+                            tools:text="Nightly\n20200503" />
 
-                            <TextView
-                                android:id="@+id/nv_nightlyText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_gravity="center_vertical|end"
-                                android:background="@drawable/nightly_text_rounded"
-                                android:fontFamily="sans-serif-light"
-                                android:padding="4dp"
-                                android:textAllCaps="true"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                tools:backgroundTint="#a0ff0000"
-                                tools:text="Nightly\n20200503" />
+                        <com.mikepenz.materialdrawer.view.BezelImageView
+                            android:id="@+id/nv_toolbar_image"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginEnd="13dp"
+                            android:layout_marginRight="13dp"
+                            android:scaleType="centerCrop"
+                            app:materialDrawerSelectorOnPress="#80ffffff"
+                            tools:src="@tools:sample/backgrounds/scenic" />
 
-                            <com.mikepenz.materialdrawer.view.BezelImageView
-                                android:id="@+id/nv_toolbar_image"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_vertical|end"
-                                android:layout_marginEnd="13dp"
-                                android:layout_marginRight="13dp"
-                                android:scaleType="centerCrop"
-                                app:materialDrawerSelectorOnPress="#80ffffff"
-                                tools:src="@tools:sample/backgrounds/scenic" />
+                    </pl.szczodrzynski.navlib.NavToolbar>
 
-                        </pl.szczodrzynski.navlib.NavToolbar>
-                    </com.google.android.material.appbar.AppBarLayout>
+                    <View
+                        android:id="@+id/nv_toolbarElevation"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="?actionBarSize"
+                        android:layout_weight="1"
+                        android:background="@drawable/shadow_bottom" />
 
                     <LinearLayout
                         android:id="@+id/nv_content"
@@ -98,6 +102,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginTop="?actionBarSize"
+                        android:layout_marginBottom="?actionBarSize"
                         android:orientation="horizontal" >
 
                         <FrameLayout
@@ -113,19 +118,18 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/shadow_right" />
 
-                        </LinearLayout>
+                    </LinearLayout>
 
-                        <!-- TODO: remove bottom bar completely -->
-                        <pl.szczodrzynski.navlib.NavBottomBar
-                            android:id="@+id/nv_bottomBar"
-                            style="@style/Widget.Material3.BottomAppBar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:gravity="start"
-                            android:visibility="gone"
-                            app:fabAlignmentMode="center"
-                            app:fabAnimationMode="scale" />
+                    <pl.szczodrzynski.navlib.NavBottomBar
+                        android:id="@+id/nv_bottomBar"
+                        style="@style/Widget.Material3.BottomAppBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="start"
+                        android:visibility="visible"
+                        app:fabAlignmentMode="center"
+                        app:fabAnimationMode="scale" />
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/nv_extendedFloatingActionButton"
@@ -137,6 +141,7 @@
                         android:text=""
                         android:visibility="visible"
                         app:backgroundTint="?colorPrimaryContainer"
+                        app:layout_anchor="@id/nv_bottomBar"
                         app:layout_anchorGravity="center|top"
                         tools:icon="@android:drawable/ic_menu_edit" />
 
@@ -149,18 +154,23 @@
                         android:focusable="true"
                         android:visibility="gone"
                         app:backgroundTint="?colorPrimaryContainer"
+                        app:layout_anchor="@id/nv_bottomBar"
                         tools:srcCompat="@android:drawable/ic_menu_edit" />
+
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
             </LinearLayout>
+
             <View
                 android:id="@+id/nv_navigationBarBackground"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
                 android:background="?navigationBarBackground"
-                android:visibility="gone"
                 tools:layout_height="48dp" />
+
         </FrameLayout>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <View
@@ -180,10 +190,13 @@
         android:layout_gravity="bottom"
         android:background="#44000000"
         android:visibility="gone"
-        tools:layout_height="48dp" />
+        tools:layout_height="48dp"
+        tools:visibility="visible" />
 
     <pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
         android:id="@+id/nv_bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
 </merge>

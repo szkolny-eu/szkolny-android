@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,32 +20,27 @@ import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 
-class NavBottomBar : BottomAppBar {
-    constructor(context: Context) : super(context) {
-        create(null, 0)
-    }
+class NavBottomBar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+) : BottomAppBar(context, attrs, defStyle), NavMenuBarBase {
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        create(attrs, 0)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-        create(attrs, defStyle)
-    }
-
-    var drawer: NavDrawer? = null
-    var fabView: FloatingActionButton? = null
-    var fabExtendedView: ExtendedFloatingActionButton? = null
+    internal lateinit var navView: NavView
+    override lateinit var bottomSheet: NavBottomSheet
+    internal lateinit var fabView: FloatingActionButton
+    internal lateinit var fabExtendedView: ExtendedFloatingActionButton
 
     /**
      * Shows the BottomAppBar and sets the contentView's margin to be
      * above the BottomAppBar.
      */
-    var enable = false
+    var enable
+        get() = isVisible
         set(value) {
-            field = value
-            visibility = View.GONE
+            isVisible = value
             setFabParams()
+            navView.setContentMargins()
         }
     /**
      * Whether the FAB should be visible.
@@ -69,7 +65,7 @@ class NavBottomBar : BottomAppBar {
      * If BottomAppBar is enabled, sets its fabAlignmentMode.
      * Else, sets the actual FAB's gravity.
      */
-    var fabGravity = Gravity.RIGHT
+    var fabGravity = Gravity.CENTER
         set(value) {
             field = value
             setFabParams()
@@ -81,9 +77,9 @@ class NavBottomBar : BottomAppBar {
         set(value) {
             field = value
             if (fabExtended)
-                fabExtendedView?.extend()
+                fabExtendedView.extend()
             else
-                fabExtendedView?.shrink()
+                fabExtendedView.shrink()
         }
     /**
      * Set the FAB's icon.
@@ -91,12 +87,12 @@ class NavBottomBar : BottomAppBar {
     var fabIcon: IIcon? = null
         set(value) {
             field = value
-            fabView?.setImageDrawable(IconicsDrawable(context).apply {
+            fabView.setImageDrawable(IconicsDrawable(context).apply {
                 icon = value
                 colorAttr(context, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             })
-            fabExtendedView?.icon = IconicsDrawable(context).apply {
+            fabExtendedView.icon = IconicsDrawable(context).apply {
                 icon = value
                 colorAttr(context, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
@@ -106,26 +102,36 @@ class NavBottomBar : BottomAppBar {
      * Set the ExtendedFAB's text.
      */
     var fabExtendedText
-        get() = fabExtendedView?.text
+        get() = fabExtendedView.text
         set(value) {
-            fabExtendedView?.text = value
+            fabExtendedView.text = value
         }
 
     /**
      * Set the FAB's on click listener
      */
     fun setFabOnClickListener(onClickListener: OnClickListener?) {
-        fabView?.setOnClickListener(onClickListener)
-        fabExtendedView?.setOnClickListener(onClickListener)
+        fabView.setOnClickListener(onClickListener)
+        fabExtendedView.setOnClickListener(onClickListener)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun create(attrs: AttributeSet?, defStyle: Int) {
+    override var drawerClickListener: (() -> Unit)? = null
+    override var menuClickListener: (() -> Unit)? = null
+
+    init {
+        setOnTouchListener { _, event ->
+            if (bottomSheet?.enable != true || bottomSheet?.enableDragToOpen != true)
+                return@setOnTouchListener false
+            bottomSheet?.dispatchBottomBarEvent(event)
+            true
+        }
+
+        elevation = 0f
     }
 
     private fun setFabParams() {
         val layoutParams =
-            ((if (fabExtendable) fabExtendedView?.layoutParams else fabView?.layoutParams) ?: return) as CoordinatorLayout.LayoutParams
+            ((if (fabExtendable) fabExtendedView.layoutParams else fabView.layoutParams) ?: return) as CoordinatorLayout.LayoutParams
 
         if (enable) {
             layoutParams.anchorId = this.id
@@ -141,28 +147,23 @@ class NavBottomBar : BottomAppBar {
         }
         fabAlignmentMode = if (fabGravity == Gravity.END) FAB_ALIGNMENT_MODE_END else FAB_ALIGNMENT_MODE_CENTER
         if (fabExtendable)
-            fabExtendedView?.layoutParams = layoutParams
+            fabExtendedView.layoutParams = layoutParams
         else
-            fabView?.layoutParams = layoutParams
+            fabView.layoutParams = layoutParams
         setFabVisibility()
     }
     private fun setFabVisibility() {
         if (fabEnable && fabExtendable) {
-            fabView?.hide()
-            fabExtendedView?.show()
+            fabView.hide()
+            fabExtendedView.show()
         }
         else if (fabEnable) {
-            fabView?.show()
-            fabExtendedView?.hide()
+            fabView.show()
+            fabExtendedView.hide()
         }
         else {
-            fabView?.hide()
-            fabExtendedView?.hide()
+            fabView.hide()
+            fabExtendedView.hide()
         }
-    }
-
-    private var onMenuItemClickListener: OnMenuItemClickListener? = null
-    override fun setOnMenuItemClickListener(listener: OnMenuItemClickListener?) {
-        onMenuItemClickListener = listener
     }
 }

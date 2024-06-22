@@ -87,7 +87,6 @@ data class BottomSheetPrimaryItem(override val isContextual: Boolean = true) : I
         this.titleRes = null
         return this
     }
-
     fun withTitle(@StringRes title: Int): BottomSheetPrimaryItem {
         this.title = null
         this.titleRes = title

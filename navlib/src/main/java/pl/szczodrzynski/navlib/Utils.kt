@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -146,6 +147,20 @@ fun Context.getColorFromRes(@ColorRes id: Int): Int {
     }
     else {
         resources.getColor(id)
+    }
+}
+
+fun Drawable.setBadgeCount(count: Int) {
+    if (this is LayerDrawable) {
+        (this as LayerDrawable?)?.apply {
+            findDrawableByLayerId(R.id.ic_badge)
+                .takeIf { it is BadgeDrawable }
+                ?.also { badge ->
+                    (badge as BadgeDrawable).setCount(count.toString())
+                    mutate()
+                    setDrawableByLayerId(R.id.ic_badge, badge)
+                }
+        }
     }
 }
 

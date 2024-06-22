@@ -76,7 +76,7 @@ class NavDrawer(
 
     lateinit var badgeStyle: BadgeStyle
 
-    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
+    @SuppressLint("ClickableViewAccessibility")
     fun init(activity: Activity) {
         this.activity = activity
 
@@ -108,6 +108,7 @@ class NavDrawer(
             dividerBelowHeader = false
             headerBackground = ImageHolder(R.drawable.header)
             displayBadgesOnSmallProfileImages = true
+
             onAccountHeaderListener = { view, profile, current ->
                 if (profile is ProfileSettingDrawerItem) {
                     drawerProfileSettingClickListener?.invoke(profile.identifier.toInt(), view) ?: false
@@ -126,6 +127,7 @@ class NavDrawer(
                     }
                 }
             }
+
             onAccountHeaderItemLongClickListener = { view, profile, current ->
                 if (profile is ProfileSettingDrawerItem) {
                     drawerProfileSettingLongClickListener?.invoke(profile.identifier.toInt(), view) ?: true
@@ -145,6 +147,7 @@ class NavDrawer(
             accountHeader = this@NavDrawer.accountHeader
             itemAnimator = AlphaCrossFadeAnimator()
             //hasStableIds = true
+
             onDrawerItemClickListener = { _, drawerItem, position ->
                 if (drawerItem.identifier.toInt() == selection) {
                     false
@@ -203,12 +206,16 @@ class NavDrawer(
             } catch (_: Exception) { }
         }
 
+        updateMiniDrawer()
 
         toolbar.profileImageClickListener = {
             profileSelectionOpen()
             open()
         }
         toolbar.drawerClickListener = {
+            open()
+        }
+        bottomBar.drawerClickListener = {
             open()
         }
 
@@ -691,17 +698,8 @@ class NavDrawer(
         }
         updateMiniDrawer()
 
-        if (toolbar.navigationIcon is LayerDrawable) {
-            (toolbar.navigationIcon as LayerDrawable?)?.apply {
-                findDrawableByLayerId(R.id.ic_badge)
-                    .takeIf { it is BadgeDrawable }
-                    ?.also { badge ->
-                        (badge as BadgeDrawable).setCount(totalCount.toString())
-                        mutate()
-                        setDrawableByLayerId(R.id.ic_badge, badge)
-                    }
-            }
-        }
+        toolbar.navigationIcon?.setBadgeCount(totalCount)
+        bottomBar.navigationIcon?.setBadgeCount(totalCount)
     }
 
     fun setUnreadCounterList(unreadCounterList: MutableList<out IUnreadCounter>) {
