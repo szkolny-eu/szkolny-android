@@ -79,20 +79,14 @@ class MessageFragment : Fragment(), CoroutineScope {
                 }
         )
 
-        b.closeButton.setImageDrawable(
-                IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
-                    colorAttr(activity, android.R.attr.textColorSecondary)
-                    sizeDp = 24
-                }
-        )
-        b.closeButton.setOnClickListener { activity.navigateUp() }
+        b.closeButton.onClick { activity.navigateUp() }
 
         // click to expand subject and sender
         b.subject.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
-        b.sender.onClick {
-            it.maxLines = if (it.maxLines == 30) 2 else 30
+        b.senderContainer.onClick {
+            b.sender.maxLines = if (b.sender.maxLines == 30) 2 else 30
         }
         // TODO bring back iconics to reply/forward buttons - add modern icons to SzkolnyFont
 

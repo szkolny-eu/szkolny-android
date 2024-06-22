@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-20.
+  -->
+<resources>
+    <declare-styleable name="IconicsMaterialButton">
+        <!--region start icon-->
+        <attr name="iiv_start_icon" format="string" />
+        <attr name="iiv_start_color" format="color|reference" />
+        <attr name="iiv_start_size" format="dimension|reference" />
+        <attr name="iiv_start_padding" format="dimension|reference" />
+        <attr name="iiv_start_contour_color" format="color|reference" />
+        <attr name="iiv_start_contour_width" format="dimension|reference" />
+        <attr name="iiv_start_background_color" format="color|reference" />
+        <attr name="iiv_start_corner_radius" format="dimension|reference" />
+        <attr name="iiv_start_background_contour_color" format="color|reference" />
+        <attr name="iiv_start_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_start_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_start_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_start_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_start_shadow_color" format="color|reference" />
+        <attr name="iiv_start_animations" format="string" />
+        <attr name="iiv_start_automirror" format="boolean" />
+        <!--endregion-->
+
+        <!--region top icon-->
+        <attr name="iiv_top_icon" format="string" />
+        <attr name="iiv_top_color" format="color|reference" />
+        <attr name="iiv_top_size" format="dimension|reference" />
+        <attr name="iiv_top_padding" format="dimension|reference" />
+        <attr name="iiv_top_contour_color" format="color|reference" />
+        <attr name="iiv_top_contour_width" format="dimension|reference" />
+        <attr name="iiv_top_background_color" format="color|reference" />
+        <attr name="iiv_top_corner_radius" format="dimension|reference" />
+        <attr name="iiv_top_background_contour_color" format="color|reference" />
+        <attr name="iiv_top_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_top_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_top_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_top_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_top_shadow_color" format="color|reference" />
+        <attr name="iiv_top_animations" format="string" />
+        <attr name="iiv_top_automirror" format="boolean" />
+        <!--endregion-->
+
+        <!--region end icon-->
+        <attr name="iiv_end_icon" format="string" />
+        <attr name="iiv_end_color" format="color|reference" />
+        <attr name="iiv_end_size" format="dimension|reference" />
+        <attr name="iiv_end_padding" format="dimension|reference" />
+        <attr name="iiv_end_contour_color" format="color|reference" />
+        <attr name="iiv_end_contour_width" format="dimension|reference" />
+        <attr name="iiv_end_background_color" format="color|reference" />
+        <attr name="iiv_end_corner_radius" format="dimension|reference" />
+        <attr name="iiv_end_background_contour_color" format="color|reference" />
+        <attr name="iiv_end_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_end_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_end_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_end_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_end_shadow_color" format="color|reference" />
+        <attr name="iiv_end_animations" format="string" />
+        <attr name="iiv_end_automirror" format="boolean" />
+        <!--endregion-->
+
+        <!--region bottom icon-->
+        <attr name="iiv_bottom_icon" format="string" />
+        <attr name="iiv_bottom_color" format="color|reference" />
+        <attr name="iiv_bottom_size" format="dimension|reference" />
+        <attr name="iiv_bottom_padding" format="dimension|reference" />
+        <attr name="iiv_bottom_contour_color" format="color|reference" />
+        <attr name="iiv_bottom_contour_width" format="dimension|reference" />
+        <attr name="iiv_bottom_background_color" format="color|reference" />
+        <attr name="iiv_bottom_corner_radius" format="dimension|reference" />
+        <attr name="iiv_bottom_background_contour_color" format="color|reference" />
+        <attr name="iiv_bottom_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_bottom_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_bottom_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_bottom_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_bottom_shadow_color" format="color|reference" />
+        <attr name="iiv_bottom_animations" format="string" />
+        <attr name="iiv_bottom_automirror" format="boolean" />
+        <!--endregion-->
+
+        <!--region all icons-->
+        <attr name="iiv_all_icon" format="string" />
+        <attr name="iiv_all_color" format="color|reference" />
+        <attr name="iiv_all_size" format="dimension|reference" />
+        <attr name="iiv_all_padding" format="dimension|reference" />
+        <attr name="iiv_all_contour_color" format="color|reference" />
+        <attr name="iiv_all_contour_width" format="dimension|reference" />
+        <attr name="iiv_all_background_color" format="color|reference" />
+        <attr name="iiv_all_corner_radius" format="dimension|reference" />
+        <attr name="iiv_all_background_contour_color" format="color|reference" />
+        <attr name="iiv_all_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_all_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_all_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_all_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_all_shadow_color" format="color|reference" />
+        <attr name="iiv_all_animations" format="string" />
+        <attr name="iiv_all_automirror" format="boolean" />
+        <!--endregion-->
+    </declare-styleable>
+</resources>

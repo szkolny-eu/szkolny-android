@@ -15,19 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorSurface_6dp"
-            android:minHeight="?attr/actionBarSize"
             android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/closeButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="2dp"
-                android:background="?android:attr/actionBarItemBackground"
-                app:srcCompat="@android:drawable/ic_delete" />
 
             <TextView
                 android:id="@+id/subject"
@@ -40,8 +28,19 @@
                 android:maxLines="2"
                 android:padding="16dp"
                 android:textAppearance="@style/NavView.TextView.Title"
-                tools:ignore="HardcodedText"
                 tools:text="mobiDziennik - raport dzienny." />
+
+            <com.mikepenz.iconics.view.IconicsImageButton
+                android:id="@+id/closeButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:background="?android:attr/actionBarItemBackground"
+                app:iiv_color="?android:textColorSecondary"
+                app:iiv_icon="cmd-window-close"
+                app:iiv_size="24dp"
+                tools:background="@android:drawable/ic_delete" />
         </LinearLayout>
 
         <View
@@ -112,16 +111,18 @@
                     </FrameLayout>
 
                     <LinearLayout
+                        android:id="@+id/senderContainer"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?selectableItemBackground"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/sender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="?selectableItemBackground"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:paddingHorizontal="8dp"
@@ -134,18 +135,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
+                            android:layout_marginTop="4dp"
                             android:textAppearance="@style/NavView.TextView.LabelSmall"
                             tools:text="20 lis 2021 • 14:26" />
                     </LinearLayout>
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/messageStar"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="8dp"
+                        android:layout_margin="4dp"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:padding="4dp"
                         app:iiv_color="?android:textColorSecondary"
                         app:iiv_icon="cmd-star-outline"
                         app:iiv_size="24dp"
@@ -189,44 +190,53 @@
                     android:visibility="visible"
                     tools:visibility="visible">
 
-                    <com.google.android.material.button.MaterialButton
+                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                         android:id="@+id/replyButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:drawableTop="@drawable/ic_reply"
                         android:padding="16dp"
                         android:text="@string/message_reply"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary" />
+                        android:textColor="?colorSecondary"
+                        app:iiv_top_color="?android:textColorPrimary"
+                        app:iiv_top_icon="szf-reply"
+                        app:iiv_top_size="24dp"
+                        tools:drawableTop="@android:drawable/ic_menu_revert" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                         android:id="@+id/forwardButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:drawableTop="@drawable/ic_forward"
                         android:padding="16dp"
                         android:text="@string/message_forward"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary" />
+                        android:textColor="?colorSecondary"
+                        app:iiv_top_color="?android:textColorPrimary"
+                        app:iiv_top_icon="szf-forward"
+                        app:iiv_top_size="24dp"
+                        tools:drawableTop="@android:drawable/ic_media_ff" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                         android:id="@+id/deleteButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:drawableTop="@drawable/ic_delete"
                         android:padding="16dp"
                         android:text="@string/message_delete"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary" />
+                        android:textColor="?colorSecondary"
+                        app:iiv_top_color="?android:textColorPrimary"
+                        app:iiv_top_icon="cmd-trash-can-outline"
+                        app:iiv_top_size="24dp"
+                        tools:drawableTop="@android:drawable/ic_delete" />
                 </LinearLayout>
 
                 <LinearLayout

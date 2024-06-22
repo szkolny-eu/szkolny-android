@@ -230,7 +230,7 @@ dependencies {
     implementation "com.mikepenz:materialdrawer:9.0.1"
     implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
     implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar'
-    implementation "eu.szkolny:szkolny-font:77e33acc2a"
+    implementation "eu.szkolny:szkolny-font:95eabe7"
 
     // Other dependencies
     debugApi "com.mikepenz:materialize:1.2.1" // required for all R.color.md_* colors
