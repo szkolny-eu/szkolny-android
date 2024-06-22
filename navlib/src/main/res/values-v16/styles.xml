@@ -49,10 +49,6 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="NavView.TextView.Display" parent="TextAppearance.Material3.DisplaySmall">
-    </style>
-    <style name="NavView.TextView.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
-    </style>
     <style name="NavView.TextView.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
     </style>
     <style name="NavView.TextView.TitleLarge" parent="TextAppearance.Material3.TitleLarge">

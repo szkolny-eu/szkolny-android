@@ -19,7 +19,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/bs_view"
-            style="@style/width_max_600dp"
+            android:layout_width="match_parent"
+            android:maxWidth="600dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:behavior_hideable="true"
