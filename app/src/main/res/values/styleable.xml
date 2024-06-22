@@ -4,6 +4,23 @@
   -->
 <resources>
     <declare-styleable name="IconicsMaterialButton">
+        <attr name="iiv_icon" format="string" />
+        <attr name="iiv_color" format="color|reference" />
+        <attr name="iiv_size" format="dimension|reference" />
+        <attr name="iiv_padding" format="dimension|reference" />
+        <attr name="iiv_contour_color" format="color|reference" />
+        <attr name="iiv_contour_width" format="dimension|reference" />
+        <attr name="iiv_background_color" format="color|reference" />
+        <attr name="iiv_corner_radius" format="dimension|reference" />
+        <attr name="iiv_background_contour_color" format="color|reference" />
+        <attr name="iiv_background_contour_width" format="dimension|reference" />
+        <attr name="iiv_shadow_radius" format="dimension|reference" />
+        <attr name="iiv_shadow_dx" format="dimension|reference" />
+        <attr name="iiv_shadow_dy" format="dimension|reference" />
+        <attr name="iiv_shadow_color" format="color|reference" />
+        <attr name="iiv_animations" format="string" />
+        <attr name="iiv_automirror" format="boolean" />
+
         <!--region start icon-->
         <attr name="iiv_start_icon" format="string" />
         <attr name="iiv_start_color" format="color|reference" />

@@ -9,24 +9,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:backgroundTint="?colorPrimaryContainer"
-                app:iconTint="?colorOnPrimaryContainer"
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                app:icon="@drawable/ic_event_note" />
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="?colorPrimaryContainer"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-reply"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,15 +39,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/card_events_header_title"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/eventsNoData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/events_no_nearest"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                    android:textAppearance="?textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
