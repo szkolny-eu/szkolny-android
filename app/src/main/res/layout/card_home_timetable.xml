@@ -43,14 +43,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_no_timetable"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:id="@+id/noTimetableText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_no_timetable_text"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                    android:text="@string/home_timetable_no_timetable_text" />
             </LinearLayout>
         </LinearLayout>
 
@@ -85,15 +84,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_no_lessons"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:gravity="left"
-                    android:text="@string/home_timetable_no_lessons_text"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                    android:text="@string/home_timetable_no_lessons_text" />
             </LinearLayout>
         </LinearLayout>
 
@@ -127,13 +125,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_not_public"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_not_public_text"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                    android:text="@string/home_timetable_not_public_text" />
 
             </LinearLayout>
         </LinearLayout>
@@ -172,14 +169,14 @@
                         android:id="@+id/dayInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="Jutro" />
 
                     <TextView
                         android:id="@+id/lessonInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textAppearance="?textAppearanceBodySmall"
                         tools:text="7 lekcji - 8:10 do 14:45" />
                 </LinearLayout>
 
@@ -223,16 +220,14 @@
                             android:id="@+id/lessonBig"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
-                            android:textStyle="bold"
-                            android:textColor="?colorPrimary"
+                            android:textAppearance="?textAppearanceTitleMedium"
                             tools:text="Pierwsza: informatyka" />
 
                         <TextView
                             android:id="@+id/counter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
+                            android:textAppearance="?textAppearanceBodyMedium"
                             tools:text="zostały 2 minuty 35 sekund" />
                     </LinearLayout>
 
@@ -247,28 +242,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Sala"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
-                            android:textColor="?colorPrimary"
-                            android:textStyle="bold"
-                            android:visibility="gone" />
+                            android:textAppearance="?textAppearanceTitleMedium"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <TextView
                             android:id="@+id/classroom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
                             tools:text="09a komputerowa" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/nextLessons"
+                android:id="@+id/nextLessonsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
-                tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+                android:textAppearance="?textAppearanceLabelLarge"
+                tools:text="Później:"/>
+
+            <TextView
+                android:id="@+id/nextLessons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bellSync"

@@ -25,9 +25,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:textAppearance="@style/NavView.TextView.Medium"
-            tools:text="@string/agenda_lesson_changes"
-            tools:textColor="@color/md_white_1000" />
+            android:textAppearance="?textAppearanceBodyLarge"
+            tools:text="@string/agenda_lesson_changes" />
 
         <TextView
             android:id="@+id/count"

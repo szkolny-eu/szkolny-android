@@ -77,22 +77,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="64dp"
-                            android:fontFamily="sans-serif-light"
                             android:gravity="center"
                             android:text="@string/app_name"
-                            android:textAppearance="@style/NavView.TextView.Large"
-                            android:textSize="28sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?textAppearanceHeadlineMedium" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="64dp"
                             android:layout_marginBottom="48dp"
-                            android:fontFamily="sans-serif-light"
                             android:gravity="center"
                             android:text="@string/contributors_headline"
-                            android:textAppearance="@style/NavView.TextView.Medium" />
+                            android:textAppearance="?textAppearanceTitleLarge" />
                     </LinearLayout>
 
                     <com.google.android.material.tabs.TabLayout

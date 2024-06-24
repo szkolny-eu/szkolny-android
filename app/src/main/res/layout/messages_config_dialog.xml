@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/messages_config_compose"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"

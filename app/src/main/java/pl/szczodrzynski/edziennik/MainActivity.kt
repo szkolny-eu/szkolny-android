@@ -1039,7 +1039,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     getString(R.string.app_task_format, getString(navTarget.nameRes)),
                 bm,
-                getColorFromAttr(this, R.attr.colorSurface)
+                getColorFromAttr(this, R.attr.colorPrimary)
             )
             setTaskDescription(taskDesc)
         }

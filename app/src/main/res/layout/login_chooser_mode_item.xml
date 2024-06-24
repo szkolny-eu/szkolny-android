@@ -9,8 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         android:background="?selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -22,6 +20,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:adjustViewBounds="true"
+            android:layout_marginStart="16dp"
             tools:src="@drawable/login_mode_librus_email" />
 
         <View
@@ -53,14 +52,14 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="Zaloguj używając e-maila" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="Musisz posiadać konto LIBRUS® Rodzina" />
         </LinearLayout>
     </LinearLayout>

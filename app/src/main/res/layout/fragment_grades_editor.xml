@@ -12,8 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:textSize="24sp"
-            android:textAppearance="@style/NavView.TextView.Title"
+            android:textAppearance="?textAppearanceTitleLarge"
             tools:text="geografia" />
 
         <TextView
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/NavView.TextView.Subtitle"
+            android:textAppearance="?textAppearanceTitleMedium"
             tools:text="Semestr 1" />
 
         <LinearLayout
@@ -139,7 +138,7 @@
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/grades_editor_modify_help"
-            android:textStyle="italic" />
+            android:textAppearance="?textAppearanceBodySmall" />
 
         <Button
             android:id="@+id/addGrade"

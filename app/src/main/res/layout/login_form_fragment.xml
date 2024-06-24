@@ -45,7 +45,7 @@
                     android:id="@+id/subTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?textAppearanceBodyMedium"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Opolska eSzkoła" />
 
                 <View
@@ -115,7 +115,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:textAppearance="?textAppearanceBodyMedium"
                         android:textColor="?colorOnError"
                         tools:text="Nieprawidłowy login lub hasło, konto nie zostało aktywowane, lub dziennik ma problemy egzystencjalne" />
                 </LinearLayout>
@@ -137,7 +136,7 @@
                 android:text="@string/back"
                 android:textAllCaps="false" />
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />

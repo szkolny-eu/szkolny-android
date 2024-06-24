@@ -27,7 +27,7 @@
                 android:padding="16dp"
                 android:text="@string/notes_no_data"
                 android:visibility="gone"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:textAppearance="?textAppearanceHeadlineSmall"
                 app:drawableTopCompat="@drawable/ic_note"
                 tools:visibility="visible" />
 

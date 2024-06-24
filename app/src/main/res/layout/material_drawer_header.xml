@@ -4,7 +4,9 @@
     android:id="@+id/material_drawer_account_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/material_drawer_account_header_height"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/material_drawer_account_header_background"
@@ -15,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
+        tools:src="@tools:sample/backgrounds/scenic[7]" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/material_drawer_statusbar_guideline"
@@ -26,14 +28,14 @@
 
     <com.mikepenz.materialdrawer.view.BezelImageView
         android:id="@+id/material_drawer_account_header_current"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/material_drawer_account_header_selected"
+        android:layout_height="@dimen/material_drawer_account_header_selected"
         style="@style/BezelImageView"
         app:materialDrawerDrawCircularShadow="false"
         android:layout_marginStart="@dimen/material_drawer_vertical_padding"
         android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="@dimen/material_drawer_account_header_horizontal_bottom"
+        android:layout_marginTop="@dimen/material_drawer_account_header_horizontal_top"
         android:clickable="true"
         android:elevation="2dp"
         android:focusable="true"
@@ -54,7 +56,6 @@
         android:paddingHorizontal="1dp"
         android:singleLine="true"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-        android:textAppearance="@style/NavView.TextView.LabelSmall"
         app:layout_constraintBottom_toBottomOf="@id/material_drawer_account_header_current"
         app:layout_constraintStart_toStartOf="@id/material_drawer_account_header_current"
         tools:text="99" />
@@ -144,7 +145,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_third_badge"
-        android:layout_width="18dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:fontFamily="sans-serif"
@@ -173,7 +174,7 @@
         android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
         android:lines="1"
         android:maxLines="1"
-        android:textAppearance="@style/NavView.TextView.HeadlineSmall"
+        android:textSize="@dimen/material_drawer_account_header_title"
         app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_email"
         app:layout_constraintEnd_toStartOf="@id/material_drawer_account_header_text_switcher"
         app:layout_constraintStart_toStartOf="parent"
@@ -187,7 +188,7 @@
         android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
         android:lines="1"
         android:maxLines="1"
-        android:textAppearance="@style/NavView.TextView.BodyMedium"
+        android:textSize="@dimen/material_drawer_account_header_subtext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/material_drawer_account_header_text_switcher"
         app:layout_constraintStart_toStartOf="parent"

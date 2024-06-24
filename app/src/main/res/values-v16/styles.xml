@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
@@ -79,7 +79,6 @@
         <item name="android:textSize">20sp</item>
     </style>
     <style name="AppTheme.MaterialAlertDialog.BodyText">
-        <item name="android:textAppearance">@style/NavView.TextView.BodyMedium</item>
     </style>
     <style name="AppTheme.MaterialAlertDialogMonospace" parent="AppTheme.MaterialAlertDialog">
         <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialogMonospace.BodyText</item>
@@ -260,6 +259,39 @@
     <style name="AppTheme.LightGreen" parent="AppTheme.Light">
         <item name="android:colorBackground">@color/windowBackgroundLightGreen</item>
         <item name="colorSurface">@color/colorSurfaceLightGreen</item>
+    </style>
+
+    <style name="Widget.Material3.Button.IconButton.Filled.Container" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?colorPrimaryContainer</item>
+        <item name="iconTint">?colorOnPrimaryContainer</item>
+    </style>
+
+    <style name="TextAppearance.Material3.HeadlineLarge" parent="TextAppearance.M3.Sys.Typescale.HeadlineLarge">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.HeadlineMedium" parent="TextAppearance.M3.Sys.Typescale.HeadlineMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.HeadlineSmall" parent="TextAppearance.M3.Sys.Typescale.HeadlineSmall">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Material3.TitleLarge" parent="TextAppearance.M3.Sys.Typescale.TitleLarge">
+    </style>
+    <style name="TextAppearance.Material3.TitleMedium" parent="TextAppearance.M3.Sys.Typescale.TitleMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.TitleSmall" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelLarge" parent="TextAppearance.M3.Sys.Typescale.LabelLarge">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelMedium" parent="TextAppearance.M3.Sys.Typescale.LabelMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+    <style name="TextAppearance.Material3.LabelSmall" parent="TextAppearance.M3.Sys.Typescale.LabelSmall">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
 
 </resources>

@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/dialog_event_details_added_by"
-                    android:textAppearance="@style/NavView.TextView.Helper" />
+                    android:textAppearance="?textAppearanceLabelMedium" />
 
                 <com.mikepenz.iconics.view.IconicsTextView
                     android:id="@+id/addedBy"
@@ -74,7 +74,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/notes_details_id"
-                            android:textAppearance="@style/NavView.TextView.Helper" />
+                            android:textAppearance="?textAppearanceLabelMedium" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/notes_details_owner_id"
-                            android:textAppearance="@style/NavView.TextView.Helper" />
+                            android:textAppearance="?textAppearanceLabelMedium" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -112,14 +112,14 @@
                     android:layout_marginTop="8dp"
                     android:isVisible="@{note.topic != null}"
                     android:text="@string/dialog_event_details_topic"
-                    android:textAppearance="@style/NavView.TextView.Helper" />
+                    android:textAppearance="?textAppearanceLabelMedium" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:isVisible="@{note.topic != null}"
                     android:text="@{note.topicHtml}"
-                    android:textAppearance="@style/NavView.TextView.Medium"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     android:textIsSelectable="true"
                     tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
@@ -128,13 +128,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/dialog_event_details_body"
-                    android:textAppearance="@style/NavView.TextView.Helper" />
+                    android:textAppearance="?textAppearanceLabelMedium" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{note.bodyHtml}"
-                    android:textAppearance="@style/NavView.TextView.Medium"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     android:textIsSelectable="true"
                     tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
             </LinearLayout>

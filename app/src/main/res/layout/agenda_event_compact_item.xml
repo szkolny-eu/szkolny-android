@@ -31,9 +31,8 @@
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textSize="16sp"
-                tools:text="sprawdzian - Język polski"
-                tools:textColor="@color/md_white_1000" />
+                android:textAppearance="?textAppearanceBodyLarge"
+                tools:text="sprawdzian - Język polski" />
         </LinearLayout>
 
         <View

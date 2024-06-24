@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{name}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:textAppearance="?textAppearanceTitleLarge"
                         android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"
                         tools:text="sprawdzian" />
 
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         android:text="@{details}"
                         android:visibility="@{details == null ? View.GONE : View.VISIBLE}"
                         tools:text="język angielski • 2B3T a2"
@@ -84,16 +84,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
                         tools:text="14:50"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
                         android:text="@{Integer.toString(event.date.day)}"
-                        android:textSize="36sp"
+                        android:textAppearance="?textAppearanceHeadlineLarge"
                         tools:text="14" />
 
                     <TextView
@@ -110,7 +109,7 @@
                 android:id="@+id/legend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="[!] wydarzenie dodane ręcznie\n[V] oznaczono jako wykonane" />
 
             <View
@@ -123,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_event_details_teacher"
                 android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
             <TextView
@@ -139,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_event_details_added_by"/>
             <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/addedBy"
@@ -158,14 +157,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_event_details_topic"/>
 
             <TextView
                 android:id="@+id/topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
@@ -175,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_body"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <ProgressBar
                 android:id="@+id/bodyProgressBar"
@@ -190,7 +189,7 @@
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
@@ -200,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_attachments"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                 android:id="@+id/attachmentsFragment"

@@ -88,8 +88,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
                 android:text="@{profile.subname}"
-                android:textAppearance="@style/NavView.TextView.Subtitle"
-                android:textColor="?android:textColorSecondary"
+                android:textAppearance="?textAppearanceTitleMedium"
                 tools:text="3b3t - 2020/2021" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial

@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
-                android:textAppearance="@style/NavView.TextView.TitleMedium"
+                android:textAppearance="?textAppearanceTitleMedium"
                 android:textIsSelectable="true"
                 tools:text="reason" />
 
@@ -43,14 +43,13 @@
                 android:id="@+id/noticesItemAddedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 tools:text="addedDate" />
 
             <TextView
                 android:id="@+id/noticesItemTeacherName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:textAppearance="?textAppearanceBodySmall"
                 android:visibility="gone"
                 tools:text="teacherName" />
 

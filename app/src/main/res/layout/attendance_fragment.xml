@@ -29,7 +29,7 @@
                 app:tabPaddingStart="16dp"
                 app:tabPaddingTop="12dp"
                 app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextAppearance="@style/NavView.TextView.BodyMedium"
+                app:tabTextAppearance="?textAppearanceBodyMedium"
                 app:tabTextColor="?colorOnBackground" />
 
             <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager

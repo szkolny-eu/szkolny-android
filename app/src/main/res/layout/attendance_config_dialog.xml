@@ -13,15 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp">
+            android:padding="24dp">
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/attendance_config_title" />
+                android:text="@string/attendance_config_title"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <CheckBox
                 android:id="@+id/useSymbols"
@@ -33,16 +32,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
+                android:layout_marginHorizontal="32dp"
                 android:text="@string/attendance_config_use_symbols_hint"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                android:textAppearance="?textAppearanceBodySmall" />
 
             <CheckBox
                 android:id="@+id/groupConsecutiveDays"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:minHeight="32dp"
                 android:text="@string/attendance_config_group_consecutive_days" />
 
@@ -50,6 +48,7 @@
                 android:id="@+id/showPresenceInMonth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:minHeight="32dp"
                 android:text="@string/attendance_config_show_presence_in_month" />
         </LinearLayout>

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/school_notices_no_data"
-            android:textAppearance="@style/NavView.TextView.BodyMedium"
+            android:textAppearance="?textAppearanceHeadlineSmall"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

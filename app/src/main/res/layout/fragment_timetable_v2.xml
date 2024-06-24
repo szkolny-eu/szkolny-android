@@ -38,8 +38,7 @@
                         app:tabPaddingStart="16dp"
                         app:tabPaddingTop="12dp"
                         app:tabSelectedTextColor="?colorPrimary"
-                        app:tabTextColor="?colorOnBackground"
-                        app:tabTextAppearance="@style/NavView.TextView.BodyMedium" />
+                        app:tabTextColor="?colorOnBackground" />
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
@@ -68,9 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-light"
                     android:text="@string/timetable_not_public_title"
-                    android:textSize="24sp" />
+                    android:textAppearance="?textAppearanceHeadlineSmall" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -79,7 +77,7 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@string/timetable_not_public_text"
-                    android:textSize="16sp" />
+                    android:textAppearance="?textAppearanceBodyLarge" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,8 +85,7 @@
                     android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="@string/timetable_not_public_hint"
-                    android:textSize="14sp" />
+                    android:text="@string/timetable_not_public_hint" />
 
             </LinearLayout>
 

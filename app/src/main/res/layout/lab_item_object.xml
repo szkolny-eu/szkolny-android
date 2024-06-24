@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="monospace"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="lessonRanges" />
 
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:fontFamily="monospace"
                 android:text="Object"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceBodySmall" />
 
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/dropdownIcon"
@@ -61,14 +61,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="{&quot;accountId&quot;:8765432,&quot;accountLogin&quot;:&quot;2345678u&quot;,&quot;accountToken&quot;:&quot;49azsnNZfxxfdSYb6lKU8NambrMXjeCrw7yA" />
 
             <TextView
                 android:id="@+id/summaryContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="8 elements"
                 tools:visibility="gone" />
         </FrameLayout>

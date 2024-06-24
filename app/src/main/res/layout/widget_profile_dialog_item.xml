@@ -31,14 +31,14 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Medium"
+            android:textAppearance="?textAppearanceTitleMedium"
             tools:text="Title" />
 
         <TextView
             android:id="@+id/subname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Small"
+            android:textAppearance="?textAppearanceBodySmall"
             tools:text="SubTitle" />
     </LinearLayout>
 </LinearLayout>

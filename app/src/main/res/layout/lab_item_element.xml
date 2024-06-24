@@ -29,6 +29,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="Int"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            android:textAppearance="?textAppearanceBodySmall" />
     </LinearLayout>
 </layout>

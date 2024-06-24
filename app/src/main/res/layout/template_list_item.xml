@@ -17,7 +17,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Medium"
+            android:textAppearance="?textAppearanceBodyLarge"
             tools:text="Dzisiaj 1 to szczęśliwy numerek" />
 
         <LinearLayout

@@ -18,11 +18,10 @@
             android:layout_height="wrap_content"
 
             android:text="@string/grades_stats_title"
-            android:textAppearance="@style/NavView.TextView.TitleLarge" />
+            android:textAppearance="?textAppearanceTitleLarge" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/noData"
-            textAppearance="@style/NavView.TextView.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/grades_stats_no_data"
@@ -37,12 +36,12 @@
 
             <TextView
                 android:id="@+id/normalTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="@string/grades_stats_normal"
-                android:textAppearance="@style/NavView.TextView.TitleMedium" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/helpButton"
@@ -66,7 +65,7 @@
                 android:id="@+id/normalSemester1Layout"
                 style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="?colorTertiaryContainer"
@@ -83,23 +82,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_1"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/normalSemester1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="4,56" />
 
                     <TextView
                         android:id="@+id/normalSemester1Notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.LabelSmall"
-                        android:textColor="?colorOnTertiaryContainer"
+                        android:textAppearance="?textAppearanceBodySmall"
                         tools:text="*z ocen proponowanych" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -132,23 +129,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_2"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/normalSemester2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="4,67" />
 
                     <TextView
                         android:id="@+id/normalSemester2Notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.LabelSmall"
-                        android:textColor="?colorOnTertiaryContainer"
+                        android:textAppearance="?textAppearanceBodySmall"
                         tools:text="*przewidywana średnia" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -180,23 +175,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_yearly"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/normalYearly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="3,75" />
 
                     <TextView
                         android:id="@+id/normalYearlyNotice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.LabelSmall"
-                        android:textColor="?colorOnTertiaryContainer"
+                        android:textAppearance="?textAppearanceBodySmall"
                         tools:text="*przewidywana średnia" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -214,7 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
             android:text="@string/grades_stats_point"
-            android:textAppearance="@style/NavView.TextView.Subtitle" />
+            android:textAppearance="?textAppearanceTitleMedium" />
 
         <LinearLayout
             android:id="@+id/pointLayout"
@@ -244,15 +237,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_1"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/pointSemester1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="95%" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -286,15 +278,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_2"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/pointSemester2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="93,27%" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -327,15 +318,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_yearly"
-                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnTertiaryContainer" />
 
                     <TextView
                         android:id="@+id/pointYearly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="94,50%" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -355,7 +345,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/grades_stats_disclaimer"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            android:textAppearance="?textAppearanceBodySmall" />
 
         <View
             android:id="@+id/customValueDivider"
@@ -375,8 +365,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/grades_stats_custom_config_notice"
-                android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                android:text="@string/grades_stats_custom_config_notice" />
 
             <Button
                 android:id="@+id/customValueButton"

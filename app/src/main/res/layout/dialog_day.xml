@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginBottom="8dp"
-            android:textAppearance="@style/NavView.TextView.Title"
+            android:textAppearance="?textAppearanceTitleLarge"
             android:textIsSelectable="true"
             tools:text="wtorek, 17 grudnia" />
 
@@ -31,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:textAppearance="@style/NavView.TextView.Helper"
             android:textIsSelectable="true"
             android:visibility="gone"
             tools:text="8:00 - 14:20 (7 lekcji, 6 godzin, 20 minut)"
@@ -42,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:textAppearance="@style/NavView.TextView.Helper"
+            android:textAppearance="?textAppearanceBodySmall"
             tools:text="[ - ] dodano notatki" />
 
         <View
@@ -95,10 +94,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawablePadding="16dp"
-                android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="@string/dialog_day_no_events"
-                android:textSize="24sp"
+                android:textAppearance="?textAppearanceHeadlineSmall"
                 app:drawableTopCompat="@drawable/ic_no_events" />
 
             <TextView
@@ -106,8 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/dialog_no_events_hint"
-                android:textStyle="italic" />
+                android:text="@string/dialog_no_events_hint" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

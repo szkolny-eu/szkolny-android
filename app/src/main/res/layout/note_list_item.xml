@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-23.
   -->
 
@@ -6,53 +7,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:paddingTop="8dp">
+    android:background="?selectableItemBackground">
 
     <LinearLayout
+        android:id="@+id/colorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginRight="8dp">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <LinearLayout
-            android:id="@+id/colorLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/addedBy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="middle"
-                android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.TitleSmall"
-                android:textColor="?colorPrimary"
-                tools:text="Jakub Szczodrzyński • 23 października" />
-
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/topic"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="4"
-                android:minLines="1"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                android:minLines="2"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="Temat notatki. Ale może też\nbyć treść tutaj." />
+
+            <!-- cmd_pencil_outline -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="0dp"
+                android:text="\uf2f4"
+                android:textSize="20sp"
+                tools:visibility="gone" />
         </LinearLayout>
-        <!-- cmd_pencil_outline -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editButton"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="0dp"
+
+        <com.mikepenz.iconics.view.IconicsTextView
+            android:id="@+id/addedBy"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/community_material_font_v5_8_55"
-            android:text="\uf2f4"
-            android:textSize="20sp"
-            tools:visibility="visible" />
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textAppearance="?textAppearanceBodySmall"
+            tools:text="Jakub Szczodrzyński • 23 października" />
     </LinearLayout>
 </FrameLayout>

@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{oldSubjectName}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Medium"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?android:textColorTertiary"
                         android:visibility="@{oldSubjectName == null ? View.GONE : View.VISIBLE}"
                         app:strikeThrough="@{true}"
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{subjectName}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.TitleLarge"
+                        android:textAppearance="?textAppearanceTitleLarge"
                         android:visibility="@{subjectName == null ? View.GONE : View.VISIBLE}"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="czwartek, 14 listopada 2019"
                         tools:visibility="visible" />
 
@@ -101,14 +101,12 @@
                         android:layout_height="wrap_content"
                         android:text="@{lesson.displayLessonNumber.toString()}"
                         android:textAppearance="?textAppearanceHeadlineLarge"
-                        android:textColor="?colorOnSurface"
                         android:visibility="@{lesson.displayLessonNumber == null ? View.GONE : View.VISIBLE}"
                         tools:text="4" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.LabelLarge"
                         android:text="@{lesson.displayStartTime.stringHM + ` - ` + lesson.displayEndTime.stringHM}"
                         tools:text="14:55 - 15:40" />
 
@@ -125,15 +123,15 @@
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/shiftedText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:textStyle="italic"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Lekcja przeniesiona na czwartek, 17 października" />
 
                 <Button
@@ -150,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="[ - ] dodano notatki" />
 
             <LinearLayout
@@ -172,15 +170,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textStyle="bold"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_teacher" />
                     <TextView
                         android:id="@+id/oldTeacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldTeacherName}"
                         android:textIsSelectable="true"
                         android:singleLine="true"
@@ -193,7 +189,6 @@
                         android:layout_height="wrap_content"
                         android:text="@{teacherName}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
                         android:visibility="@{teacherName != null ? View.VISIBLE : View.GONE}"
                         tools:text="Janósz Kowalski" />
                 </LinearLayout>
@@ -207,14 +202,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textStyle="bold"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_team" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldTeamName}"
                         android:textIsSelectable="true"
                         android:visibility="@{oldTeamName != null ? View.VISIBLE : View.GONE}"
@@ -248,14 +241,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textStyle="bold"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_classroom" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldClassroom}"
                         android:textIsSelectable="true"
                         android:visibility="@{oldClassroom != null ? View.VISIBLE : View.GONE}"
@@ -282,9 +273,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium"
-                        android:textStyle="bold"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_id" />
 
                     <TextView
@@ -334,7 +323,7 @@
                     android:gravity="center"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textSize="16sp"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="nieobecność usprawiedliweniowsza1234324" />
 
                 <ImageView
@@ -379,13 +368,12 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge"
-                    android:text="@string/dialog_lesson_no_events" />
+                    android:text="@string/dialog_lesson_no_events"
+                    android:textAppearance="?textAppearanceHeadlineSmall" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium"
                     android:text="@string/dialog_no_events_hint" />
 
             </LinearLayout>

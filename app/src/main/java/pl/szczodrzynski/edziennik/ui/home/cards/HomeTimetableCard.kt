@@ -318,25 +318,24 @@ class HomeTimetableCard(
             showAllLessons = true
         }
 
-        val text = mutableListOf<CharSequence>(
-            if (showAllLessons)
-                activity.getString(R.string.home_timetable_all_lessons)
-            else
-                activity.getString(R.string.home_timetable_later)
-        )
+        if (showAllLessons)
+            b.nextLessonsTitle.setText(R.string.home_timetable_all_lessons)
+        else
+            b.nextLessonsTitle.setText(R.string.home_timetable_later)
 
         val nextLessons = if (showAllLessons)
             lessons.drop(skipFirst)
         else
             lessons.drop(skipFirst + 1)
 
+        val text = mutableListOf<CharSequence>()
         for (lesson in nextLessons) {
             text += listOf(
                     adjustTimeWidth(lesson.displayStartTime?.stringHM),
                     lesson.subjectSpannable
             ).concat(" ")
         }
-        if (text.size == 1)
+        if (text.isEmpty())
             text += activity.getString(R.string.home_timetable_later_no_lessons)
         b.nextLessons.text = text.concat("\n")
     }}

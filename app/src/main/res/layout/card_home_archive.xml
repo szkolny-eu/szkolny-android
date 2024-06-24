@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/home_archive_title"
-                android:textAppearance="@style/NavView.TextView.TitleMedium" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/homeArchiveText"
@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:gravity="left"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 android:text="@string/home_archive_text"
                 tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
 

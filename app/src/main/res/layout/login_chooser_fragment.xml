@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="2dp"
-            android:textAppearance="?textAppearanceBodyMedium"
             android:text="@string/login_chooser_subtitle" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,12 +49,12 @@
 
         <TextView
             android:id="@+id/footnoteText"
-            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:text="@string/login_copyright_notice"
+            android:textAppearance="?textAppearanceBodySmall"
             android:gravity="center" />
 
         <LinearLayout
@@ -81,7 +80,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:gravity="center"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:textSize="12sp"
                 tools:text="Szkolny.eu v4.7-rc.2\n2021-04-06" />
 
             <com.google.android.material.button.MaterialButton

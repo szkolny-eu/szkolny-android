@@ -53,14 +53,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?colorPrimary"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     android:text="@string/notices_praises_title" />
                 <TextView
                     android:id="@+id/noticesPraisesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     tools:text="342525"/>
             </LinearLayout>
 
@@ -72,14 +70,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?colorPrimary"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     android:text="@string/notices_warnings_title" />
                 <TextView
                     android:id="@+id/noticesWarningsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     tools:text="53535353"/>
             </LinearLayout>
 
@@ -90,14 +86,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?colorPrimary"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     android:text="@string/notices_other_title" />
                 <TextView
                     android:id="@+id/noticesOtherCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.TitleSmall"
                     tools:text="3331"/>
             </LinearLayout>
         </LinearLayout>

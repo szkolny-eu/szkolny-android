@@ -23,13 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/home_availability_title"
-                android:textAppearance="@style/NavView.TextView.TitleMedium" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <TextView
                 android:id="@+id/homeAvailabilityText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 android:text="@string/home_availability_text"
                 tools:text="Zaktualizuj aplikację do najnowszej wersji 4.3.1." />
 

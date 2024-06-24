@@ -14,18 +14,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp">
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/grades_config_title"/>
+                android:text="@string/grades_config_title"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -52,7 +52,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -78,8 +77,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/divider"/>
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/divider" />
 
             <CheckBox
                 android:id="@+id/dontCountGrades"
@@ -89,12 +88,13 @@
                 android:text="@string/grades_config_dont_count_grades"/>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                android:layout_marginTop="8dp"
+                android:enabled="@{dontCountGrades.checked}"
                 android:hint="@string/grades_config_dont_count_hint"
-                app:placeholderText="@string/grades_config_dont_count_placeholder"
-                android:enabled="@{dontCountGrades.checked}">
+                app:placeholderText="@string/grades_config_dont_count_placeholder">
 
                 <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/dontCountGradesText"
@@ -114,6 +114,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -139,13 +140,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_sort_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_sort_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/sortGradesByDateRadio"
@@ -165,14 +167,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_color_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_color_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/gradeColorFromERegister"
@@ -192,14 +194,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_average_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_average_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode4"

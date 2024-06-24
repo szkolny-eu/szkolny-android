@@ -16,10 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:drawablePadding="16dp"
-        android:fontFamily="sans-serif-light"
         android:text="@string/timetable_no_lessons_title"
-        android:textAppearance="@style/NavView.TextView.BodyLarge"
-        android:textSize="24sp"
+        android:textAppearance="?textAppearanceHeadlineSmall"
         app:drawableTopCompat="@drawable/ic_timetable" />
 
     <com.google.android.material.button.MaterialButton

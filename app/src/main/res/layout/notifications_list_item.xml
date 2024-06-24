@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
-                android:textColor="?colorPrimary"
+                android:textAppearance="?textAppearanceTitleMedium"
                 tools:text="Szczęśliwy numerek" />
         </LinearLayout>
 
@@ -37,13 +36,12 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.BodyMedium"
             tools:text="Dzisiaj 1 to szczęśliwy numerek" />
         <TextView
             android:id="@+id/profileDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceLabelMedium"
+            android:textAppearance="?textAppearanceBodySmall"
             tools:text="Władca Androida • 22 listopada" />
         <View
             android:layout_width="match_parent"

@@ -60,8 +60,7 @@
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="@{annotationVisible ? 1 : 2}"
-                        android:textAppearance="@style/NavView.TextView.TitleMedium"
-                        android:textColor="?colorPrimary"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         app:autoSizeMaxTextSize="16sp"
                         app:autoSizeMinTextSize="12sp"
                         app:autoSizeTextType="uniform"
@@ -103,7 +102,7 @@
                                 android:includeFontPadding="false"
                                 android:paddingHorizontal="4dp"
                                 android:text="@{Integer.toString(lessonNumber)}"
-                                android:textAppearance="@style/NavView.TextView.BodyLarge"
+                                android:textAppearance="?textAppearanceTitleLarge"
                                 android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
                                 tools:text="3" />
                         </LinearLayout>
@@ -165,8 +164,6 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
-                            android:textColor="?colorOnSurface"
                             tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />
 
                         <TextView
@@ -175,8 +172,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="middle"
                             android:singleLine="true"
-                            android:textAppearance="@style/NavView.TextView.LabelSmall"
-                            android:textColor="?colorOnSurface"
+                            android:textAppearance="?textAppearanceBodySmall"
                             tools:text="Paweł Informatyczny • 2b3T n1" />
                     </LinearLayout>
 

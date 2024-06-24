@@ -35,14 +35,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/card_notes_header_title"
-                android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/noData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notes_no_data"
-                android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                android:text="@string/notes_no_data" />
 
         </LinearLayout>
     </LinearLayout>

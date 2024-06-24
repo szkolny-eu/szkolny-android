@@ -37,7 +37,7 @@
                 android:layout_marginRight="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="@style/NavView.TextView.TitleSmall"
+                android:textAppearance="?textAppearanceBodyLarge"
                 app:layout_constraintEnd_toStartOf="@+id/announcementsItemDate"
                 app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +53,6 @@
                 android:layout_marginRight="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="@style/NavView.TextView.BodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
                 app:layout_constraintTop_toBottomOf="@+id/announcementsItemSender"
@@ -71,7 +70,7 @@
                 android:autoLink="all"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:textAppearance="?textAppearanceBodySmall"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
@@ -87,7 +86,7 @@
                 android:layout_marginRight="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:textAppearance="?textAppearanceLabelMedium"
                 tools:text="18 lut 2018" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

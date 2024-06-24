@@ -58,8 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="2"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium"
-                    android:textColor="?colorPrimary"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     tools:text="sprawdzian • 9:05 • historia i społeczeństwo" />
 
                 <View
@@ -85,7 +84,6 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:textAppearance="@style/NavView.TextView.BodyMedium"
                     tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
                 <!-- cmd_pencil_outline -->
             </LinearLayout>
@@ -96,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
                 android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:textAppearance="?textAppearanceBodySmall"
                 android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"
                 tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
         </LinearLayout>

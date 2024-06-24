@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{BetterHtml.fromHtml(context, message.title, false)}"
-                    android:textAppearance="@style/NavView.TextView.Title"
+                    android:textAppearance="?textAppearanceHeadlineSmall"
                     tools:text="Dziennik nie działa" />
 
                 <TextView
@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@{BetterHtml.fromHtml(context, message.contentLong, false)}"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Dziennik się zepsuł i nie działa, szkoda\n\n\nwiele linijek ma ten tekst" />
 
                 <com.google.android.material.button.MaterialButton

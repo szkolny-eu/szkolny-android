@@ -25,14 +25,15 @@
                 android:id="@+id/browserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="Firefox 71.0 @ Windows 7 64-bit"/>
 
             <TextView
                 android:id="@+id/datePaired"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Połączono 2019-12-12 19:54:09"/>
+                android:textAppearance="?textAppearanceBodySmall"
+                tools:text="Połączono 2019-12-12 19:54:09" />
 
         </LinearLayout>
 

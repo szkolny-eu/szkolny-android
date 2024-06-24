@@ -47,7 +47,7 @@
                         android:layout_marginHorizontal="8dp"
                         android:layout_weight="1"
                         android:text="@string/home_configure_notice"
-                        android:textAppearance="@style/NavView.TextView.BodyMedium" />
+                        android:textAppearance="?textAppearanceBodySmall" />
 
                     <Button
                         android:id="@+id/configureCards"

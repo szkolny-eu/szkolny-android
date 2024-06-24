@@ -27,7 +27,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:padding="16dp"
-                android:textAppearance="@style/NavView.TextView.Title"
+                android:textAppearance="?textAppearanceTitleLarge"
                 tools:text="mobiDziennik - raport dzienny." />
 
             <com.mikepenz.iconics.view.IconicsImageButton
@@ -126,7 +126,6 @@
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:paddingHorizontal="8dp"
-                            android:textAppearance="@style/NavView.TextView.BodyMedium"
                             android:textStyle="bold"
                             tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
 
@@ -136,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
                             android:layout_marginTop="4dp"
-                            android:textAppearance="@style/NavView.TextView.LabelSmall"
+                            android:textAppearance="?textAppearanceBodySmall"
                             tools:text="20 lis 2021 • 14:26" />
                     </LinearLayout>
 
@@ -171,7 +170,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:text="Załączniki:"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                     android:id="@+id/attachmentsFragment"
@@ -276,7 +275,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:text="Odbiorcy wiadomości:"
-                    android:textAppearance="@style/NavView.TextView.BodyLarge" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:id="@+id/recipients"

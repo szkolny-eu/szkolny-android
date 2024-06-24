@@ -14,62 +14,8 @@
     </style>
 
     <style name="NavView.TextView">
-        <item name="android:textAppearance">@style/NavView.TextView.BodyMedium</item>
+        <item name="android:textAppearance">?textAppearanceBodyMedium</item>
     </style>
-    <!-- title text                 20sp, primary, medium -->
-    <!-- subtitle text              16sp, primary, medium -->
-    <!-- large body text            22sp, primary, regular -->
-    <!-- medium body text           18sp, primary, regular -->
-    <!-- normal(default) body text  14sp, primary, regular -->
-    <!-- small body text            14sp, secondary, medium -->
-    <!-- helper body text           14sp, secondary, regular -->
-    <style name="NavView.TextView.Normal" parent="Widget.Material3.CheckedTextView">
-        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-    <style name="NavView.TextView.Title" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-    <style name="NavView.TextView.Subtitle" parent="TextAppearance.AppCompat.Subhead">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-    <style name="NavView.TextView.Large" parent="TextAppearance.AppCompat.Large">
-    </style>
-    <style name="NavView.TextView.Medium" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-    <style name="NavView.TextView.Small" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-    <style name="NavView.TextView.Helper" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="NavView.TextView.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
-    </style>
-    <style name="NavView.TextView.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
-    </style>
-    <style name="NavView.TextView.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
-    </style>
-    <style name="NavView.TextView.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
-    </style>
-    <style name="NavView.TextView.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
-    </style>
-    <style name="NavView.TextView.BodyLargeHighlight" parent="NavView.TextView.BodyLarge">
-        <item name="android:textColor">?colorPrimary</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="NavView.TextView.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
-    </style>
-    <style name="NavView.TextView.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
-    </style>
-    <style name="NavView.TextView.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
-    </style>
-    <!--<item name="colorAccent">#ffb300</item>-->
 
     <style name="NavView.Light" parent="Theme.Material3.Light.NoActionBar">
         <!-- primary styling -->
