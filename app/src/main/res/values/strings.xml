@@ -63,9 +63,14 @@
     <string name="attendance_belated_excused" translatable="false">su</string>
     <string name="attendance_config_group_consecutive_days">Grupuj kolejne dni na liście</string>
     <string name="attendance_config_show_presence_in_month">Wyświetlaj obecność w widoku miesięcy</string>
+    <string name="attendance_config_show_difference">Wyświetlaj różnice obecności</string>
+    <string name="attendance_config_show_difference_message">Wyświetla różnice między obecnościami a nieobecnościami (Ile lekcji potrzebujesz lub możesz nie mieć aby mieć nadal 50%) \n\nnp. -1 oznacza, że brakuje ci jednej lekcji do 50%</string>
     <string name="attendance_config_title">Konfiguracja frekwencji</string>
     <string name="attendance_config_use_symbols">Używaj symboli i kolorów wg dziennika</string>
     <string name="attendance_config_use_symbols_hint">Widoczne po rozwinięciu listy</string>
+    <string name="attendance_config_dialog_sort_by_alphabet">Alfabetycznie</string>
+    <string name="attendance_config_dialog_sort_by_lowest">Od najniższej</string>
+    <string name="attendance_config_dialog_sort_by_highest">Od najwyższej</string>
     <string name="attendance_empty_text">Nie ma tutaj żadnych nieobecności.</string>
     <string name="attendance_free_day" translatable="false">w</string>
     <string name="attendance_lesson_number_format">lekcja %d</string>
@@ -677,6 +682,7 @@
     <string name="menu_announcements">Tablica ogłoszeń</string>
     <string name="menu_attendance">Frekwencja</string>
     <string name="menu_attendance_config">Ustawienia frekwencji</string>
+    <string name="menu_attendance_sort_mode">Sortuj frekwencje</string>
     <string name="menu_debug">Debugowanie</string>
     <string name="menu_feedback">Pomoc i opinie</string>
     <string name="menu_generate_block_timetable">Zapisz plan lekcji jako obraz</string>

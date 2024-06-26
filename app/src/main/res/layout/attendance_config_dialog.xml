@@ -3,7 +3,9 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,6 +32,32 @@
                 android:minHeight="32dp"
                 android:text="@string/attendance_config_use_symbols" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/showDifference"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="32dp"
+                    android:text="@string/attendance_config_show_difference" />
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/showDifferenceHelp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:scaleType="centerInside"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_icon="cmd-help-circle-outline"
+                    app:iiv_size="24dp"
+                    tools:src="@android:drawable/ic_menu_help" />
+
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,6 +80,39 @@
                 android:layout_height="wrap_content"
                 android:minHeight="32dp"
                 android:text="@string/attendance_config_show_presence_in_month" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_attendance_sort_mode"/>
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByAlphabet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_alphabet" />
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByLowest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_lowest"/>
+
+                <RadioButton
+                    android:id="@+id/sortAttendanceByHighest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/attendance_config_dialog_sort_by_highest"/>
+
+            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 </layout>
