@@ -6,4 +6,7 @@
     <attr name="timetable_lesson_shifted_source_color" format="color" />
     <attr name="timetable_lesson_shifted_target_color" format="color" />
     <attr name="colorOnPrimaryContainer" format="color" />
+    <attr name="materialButtonSecondaryStyle" format="reference" />
+    <attr name="materialIconButtonSecondaryStyle" format="reference" />
+    <attr name="materialIconButtonContainerStyle" format="reference" />
 </resources>

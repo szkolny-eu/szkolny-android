@@ -51,7 +51,7 @@
 
                     <Button
                         android:id="@+id/configureCards"
-                        style="@style/Widget.Material3.Button.TonalButton"
+                        style="?materialButtonSecondaryStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"

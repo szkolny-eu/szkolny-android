@@ -18,11 +18,10 @@
             android:orientation="horizontal">
 
             <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="?colorPrimaryContainer"
                 android:clickable="false"
                 app:iiv_color="?colorOnPrimaryContainer"
                 app:iiv_icon="cmd-reply"

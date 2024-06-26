@@ -100,10 +100,9 @@
         </LinearLayout>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editButton"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="0dp"
+            style="?materialIconButtonSecondaryStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:fontFamily="@font/community_material_font_v5_8_55"
             android:text="\uf2f4"
             android:textSize="20sp"

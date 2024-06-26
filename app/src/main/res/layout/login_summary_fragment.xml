@@ -75,7 +75,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/anotherButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

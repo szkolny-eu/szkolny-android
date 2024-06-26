@@ -1,74 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Material 3 theme builder light colors -->
-    <color name="seed">#2196f3</color>
-    <color name="md_theme_light_primary">#6750A4</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#EADDFF</color>
-    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
-    <color name="md_theme_light_secondary">#625B71</color>
-    <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#E8DEF8</color>
-    <color name="md_theme_light_onSecondaryContainer">#1D192B</color>
-    <color name="md_theme_light_tertiary">#7D5260</color>
-    <color name="md_theme_light_onTertiary">#FFFFFF</color>
-    <color name="md_theme_light_tertiaryContainer">#FFD8E4</color>
-    <color name="md_theme_light_onTertiaryContainer">#31111D</color>
-    <color name="md_theme_light_error">#B3261E</color>
-    <color name="md_theme_light_onError">#FFFFFF</color>
-    <color name="md_theme_light_errorContainer">#F9DEDC</color>
-    <color name="md_theme_light_onErrorContainer">#410E0B</color>
-    <color name="md_theme_light_outline">#79747E</color>
-    <color name="md_theme_light_background">#FFFBFE</color>
-    <color name="md_theme_light_onBackground">#1C1B1F</color>
-    <color name="md_theme_light_surface">#FFFBFE</color>
-    <color name="md_theme_light_onSurface">#1C1B1F</color>
-    <color name="md_theme_light_surfaceVariant">#E7E0EC</color>
-    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
-    <color name="md_theme_light_inverseSurface">#313033</color>
-    <color name="md_theme_light_inverseOnSurface">#F4EFF4</color>
-    <color name="md_theme_light_inversePrimary">#D0BCFF</color>
-    <color name="md_theme_light_shadow">#000000</color>
-    <color name="md_theme_light_surfaceTint">#6750A4</color>
-    <color name="md_theme_light_outlineVariant">#CAC4D0</color>
-    <color name="md_theme_light_scrim">#000000</color>
-
-    <!-- Material 3 theme builder dark colors -->
-    <color name="md_theme_dark_primary">#D0BCFF</color>
-    <color name="md_theme_dark_onPrimary">#381E72</color>
-    <color name="md_theme_dark_primaryContainer">#4F378B</color>
-    <color name="md_theme_dark_onPrimaryContainer">#EADDFF</color>
-    <color name="md_theme_dark_secondary">#CCC2DC</color>
-    <color name="md_theme_dark_onSecondary">#332D41</color>
-    <color name="md_theme_dark_secondaryContainer">#4A4458</color>
-    <color name="md_theme_dark_onSecondaryContainer">#E8DEF8</color>
-    <color name="md_theme_dark_tertiary">#EFB8C8</color>
-    <color name="md_theme_dark_onTertiary">#492532</color>
-    <color name="md_theme_dark_tertiaryContainer">#633B48</color>
-    <color name="md_theme_dark_onTertiaryContainer">#FFD8E4</color>
-    <color name="md_theme_dark_error">#F2B8B5</color>
-    <color name="md_theme_dark_onError">#601410</color>
-    <color name="md_theme_dark_errorContainer">#8C1D18</color>
-    <color name="md_theme_dark_onErrorContainer">#F9DEDC</color>
-    <color name="md_theme_dark_outline">#938F99</color>
-    <color name="md_theme_dark_background">#1C1B1F</color>
-    <color name="md_theme_dark_onBackground">#E6E1E5</color>
-    <color name="md_theme_dark_surface">#1C1B1F</color>
-    <color name="md_theme_dark_onSurface">#E6E1E5</color>
-    <color name="md_theme_dark_surfaceVariant">#49454F</color>
-    <color name="md_theme_dark_onSurfaceVariant">#CAC4D0</color>
-    <color name="md_theme_dark_inverseSurface">#E6E1E5</color>
-    <color name="md_theme_dark_inverseOnSurface">#313033</color>
-    <color name="md_theme_dark_inversePrimary">#6750A4</color>
-    <color name="md_theme_dark_shadow">#000000</color>
-    <color name="md_theme_dark_surfaceTint">#D0BCFF</color>
-    <color name="md_theme_dark_outlineVariant">#49454F</color>
-    <color name="md_theme_dark_scrim">#000000</color>
-
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorPrimaryLight">#6EC6FF</color>
-    <color name="colorAccent">#4caf50</color>
+    <color name="colorAccent">#ff3d00</color>
 
     <color name="primaryTextLight">#ff101010</color>
     <color name="primaryTextDark">#fff3f3f3</color>
@@ -76,61 +11,6 @@
     <color name="secondaryTextDark">#ffb2b2b2</color>
 
     <color name="dividerColor">#3e7f7f7f</color>
-
-    <!-- LIGHT THEME -->
-    <color name="windowBackgroundLight">#ffffffff</color>
-    <color name="colorSurfaceLight">#ffffffff</color>
-    <!-- DARK THEME -->
-    <color name="windowBackgroundDark">#ff242424</color>
-    <color name="colorSurfaceDark">#ff333333</color>
-    <!-- BLACK THEME -->
-    <color name="windowBackgroundBlack">#ff000000</color>
-    <color name="colorSurfaceBlack">#ff121212</color>
-    <!-- CHOCOLATE THEME -->
-    <color name="windowBackgroundChocolate">#ff3e2723</color>
-    <color name="colorSurfaceChocolate">#ff4b3632</color>
-    <!-- INDIGO THEME -->
-    <color name="windowBackgroundIndigo">#ff1a237e</color>
-    <color name="colorSurfaceIndigo">#ff2a3287</color>
-    <!-- LIGHT YELLOW THEME -->
-    <color name="windowBackgroundLightYellow">#ffffffc9</color>
-    <color name="colorSurfaceLightYellow">#ffffffd9</color>
-    <!-- DARK BLUE THEME -->
-    <color name="windowBackgroundDarkBlue">#ff0f2833</color>
-    <color name="colorSurfaceDarkBlue">#ff1f3741</color>
-    <!-- BLUE THEME -->
-    <color name="windowBackgroundBlue">#ff0d47a1</color>
-    <color name="colorSurfaceBlue">#ff1e53a7</color>
-    <!-- LIGHT BLUE THEME -->
-    <color name="windowBackgroundLightBlue">#ffc9ecfc</color>
-    <color name="colorSurfaceLightBlue">#ffd9f1fc</color>
-    <!-- DARK PURPLE THEME -->
-    <color name="windowBackgroundDarkPurple">#ff2f0f34</color>
-    <color name="colorSurfaceDarkPurple">#ff3d1f42</color>
-    <!-- PURPLE THEME -->
-    <color name="windowBackgroundPurple">#ff7b1fa2</color>
-    <color name="colorSurfacePurple">#ff842ea8</color>
-    <!-- LIGHT PURPLE THEME -->
-    <color name="windowBackgroundLightPurple">#fff6c9fd</color>
-    <color name="colorSurfaceLightPurple">#fff8d9fd</color>
-    <!-- DARK RED THEME -->
-    <color name="windowBackgroundDarkRed">#ff350f0f</color>
-    <color name="colorSurfaceDarkRed">#ff431f1f</color>
-    <!-- RED THEME -->
-    <color name="windowBackgroundRed">#ffff5252</color>
-    <color name="colorSurfaceRed">#ffff5e5e</color>
-    <!-- LIGHT RED THEME -->
-    <color name="windowBackgroundLightRed">#fff6c9c9</color>
-    <color name="colorSurfaceLightRed">#fff8d9d9</color>
-    <!-- DARK GREEN THEME -->
-    <color name="windowBackgroundDarkGreen">#ff0f2d1b</color>
-    <color name="colorSurfaceDarkGreen">#ff1f3b2b</color>
-    <!-- AMBER THEME -->
-    <color name="windowBackgroundAmber">#ffffd54f</color>
-    <color name="colorSurfaceAmber">#ffffd75b</color>
-    <!-- LIGHT GREEN THEME -->
-    <color name="windowBackgroundLightGreen">#ffedfac9</color>
-    <color name="colorSurfaceLightGreen">#fff2fbd9</color>
 
     <color name="black">#000000</color>
 

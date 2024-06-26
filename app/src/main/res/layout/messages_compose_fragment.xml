@@ -14,7 +14,7 @@
         android:paddingBottom="40dp"><!-- half of the FAB's size -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recipientsLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+            style="?textInputFilledDenseStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundColor="@android:color/transparent"
@@ -35,7 +35,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/subjectLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            style="?textInputFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundColor="@android:color/transparent"
@@ -45,7 +45,6 @@
 
             <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                 android:id="@+id/subject"
-                style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
@@ -85,7 +84,7 @@
 
         <Button
             android:id="@+id/breakpoints"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"

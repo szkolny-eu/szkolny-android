@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources>
+
+    <style name="AppTheme.M2.Black" />
+
+    <style name="AppTheme.M2.Red.Black" />
+
+    <style name="AppTheme.M2.Green.Black" />
+
+    <style name="AppTheme.M2.Blue.Black" />
+
+    <style name="AppTheme.M2.Purple.Black" />
+
+    <style name="AppTheme.M2.Teal.Black" />
+
+    <style name="AppTheme.M3.Black" />
+
+    <style name="AppTheme.M3.Red.Black" />
+
+    <style name="AppTheme.M3.Green.Black" />
+
+    <style name="AppTheme.M3.Blue.Black" />
+
+    <style name="AppTheme.M3.Purple.Black" />
+
+    <style name="AppTheme.M3.Teal.Black" />
+
+</resources>

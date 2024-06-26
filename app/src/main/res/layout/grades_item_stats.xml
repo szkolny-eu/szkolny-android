@@ -63,12 +63,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalSemester1Layout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:cardBackgroundColor="?colorSecondaryContainer"
                 app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_1"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/normalSemester1"
@@ -110,12 +110,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalSemester2Layout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:cardBackgroundColor="?colorSecondaryContainer"
                 app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_2"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/normalSemester2"
@@ -157,11 +157,11 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalYearlyLayout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:cardBackgroundColor="?colorSecondaryContainer"
                 app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_yearly"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/normalYearly"
@@ -217,13 +217,13 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester1Layout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -238,7 +238,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_1"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/pointSemester1"
@@ -258,13 +258,13 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester2Layout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -279,7 +279,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_semester_2"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/pointSemester2"
@@ -299,12 +299,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointYearlyLayout"
-                style="@style/Widget.Material3.CardView.Filled"
+                style="?materialCardViewFilledStyle"
                 app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorTertiaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -319,7 +319,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/grades_stats_yearly"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnTertiaryContainer" />
+                        android:textColor="?colorOnSecondaryContainer" />
 
                     <TextView
                         android:id="@+id/pointYearly"
@@ -369,7 +369,7 @@
 
             <Button
                 android:id="@+id/customValueButton"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="?materialButtonSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"

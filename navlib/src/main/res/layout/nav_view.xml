@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="top"
-                android:background="?colorSurfaceContainerLow"
+                android:background="?nvStatusBarBackground"
                 tools:layout_height="25dp" />
 
             <LinearLayout
@@ -50,10 +50,10 @@
 
                     <pl.szczodrzynski.navlib.NavToolbar
                         android:id="@+id/nv_toolbar"
-                        style="@style/Widget.Material3.Toolbar.Surface"
+                        style="?toolbarSurfaceStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?actionBarBackground"
+                        android:background="?nvActionBarBackground"
                         android:clipToPadding="false"
                         android:elevation="4dp"
                         app:title="@string/app_name"
@@ -122,10 +122,11 @@
 
                     <pl.szczodrzynski.navlib.NavBottomBar
                         android:id="@+id/nv_bottomBar"
-                        style="@style/Widget.Material3.BottomAppBar"
+                        style="?bottomAppBarStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:background="?nvBottomBarBackground"
                         android:gravity="start"
                         android:visibility="visible"
                         app:fabAlignmentMode="center"
@@ -135,12 +136,10 @@
                         android:id="@+id/nv_extendedFloatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:text=""
                         android:visibility="visible"
-                        app:backgroundTint="?colorPrimaryContainer"
                         app:layout_anchor="@id/nv_bottomBar"
                         app:layout_anchorGravity="center|top"
                         tools:icon="@android:drawable/ic_menu_edit" />
@@ -149,11 +148,9 @@
                         android:id="@+id/nv_floatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:visibility="gone"
-                        app:backgroundTint="?colorPrimaryContainer"
                         app:layout_anchor="@id/nv_bottomBar"
                         tools:srcCompat="@android:drawable/ic_menu_edit" />
 
@@ -166,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:background="?navigationBarBackground"
+                android:background="?nvNavigationBarBackground"
                 tools:layout_height="48dp" />
 
         </FrameLayout>

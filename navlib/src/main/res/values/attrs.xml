@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="actionBarBackground" format="color" />
-    <attr name="navigationBarBackground" format="color" />
-    <attr name="colorCard" format="color" />
-    <attr name="colorDrawer" format="color" />
-    <attr name="colorOutlineVariant" format="color" />
+    <attr name="nvStatusBarBackground" format="color" />
+    <attr name="nvActionBarBackground" format="color" />
+    <attr name="nvBottomBarBackground" format="color" />
+    <attr name="nvNavigationBarBackground" format="color" />
 </resources>

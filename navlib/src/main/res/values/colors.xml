@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="transparent">#00FFFFFF</color>
-
     <color name="color">#202196f3</color>
-    <color name="blue">#154FBC</color>
-
-    <color name="background_light">#ffffff</color>
-    <color name="background_dark">#242424</color>
-    <color name="background_black">#000000</color>
 
     <color name="colorSurface_1dp">#0dffffff</color>
     <color name="colorSurface_2dp">#12ffffff</color>

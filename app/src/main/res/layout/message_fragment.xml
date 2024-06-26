@@ -199,7 +199,6 @@
                         android:padding="16dp"
                         android:text="@string/message_reply"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary"
                         app:iiv_top_color="?android:textColorPrimary"
                         app:iiv_top_icon="szf-reply"
                         app:iiv_top_size="24dp"
@@ -215,7 +214,6 @@
                         android:padding="16dp"
                         android:text="@string/message_forward"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary"
                         app:iiv_top_color="?android:textColorPrimary"
                         app:iiv_top_icon="szf-forward"
                         app:iiv_top_size="24dp"
@@ -231,7 +229,6 @@
                         android:padding="16dp"
                         android:text="@string/message_delete"
                         android:textAllCaps="false"
-                        android:textColor="?colorSecondary"
                         app:iiv_top_color="?android:textColorPrimary"
                         app:iiv_top_icon="cmd-trash-can-outline"
                         app:iiv_top_size="24dp"
@@ -248,14 +245,14 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/notesButton"
-                        style="@style/Widget.Material3.Button.TextButton"
+                        style="?materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/notes_button" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/downloadButton"
-                        style="@style/Widget.Material3.Button.TextButton"
+                        style="?materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/message_download"

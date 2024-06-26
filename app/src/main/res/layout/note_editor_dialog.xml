@@ -51,7 +51,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/topicLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="?textInputOutlinedDenseStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -70,7 +70,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bodyLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="?textInputOutlinedDenseStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -124,7 +124,7 @@
                     android:textAppearance="?textAppearanceBodySmall" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="?textInputOutlinedDenseStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

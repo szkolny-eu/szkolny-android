@@ -55,7 +55,7 @@
 
             <Button
                 android:id="@+id/closeButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

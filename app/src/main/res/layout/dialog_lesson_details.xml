@@ -84,7 +84,8 @@
                         android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
                         app:chipBackgroundColor="?colorError"
                         android:textColor="?colorOnError"
-                        style="@style/Widget.Material3.Chip.Suggestion"
+                        style="?chipStyle"
+                        app:chipStrokeWidth="0dp"
                         android:text="@string/timetable_lesson_cancelled"/>
 
                 </LinearLayout>
@@ -136,7 +137,7 @@
 
                 <Button
                     android:id="@+id/shiftedGoTo"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_go_to_button" />
@@ -335,7 +336,7 @@
 
                 <Button
                     android:id="@+id/attendanceDetails"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_attendance_details" />
@@ -396,7 +397,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addEventButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    style="?materialButtonOutlinedStyle.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -406,7 +407,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/notesButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    style="?materialButtonOutlinedStyle.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

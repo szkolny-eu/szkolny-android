@@ -58,7 +58,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/readMore"
-                    style="@style/Widget.Material3.Button"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

@@ -39,13 +39,12 @@
         android:layout_marginTop="16dp">
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityUpdate"
-                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_availability_update" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityInfo"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="?materialButtonSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"

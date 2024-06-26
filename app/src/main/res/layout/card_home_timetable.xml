@@ -24,8 +24,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/noTimetableSync"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:backgroundTint="?colorPrimaryContainer"
+                style="?materialIconButtonContainerStyle"
                 app:iconTint="?colorOnPrimaryContainer"
                 android:clickable="false"
                 android:layout_width="wrap_content"
@@ -66,8 +65,7 @@
             tools:visibility="visible">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:backgroundTint="?colorPrimaryContainer"
+                style="?materialIconButtonContainerStyle"
                 app:iconTint="?colorOnPrimaryContainer"
                 android:clickable="false"
                 android:layout_width="wrap_content"
@@ -107,8 +105,7 @@
             tools:visibility="visible">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:backgroundTint="?colorPrimaryContainer"
+                style="?materialIconButtonContainerStyle"
                 app:iconTint="?colorOnPrimaryContainer"
                 android:clickable="false"
                 android:layout_width="wrap_content"
@@ -150,8 +147,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:backgroundTint="?colorPrimaryContainer"
+                    style="?materialIconButtonContainerStyle"
                     app:iconTint="?colorOnPrimaryContainer"
                     android:clickable="false"
                     android:layout_width="wrap_content"
@@ -271,7 +267,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bellSync"
-                style="@style/Widget.Material3.Button.Icon"
                 android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -279,7 +274,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/showCounter"
-                style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/counter_activity"/>

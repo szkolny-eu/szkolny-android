@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-26.
+  -->
+
+<resources>
+
+    <style name="AppTheme.M2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColorSecondary">@color/secondaryText</item>
+        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
+
+        <item name="nvStatusBarBackground">#ff00ff</item>
+        <item name="nvActionBarBackground">#ff00ff</item>
+        <item name="nvBottomBarBackground">#ff00ff</item>
+        <item name="nvNavigationBarBackground">#ff00ff</item>
+
+        <item name="materialButtonSecondaryStyle">
+            @style/Widget.MaterialComponents.Button.OutlinedButton
+        </item>
+        <item name="materialIconButtonSecondaryStyle">
+            @style/AppTheme.M2.Button.IconButton.Secondary
+        </item>
+        <item name="materialIconButtonContainerStyle">
+            @style/Widget.Material3.Button.IconButton.Filled.Tonal
+        </item>
+
+        <item name="textAppearanceHeadlineLarge">?textAppearanceHeadline3</item>
+        <item name="textAppearanceHeadlineMedium">?textAppearanceHeadline4</item>
+        <item name="textAppearanceHeadlineSmall">?textAppearanceHeadline5</item>
+        <item name="textAppearanceTitleLarge">?textAppearanceHeadline6</item>
+        <item name="textAppearanceTitleMedium">?textAppearanceSubtitle1</item>
+        <item name="textAppearanceTitleSmall">?textAppearanceSubtitle2</item>
+        <item name="textAppearanceBodyLarge">?textAppearanceBody1</item>
+        <item name="textAppearanceBodyMedium">@style/AppTheme.M2.Normal</item>
+        <item name="textAppearanceBodySmall">@style/AppTheme.M2.Helper</item>
+        <item name="textAppearanceLabelLarge">@style/AppTheme.M2.Subtitle</item>
+        <item name="textAppearanceLabelMedium">@style/AppTheme.M2.Helper</item>
+        <item name="textAppearanceLabelSmall">?textAppearanceCaption</item>
+
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/primaryTextLight</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/primaryTextLight</item>
+
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+
+        <item name="colorOnTertiary">?colorOnSurface</item>
+        <item name="colorOnTertiaryContainer">?colorOnSurface</item>
+        <item name="colorOnContainer">?colorOnSurface</item>
+        <item name="colorOnSecondaryContainer">?colorOnSurface</item>
+
+        <item name="colorOutline">@color/dividerColor</item>
+
+        <item name="android:colorBackground">@color/windowBackgroundDefault</item>
+        <item name="colorOnBackground">@color/primaryText</item>
+        <item name="colorSurface">@color/colorSurfaceDefault</item>
+        <item name="colorOnSurface">@color/primaryText</item>
+    </style>
+
+    <style name="AppTheme.M2.Red">
+        <item name="android:colorBackground">@color/windowBackgroundRed</item>
+        <item name="colorSurface">@color/colorSurfaceRed</item>
+    </style>
+
+    <style name="AppTheme.M2.Green">
+        <item name="android:colorBackground">@color/windowBackgroundGreen</item>
+        <item name="colorSurface">@color/colorSurfaceGreen</item>
+    </style>
+
+    <style name="AppTheme.M2.Blue">
+        <item name="android:colorBackground">@color/windowBackgroundBlue</item>
+        <item name="colorSurface">@color/colorSurfaceBlue</item>
+    </style>
+
+    <style name="AppTheme.M2.Purple">
+        <item name="android:colorBackground">@color/windowBackgroundPurple</item>
+        <item name="colorSurface">@color/colorSurfacePurple</item>
+    </style>
+
+    <style name="AppTheme.M2.Teal">
+        <item name="android:colorBackground">@color/windowBackgroundTeal</item>
+        <item name="colorSurface">@color/colorSurfaceTeal</item>
+    </style>
+
+    <style name="AppTheme.M2.Red.Full">
+        <item name="android:colorBackground">@color/windowBackgroundRedFull</item>
+        <item name="colorSurface">@color/colorSurfaceRedFull</item>
+    </style>
+
+    <style name="AppTheme.M2.Green.Full">
+        <item name="android:colorBackground">@color/windowBackgroundGreenFull</item>
+        <item name="colorSurface">@color/colorSurfaceGreenFull</item>
+    </style>
+
+    <style name="AppTheme.M2.Blue.Full">
+        <item name="android:colorBackground">@color/windowBackgroundBlueFull</item>
+        <item name="colorSurface">@color/colorSurfaceBlueFull</item>
+    </style>
+
+    <style name="AppTheme.M2.Purple.Full">
+        <item name="android:colorBackground">@color/windowBackgroundPurpleFull</item>
+        <item name="colorSurface">@color/colorSurfacePurpleFull</item>
+    </style>
+
+    <style name="AppTheme.M2.Teal.Full">
+        <item name="android:colorBackground">@color/windowBackgroundTealFull</item>
+        <item name="colorSurface">@color/colorSurfaceTealFull</item>
+    </style>
+
+</resources>

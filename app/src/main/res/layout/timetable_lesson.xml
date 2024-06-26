@@ -26,7 +26,7 @@
         tools:padding="32dp">
 
         <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.Material3.CardView.Elevated"
+            style="?materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -178,7 +178,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/annotation"
-                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                        style="?chipStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
                         android:layout_weight="0"
@@ -187,6 +187,7 @@
                         android:textAlignment="center"
                         android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
                         app:chipBackgroundColor="?colorError"
+                        app:chipStrokeWidth="0dp"
                         tools:text="@string/timetable_lesson_cancelled" />
 
                 </LinearLayout>

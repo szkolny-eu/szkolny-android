@@ -22,8 +22,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/image"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:backgroundTint="?colorPrimaryContainer"
+                style="?materialIconButtonContainerStyle"
                 app:iconTint="?colorOnPrimaryContainer"
                 android:clickable="false"
                 android:layout_width="wrap_content"

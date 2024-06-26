@@ -19,7 +19,6 @@
                 tools:visibility="gone">
 
                 <com.google.android.material.appbar.AppBarLayout
-                    style="@style/Widget.Material3.AppBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?colorSurface">

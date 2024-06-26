@@ -20,7 +20,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+    *** No Display themes ***
+    AppTheme.<M2/M3>.NoDisplay
+
+    *** Material 2 themes ***
+    AppTheme.M2 - light/dark theme
+    AppTheme.M2.<Color> - colored light/dark theme
+    AppTheme.M2.<Color>.Full - full color theme (dark-ish)
+
+    *** Material 3 themes (with Monet) ***
+    AppTheme.M3 - dynamic seed color
+    AppTheme.M3.<Color> - static seed color
+    AppTheme.M3.<Color>.Classic - static seed + classic (M2) background
+    AppTheme.M3.<Color>.Full - static seed + classic (M2 full) background & surface
+
+    *** Black background themes (OLED) ***
+    AppTheme.M2.Black
+    AppTheme.M2.<Color>.Black
+    AppTheme.M3.Black
+    AppTheme.M3.<Color>.Black
+    -->
+
+    <!-- SPLASH THEMES -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="DeadTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/dead_background</item>
+    </style>
+
+    <!-- NO DISPLAY THEMES -->
+    <style name="AppTheme.M2.NoDisplay">
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">
+            @style/Base.DialogWindowTitleBackground.AppCompat
+        </item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="listPreferredItemPaddingLeft">24dip</item>
+        <item name="listPreferredItemPaddingRight">24dip</item>
+
+        <item name="android:listDivider">@null</item>
+
+        <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
+        <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:popupBackground">@color/windowBackgroundDefault</item>
+    </style>
+
+    <style name="AppTheme.M3.NoDisplay">
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">
+            @style/Base.DialogWindowTitleBackground.AppCompat
+        </item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="listPreferredItemPaddingLeft">24dip</item>
+        <item name="listPreferredItemPaddingRight">24dip</item>
+
+        <item name="android:listDivider">@null</item>
+
+        <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
+        <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:popupBackground">@color/windowBackgroundDefault</item>
+    </style>
+
+    <!-- TEXT APPEARANCE STYLES -->
+    <style name="AppTheme.TextView" parent="">
+        <item name="android:textAppearance">?textAppearanceBodyMedium</item>
+    </style>
+
+    <!-- BUTTON STYLES -->
+    <style name="AppTheme.M2.Button.IconButton.Secondary" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="cornerRadius">4dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="AppTheme.M3.Button.IconButton.Filled.Container" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?colorPrimaryContainer</item>
+        <item name="iconTint">?colorOnPrimaryContainer</item>
+    </style>
+
+    <!-- title text                 20sp, primary, medium -->
+    <!-- subtitle text              16sp, primary, medium -->
+    <!-- large body text            22sp, primary, regular -->
+    <!-- medium body text           18sp, primary, regular -->
+    <!-- normal(default) body text  14sp, primary, regular -->
+    <!-- small body text            14sp, secondary, medium -->
+    <!-- helper body text           14sp, secondary, regular -->
+
+    <style name="AppTheme.M2.Normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M2.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M2.Subtitle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="AppTheme.M2.Large" parent="TextAppearance.AppCompat.Large" />
+
+    <style name="AppTheme.M2.Medium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M2.Small" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="AppTheme.M2.Helper" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.M3.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.TitleLarge" parent="TextAppearance.Material3.TitleLarge" />
+
+    <style name="AppTheme.M3.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.M3.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+</resources>
