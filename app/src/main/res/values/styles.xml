@@ -104,7 +104,7 @@
         <item name="android:popupBackground">@color/windowBackgroundDefault</item>
     </style>
 
-    <!-- TEXT APPEARANCE STYLES -->
+    <!-- TEXT VIEW STYLES -->
     <style name="AppTheme.TextView" parent="">
         <item name="android:textAppearance">?textAppearanceBodyMedium</item>
     </style>
@@ -121,6 +121,28 @@
         <item name="iconTint">?colorOnPrimaryContainer</item>
     </style>
 
+    <!-- DIALOG STYLES -->
+    <style name="AppTheme.M2.MaterialAlertDialog.Monospace" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/AppTheme.M2.MaterialAlertDialog.Monospace.BodyText
+        </item>
+    </style>
+
+    <style name="AppTheme.M2.MaterialAlertDialog.Monospace.BodyText">
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="AppTheme.M3.MaterialAlertDialog.Monospace" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/AppTheme.M3.MaterialAlertDialog.Monospace.BodyText
+        </item>
+    </style>
+
+    <style name="AppTheme.M3.MaterialAlertDialog.Monospace.BodyText" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <!-- TEXT APPEARANCE VARIANTS -->
     <!-- title text                 20sp, primary, medium -->
     <!-- subtitle text              16sp, primary, medium -->
     <!-- large body text            22sp, primary, regular -->
@@ -128,7 +150,6 @@
     <!-- normal(default) body text  14sp, primary, regular -->
     <!-- small body text            14sp, secondary, medium -->
     <!-- helper body text           14sp, secondary, regular -->
-
     <style name="AppTheme.M2.Normal" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">?attr/textAppearanceBody2</item>
         <item name="android:textSize">14sp</item>

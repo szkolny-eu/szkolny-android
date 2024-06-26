@@ -5,8 +5,8 @@ import pl.szczodrzynski.edziennik.data.api.models.Feature
 import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
 import pl.szczodrzynski.edziennik.ext.getFeatureTypesUnnecessary
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty

@@ -9,9 +9,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.config.Config
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.asNavTargetOrNull
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
 

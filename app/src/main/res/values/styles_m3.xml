@@ -22,6 +22,9 @@
         <item name="materialIconButtonContainerStyle">
             @style/AppTheme.M3.Button.IconButton.Filled.Container
         </item>
+        <item name="materialAlertDialogMonospaceTheme">
+            @style/AppTheme.M3.MaterialAlertDialog.Monospace
+        </item>
 
         <item name="textAppearanceHeadlineLarge">@style/AppTheme.M3.HeadlineLarge</item>
         <item name="textAppearanceHeadlineMedium">@style/AppTheme.M3.HeadlineMedium</item>

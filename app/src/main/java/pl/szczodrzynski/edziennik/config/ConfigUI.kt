@@ -4,7 +4,7 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 
 @Suppress("RemoveExplicitTypeArguments")
 class ConfigUI(base: Config) {

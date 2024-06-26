@@ -2,12 +2,13 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-27.
  */
 
-package pl.szczodrzynski.edziennik.config.db
+package pl.szczodrzynski.edziennik.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import pl.szczodrzynski.edziennik.data.db.entity.ConfigEntry
 
 @Dao
 interface ConfigDao {

@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-17.
  */
 
-package pl.szczodrzynski.edziennik.data.db.enums
+package pl.szczodrzynski.edziennik.data.enums
 
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile

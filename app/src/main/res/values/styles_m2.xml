@@ -22,6 +22,9 @@
         <item name="materialIconButtonContainerStyle">
             @style/Widget.Material3.Button.IconButton.Filled.Tonal
         </item>
+        <item name="materialAlertDialogMonospaceTheme">
+            @style/AppTheme.M2.MaterialAlertDialog.Monospace
+        </item>
 
         <item name="textAppearanceHeadlineLarge">?textAppearanceHeadline3</item>
         <item name="textAppearanceHeadlineMedium">?textAppearanceHeadline4</item>
@@ -40,7 +43,7 @@
         <item name="colorPrimaryVariant">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
         <item name="colorOnPrimary">@color/primaryTextLight</item>
         <item name="colorSecondary">@color/colorAccent</item>
         <item name="colorOnSecondary">@color/primaryTextLight</item>
@@ -48,14 +51,19 @@
         <item name="colorTertiary">?colorSurface</item>
         <item name="colorTertiaryContainer">?colorSurface</item>
         <item name="colorContainer">?colorSurface</item>
+        <item name="colorPrimaryContainer">?colorSurface</item>
         <item name="colorSecondaryContainer">?colorSurface</item>
+        <item name="colorSurfaceVariant">?colorSurface</item>
 
         <item name="colorOnTertiary">?colorOnSurface</item>
         <item name="colorOnTertiaryContainer">?colorOnSurface</item>
         <item name="colorOnContainer">?colorOnSurface</item>
+        <item name="colorOnPrimaryContainer">?colorOnSurface</item>
         <item name="colorOnSecondaryContainer">?colorOnSurface</item>
+        <item name="colorOnSurfaceVariant">?colorOnSurface</item>
 
         <item name="colorOutline">@color/dividerColor</item>
+        <item name="colorOutlineVariant">@color/dividerColor</item>
 
         <item name="android:colorBackground">@color/windowBackgroundDefault</item>
         <item name="colorOnBackground">@color/primaryText</item>

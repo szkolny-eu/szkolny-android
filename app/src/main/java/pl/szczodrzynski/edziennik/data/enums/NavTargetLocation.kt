@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-17.
  */
 
-package pl.szczodrzynski.edziennik.ui.base.enums
+package pl.szczodrzynski.edziennik.data.enums
 
 enum class NavTargetLocation {
     NOWHERE,

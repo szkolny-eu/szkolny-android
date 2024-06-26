@@ -9,8 +9,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.data.db.enums.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import java.io.Serializable
 
 fun Bundle?.getInt(key: String, defaultValue: Int) =

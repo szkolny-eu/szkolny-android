@@ -6,8 +6,7 @@ package pl.szczodrzynski.edziennik.ext
 
 import android.view.View
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.db.enums.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 
 fun Int.asFeatureType() = FeatureType.values().first { it.id == this }

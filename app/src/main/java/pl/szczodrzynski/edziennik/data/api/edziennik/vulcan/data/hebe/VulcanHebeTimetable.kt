@@ -20,7 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_S
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_TARGET
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getBoolean
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getJsonObject

@@ -67,7 +67,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay">
+            android:theme="@style/AppTheme.M3.NoDisplay">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -91,7 +91,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay" />
+            android:theme="@style/AppTheme.M3.NoDisplay" />
         <!-- NOTIFICATIONS -->
         <receiver android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
             android:label="@string/widget_notifications_title"
@@ -139,18 +139,18 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:exported="false"
-            android:theme="@style/AppTheme.Light" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.home.CounterActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.Black" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"

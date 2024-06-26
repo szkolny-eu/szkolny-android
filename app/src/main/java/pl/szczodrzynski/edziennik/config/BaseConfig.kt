@@ -8,8 +8,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import pl.szczodrzynski.edziennik.config.db.ConfigEntry
 import pl.szczodrzynski.edziennik.data.db.AppDb
+import pl.szczodrzynski.edziennik.data.db.entity.ConfigEntry
 import pl.szczodrzynski.edziennik.ext.takePositive
 import kotlin.coroutines.CoroutineContext
 

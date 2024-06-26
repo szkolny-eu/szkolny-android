@@ -24,9 +24,9 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.core.widget.addTextChangedListener
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.Regexes
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 @SuppressLint("RestrictedApi")

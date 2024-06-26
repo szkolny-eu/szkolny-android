@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class PodlasieLogin(val data: DataPodlasie, val onSuccess: () -> Unit) {

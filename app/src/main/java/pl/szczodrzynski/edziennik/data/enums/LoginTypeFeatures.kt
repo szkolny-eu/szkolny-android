@@ -2,9 +2,9 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-20.
  */
 
-package pl.szczodrzynski.edziennik.data.db.enums
+package pl.szczodrzynski.edziennik.data.enums
 
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType.*
+import pl.szczodrzynski.edziennik.data.enums.FeatureType.*
 
 internal val FEATURES_MOBIDZIENNIK = setOf(
     TIMETABLE,

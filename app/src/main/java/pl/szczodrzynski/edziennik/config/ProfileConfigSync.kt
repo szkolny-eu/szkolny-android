@@ -4,7 +4,7 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
+import pl.szczodrzynski.edziennik.data.enums.NotificationType
 
 @Suppress("RemoveExplicitTypeArguments")
 class ProfileConfigSync(base: ProfileConfig) {

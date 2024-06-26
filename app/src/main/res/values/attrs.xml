@@ -9,4 +9,5 @@
     <attr name="materialButtonSecondaryStyle" format="reference" />
     <attr name="materialIconButtonSecondaryStyle" format="reference" />
     <attr name="materialIconButtonContainerStyle" format="reference" />
+    <attr name="materialAlertDialogMonospaceTheme" format="reference" />
 </resources>

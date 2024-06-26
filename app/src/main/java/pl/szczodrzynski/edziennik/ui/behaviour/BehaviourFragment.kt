@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.App.Companion.profileId
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding
 import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor

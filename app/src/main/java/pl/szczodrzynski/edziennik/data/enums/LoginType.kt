@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-17.
  */
 
-package pl.szczodrzynski.edziennik.data.db.enums
+package pl.szczodrzynski.edziennik.data.enums
 
 enum class LoginType(
     val id: Int,

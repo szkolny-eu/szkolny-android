@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.PodlasieApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLoginApi
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.getShortName
 import pl.szczodrzynski.edziennik.ext.getString

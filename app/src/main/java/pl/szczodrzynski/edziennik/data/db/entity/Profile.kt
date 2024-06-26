@@ -11,7 +11,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.dateToSemester
 import pl.szczodrzynski.edziennik.ext.getDrawable
 import pl.szczodrzynski.edziennik.ext.getHolder
@@ -20,28 +20,28 @@ import pl.szczodrzynski.navlib.drawer.IDrawerProfile
 
 @Entity(tableName = "profiles", primaryKeys = ["profileId"])
 open class Profile(
-        @ColumnInfo(name = "profileId")
-        override var id: Int, /* needs to be var for ProfileArchiver */
+    @ColumnInfo(name = "profileId")
+        override var id: Int,/* needs to be var for ProfileArchiver */
         val loginStoreId: Int,
-        val loginStoreType: LoginType,
+    val loginStoreType: LoginType,
 
-        override var name: String = "",
-        override var subname: String? = null,
+    override var name: String = "",
+    override var subname: String? = null,
 
-        /**
+    /**
          * The name of the student.
          * This doesn't change, no matter if it's a parent or student account.
          */
         var studentNameLong: String = "",
-        var studentNameShort: String = "",
-        /**
+    var studentNameShort: String = "",
+    /**
          * A full name of the account owner.
          * If null, then it's a student account.
          * If not null, then it's a parent account with this name.
          */
         var accountName: String? = null,
 
-        val studentData: JsonObject = JsonObject()
+    val studentData: JsonObject = JsonObject()
 
 ) : IDrawerProfile {
     companion object {

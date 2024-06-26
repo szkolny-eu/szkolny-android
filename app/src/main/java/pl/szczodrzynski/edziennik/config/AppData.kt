@@ -10,7 +10,7 @@ import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.mergeWith
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode

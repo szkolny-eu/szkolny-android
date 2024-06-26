@@ -18,6 +18,7 @@ import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeGradesBinding
 import pl.szczodrzynski.edziennik.ext.dp
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
@@ -135,11 +136,7 @@ class HomeGradesCard(
                     val ellipsisText = TextView(gradeItem.context).apply {
                         text = app.getString(R.string.ellipsis)
 
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                            setTextAppearance(context, R.style.NavView_TextView)
-                        } else {
-                            setTextAppearance(R.style.NavView_TextView)
-                        }
+                        TextViewCompat.setTextAppearance(this, R.style.AppTheme_TextView)
 
                         setTypeface(null, Typeface.BOLD)
                         setPadding(0, 0, 0, 0)

@@ -1,6 +1,6 @@
 package pl.szczodrzynski.edziennik.utils.models
 
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.asMetadataType
 import pl.szczodrzynski.navlib.drawer.IUnreadCounter
 

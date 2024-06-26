@@ -4,9 +4,9 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.config.db.ConfigEntry
 import pl.szczodrzynski.edziennik.config.utils.ProfileConfigMigration
 import pl.szczodrzynski.edziennik.data.db.AppDb
+import pl.szczodrzynski.edziennik.data.db.entity.ConfigEntry
 
 @Suppress("RemoveExplicitTypeArguments")
 class ProfileConfig(

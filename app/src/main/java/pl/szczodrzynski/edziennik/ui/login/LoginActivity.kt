@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme_Light)
+        setTheme(R.style.AppTheme_M3)
 
         navOptionsBuilder = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)

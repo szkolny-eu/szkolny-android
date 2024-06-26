@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.template.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class TemplateLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
