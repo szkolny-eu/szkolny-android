@@ -32,5 +32,10 @@ enum class FeatureType(
     TEACHERS(id = 106, isAlwaysNeeded = true),
     SUBJECTS(id = 107, isAlwaysNeeded = true),
     CLASSROOMS(id = 108, isAlwaysNeeded = true),
-    PUSH_CONFIG(id = 120, isAlwaysNeeded = true),
+    PUSH_CONFIG(id = 120, isAlwaysNeeded = true);
+
+    companion object {
+        fun getNecessary() = FeatureType.entries.filter { it.isAlwaysNeeded }.toSet()
+        fun getUnnecessary() = FeatureType.entries.filter { !it.isAlwaysNeeded }.toSet()
+    }
 }

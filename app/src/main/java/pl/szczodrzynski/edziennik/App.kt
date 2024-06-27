@@ -36,8 +36,8 @@ import kotlinx.coroutines.withContext
 import me.leolin.shortcutbadger.ShortcutBadger
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.config.AppData
-import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.data.config.AppData
+import pl.szczodrzynski.edziennik.data.config.Config
 import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
@@ -211,7 +211,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         // initialize companion object values
         AppData.read(this)
         App.db = AppDb(this)
-        App.config = Config(App.db)
+        App.config = Config(this)
+        App.config.migrate()
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
@@ -240,8 +241,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
         launch {
             withContext(Dispatchers.Default) {
-                config.migrate(this@App)
-
                 SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 
                 if (config.devModePassword != null)
@@ -427,8 +426,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             // apply newly-added config overrides, if not changed by the user yet
             for ((key, value) in App.data.configOverrides) {
                 val config = App.profile.config
-                if (!config.has(key))
-                    config.set(key, value)
+                if (key !in config)
+                    config[key] = value
             }
         } catch (e: Exception) {
             Log.e("App", "Cannot load AppData", e)

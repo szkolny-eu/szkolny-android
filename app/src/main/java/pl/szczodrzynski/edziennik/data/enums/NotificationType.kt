@@ -130,5 +130,11 @@ enum class NotificationType(
         id = 17,
         titleRes = R.string.notification_type_auto_archiving,
         enabledByDefault = null,
-    ),
+    );
+
+    companion object {
+        fun getDefaultConfig() = NotificationType.entries
+            .filter { it.enabledByDefault == false }
+            .toSet()
+    }
 }

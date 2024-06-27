@@ -117,7 +117,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                 is JsonArray -> {
 
                                 }
-                                is HashMap<*, *> -> app.config.set(objName, input)
+                                is HashMap<*, *> -> app.config[objName] = input
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true

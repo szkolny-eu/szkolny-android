@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-21.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.data.config
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject

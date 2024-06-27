@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-21.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.data.config
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -17,7 +17,17 @@ import kotlin.reflect.KProperty
 
 private val gson = Gson()
 
-inline fun <reified T> BaseConfig.config(name: String? = null, noinline default: () -> T) = ConfigDelegate(
+inline fun <reified T> BaseConfig<*>.config(noinline default: () -> T) = ConfigDelegate(
+    config = this,
+    type = T::class.java,
+    nullable = null is T,
+    typeToken = object : TypeToken<T>() {},
+    defaultFunc = default,
+    defaultValue = null,
+    fieldName = null,
+)
+
+inline fun <reified T> BaseConfig<*>.config(name: String? = null, noinline default: () -> T) = ConfigDelegate(
     config = this,
     type = T::class.java,
     nullable = null is T,
@@ -27,7 +37,7 @@ inline fun <reified T> BaseConfig.config(name: String? = null, noinline default:
     fieldName = name,
 )
 
-inline fun <reified T> BaseConfig.config(default: T) = ConfigDelegate(
+inline fun <reified T> BaseConfig<*>.config(default: T) = ConfigDelegate(
     config = this,
     type = T::class.java,
     nullable = null is T,
@@ -37,7 +47,7 @@ inline fun <reified T> BaseConfig.config(default: T) = ConfigDelegate(
     fieldName = null,
 )
 
-inline fun <reified T> BaseConfig.config(name: String? = null, default: T) = ConfigDelegate(
+inline fun <reified T> BaseConfig<*>.config(name: String? = null, default: T) = ConfigDelegate(
     config = this,
     type = T::class.java,
     nullable = null is T,
@@ -49,7 +59,7 @@ inline fun <reified T> BaseConfig.config(name: String? = null, default: T) = Con
 
 @Suppress("UNCHECKED_CAST")
 class ConfigDelegate<T>(
-    private val config: BaseConfig,
+    private val config: BaseConfig<*>,
     private val type: Class<T>,
     private val nullable: Boolean,
     private val typeToken: TypeToken<T>,
@@ -74,7 +84,7 @@ class ConfigDelegate<T>(
     operator fun setValue(_thisRef: Any, property: KProperty<*>, newValue: T) {
         value = newValue
         isInitialized = true
-        config.set(fieldName ?: property.name, serialize(newValue)?.toString())
+        config[fieldName ?: property.name] = serialize(newValue)?.toString()
     }
 
     operator fun getValue(_thisRef: Any, property: KProperty<*>): T {
@@ -82,12 +92,12 @@ class ConfigDelegate<T>(
             return value as T
         val key = fieldName ?: property.name
 
-        if (key !in config.values) {
+        if (key !in config) {
             value = getDefault()
             isInitialized = true
             return value as T
         }
-        val str = config.values[key]
+        val str = config[key]
 
         value = if (str == null && nullable)
             null as T

@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.config.AppData
+import pl.szczodrzynski.edziennik.data.config.AppData
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -78,7 +78,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
 
                 val data = AppData.get(it.loginStoreType)
                 for ((key, value) in data.configOverrides) {
-                    it.config.set(key, value)
+                    it.config[key] = value
                 }
 
                 app.db.eventTypeDao().addDefaultTypes(it)

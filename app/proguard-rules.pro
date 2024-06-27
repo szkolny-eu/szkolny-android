@@ -35,8 +35,8 @@
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
--keep class pl.szczodrzynski.edziennik.config.AppData { *; }
--keep class pl.szczodrzynski.edziennik.config.AppData$** { *; }
+-keep class pl.szczodrzynski.edziennik.data.config.AppData { *; }
+-keep class pl.szczodrzynski.edziennik.data.config.AppData$** { *; }
 -keep class pl.szczodrzynski.edziennik.utils.managers.TextStylingManager$HtmlMode { *; }
 
 -keepnames class androidx.appcompat.view.menu.MenuBuilder { setHeaderTitleInt(java.lang.CharSequence); }

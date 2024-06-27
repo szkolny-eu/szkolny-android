@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.enums
 
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ui.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.announcements.AnnouncementsFragment
@@ -31,14 +33,18 @@ import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
 import pl.szczodrzynski.edziennik.ui.teachers.TeachersListFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.webpush.WebPushFragment
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 
 enum class NavTarget(
     val id: Int,
     val fragmentClass: Class<out Fragment>?,
     val location: NavTargetLocation = NavTargetLocation.NOWHERE,
-    @StringRes val nameRes: Int,
-    @StringRes val descriptionRes: Int? = null,
-    @StringRes val titleRes: Int? = null,
+    @StringRes
+    val nameRes: Int,
+    @StringRes
+    val descriptionRes: Int? = null,
+    @StringRes
+    val titleRes: Int? = null,
     val icon: IIcon? = null,
     val popTo: NavTarget? = null,
     val badgeType: MetadataType? = null,
@@ -237,5 +243,27 @@ enum class NavTarget(
         id = 140,
         fragmentClass = WebPushFragment::class.java,
         nameRes = R.string.menu_web_push,
-    )
+    );
+
+    companion object {
+        fun getDefaultConfig() = setOf(
+            HOME,
+            TIMETABLE,
+            AGENDA,
+            GRADES,
+            MESSAGES,
+            HOMEWORK,
+            SETTINGS
+        )
+    }
+
+    fun toBottomSheetItem(activity: MainActivity) =
+        BottomSheetPrimaryItem(isContextual = false).also {
+            it.titleRes = this.nameRes
+            if (this.icon != null)
+                it.iconicsIcon = this.icon
+            it.onClickListener = View.OnClickListener {
+                activity.navigate(navTarget = this)
+            }
+        }
 }
