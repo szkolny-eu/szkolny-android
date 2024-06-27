@@ -136,7 +136,7 @@ class HomeGradesCard(
                     val ellipsisText = TextView(gradeItem.context).apply {
                         text = app.getString(R.string.ellipsis)
 
-                        TextViewCompat.setTextAppearance(this, R.style.AppTheme_TextView)
+                        TextViewCompat.setTextAppearance(this, R.style.AppStyle_TextView)
 
                         setTypeface(null, Typeface.BOLD)
                         setPadding(0, 0, 0, 0)

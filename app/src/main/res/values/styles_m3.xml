@@ -6,7 +6,7 @@
 
     <style name="AppTheme.M3" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
         <item name="android:textColorSecondary">?android:textColorHint</item>
-        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
+        <item name="android:textViewStyle">@style/AppStyle.TextView</item>
 
         <item name="nvStatusBarBackground">#ff00ff</item>
         <item name="nvActionBarBackground">#ff00ff</item>
@@ -20,21 +20,21 @@
             @style/Widget.Material3.Button.IconButton.Filled.Tonal
         </item>
         <item name="materialIconButtonContainerStyle">
-            @style/AppTheme.M3.Button.IconButton.Filled.Container
+            @style/AppStyle.M3.Button.IconButton.Filled.Container
         </item>
         <item name="materialAlertDialogMonospaceTheme">
-            @style/AppTheme.M3.MaterialAlertDialog.Monospace
+            @style/AppStyle.M3.MaterialAlertDialog.Monospace
         </item>
 
-        <item name="textAppearanceHeadlineLarge">@style/AppTheme.M3.HeadlineLarge</item>
-        <item name="textAppearanceHeadlineMedium">@style/AppTheme.M3.HeadlineMedium</item>
-        <item name="textAppearanceHeadlineSmall">@style/AppTheme.M3.HeadlineSmall</item>
-        <item name="textAppearanceTitleLarge">@style/AppTheme.M3.TitleLarge</item>
-        <item name="textAppearanceTitleMedium">@style/AppTheme.M3.TitleMedium</item>
-        <item name="textAppearanceTitleSmall">@style/AppTheme.M3.TitleSmall</item>
-        <item name="textAppearanceLabelLarge">@style/AppTheme.M3.LabelLarge</item>
-        <item name="textAppearanceLabelMedium">@style/AppTheme.M3.LabelMedium</item>
-        <item name="textAppearanceLabelSmall">@style/AppTheme.M3.LabelSmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/AppStyle.M3.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/AppStyle.M3.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/AppStyle.M3.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/AppStyle.M3.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/AppStyle.M3.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/AppStyle.M3.TitleSmall</item>
+        <item name="textAppearanceLabelLarge">@style/AppStyle.M3.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/AppStyle.M3.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/AppStyle.M3.LabelSmall</item>
     </style>
 
     <style name="AppTheme.M3.Red">

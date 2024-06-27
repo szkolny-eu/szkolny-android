@@ -6,7 +6,7 @@
 
     <style name="AppTheme.M2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textColorSecondary">@color/secondaryText</item>
-        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
+        <item name="android:textViewStyle">@style/AppStyle.TextView</item>
 
         <item name="nvStatusBarBackground">#ff00ff</item>
         <item name="nvActionBarBackground">#ff00ff</item>
@@ -17,13 +17,13 @@
             @style/Widget.MaterialComponents.Button.OutlinedButton
         </item>
         <item name="materialIconButtonSecondaryStyle">
-            @style/AppTheme.M2.Button.IconButton.Secondary
+            @style/AppStyle.M2.Button.IconButton.Secondary
         </item>
         <item name="materialIconButtonContainerStyle">
             @style/Widget.Material3.Button.IconButton.Filled.Tonal
         </item>
         <item name="materialAlertDialogMonospaceTheme">
-            @style/AppTheme.M2.MaterialAlertDialog.Monospace
+            @style/AppStyle.M2.MaterialAlertDialog.Monospace
         </item>
 
         <item name="textAppearanceHeadlineLarge">?textAppearanceHeadline3</item>
@@ -33,10 +33,10 @@
         <item name="textAppearanceTitleMedium">?textAppearanceSubtitle1</item>
         <item name="textAppearanceTitleSmall">?textAppearanceSubtitle2</item>
         <item name="textAppearanceBodyLarge">?textAppearanceBody1</item>
-        <item name="textAppearanceBodyMedium">@style/AppTheme.M2.Normal</item>
-        <item name="textAppearanceBodySmall">@style/AppTheme.M2.Helper</item>
-        <item name="textAppearanceLabelLarge">@style/AppTheme.M2.Subtitle</item>
-        <item name="textAppearanceLabelMedium">@style/AppTheme.M2.Helper</item>
+        <item name="textAppearanceBodyMedium">@style/AppStyle.M2.Normal</item>
+        <item name="textAppearanceBodySmall">@style/AppStyle.M2.Helper</item>
+        <item name="textAppearanceLabelLarge">@style/AppStyle.M2.Subtitle</item>
+        <item name="textAppearanceLabelMedium">@style/AppStyle.M2.Helper</item>
         <item name="textAppearanceLabelSmall">?textAppearanceCaption</item>
 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
