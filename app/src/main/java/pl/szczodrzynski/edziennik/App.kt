@@ -47,7 +47,6 @@ import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.putExtras
-import pl.szczodrzynski.edziennik.ext.setLanguage
 import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
@@ -56,7 +55,6 @@ import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.DebugLogFormat
 import pl.szczodrzynski.edziennik.utils.PermissionChecker
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager
@@ -69,6 +67,7 @@ import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.managers.NotificationChannelsManager
 import pl.szczodrzynski.edziennik.utils.managers.PermissionManager
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager
+import pl.szczodrzynski.edziennik.utils.managers.UiManager
 import pl.szczodrzynski.edziennik.utils.managers.TimetableManager
 import pl.szczodrzynski.edziennik.utils.managers.UpdateManager
 import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
@@ -107,6 +106,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val permissionManager by lazy { PermissionManager(this) }
     val textStylingManager by lazy { TextStylingManager(this) }
     val timetableManager by lazy { TimetableManager(this) }
+    val uiManager by lazy { UiManager(this) }
     val updateManager by lazy { UpdateManager(this) }
     val userActionManager by lazy { UserActionManager(this) }
 
@@ -216,6 +216,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
+        uiManager.setLanguage(this)
 
         if (devMode) {
             HyperLog.initialize(this)
@@ -230,11 +231,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
 
         buildHttp()
-
-        Themes.themeInt = config.ui.theme
-        config.ui.language?.let {
-            setLanguage(it)
-        }
 
         Signing.getCert(this)
         Utils.initializeStorageDir(this)

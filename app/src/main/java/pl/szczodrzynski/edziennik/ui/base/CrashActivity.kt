@@ -21,7 +21,6 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveColor
-import pl.szczodrzynski.edziennik.utils.Themes.appTheme
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
@@ -55,7 +54,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(appTheme)
+        app.uiManager.applyTheme(this)
         setContentView(R.layout.activity_crash)
         val config = CustomActivityOnCrash.getConfigFromIntent(intent)
         if (config == null) { //This should never happen - Just finish the activity to avoid a recursive crash.

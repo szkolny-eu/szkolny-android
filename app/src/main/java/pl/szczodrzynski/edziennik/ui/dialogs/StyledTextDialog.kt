@@ -60,7 +60,7 @@ class StyledTextDialog(
         b.editText.text = initialText
 
         // this is awful
-        if (Themes.isDark) {
+        if (app.uiManager.isDark) {
             val colorStateList = ColorStateList.valueOf(0x40ffffff)
             b.fontStyle.bold.strokeColor = colorStateList
             b.fontStyle.italic.strokeColor = colorStateList

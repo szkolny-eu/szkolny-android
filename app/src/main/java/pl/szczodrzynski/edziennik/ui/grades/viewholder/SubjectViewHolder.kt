@@ -37,7 +37,7 @@ class SubjectViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: GradesSubject, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
+        val contextWrapper = app.uiManager.getContextWrapper(activity)
 
         if (!item.isUnknown) {
             b.subjectName.text = item.subjectName

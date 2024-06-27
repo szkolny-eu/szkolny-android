@@ -15,8 +15,8 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.resolveColor
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class SettingsLicenseActivity : MaterialAboutActivity() {
 
@@ -30,16 +30,8 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(
-            if (Themes.isDark)
-                R.style.Theme_Material3_Dark
-            else
-                R.style.Theme_Material3_Light
-        )
-        foregroundColor = if (Themes.isDark)
-            R.color.primaryTextDark.resolveColor(this)
-        else
-            R.color.primaryTextLight.resolveColor(this)
+        app.uiManager.applyTheme(this)
+        foregroundColor = R.color.primaryText.resolveColor(this)
         super.onCreate(savedInstanceState)
     }
 

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.utils.Themes.appTheme
+import pl.szczodrzynski.edziennik.ext.app
 
 class FeedbackActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(appTheme)
+        app.uiManager.applyTheme(this)
         setContentView(R.layout.activity_feedback)
 
         val transaction = supportFragmentManager.beginTransaction()

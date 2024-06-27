@@ -9,7 +9,7 @@
         <item name="android:textViewStyle">@style/AppStyle.TextView</item>
 
         <item name="nvStatusBarBackground">#ff00ff</item>
-        <item name="nvActionBarBackground">#ff00ff</item>
+        <item name="nvActionBarBackground">?colorSurface</item>
         <item name="nvBottomBarBackground">#ff00ff</item>
         <item name="nvNavigationBarBackground">#ff00ff</item>
 

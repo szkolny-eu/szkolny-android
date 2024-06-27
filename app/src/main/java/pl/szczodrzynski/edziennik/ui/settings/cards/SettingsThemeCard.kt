@@ -52,7 +52,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
 
         util.createActionItem(
             text = R.string.settings_theme_theme_text,
-            subText = Themes.getThemeNameRes(),
+            subText = app.uiManager.themeColor.nameRes,
             icon = CommunityMaterial.Icon3.cmd_palette_outline
         ) {
             ThemeChooserDialog(activity).show()

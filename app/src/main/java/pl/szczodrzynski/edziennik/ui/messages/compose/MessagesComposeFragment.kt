@@ -84,7 +84,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        requireContext().theme.applyStyle(Themes.appTheme, true)
+        app.uiManager.applyStyle(requireContext())
         // activity, context and profile is valid
         b = MessagesComposeFragmentBinding.inflate(inflater)
         return b.root

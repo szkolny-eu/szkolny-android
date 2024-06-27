@@ -6,6 +6,8 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.enums.Theme
+import pl.szczodrzynski.edziennik.ext.toEnum
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 import pl.szczodrzynski.edziennik.utils.Themes
 
@@ -21,19 +23,23 @@ class ThemeChooserDialog(
     override fun getPositiveButtonText() = R.string.ok
     override fun getNegativeButtonText() = R.string.cancel
 
-    override fun getSingleChoiceItems(): Map<CharSequence, Any> = Themes.themeList.associate {
-        activity.getString(it.name) to it.id
+    override fun getSingleChoiceItems(): Map<CharSequence, Any> = Theme.entries.associate {
+        activity.getString(it.nameRes) to it.ordinal
     }
 
-    override fun getDefaultSelectedItem() = Themes.theme.id
+    override fun getDefaultSelectedItem() = app.uiManager.themeColor.id
 
     override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         val themeId = getSingleSelection() as? Int ?: return DISMISS
-        if (app.config.ui.theme != themeId) {
-            app.config.ui.theme = themeId
-            Themes.themeInt = themeId
+        if (app.uiManager.themeColor.ordinal != themeId) {
+            app.config.ui.themeConfig = Theme.Config(
+                color = enumValues<Theme>()[themeId],
+                type = app.config.ui.themeConfig.type,
+                mode = app.config.ui.themeConfig.mode,
+                nightMode = app.config.ui.themeConfig.nightMode,
+            )
             activity.recreate()
         }
         return DISMISS

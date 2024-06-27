@@ -9,7 +9,7 @@
 
         <variable
             name="config"
-            type="pl.szczodrzynski.edziennik.data.config.ProfileConfig" />
+            type="pl.szczodrzynski.edziennik.data.config.ProfileConfig.UI" />
     </data>
 
     <ScrollView

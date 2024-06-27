@@ -40,7 +40,7 @@ class MonthViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: AttendanceMonth, position: Int, adapter: AttendanceAdapter) {
         val manager = app.attendanceManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
+        val contextWrapper = app.uiManager.getContextWrapper(activity)
 
         b.title.text = listOf(
                 app.resources.getStringArray(R.array.material_calendar_months_array).getOrNull(item.month - 1)?.fixName(),

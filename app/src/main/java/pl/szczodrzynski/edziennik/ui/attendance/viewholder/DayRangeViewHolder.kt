@@ -35,7 +35,7 @@ class DayRangeViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: AttendanceDayRange, position: Int, adapter: AttendanceAdapter) {
         val manager = app.attendanceManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
+        val contextWrapper = app.uiManager.getContextWrapper(activity)
 
         b.title.text = listOf(
                 item.rangeStart.formattedString,
