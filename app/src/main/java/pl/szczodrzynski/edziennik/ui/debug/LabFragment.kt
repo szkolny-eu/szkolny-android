@@ -59,7 +59,8 @@ class LabFragment : Fragment(), CoroutineScope {
                 b.refreshLayout,
                 listOf(
                         LabPageFragment() to "click me",
-                        LabProfileFragment() to "JSON"
+                        LabProfileFragment() to "JSON",
+                        LabPlaygroundFragment() to "Playground",
                 )
         )
         b.viewPager.apply {

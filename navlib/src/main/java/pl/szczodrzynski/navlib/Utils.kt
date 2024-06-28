@@ -14,6 +14,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
@@ -128,6 +129,9 @@ fun IconicsDrawable.colorAttr(context: Context, @AttrRes attrRes: Int) {
 fun getColorFromAttr(context: Context, @AttrRes color: Int): Int {
     val typedValue = TypedValue()
     context.theme.resolveAttribute(color, typedValue, true)
+    if (typedValue.resourceId != 0) {
+        return ContextCompat.getColor(context, typedValue.resourceId)
+    }
     return typedValue.data
 }
 
