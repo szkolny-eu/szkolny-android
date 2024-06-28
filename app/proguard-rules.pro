@@ -45,6 +45,15 @@
 -keepclassmembernames class androidx.appcompat.view.menu.MenuItemImpl { private *; }
 
 -keepclassmembernames class com.mikepenz.materialdrawer.widget.MiniDrawerSliderView { private *; }
+-keepclassmembernames class com.mikepenz.iconics.internal.IconicsViewsAttrsApplier {
+    <fields>;
+    readIconicsTextView(android.content.Context, android.util.AttributeSet, com.mikepenz.iconics.internal.CompoundIconsBundle);
+    getIconicsImageViewDrawable(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclassmembernames class com.mikepenz.iconics.internal.CompoundIconsBundle {
+    setIcons(android.widget.TextView);
+}
 
 -keep class .R
 -keep class **.R$* {
