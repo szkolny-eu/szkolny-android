@@ -22,6 +22,8 @@ fun <E : Enum<E>> String.toEnum(type: Class<*>) = when (type) {
     NavTarget::class.java -> enumValueOf<NavTarget>(this)
     NotificationType::class.java -> enumValueOf<NotificationType>(this)
     Theme::class.java -> enumValueOf<Theme>(this)
+    Theme.Type::class.java -> enumValueOf<Theme.Type>(this)
+    Theme.Mode::class.java -> enumValueOf<Theme.Mode>(this)
     else -> throw IllegalArgumentException("Unknown type $type")
 } as E
 

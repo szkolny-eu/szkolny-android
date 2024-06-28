@@ -24,7 +24,6 @@ class ProfileManagerFragment : Fragment() {
         if (context == null)
             return null
         app = activity.application as App
-        app.uiManager.applyStyle(requireContext())
         // activity, context and profile is valid
         b = FragmentProfileManagerBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)

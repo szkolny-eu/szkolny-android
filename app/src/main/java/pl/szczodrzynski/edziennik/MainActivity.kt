@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Activity created")
 
         app.uiManager.applyTheme(this)
-        app.uiManager.setLanguage(this)
+        app.uiManager.applyLanguage(this)
         app.buildManager.validateBuild(this)
 
         if (App.profileId == 0) {

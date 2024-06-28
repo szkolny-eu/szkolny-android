@@ -66,7 +66,12 @@ class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
     var widgetConfigs by config<JsonObject> { JsonObject() }
 
     inner class UI {
-        var themeConfig by config<Theme.Config> { Theme.Config() }
+        var themeColor by config<Theme>(Theme.DEFAULT)
+        var themeType by config<Theme.Type>(Theme.Type.M3)
+        var themeMode by config<Theme.Mode>(Theme.Mode.DAYNIGHT)
+        var themeNightMode by config<Boolean?>(null)
+        var themeBlackMode by config<Boolean>(false)
+
         var language by config<String?>(null)
 
         var appBackground by config<String?>("appBg", null)

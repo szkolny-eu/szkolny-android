@@ -104,6 +104,10 @@
         <item name="android:popupBackground">@color/windowBackgroundDefault</item>
     </style>
 
+    <style name="ThemeOverlay.AppTheme.Black" parent="">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
     <!-- TEXT VIEW STYLES -->
     <style name="AppStyle.TextView" parent="">
         <item name="android:textAppearance">?textAppearanceBodyMedium</item>

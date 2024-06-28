@@ -57,7 +57,6 @@ class AgendaFragment : Fragment(), CoroutineScope {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (getActivity() == null || context == null) return null
         activity = getActivity() as MainActivity
-        app.uiManager.applyStyle(requireContext())
         type = app.profile.config.ui.agendaViewType
         b = when (type) {
             Profile.AGENDA_DEFAULT -> FragmentAgendaDefaultBinding.inflate(inflater, container, false)

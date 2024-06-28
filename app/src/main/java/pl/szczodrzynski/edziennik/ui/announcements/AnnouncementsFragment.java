@@ -49,7 +49,6 @@ public class AnnouncementsFragment extends Fragment {
         if (getActivity() == null || getContext() == null)
             return null;
         app = (App) activity.getApplication();
-        app.getUiManager().applyStyle(getContext());
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());

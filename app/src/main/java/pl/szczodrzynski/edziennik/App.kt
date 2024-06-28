@@ -216,7 +216,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
-        uiManager.setLanguage(this)
+        uiManager.applyNightMode()
+        uiManager.applyLanguage(this)
 
         if (devMode) {
             HyperLog.initialize(this)

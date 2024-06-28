@@ -37,7 +37,6 @@ public class DebugFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         app = (App)getActivity().getApplication();
-        app.getUiManager().applyStyle(getContext());
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_debug, container, false);
