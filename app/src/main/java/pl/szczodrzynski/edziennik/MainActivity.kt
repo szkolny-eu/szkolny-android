@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     if (item is ExpandableDrawerItem)
                         false
                     else
-                        navigate(navTarget = id.asNavTargetOrNull())
+                        navigate(navTarget = NavTarget.getById(id))
                 }
                 drawerProfileSelectedListener = { id, _, _, _ ->
                     // why is this negated -_-
@@ -392,7 +392,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private var profileSettingClickListener = { itemId: Int, _: View? ->
-        when (val item = itemId.asNavTarget()) {
+        when (val item = NavTarget.getById(itemId)) {
             NavTarget.PROFILE_ADD -> {
                 requestHandler.requestLogin()
             }
@@ -672,7 +672,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "}")
 
         val intentProfileId = extras.getIntOrNull("profileId").takePositive()
-        var intentNavTarget = extras.getIntOrNull("fragmentId").asNavTargetOrNull()
+        var intentNavTarget = extras.getEnum<NavTarget>("fragmentId")
 
         if (extras?.containsKey("action") == true) {
             val handled = when (extras.getString("action")) {
@@ -775,7 +775,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (arguments != null)
             intent.putExtras(arguments)
         if (navTarget != null) {
-            intent.putExtra("fragmentId", navTarget.id)
+            intent.putExtras("fragmentId" to navTarget)
         }
         finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)

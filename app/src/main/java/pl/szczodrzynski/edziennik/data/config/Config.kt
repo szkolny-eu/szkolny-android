@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.data.config.migration.ConfigMigration11
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.data.config.migration.ConfigMigration13
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.Theme
 import pl.szczodrzynski.edziennik.ext.HOUR
@@ -18,10 +19,11 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 
 class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
 
-    override val dataVersion = 12
+    override val dataVersion = 13
     override val migrations
         get() = mapOf(
             11 to ConfigMigration11(),
+            13 to ConfigMigration13(),
         )
 
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
@@ -64,7 +66,6 @@ class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
     var widgetConfigs by config<JsonObject> { JsonObject() }
 
     inner class UI {
-        var theme by config<Int>(1)
         var themeConfig by config<Theme.Config> { Theme.Config() }
         var language by config<String?>(null)
 

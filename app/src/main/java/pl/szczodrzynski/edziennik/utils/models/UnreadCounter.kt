@@ -1,7 +1,6 @@
 package pl.szczodrzynski.edziennik.utils.models
 
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
-import pl.szczodrzynski.edziennik.ext.asMetadataType
 import pl.szczodrzynski.navlib.drawer.IUnreadCounter
 
 class UnreadCounter : IUnreadCounter {
@@ -12,5 +11,5 @@ class UnreadCounter : IUnreadCounter {
     override var drawerItemId: Int? = null
     override var type: Int
         get() = thingType.id
-        set(value) { thingType = value.asMetadataType() }
+        set(value) { thingType = MetadataType.entries.first { it.id == value } }
 }

@@ -255,6 +255,8 @@ enum class NavTarget(
             HOMEWORK,
             SETTINGS
         )
+
+        fun getById(id: Int) = NavTarget.entries.first { it.id == id }
     }
 
     fun toBottomSheetItem(activity: MainActivity) =

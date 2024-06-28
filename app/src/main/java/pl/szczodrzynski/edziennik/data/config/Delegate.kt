@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.config
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.lang.reflect.ParameterizedType
@@ -67,6 +69,10 @@ class ConfigDelegate<T>(
     private val defaultValue: T?,
     private val fieldName: String?,
 ) {
+    companion object {
+        private const val TAG = "ConfigDelegate"
+    }
+
     private var value: T? = null
     private var isInitialized = false
 
@@ -97,14 +103,16 @@ class ConfigDelegate<T>(
             isInitialized = true
             return value as T
         }
-        val str = config[key]
 
-        value = if (str == null && nullable)
-            null as T
-        else if (str == null)
-            getDefault()
-        else
-            deserialize(str)
+        try {
+            value = config[key]?.let(::deserialize)
+        } catch (e: Exception) {
+            value = getDefault()
+            d(TAG, "Couldn't deserialize '$key'")
+            e.printStackTrace()
+        }
+        if (value == null && !nullable)
+            value = getDefault()
 
         isInitialized = true
         return value as T
@@ -124,7 +132,7 @@ class ConfigDelegate<T>(
             is Number -> value
             is Boolean -> value
             // enums, maps & collections
-            is Enum<*> -> value.toInt()
+            is Enum<*> -> value.toString()
             is Collection<*> -> value.map {
                 if (it is Number || it is Boolean) it else serialize(it, serializeObjects = false)
             }.toJsonElement()
@@ -140,7 +148,7 @@ class ConfigDelegate<T>(
         if (value == null)
             return null
 
-        @Suppress("TYPE_MISMATCH_WARNING")
+        @Suppress("USELESS_CAST")
         return when (type) {
             String::class.java -> value
             Date::class.java -> Date.fromY_m_d(value)
@@ -154,7 +162,7 @@ class ConfigDelegate<T>(
             java.lang.Float::class.java -> value.toFloatOrNull()
             // enums, maps & collections
             else -> when {
-                Enum::class.java.isAssignableFrom(type) -> value.toIntOrNull()?.toEnum(type) as Enum
+                Enum::class.java.isAssignableFrom(type) -> value.toEnumOrNull(type) as Enum?
                 Collection::class.java.isAssignableFrom(type) -> {
                     val array = value.toJsonArray()
                     val genericType = getGenericType()

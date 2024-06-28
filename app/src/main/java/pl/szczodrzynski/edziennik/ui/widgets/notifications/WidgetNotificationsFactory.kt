@@ -14,6 +14,7 @@ import com.google.gson.JsonParser
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
@@ -49,11 +50,14 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
                     getString("title") ?: "",
                     getString("text") ?: "",
                     getString("textLong"),
-                    getInt("type")?.asNotificationTypeOrNull() ?: NotificationType.GENERAL,
+                    getInt("type")
+                        ?.run { NotificationType.entries.firstOrNull { it.id == this } }
+                        ?: NotificationType.GENERAL,
                     getInt("profileId"),
                     getString("profileName"),
                     getInt("posted") == 1,
-                    getInt("viewId")?.asNavTargetOrNull(),
+                    getInt("viewId")
+                        ?.run { NavTarget.entries.firstOrNull { it.id == this } },
                     getString("extras")?.let { JsonParser.parseString(it).asJsonObject },
                     getLong("addedDate") ?: System.currentTimeMillis()
             )

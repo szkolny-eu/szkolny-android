@@ -77,7 +77,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         val intent = Intent(
                 app,
                 MainActivity::class.java,
-                "fragmentId" to NavTarget.NOTIFICATIONS.id
+                "fragmentId" to NavTarget.NOTIFICATIONS
         )
         val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 

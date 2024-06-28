@@ -256,6 +256,9 @@ dependencies {
     implementation("com.heinrichreimersoftware:material-intro") { version { strictly "1.5.8" } }
     implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
 
+    // Debug-only dependencies
+    debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6"
+
     // NavLib dependencies
     // TODO: try to move these dependencies to NavLib build.gradle file
     implementation "com.mikepenz:materialize:1.2.1"

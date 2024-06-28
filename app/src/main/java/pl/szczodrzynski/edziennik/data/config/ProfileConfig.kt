@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.config.migration.ProfileConfigMigration2
 import pl.szczodrzynski.edziennik.data.config.migration.ProfileConfigMigration3
 import pl.szczodrzynski.edziennik.data.config.migration.ProfileConfigMigration4
 import pl.szczodrzynski.edziennik.data.config.migration.ProfileConfigMigration5
+import pl.szczodrzynski.edziennik.data.config.migration.ProfileConfigMigration6
 import pl.szczodrzynski.edziennik.data.db.entity.ConfigEntry
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
 import pl.szczodrzynski.edziennik.data.enums.NotificationType
@@ -22,13 +23,14 @@ class ProfileConfig(
     entries: List<ConfigEntry>?,
 ) : BaseConfig<ProfileConfig>(app, profileId, entries) {
 
-    override val dataVersion = 5
+    override val dataVersion = 6
     override val migrations
         get() = mapOf(
             2 to ProfileConfigMigration2(),
             3 to ProfileConfigMigration3(),
             4 to ProfileConfigMigration4(),
             5 to ProfileConfigMigration5(),
+            6 to ProfileConfigMigration6(),
         )
 
     val grades by lazy { Grades() }

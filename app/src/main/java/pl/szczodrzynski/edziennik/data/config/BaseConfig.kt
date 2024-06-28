@@ -27,7 +27,10 @@ abstract class BaseConfig<T>(
     // public for lab
     val values = hashMapOf<String, String?>()
 
-    private var currentDataVersion by config<Int>("dataVersion") { dataVersion }
+    private var currentDataVersion: Int by config<Int>("dataVersion") {
+        currentDataVersion = dataVersion
+        dataVersion
+    }
     var hash by config<String>("")
 
     abstract val dataVersion: Int
