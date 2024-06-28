@@ -34,14 +34,15 @@ class UiManager(val app: App) {
     val themeNightMode
         get() = app.config.ui.themeConfig.nightMode
 
-    private val themeStyleRes by lazy {
-        val res = themeColor.styleRes[themeType to themeMode]
-        if (res != null)
-            return@lazy res
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S)
-            return@lazy BLUE.styleRes[Theme.Type.M3 to Theme.Mode.DAYNIGHT]!!
-        return@lazy DEFAULT.styleRes[Theme.Type.M3 to Theme.Mode.DAYNIGHT]!!
-    }
+    private val themeStyleRes: Int
+        get() {
+            val res = themeColor.styleRes[themeType to themeMode]
+            if (res != null)
+                return res
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S)
+                return BLUE.styleRes[Theme.Type.M3 to Theme.Mode.DAYNIGHT]!!
+            return DEFAULT.styleRes[Theme.Type.M3 to Theme.Mode.DAYNIGHT]!!
+        }
 
     val isDark: Boolean
         get() {

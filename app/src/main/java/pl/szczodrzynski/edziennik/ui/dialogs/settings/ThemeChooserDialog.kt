@@ -7,9 +7,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.Theme
-import pl.szczodrzynski.edziennik.ext.toEnum
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class ThemeChooserDialog(
     activity: AppCompatActivity,
@@ -36,9 +34,6 @@ class ThemeChooserDialog(
         if (app.uiManager.themeColor.ordinal != themeId) {
             app.config.ui.themeConfig = Theme.Config(
                 color = enumValues<Theme>()[themeId],
-                type = app.config.ui.themeConfig.type,
-                mode = app.config.ui.themeConfig.mode,
-                nightMode = app.config.ui.themeConfig.nightMode,
             )
             activity.recreate()
         }
