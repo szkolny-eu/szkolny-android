@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_marginEnd="8dp"
                 android:clickable="false"
                 app:iiv_color="?colorOnPrimaryContainer"
-                app:iiv_icon="cmd-reply"
+                app:iiv_icon="cmd-calendar-multiple"
                 app:iiv_size="24dp"
                 tools:icon="@sample/settings"
                 tools:iconTint="?colorOnPrimaryContainer" />

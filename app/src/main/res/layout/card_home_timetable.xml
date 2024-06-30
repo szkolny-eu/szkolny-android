@@ -22,15 +22,18 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <com.google.android.material.button.MaterialButton
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 android:id="@+id/noTimetableSync"
                 style="?materialIconButtonContainerStyle"
-                app:iconTint="?colorOnPrimaryContainer"
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                app:icon="@drawable/ic_sync" />
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="szf-sync"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -64,14 +67,17 @@
             tools:layout_marginTop="100dp"
             tools:visibility="visible">
 
-            <com.google.android.material.button.MaterialButton
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
-                app:iconTint="?colorOnPrimaryContainer"
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                app:icon="@drawable/ic_timetable" />
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-calendar-month-outline"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -104,14 +110,17 @@
             tools:layout_marginTop="185dp"
             tools:visibility="visible">
 
-            <com.google.android.material.button.MaterialButton
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
-                app:iconTint="?colorOnPrimaryContainer"
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                app:icon="@drawable/ic_no_timetable" />
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="szf-sync-error"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -146,14 +155,17 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                     style="?materialIconButtonContainerStyle"
-                    app:iconTint="?colorOnPrimaryContainer"
-                    android:clickable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    app:icon="@drawable/ic_timetable" />
+                    android:layout_marginEnd="8dp"
+                    android:clickable="false"
+                    app:iiv_color="?colorOnPrimaryContainer"
+                    app:iiv_icon="cmd-calendar-month-outline"
+                    app:iiv_size="24dp"
+                    tools:icon="@sample/settings"
+                    tools:iconTint="?colorOnPrimaryContainer" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

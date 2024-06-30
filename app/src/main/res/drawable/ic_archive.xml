@@ -1,10 +1,19 @@
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-8-25.
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="64dp"
-    android:height="64dp"
-    android:viewportWidth="48"
-    android:viewportHeight="48"
-    android:tint="?colorOnSecondaryContainer">
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
   <path
-      android:fillColor="?colorOnSecondaryContainer"
-      android:pathData="M4.95,40.5V16.5Q4.2,16.25 3.575,15.325Q2.95,14.4 2.95,12.75V7.55Q2.95,5.7 4.3,4.325Q5.65,2.95 7.5,2.95H40.5Q42.35,2.95 43.725,4.325Q45.1,5.7 45.1,7.55V12.75Q45.1,14.4 44.45,15.325Q43.8,16.25 43.1,16.5V40.5Q43.1,42.35 41.725,43.75Q40.35,45.15 38.5,45.15H9.5Q7.65,45.15 6.3,43.75Q4.95,42.35 4.95,40.5ZM9.5,17.35V40.6Q9.5,40.6 9.5,40.6Q9.5,40.6 9.5,40.6H38.5Q38.5,40.6 38.5,40.6Q38.5,40.6 38.5,40.6V17.35ZM40.5,12.75Q40.5,12.75 40.5,12.75Q40.5,12.75 40.5,12.75V7.55Q40.5,7.55 40.5,7.55Q40.5,7.55 40.5,7.55H7.5Q7.5,7.55 7.5,7.55Q7.5,7.55 7.5,7.55V12.75Q7.5,12.75 7.5,12.75Q7.5,12.75 7.5,12.75ZM17.4,27.15H30.65V23.75H17.4ZM9.5,40.6Q9.5,40.6 9.5,40.6Q9.5,40.6 9.5,40.6V17.35V40.6Q9.5,40.6 9.5,40.6Q9.5,40.6 9.5,40.6Z"/>
+      android:pathData="M54,19H10v33c0,2.209 1.791,4 4,4h36c2.209,0 4,-1.791 4,-4V19z"
+      android:fillColor="#ffb86b"/>
+  <path
+      android:pathData="m54,22h-44c-1.657,0 -3,-1.343 -3,-3v-5c0,-1.657 1.343,-3 3,-3h44c1.657,0 3,1.343 3,3v5c0,1.657 -1.343,3 -3,3z"
+      android:fillColor="#ffa54a"/>
+  <path
+      android:pathData="m37,32h-10c-1.65,0 -3,-1.35 -3,-3s1.35,-3 3,-3h10c1.65,0 3,1.35 3,3s-1.35,3 -3,3z"
+      android:fillColor="#69707e"/>
 </vector>

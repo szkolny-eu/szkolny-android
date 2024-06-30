@@ -29,7 +29,8 @@
             android:drawablePadding="8dp"
             android:text="@{text}"
             android:textAppearance="?textAppearanceTitleLarge"
-            app:drawableStartCompat="@drawable/ic_note_legacy"
+            app:drawableStartCompat="@drawable/ic_note"
+            tools:layout_height="28sp"
             tools:text="@string/notes_list_dialog_title" />
 
         <View

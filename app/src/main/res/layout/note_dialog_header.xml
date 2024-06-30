@@ -22,6 +22,7 @@
             android:drawablePadding="8dp"
             android:textAppearance="?textAppearanceTitleLarge"
             tools:drawableStartCompat="@drawable/ic_grade"
+            tools:layout_height="28sp"
             tools:text="Ocena" />
 
         <View

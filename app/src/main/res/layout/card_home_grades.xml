@@ -2,7 +2,10 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2019-11-29
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,14 +19,17 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
-                app:icon="@drawable/ic_grade"
-                app:iconTint="?colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:clickable="false" />
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-numeric-5-box-outline"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

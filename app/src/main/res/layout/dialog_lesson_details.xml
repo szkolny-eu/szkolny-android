@@ -413,7 +413,6 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:text="@string/notes_button"
-                    app:icon="@drawable/ic_note_legacy"
                     android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>

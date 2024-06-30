@@ -14,11 +14,17 @@
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingTop="8dp">
-            <ImageView
+
+            <com.mikepenz.iconics.view.IconicsImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="8dp"
-                app:srcCompat="@drawable/ic_archive" />
+                app:iiv_color="?colorOnSecondaryContainer"
+                app:iiv_icon="szf-archive"
+                app:iiv_size="24dp"
+                tools:background="@sample/settings"
+                tools:backgroundTint="?colorOnSecondaryContainer" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
