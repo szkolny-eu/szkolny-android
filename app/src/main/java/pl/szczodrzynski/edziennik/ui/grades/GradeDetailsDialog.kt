@@ -39,7 +39,7 @@ class GradeDetailsDialog(
     override suspend fun onShow() {
         val manager = app.gradesManager
 
-        val gradeColor = manager.getGradeColor(grade)
+        val gradeColor = manager.getGradeColor(b.root.context, grade)
         b.grade = grade
         b.weightText = manager.getWeightString(app, grade)
         b.commentVisible = false

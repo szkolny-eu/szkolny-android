@@ -24,9 +24,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-light"
                 android:text="Jak połączyć komputer z aplikacją?"
-                android:textSize="24sp" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -37,9 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-light"
                 android:text="Sparuj przeglądarkę"
-                android:textSize="24sp" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <Button
                 android:id="@+id/scanQrCode"
@@ -54,7 +52,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tokenLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    style="?textInputOutlinedDenseStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -82,9 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-light"
                 android:text="Połączone przeglądarki"
-                android:textSize="24sp" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/browsersNoData"
@@ -94,9 +91,8 @@
                 android:layout_marginTop="8dp"
                 app:drawableTopCompat="@drawable/ic_web_push_no_browsers"
                 android:drawablePadding="16dp"
-                android:fontFamily="sans-serif-light"
                 android:text="Brak połączonych przeglądarek"
-                android:textSize="18sp"/>
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/browsersView"

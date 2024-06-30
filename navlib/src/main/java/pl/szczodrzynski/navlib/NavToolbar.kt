@@ -2,22 +2,31 @@ package pl.szczodrzynski.navlib
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import com.google.android.material.appbar.MaterialToolbar
+import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 
-class NavToolbar : MaterialToolbar {
+class NavToolbar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+) : MaterialToolbar(context, attrs, defStyle), NavMenuBarBase {
 
-    constructor(context: Context) : super(context) {
-        create(null, 0)
-    }
+    internal lateinit var navView: NavView
+    override lateinit var bottomSheet: NavBottomSheet
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        create(attrs, 0)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-        create(attrs, defStyle)
-    }
+    /**
+     * Shows the toolbar and sets the contentView's margin to be
+     * below the toolbar.
+     */
+    var enable
+        get() = isVisible
+        set(value) {
+            isVisible = value
+            navView.setContentMargins()
+        }
 
     var toolbarImage: ImageView? = null
         set(value) {
@@ -27,8 +36,12 @@ class NavToolbar : MaterialToolbar {
             }
         }
 
+    override var drawerClickListener: (() -> Unit)? = null
+    override var menuClickListener: (() -> Unit)? = null
+    var profileImageClickListener: (() -> Unit)? = null
+
     override fun setSubtitle(subtitle: CharSequence?) {
-        if(subtitle.isNullOrEmpty()) {
+        if (subtitle.isNullOrEmpty()) {
             setPadding(0, 0, 0, 0)
             toolbarImage?.translationY = 0f
         } else {
@@ -37,15 +50,6 @@ class NavToolbar : MaterialToolbar {
         }
         super.setSubtitle(subtitle)
     }
-
-    private fun create(attrs: AttributeSet?, defStyle: Int) {
-
-    }
-
-    var subtitleFormat: Int? = null
-    var subtitleFormatWithUnread: Int? = null
-
-    var profileImageClickListener: (() -> Unit)? = null
 
     var profileImage
         get() = toolbarImage?.drawable

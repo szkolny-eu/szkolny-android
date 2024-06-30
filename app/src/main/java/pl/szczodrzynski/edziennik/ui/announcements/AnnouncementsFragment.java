@@ -28,8 +28,8 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent;
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType;
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType;
+import pl.szczodrzynski.edziennik.data.enums.LoginType;
+import pl.szczodrzynski.edziennik.data.enums.MetadataType;
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
@@ -49,7 +49,6 @@ public class AnnouncementsFragment extends Fragment {
         if (getActivity() == null || getContext() == null)
             return null;
         app = (App) activity.getApplication();
-        getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());

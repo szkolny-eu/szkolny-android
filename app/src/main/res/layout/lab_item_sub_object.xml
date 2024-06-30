@@ -33,7 +33,7 @@
             android:layout_marginHorizontal="8dp"
             android:fontFamily="monospace"
             android:text="Object"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            android:textAppearance="?textAppearanceBodySmall" />
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/dropdownIcon"

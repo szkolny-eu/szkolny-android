@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginLeft="8dp"
+    android:paddingHorizontal="4dp">
 
     <ImageView
         android:id="@+id/image"
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:singleLine="true"
+            android:textAppearance="?textAppearanceTitleMedium"
             tools:text="Jan Kowalski" />
 
         <TextView
@@ -38,8 +41,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="13sp"
+            android:textAppearance="?textAppearanceBodySmall"
             tools:text="Jan Kowalski" />
     </LinearLayout>
 

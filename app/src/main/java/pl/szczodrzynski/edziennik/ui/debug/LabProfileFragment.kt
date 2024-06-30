@@ -94,7 +94,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                         objVal.isBoolean -> objVal.asBoolean.toString()
                         else -> objVal.asString
                     }
-                    is Enum<*> -> objVal.toInt().toString()
+                    is Enum<*> -> objVal.toString()
                     else -> objVal.toString()
                 }
 
@@ -117,10 +117,11 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                 is JsonArray -> {
 
                                 }
-                                is HashMap<*, *> -> app.config.set(objName, input)
+                                is HashMap<*, *> -> app.config[objName] = input
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true
+                                    @Suppress("USELESS_CAST")
                                     val newVal = when (objVal) {
                                         is Int -> input.toInt()
                                         is Boolean -> input.toBoolean()
@@ -129,7 +130,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                         is String -> input
                                         is Long -> input.toLong()
                                         is Double -> input.toDouble()
-                                        is Enum<*> -> input.toInt().toEnum(objVal::class.java)
+                                        is Enum<*> -> input.toEnum(objVal::class.java) as Enum
                                         else -> input
                                     }
                                     field.set(parent, newVal)

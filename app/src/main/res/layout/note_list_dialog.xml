@@ -57,10 +57,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="16dp"
-                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
+                    android:padding="16dp"
                     android:text="@string/notes_no_data"
-                    android:textSize="24sp"
+                    android:textAppearance="?textAppearanceHeadlineSmall"
                     app:drawableTopCompat="@drawable/ic_note" />
 
                 <TextView

@@ -17,7 +17,7 @@
             android:layout_height="32dp"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="32dp"
-            app:iiv_color="@color/colorPrimary"
+            app:iiv_color="?colorPrimary"
             app:iiv_icon="cmd-school-outline"
             app:iiv_size="32dp"
             tools:srcCompat="@tools:sample/avatars" />
@@ -28,7 +28,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="16dp"
             android:text="@string/login_chooser_title"
-            android:textSize="24sp" />
+            android:textAppearance="?textAppearanceHeadlineSmall" />
 
         <TextView
             android:id="@+id/subtitleText"
@@ -49,12 +49,12 @@
 
         <TextView
             android:id="@+id/footnoteText"
-            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:text="@string/login_copyright_notice"
+            android:textAppearance="?textAppearanceBodySmall"
             android:gravity="center" />
 
         <LinearLayout
@@ -65,7 +65,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancelButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -79,13 +79,12 @@
                 android:layout_weight="1"
                 android:background="?selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:textAppearance="@style/NavView.TextView.Small"
-                android:textSize="12sp"
+                android:textAppearance="?textAppearanceLabelMedium"
                 tools:text="Szkolny.eu v4.7-rc.2\n2021-04-06" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/helpButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

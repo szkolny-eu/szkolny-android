@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.mikepenz.iconics.utils.colorInt
 import pl.szczodrzynski.edziennik.databinding.ActivityBuildInvalidBinding
+import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.Themes
 
@@ -17,7 +18,7 @@ class BuildInvalidActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(Themes.themeInt)
+        app.uiManager.applyTheme(this)
         val b = ActivityBuildInvalidBinding.inflate(layoutInflater, null, false)
         setContentView(b.root)
 

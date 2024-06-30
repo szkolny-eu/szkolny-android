@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-22.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,7 +14,7 @@
         android:paddingBottom="40dp"><!-- half of the FAB's size -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/recipientsLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            style="?textInputFilledDenseStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundColor="@android:color/transparent"
@@ -25,7 +24,7 @@
 
             <com.hootsuite.nachos.NachoTextView
                 android:id="@+id/recipients"
-                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox.Dense"
+                style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
@@ -36,7 +35,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/subjectLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            style="?textInputFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundColor="@android:color/transparent"
@@ -46,7 +45,6 @@
 
             <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                 android:id="@+id/subject"
-                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
@@ -86,7 +84,7 @@
 
         <Button
             android:id="@+id/breakpoints"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"

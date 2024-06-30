@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources>
+    <color name="primaryText">@color/primaryTextDark</color>
+    <color name="secondaryText">@color/secondaryTextDark</color>
+
+    <!-- DEFAULT THEME - DARK -->
+    <color name="windowBackgroundDefault">#ff242424</color>
+    <color name="colorSurfaceDefault">#ff333333</color>
+
+    <!-- RED THEME - DARK -->
+    <color name="windowBackgroundRed">#ff350f0f</color>
+    <color name="colorSurfaceRed">#ff431f1f</color>
+
+    <!-- GREEN THEME - DARK -->
+    <color name="windowBackgroundGreen">#ff0f2d1b</color>
+    <color name="colorSurfaceGreen">#ff1f3b2b</color>
+
+    <!-- BLUE THEME - DARK -->
+    <color name="windowBackgroundBlue">#ff0a0866</color>
+    <color name="colorSurfaceBlue">#ff0a3591</color>
+
+    <!-- PURPLE THEME - DARK -->
+    <color name="windowBackgroundPurple">#ff2f0f34</color>
+    <color name="colorSurfacePurple">#ff3d1f42</color>
+
+    <!-- TEAL THEME - DARK -->
+    <color name="windowBackgroundTeal">#ff0f2833</color>
+    <color name="colorSurfaceTeal">#ff1f3741</color>
+</resources>

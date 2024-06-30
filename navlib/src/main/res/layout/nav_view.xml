@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="top"
-                android:background="?android:windowBackground"
+                android:background="?nvStatusBarBackground"
                 tools:layout_height="25dp" />
 
             <LinearLayout
@@ -50,16 +50,30 @@
 
                     <pl.szczodrzynski.navlib.NavToolbar
                         android:id="@+id/nv_toolbar"
-                        style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                        style="?toolbarSurfaceStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?actionBarBackground"
+                        android:background="?nvActionBarBackground"
                         android:clipToPadding="false"
                         android:elevation="4dp"
-                        android:minHeight="?attr/actionBarSize"
                         app:title="@string/app_name"
                         app:titleMargin="0dp"
                         tools:targetApi="lollipop">
+
+                        <TextView
+                            android:id="@+id/nv_nightlyText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:background="@drawable/nightly_text_rounded"
+                            android:fontFamily="sans-serif-light"
+                            android:padding="4dp"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            tools:backgroundTint="#a0ff0000"
+                            tools:text="Nightly\n20200503" />
 
                         <com.mikepenz.materialdrawer.view.BezelImageView
                             android:id="@+id/nv_toolbar_image"
@@ -108,49 +122,25 @@
 
                     <pl.szczodrzynski.navlib.NavBottomBar
                         android:id="@+id/nv_bottomBar"
-                        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+                        style="?bottomAppBarStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:background="?nvBottomBarBackground"
                         android:gravity="start"
                         android:visibility="visible"
                         app:fabAlignmentMode="center"
                         app:fabAnimationMode="scale" />
 
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        android:id="@+id/ripple"
-                        android:layout_width="100dp"
-                        android:layout_height="?actionBarSize"
-                        android:layout_gravity="bottom|end"
-                        android:enabled="false"
-                        android:focusableInTouchMode="false"
-                        android:focusable="false"
-                        app:mrl_rippleFadeDuration="200"
-                        app:mrl_rippleDuration="350"
-                        app:mrl_rippleColor="?colorOnBackground"
-                        app:mrl_rippleAlpha="0.3">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:enabled="false"
-                            android:focusableInTouchMode="false"
-                            android:focusable="false"
-                            android:visibility="invisible"/>
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/nv_extendedFloatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:text=""
                         android:visibility="visible"
-                        app:backgroundTint="?colorFab"
-                        app:layout_anchor="@+id/nv_bottomBar"
+                        app:layout_anchor="@id/nv_bottomBar"
                         app:layout_anchorGravity="center|top"
                         tools:icon="@android:drawable/ic_menu_edit" />
 
@@ -158,11 +148,9 @@
                         android:id="@+id/nv_floatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:visibility="gone"
-                        app:backgroundTint="?colorFab"
                         app:layout_anchor="@id/nv_bottomBar"
                         tools:srcCompat="@android:drawable/ic_menu_edit" />
 
@@ -175,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:background="?navigationBarBackground"
+                android:background="?nvNavigationBarBackground"
                 tools:layout_height="48dp" />
 
         </FrameLayout>

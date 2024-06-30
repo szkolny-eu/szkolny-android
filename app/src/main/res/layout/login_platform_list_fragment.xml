@@ -17,7 +17,7 @@
             android:layout_height="32dp"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="32dp"
-            app:iiv_color="@color/colorPrimary"
+            app:iiv_color="?colorPrimary"
             app:iiv_icon="cmd-comment-account-outline"
             app:iiv_size="32dp"
             tools:srcCompat="@tools:sample/avatars" />
@@ -28,7 +28,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="16dp"
             android:text="@string/login_platform_list_title"
-            android:textSize="24sp" />
+            android:textAppearance="?textAppearanceHeadlineSmall" />
 
         <TextView
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/login_platform_list_loading"
-                android:textAppearance="@style/NavView.TextView.Medium" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <TextView
                 android:id="@+id/timeoutText"
@@ -74,13 +74,14 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="@string/login_platform_list_loading_timeout"
+                android:textAppearance="?textAppearanceBodySmall"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/reloadButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -95,7 +96,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/backButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -109,7 +110,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/helpButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"

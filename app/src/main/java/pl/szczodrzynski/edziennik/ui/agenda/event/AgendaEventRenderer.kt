@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
+import com.google.android.material.color.MaterialColors
 import com.mikepenz.iconics.view.IconicsTextView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
@@ -47,7 +48,8 @@ class AgendaEventRenderer(
     ) {
         val event = aEvent.event
 
-        val textColor = Colors.legibleTextColor(event.eventColor)
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(card.context, event.eventColor)
+        val textColor = Colors.legibleTextColor(harmonizedColor)
 
         val timeText = if (event.time == null)
             card.context.getString(R.string.agenda_event_all_day)
@@ -63,8 +65,8 @@ class AgendaEventRenderer(
             event.teamName
         ).join(", ")
 
-        card.foreground.setTintColor(event.eventColor)
-        card.background.setTintColor(event.eventColor)
+        card.foreground.setTintColor(harmonizedColor)
+        card.background.setTintColor(harmonizedColor)
         manager.setEventTopic(
             title = title,
             event = event,

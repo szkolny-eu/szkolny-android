@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -8,11 +10,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/targetDeviceLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="?textInputOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <pl.szczodrzynski.edziennik.utils.TextInputDropDown
                 android:id="@+id/targetDeviceDropDown"
@@ -35,11 +38,10 @@
                 android:autoLink="all"
                 android:background="?selectableItemBackground"
                 android:text="@string/feedback_faq"
-                android:textSize="20sp" />
+                android:textAppearance="?textAppearanceTitleLarge" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/faqButton"
-                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -63,10 +65,10 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/feedback_title"
-                android:textSize="20sp" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                style="?textInputFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -88,7 +90,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sendButton"
-                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -112,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:text="@string/feedback_history"
-                android:textSize="20sp" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.github.bassaer.chatmessageview.view.ChatView
                 android:id="@+id/chat_view"

@@ -20,14 +20,18 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/getLogs"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save Debug Logs" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/librusCaptchaButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LIBRUS® Captcha" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/refreshWidget"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Refresh all widgets" />
@@ -40,7 +44,6 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/runChucker"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Launch Chucker" />
@@ -53,14 +56,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/migrate71"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Migration 71" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/syncReceivers"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sync receivers" />
@@ -73,7 +76,6 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pruneWorkButton"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Prune finished work" />

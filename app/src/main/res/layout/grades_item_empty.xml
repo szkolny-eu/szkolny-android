@@ -13,9 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="?android:textColorSecondary"
-            android:textStyle="italic"
+            android:textAppearance="?textAppearanceBodyLarge"
             android:text="@string/grades_empty_text"/>
     </LinearLayout>
 </layout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-4.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,84 +8,74 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground">
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp">
 
         <ImageView
             android:id="@+id/messageProfileBackground"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:padding="12dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/bg_circle" />
 
         <TextView
-            android:id="@+id/messageProfileName"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:gravity="center"
-            android:padding="12dp"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="JP"
-            tools:visibility="visible" />
-
-        <com.mikepenz.iconics.view.IconicsTextView
-            android:id="@+id/messageSubject"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:paddingEnd="32dp"
-            android:paddingRight="32dp"
-            android:singleLine="true"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            android:textStyle="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
-            app:layout_constraintTop_toBottomOf="@+id/messageSender"
-            tools:text="Nowe oferty w Twoich obserwowanych wyszukiwaniach" />
-
-        <TextView
             android:id="@+id/messageSender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textAppearance="?textAppearanceBodyLarge"
             app:layout_constraintEnd_toStartOf="@+id/messageAttachmentImage"
             app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Allegro" />
 
+        <com.mikepenz.iconics.view.IconicsTextView
+            android:id="@+id/messageSubject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@id/messageStar"
+            app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
+            app:layout_constraintTop_toBottomOf="@+id/messageSender"
+            tools:text="Nowe oferty w Twoich obserwowanych wyszukiwaniach" />
+
         <TextView
             android:id="@+id/messageBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="12dp"
-            android:paddingEnd="32dp"
-            android:paddingRight="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:autoLink="all"
+            android:ellipsize="end"
             android:singleLine="true"
-            android:textAppearance="@style/NavView.TextView.Helper"
+            android:textAppearance="?textAppearanceBodySmall"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/messageStar"
             app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
             app:layout_constraintTop_toBottomOf="@+id/messageSubject"
             tools:text="Znajdź produkty, których szukasz. Witaj Kuba Szczodrzyński (Client" />
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/messageStar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
@@ -104,10 +93,10 @@
             android:id="@+id/messageDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:textStyle="bold"
+            android:textAppearance="?textAppearanceLabelMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="09:41" />

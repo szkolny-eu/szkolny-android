@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:visibility="@{profileName == null ? View.GONE : View.VISIBLE}"
                 android:text="@string/dialog_widget_config_profile" />
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_widget_timetable_config_theme" />
 
             <RadioGroup
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_widget_timetable_config_opacity" />
 
             <SeekBar

@@ -34,7 +34,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
@@ -333,28 +333,25 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             val teacherInfo = if (lesson.teacherId != null && lesson.teacherId == lesson.oldTeacherId)
                 lesson.teacherName ?: "?"
             else
-                mutableListOf<CharSequence>().apply {
-                    lesson.oldTeacherName?.let { add(it.asStrikethroughSpannable()) }
-                    lesson.teacherName?.let { add(it) }
-                }.concat(arrowRight)
+                lesson.teacherName
+                    ?: lesson.oldTeacherName?.asStrikethroughSpannable()
+                    ?: ""
 
             // team
             val teamInfo = if (lesson.teamId != null && lesson.teamId == lesson.oldTeamId)
                 lesson.teamName ?: "?"
             else
-                mutableListOf<CharSequence>().apply {
-                    lesson.oldTeamName?.let { add(it.asStrikethroughSpannable()) }
-                    lesson.teamName?.let { add(it) }
-                }.concat(arrowRight)
+                lesson.teamName
+                    ?: lesson.oldTeamName?.asStrikethroughSpannable()
+                    ?: ""
 
             // classroom
             val classroomInfo = if (lesson.classroom != null && lesson.classroom == lesson.oldClassroom)
                 lesson.classroom ?: "?"
             else
-                mutableListOf<CharSequence>().apply {
-                    lesson.oldClassroom?.let { add(it.asStrikethroughSpannable()) }
-                    lesson.classroom?.let { add(it) }
-                }.concat(arrowRight)
+                lesson.classroom
+                    ?: lesson.oldClassroom?.asStrikethroughSpannable()
+                    ?: ""
 
             lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
@@ -412,12 +409,13 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            val lessonNumberMargin =
+            // TODO bring it back on classic theme
+            /*val lessonNumberMargin =
                 if (lb.annotationVisible) (-8).dp
                 else 0
             lb.lessonNumberText.updateLayoutParams<LinearLayout.LayoutParams> {
                 updateMargins(top = lessonNumberMargin, bottom = lessonNumberMargin)
-            }
+            }*/
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here

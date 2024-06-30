@@ -10,7 +10,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType;
+import pl.szczodrzynski.edziennik.data.enums.MetadataType;
 
 @Entity(tableName = "metadata",
         indices = {@Index(value = {"profileId", "thingType", "thingId"}, unique = true)}

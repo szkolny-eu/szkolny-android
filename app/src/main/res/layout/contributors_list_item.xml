@@ -33,8 +33,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.Subtitle"
-                tools:text="der Librüsch" />
+                android:textAppearance="?textAppearanceTitleMedium"
+                tools:text="Jan Kowalski" />
 
             <TextView
                 android:id="@+id/subtext"
@@ -42,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                tools:text="[at]librüsch - ∞ contributions" />
+                android:textAppearance="?textAppearanceBodyMedium"
+                tools:text="\@jan - ∞ contributions" />
         </LinearLayout>
     </LinearLayout>
 </layout>

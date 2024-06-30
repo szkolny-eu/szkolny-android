@@ -27,11 +27,11 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.ui.home.CounterActivity
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
@@ -93,24 +93,18 @@ class HomeTimetableCard(
 
         b.settings.setImageDrawable(
             IconicsDrawable(activity, CommunityMaterial.Icon.cmd_cog_outline).apply {
-                colorAttr(activity, R.attr.colorIcon)
+                colorAttr(activity, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             }
         )
 
-        b.bellSync.setImageDrawable(
-            IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
-                colorAttr(activity, R.attr.colorIcon)
-                sizeDp = 24
-            }
-        )
+        b.bellSync.icon = IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
+            sizeDp = 24
+        }
 
-        b.showCounter.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
-                colorAttr(activity, R.attr.colorIcon)
-                sizeDp = 24
-            }
-        )
+        b.showCounter.icon = IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
+            sizeDp = 24
+        }
 
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(
@@ -267,9 +261,11 @@ class HomeTimetableCard(
                 R.string.home_timetable_lesson_not_started
             b.lessonBig.setText(lessonRes, firstLesson.subjectSpannable)
             firstLesson?.displayClassroom?.let {
+                b.classroomHeading.visibility = View.VISIBLE
                 b.classroom.visibility = View.VISIBLE
                 b.classroom.text = it
             } ?: run {
+                b.classroomHeading.visibility = View.GONE
                 b.classroom.visibility = View.GONE
             }
 
@@ -311,37 +307,44 @@ class HomeTimetableCard(
             b.counter.visibility = View.VISIBLE
             b.counter.text = firstLesson?.displayStartTime?.stringHM
             firstLesson?.displayClassroom?.let {
+                b.classroomHeading.visibility = View.VISIBLE
                 b.classroom.visibility = View.VISIBLE
                 b.classroom.text = it
             } ?: run {
+                b.classroomHeading.visibility = View.GONE
                 b.classroom.visibility = View.GONE
             }
 
             showAllLessons = true
         }
 
-        val text = mutableListOf<CharSequence>(
-            if (showAllLessons)
-                activity.getString(R.string.home_timetable_all_lessons)
-            else
-                activity.getString(R.string.home_timetable_later)
-        )
+        if (showAllLessons)
+            b.nextLessonsTitle.setText(R.string.home_timetable_all_lessons)
+        else
+            b.nextLessonsTitle.setText(R.string.home_timetable_later)
 
         val nextLessons = if (showAllLessons)
             lessons.drop(skipFirst)
         else
             lessons.drop(skipFirst + 1)
 
+        val text = mutableListOf<CharSequence>()
         for (lesson in nextLessons) {
             text += listOf(
-                    lesson.displayStartTime?.stringHM,
+                    adjustTimeWidth(lesson.displayStartTime?.stringHM),
                     lesson.subjectSpannable
             ).concat(" ")
         }
-        if (text.size == 1)
+        if (text.isEmpty())
             text += activity.getString(R.string.home_timetable_later_no_lessons)
         b.nextLessons.text = text.concat("\n")
     }}
+
+    private fun adjustTimeWidth(time: String?) = when {
+        time == null -> ""
+        time.length == 4 -> " $time  "
+        else -> "$time "
+    }
 
     private val LessonFull?.subjectSpannable: CharSequence
         get() = if (this == null) "?" else when {
@@ -397,7 +400,7 @@ class HomeTimetableCard(
             if (diff >= 60 * MINUTE)
                 b.counter.text = counterStart.stringHM
             else
-                b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
+                b.counter.text = activity.timeTill(diff.toInt(), " ", countInSeconds)
         }
         else {
             // the lesson is right now
@@ -406,7 +409,7 @@ class HomeTimetableCard(
             val lessonLength = counterEnd - counterStart
             val timePassed = now - counterStart
             val timeLeft = counterEnd - now
-            b.counter.text = activity.timeLeft(timeLeft.toInt(), "\n", countInSeconds)
+            b.counter.text = activity.timeLeft(timeLeft.toInt(), " ", countInSeconds)
             b.progress.max = lessonLength.toInt()
             b.progress.progress = timePassed.toInt()
         }

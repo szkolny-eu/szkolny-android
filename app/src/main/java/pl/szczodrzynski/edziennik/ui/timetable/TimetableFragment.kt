@@ -9,11 +9,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -28,8 +31,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
@@ -90,8 +93,18 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
     override fun onResume() {
         super.onResume()
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
+        ContextCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_SCROLL_TO_DATE),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        ContextCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_RELOAD_PAGES),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
     }
     override fun onPause() {
         super.onPause()
@@ -177,8 +190,9 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
         val selectedDate = arguments?.getString("timetableDate", "")?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
 
-        b.tabLayout.setUpWithViewPager(b.viewPager)
-        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
+        // TODO bring back RecyclerTabLayout
+        b.tabLayout.setupWithViewPager(b.viewPager)
+        b.viewPager.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 
         activity.navView.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
@@ -211,7 +225,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                                         val dateSelected = Date.fromMillisUtc(millis)
                                         val index = items.indexOfFirst { it == dateSelected }
                                         if (index != -1)
-                                            b.tabLayout.setCurrentItem(index, true)
+                                            b.viewPager.setCurrentItem(index, true)
                                     }
                                 }
                                 .show(activity.supportFragmentManager, TAG)
@@ -254,7 +268,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
         activity.navView.bottomBar.fabIcon = SzkolnyFont.Icon.szf_calendar_today_outline
         activity.navView.setFabOnClickListener(View.OnClickListener {
-            b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
+            b.viewPager.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })
     }}
 

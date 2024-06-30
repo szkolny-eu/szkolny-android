@@ -19,8 +19,8 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_APP_CRASH
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveColor
-import pl.szczodrzynski.edziennik.utils.Themes.appTheme
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
@@ -54,7 +54,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(appTheme)
+        app.uiManager.applyTheme(this)
         setContentView(R.layout.activity_crash)
         val config = CustomActivityOnCrash.getConfigFromIntent(intent)
         if (config == null) { //This should never happen - Just finish the activity to avoid a recursive crash.
@@ -88,7 +88,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
 
         val moreInfoButton = findViewById<Button>(R.id.crash_details_btn)
         moreInfoButton.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.style.AppTheme_MaterialAlertDialogMonospace)
+            MaterialAlertDialogBuilder(this, R.attr.materialAlertDialogMonospaceTheme.resolveAttr(this))
                 .setTitle(R.string.crash_details)
                 .setMessage(BetterHtml.fromHtml(context = null, getErrorString(intent, false)))
                 .setPositiveButton(R.string.close, null)
@@ -112,6 +112,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
     private fun getErrorString(intent: Intent, plain: Boolean): String {
         var contentPlain = "Crash report:\n\n" + CustomActivityOnCrash.getStackTraceFromIntent(intent)
         var content = "<small>$contentPlain</small>"
+        val packageName = packageName.replace(".debug", "")
         content = content.replace(packageName.toRegex(), "<font color='#4caf50'>$packageName</font>")
         content = content.replace("\n".toRegex(), "<br>")
         contentPlain += "\n" + Build.MANUFACTURER + "\n" + Build.BRAND + "\n" + Build.MODEL + "\n" + Build.DEVICE + "\n"

@@ -43,7 +43,7 @@
                     android:layout_weight="1"
                     android:ellipsize="middle"
                     android:singleLine="true"
-                    android:textSize="16sp"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Jan Kowalski Bardzo długi" />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
-                    android:textAppearance="@style/NavView.TextView.Helper"
+                    android:textAppearance="?textAppearanceBodySmall"
                     tools:text="(rodzic)" />
             </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="2B3T - 2019/2020" />
         </LinearLayout>
 

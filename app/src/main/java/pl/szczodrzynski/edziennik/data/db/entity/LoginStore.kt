@@ -8,22 +8,22 @@ import android.os.Bundle
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 
 @Entity(tableName = "loginStores", primaryKeys = ["loginStoreId"])
 class LoginStore(
-        @ColumnInfo(name = "loginStoreId")
+    @ColumnInfo(name = "loginStoreId")
         val id: Int,
 
-        @ColumnInfo(name = "loginStoreType")
+    @ColumnInfo(name = "loginStoreType")
         val type: LoginType,
 
-        @ColumnInfo(name = "loginStoreMode")
+    @ColumnInfo(name = "loginStoreMode")
         val mode: LoginMode,
 
-        @ColumnInfo(name = "loginStoreData")
+    @ColumnInfo(name = "loginStoreData")
         val data: JsonObject = JsonObject()
 ) {
 

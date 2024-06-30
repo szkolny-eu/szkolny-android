@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {

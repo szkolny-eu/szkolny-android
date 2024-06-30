@@ -31,7 +31,7 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogGenerateBlockTimetableBinding
 import pl.szczodrzynski.edziennik.ext.*
@@ -388,7 +388,9 @@ class GenerateBlockTimetableDialog(
             try {
                 val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return@withContext null
                 resolver.openOutputStream(uri).use {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    if (it != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    }
                 }
                 uri
             } catch (e: Exception) {

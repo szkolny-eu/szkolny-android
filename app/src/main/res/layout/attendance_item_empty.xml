@@ -8,14 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="?android:textColorSecondary"
-            android:textStyle="italic"
-            android:text="@string/attendance_empty_text"/>
+            android:text="@string/attendance_empty_text"
+            android:textAppearance="?textAppearanceBodyLarge" />
     </LinearLayout>
 </layout>

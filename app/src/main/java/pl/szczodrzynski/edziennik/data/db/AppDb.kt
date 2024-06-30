@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import pl.szczodrzynski.edziennik.config.db.ConfigDao
-import pl.szczodrzynski.edziennik.config.db.ConfigEntry
 import pl.szczodrzynski.edziennik.data.db.converter.*
 import pl.szczodrzynski.edziennik.data.db.dao.*
 import pl.szczodrzynski.edziennik.data.db.entity.*

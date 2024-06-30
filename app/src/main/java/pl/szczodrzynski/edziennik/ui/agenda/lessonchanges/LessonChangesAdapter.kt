@@ -17,7 +17,6 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
-import pl.szczodrzynski.navlib.getColorFromAttr
 
 class LessonChangesAdapter(
         val context: Context,
@@ -109,40 +108,11 @@ class LessonChangesAdapter(
             Lesson.TYPE_CANCELLED -> {
                 b.annotationVisible = true
                 b.annotation.setText(R.string.timetable_lesson_cancelled)
-                b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(context, R.attr.timetable_lesson_cancelled_color),
-                        PorterDuff.Mode.SRC_ATOP
-                )
                 //lb.subjectName.typeface = Typeface.DEFAULT
             }
             Lesson.TYPE_CHANGE -> {
                 b.annotationVisible = true
-                when {
-                    lesson.subjectId != lesson.oldSubjectId && lesson.teacherId != lesson.oldTeacherId
-                            && lesson.oldSubjectName != null && lesson.oldTeacherName != null ->
-                        b.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                "${lesson.oldSubjectName ?: "?"}, ${lesson.oldTeacherName ?: "?"}"
-                        )
-
-                    lesson.subjectId != lesson.oldSubjectId && lesson.oldSubjectName != null ->
-                        b.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                lesson.oldSubjectName ?: "?"
-                        )
-
-                    lesson.teacherId != lesson.oldTeacherId && lesson.oldTeacherName != null ->
-                        b.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                lesson.oldTeacherName ?: "?"
-                        )
-                    else -> b.annotation.setText(R.string.timetable_lesson_change)
-                }
-
-                b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(context, R.attr.timetable_lesson_change_color),
-                        PorterDuff.Mode.SRC_ATOP
-                )
+                b.annotation.setText(R.string.timetable_lesson_change)
             }
             Lesson.TYPE_SHIFTED_SOURCE -> {
                 b.annotationVisible = true
@@ -162,8 +132,6 @@ class LessonChangesAdapter(
 
                     else -> b.annotation.setText(R.string.timetable_lesson_shifted)
                 }
-
-                b.annotation.background.setTintColor(R.attr.timetable_lesson_shifted_source_color.resolveAttr(context))
             }
             Lesson.TYPE_SHIFTED_TARGET -> {
                 b.annotationVisible = true
@@ -183,11 +151,6 @@ class LessonChangesAdapter(
 
                     else -> b.annotation.setText(R.string.timetable_lesson_shifted_from)
                 }
-
-                b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(context, R.attr.timetable_lesson_shifted_target_color),
-                        PorterDuff.Mode.SRC_ATOP
-                )
             }
         }
     }

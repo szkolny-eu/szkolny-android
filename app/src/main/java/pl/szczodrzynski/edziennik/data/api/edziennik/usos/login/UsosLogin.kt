@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {

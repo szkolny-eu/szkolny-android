@@ -31,18 +31,16 @@
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textSize="16sp"
-                tools:text="sprawdzian - Język polski"
-                tools:textColor="@color/md_white_1000" />
+                android:textAppearance="?textAppearanceBodyLarge"
+                tools:text="sprawdzian - Język polski" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="12sp"
-                tools:text="9:05, biologia, Jan Kowalski, 7a"
-                tools:textColor="@color/md_white_1000" />
+                android:textAppearance="?textAppearanceBodySmall"
+                tools:text="9:05, biologia, Jan Kowalski, 7a" />
         </LinearLayout>
 
         <View

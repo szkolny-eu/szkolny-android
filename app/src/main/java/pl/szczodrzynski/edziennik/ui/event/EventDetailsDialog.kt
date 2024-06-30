@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -26,7 +27,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
@@ -111,7 +112,7 @@ class EventDetailsDialog(
 
         manager.setLegendText(b.legend, event, showNotes)
 
-        b.typeColor.background?.setTintColor(event.eventColor)
+        b.typeColor.background?.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, event.eventColor))
 
         val agendaSubjectImportant = event.subjectLongName != null
                 && App.config[event.profileId].ui.agendaSubjectImportant

@@ -168,7 +168,7 @@ class SettingsUtil(
         MaterialAboutTitleItem.Builder()
             .text(R.string.app_name)
             .desc(R.string.settings_about_title_subtext)
-            .icon(R.mipmap.ic_splash)
+            .icon(R.mipmap.ic_splash_v5)
             .build()
 
     fun createProfileItem(

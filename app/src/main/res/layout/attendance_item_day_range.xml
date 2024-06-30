@@ -27,13 +27,12 @@
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif"
                 android:maxLines="2"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="20sp"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="2 marca - 3 marca" />
 
             <View
@@ -83,7 +82,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:textSize="14sp"
                 android:visibility="gone"
                 tools:text="6 nieob. • 2 nieob. nieuspr. • 5 spóźnień"
                 tools:text1="Cały rok: 3 oceny • suma: 320 pkt"

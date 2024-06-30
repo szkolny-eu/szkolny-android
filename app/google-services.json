@@ -36,6 +36,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640759989760:android:4aa71407b25cdc8d",
+        "android_client_info": {
+          "package_name": "pl.szczodrzynski.edziennik.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640759989760-6f8q00u864lnuh3gh36e8g4cer9lv8pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvq9HMPxulz9ntdAHZ0eZuPf2YQs4nDSU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
+import pl.szczodrzynski.edziennik.ext.isNightMode
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -60,7 +61,7 @@ class StyledTextDialog(
         b.editText.text = initialText
 
         // this is awful
-        if (Themes.isDark) {
+        if (activity.isNightMode) {
             val colorStateList = ColorStateList.valueOf(0x40ffffff)
             b.fontStyle.bold.strokeColor = colorStateList
             b.fontStyle.italic.strokeColor = colorStateList

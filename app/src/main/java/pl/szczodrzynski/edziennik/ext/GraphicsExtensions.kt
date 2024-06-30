@@ -11,6 +11,7 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.mikepenz.iconics.typeface.IIcon
 import pl.szczodrzynski.navlib.ImageHolder
@@ -55,6 +56,9 @@ fun colorFromCssName(name: String): Int {
 fun @receiver:AttrRes Int.resolveAttr(context: Context?): Int {
     val typedValue = TypedValue()
     context?.theme?.resolveAttribute(this, typedValue, true)
+    if (typedValue.resourceId != 0) {
+        return ContextCompat.getColor(context!!, typedValue.resourceId)
+    }
     return typedValue.data
 }
 @Dimension

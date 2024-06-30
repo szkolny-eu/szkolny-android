@@ -119,6 +119,7 @@
     <string name="configure">Configure</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="counter_activity">Countdown</string>
     <string name="counter_activity_sync">Synchronize</string>
     <string name="crash_advice_info">If the app doesn\'t open at all, you can try to download the data again. Click the button, then Restart the app.</string>
     <string name="crash_details">Error details</string>
@@ -467,8 +468,8 @@
     <string name="hint_save_in_calendar">Save to calendar</string>
     <string name="home_configure_add_remove">Add/remove cards</string>
     <string name="home_configure_notice">Swipe left to remove a card, hold to move.</string>
-    <string name="home_lucky_number_details">%s • Your e-register number is %d</string>
-    <string name="home_lucky_number_details_click_to_set">%s • Click to set your journal number.</string>
+    <string name="home_lucky_number_details">Your e-register number is %s</string>
+    <string name="home_lucky_number_details_click_to_set">Click to set your journal number.</string>
     <string name="home_lucky_number_later">The lucky number on %s is %d.</string>
     <string name="home_lucky_number_no_info">No info about the lucky number.</string>
     <string name="home_lucky_number_no_number">There is no lucky number today.</string>
@@ -490,7 +491,7 @@
     <string name="home_timetable_no_timetable_sync">Sync</string>
     <string name="home_timetable_no_timetable_text">The timetable for week %s hasn\'t yet been downloaded.</string>
     <string name="home_timetable_not_public">There is no timetable</string>
-    <string name="home_timetable_not_public_text">The timetable hasn\'t yet been made public by your school.\n\n\Contact your tutor for more information.</string>
+    <string name="home_timetable_not_public_text">The timetable hasn\'t yet been made public by your school. Contact your tutor for more information.</string>
     <string name="home_timetable_today">Today</string>
     <string name="home_timetable_tomorrow">Tomorrow (%1$s)</string>
     <string name="homework_edit">Edit</string>

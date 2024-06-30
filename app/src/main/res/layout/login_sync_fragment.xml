@@ -17,7 +17,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="32dp"
-            app:iiv_color="@color/colorPrimary"
+            app:iiv_color="?colorPrimary"
             app:iiv_icon="cmd-sync"
             app:iiv_size="32dp"
             tools:srcCompat="@android:drawable/stat_sys_phone_call_forward" />
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/login_sync_title"
-            android:textSize="24sp" />
+            android:textAppearance="?textAppearanceHeadlineSmall" />
 
         <ProgressBar
             android:id="@+id/loginSyncProgressBar"

@@ -28,7 +28,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="32dp"
-                    app:iiv_color="@color/colorPrimary"
+                    app:iiv_color="?colorPrimary"
                     app:iiv_icon="cmd-account-circle-outline"
                     app:iiv_size="32dp"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -38,14 +38,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textSize="24sp"
+                    android:textAppearance="?textAppearanceHeadlineSmall"
                     tools:text="Zaloguj się - VULCAN® UONET+" />
 
                 <TextView
                     android:id="@+id/subTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Medium"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Opolska eSzkoła" />
 
                 <View
@@ -96,6 +96,7 @@
                     android:gravity="center_vertical"
                     android:minHeight="40dp"
                     android:orientation="horizontal"
+                    android:paddingVertical="8dp"
                     android:paddingHorizontal="8dp"
                     android:visibility="gone"
                     tools:backgroundTint="?colorError"
@@ -112,11 +113,9 @@
                         android:id="@+id/errorText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginVertical="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:textColor="?colorOnError"
-                        android:textStyle="bold"
                         tools:text="Nieprawidłowy login lub hasło, konto nie zostało aktywowane, lub dziennik ma problemy egzystencjalne" />
                 </LinearLayout>
             </LinearLayout>
@@ -130,14 +129,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/backButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:text="@string/back"
                 android:textAllCaps="false" />
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />

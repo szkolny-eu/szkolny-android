@@ -25,20 +25,30 @@ android {
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
         consumerProguardFiles 'consumer-proguard-rules.pro'
-        versionCode 10
-        versionName "1.0"
 
         resValue "string", "NavLibFont_version", "${versionName}"
     }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    namespace 'com.mikepenz.iconics.typeface.library.navlibfont'
 }
 
 dependencies {
-    implementation "com.mikepenz:iconics-typeface-api:5.3.0-b01"
+    implementation "com.mikepenz:iconics-typeface-api:5.3.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }

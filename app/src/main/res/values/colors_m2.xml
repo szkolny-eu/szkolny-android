@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources>
+    <color name="primaryText">@color/primaryTextLight</color>
+    <color name="secondaryText">@color/secondaryTextLight</color>
+
+    <!-- DEFAULT THEME - LIGHT -->
+    <color name="windowBackgroundDefault">#ffffffff</color>
+    <color name="colorSurfaceDefault">#ffffffff</color>
+
+    <!-- RED THEME - LIGHT -->
+    <color name="windowBackgroundRed">#fff6c9c9</color>
+    <color name="colorSurfaceRed">#fff8d9d9</color>
+    <!-- RED THEME - FULL -->
+    <color name="windowBackgroundRedFull">#ff3e2723</color> <!-- Brown 900 -->
+    <color name="colorSurfaceRedFull">#ff4b3632</color>
+
+    <!-- GREEN THEME - LIGHT -->
+    <color name="windowBackgroundGreen">#ffedfac9</color>
+    <color name="colorSurfaceGreen">#fff2fbd9</color>
+    <!-- GREEN THEME - FULL -->
+    <color name="windowBackgroundGreenFull">#ff1b5e20</color> <!-- Green 900 -->
+    <color name="colorSurfaceGreenFull">#ff388e3c</color> <!-- Green 700 -->
+
+    <!-- BLUE THEME - LIGHT -->
+    <color name="windowBackgroundBlue">#ffc9ecfc</color>
+    <color name="colorSurfaceBlue">#ffd9f1fc</color>
+    <!-- BLUE THEME - FULL -->
+    <color name="windowBackgroundBlueFull">#ff0d47a1</color> <!-- Blue 900 -->
+    <color name="colorSurfaceBlueFull">#ff1e53a7</color>
+
+    <!-- PURPLE THEME - LIGHT -->
+    <color name="windowBackgroundPurple">#fff6c9fd</color>
+    <color name="colorSurfacePurple">#fff8d9fd</color>
+    <!-- PURPLE THEME - FULL -->
+    <color name="windowBackgroundPurpleFull">#ff7b1fa2</color> <!-- Purple 700 -->
+    <color name="colorSurfacePurpleFull">#ff842ea8</color>
+
+    <!-- TEAL THEME - LIGHT -->
+    <color name="windowBackgroundTeal">#ffb2fef7</color> <!-- Teal 200 Light -->
+    <color name="colorSurfaceTeal">#ffe5ffff</color> <!-- Teal 100 Light -->
+    <!-- TEAL THEME - FULL -->
+    <color name="windowBackgroundTealFull">#ff004d40</color> <!-- Teal 900 -->
+    <color name="colorSurfaceTealFull">#00695c</color> <!-- Teal 800 -->
+
+</resources>

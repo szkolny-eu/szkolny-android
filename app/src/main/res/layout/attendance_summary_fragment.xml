@@ -64,7 +64,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Obecność w tym okresie: 99,7%" />
@@ -151,11 +151,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="16dp"
-                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:padding="16dp"
                     android:text="@string/attendances_no_data"
-                    android:textSize="24sp"
+                    android:textAppearance="?textAppearanceHeadlineSmall"
                     android:visibility="gone"
                     app:drawableTopCompat="@drawable/ic_no_grades"
                     tools:visibility="visible" />

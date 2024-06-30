@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -13,6 +14,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
@@ -127,6 +129,9 @@ fun IconicsDrawable.colorAttr(context: Context, @AttrRes attrRes: Int) {
 fun getColorFromAttr(context: Context, @AttrRes color: Int): Int {
     val typedValue = TypedValue()
     context.theme.resolveAttribute(color, typedValue, true)
+    if (typedValue.resourceId != 0) {
+        return ContextCompat.getColor(context, typedValue.resourceId)
+    }
     return typedValue.data
 }
 
@@ -146,6 +151,20 @@ fun Context.getColorFromRes(@ColorRes id: Int): Int {
     }
     else {
         resources.getColor(id)
+    }
+}
+
+fun Drawable.setBadgeCount(count: Int) {
+    if (this is LayerDrawable) {
+        (this as LayerDrawable?)?.apply {
+            findDrawableByLayerId(R.id.ic_badge)
+                .takeIf { it is BadgeDrawable }
+                ?.also { badge ->
+                    (badge as BadgeDrawable).setCount(count.toString())
+                    mutate()
+                    setDrawableByLayerId(R.id.ic_badge, badge)
+                }
+        }
     }
 }
 

@@ -42,7 +42,7 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="@string/build_invalid_title"
-                android:textAppearance="@style/NavView.TextView.Title" />
+                android:textAppearance="?textAppearanceHeadlineSmall" />
 
             <TextView
                 android:id="@+id/message"
@@ -55,7 +55,7 @@
 
             <Button
                 android:id="@+id/closeButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

@@ -13,9 +13,7 @@
         android:layout_marginVertical="8dp"
         android:drawableLeftAutoSize="@{true}"
         android:drawablePadding="8dp"
-        android:textAppearance="@style/NavView.TextView.Large"
-        android:textSize="28sp"
+        android:textAppearance="?textAppearanceTitleLarge"
         tools:drawableStartCompat="@drawable/ic_grade"
-        tools:layout_height="32sp"
         tools:text="Ocena" />
 </layout>

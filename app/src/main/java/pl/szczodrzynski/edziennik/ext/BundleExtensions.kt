@@ -9,8 +9,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.data.db.enums.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import java.io.Serializable
 
 fun Bundle?.getInt(key: String, defaultValue: Int) =
@@ -25,8 +23,8 @@ fun Bundle?.getFloat(key: String, defaultValue: Float) =
 fun Bundle?.getString(key: String, defaultValue: String) =
     this?.getString(key, defaultValue) ?: defaultValue
 
-inline fun <reified E : Enum<E>> Bundle?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
-fun Bundle.putEnum(key: String, value: Enum<*>) = putInt(key, value.toInt())
+inline fun <reified E : Enum<E>> Bundle?.getEnum(key: String) = this?.getString(key)?.toEnumOrNull<E>()
+fun Bundle.putEnum(key: String, value: Enum<*>) = putString(key, value.toString())
 
 fun Bundle?.getIntOrNull(key: String): Int? {
     return this?.get(key) as? Int

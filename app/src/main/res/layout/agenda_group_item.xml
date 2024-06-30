@@ -27,9 +27,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:padding="10dp"
-            android:textAppearance="@style/NavView.TextView.Medium"
-            tools:text="informacja"
-            tools:textColor="@color/md_white_1000" />
+            android:textAppearance="?textAppearanceBodyLarge"
+            tools:text="informacja" />
 
         <TextView
             android:id="@+id/count"

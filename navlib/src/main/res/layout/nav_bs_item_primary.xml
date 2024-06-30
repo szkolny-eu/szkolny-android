@@ -28,10 +28,7 @@
             android:id="@+id/item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
             android:gravity="start|center_vertical"
-            android:textAppearance="@style/NavView.TextView"
-            android:textSize="14sp"
             tools:text="Search activity" />
 
         <TextView
@@ -42,7 +39,7 @@
             android:gravity="center_vertical|start"
             android:lines="1"
             android:singleLine="true"
-            android:textAppearance="@style/NavView.TextView.Small"
+            android:textAppearance="?textAppearanceBodySmall"
             android:textSize="12sp"
             tools:text="Some drawer text" />
     </LinearLayout>

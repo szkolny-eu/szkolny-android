@@ -21,6 +21,8 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:adjustViewBounds="true"
+            android:background="@drawable/bg_rounded_16dp"
+            android:padding="8dp"
             tools:src="@sample/vulcan" />
 
         <View
@@ -40,14 +42,14 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textAppearance="?textAppearanceBodyLarge"
                 tools:text="Lubelski Portal Oświatowy" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="edu.lublin.eu" />
         </LinearLayout>
 

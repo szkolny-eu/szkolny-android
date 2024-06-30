@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-4.
   -->
 
@@ -23,11 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawablePadding="16dp"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/messages_no_data"
-            android:textSize="24sp"
+            android:textAppearance="?textAppearanceHeadlineSmall"
             android:visibility="gone"
             app:drawableTopCompat="@drawable/ic_no_messages"
             tools:visibility="visible" />

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-24.
   -->
 
@@ -10,38 +9,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        tools:layout_margin="8dp">
+        android:padding="8dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
 
-            <ImageView
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
                 android:id="@+id/image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/emoji_sad" />
-
-            <TextView
-                android:id="@+id/title"
+                style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="@string/home_lucky_number_no_info"
-                android:textAppearance="@style/NavView.TextView.Title" />
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-emoticon-sad-outline"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_lucky_number_no_info"
+                    android:textAppearance="?textAppearanceTitleMedium" />
+
+
+                <TextView
+                    android:id="@+id/subText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Numer w dzienniku to 23" />
+            </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/subText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            tools:text="Oranż Metylowy • Numer w dzienniku to 23" />
-
     </LinearLayout>
 </layout>

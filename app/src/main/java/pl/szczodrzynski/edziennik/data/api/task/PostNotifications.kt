@@ -11,12 +11,12 @@ import com.mikepenz.iconics.utils.colorRes
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
+import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.asBoldSpannable
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.data.db.entity.Notification as AppNotification
 
@@ -77,7 +77,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         val intent = Intent(
                 app,
                 MainActivity::class.java,
-                "fragmentId" to NavTarget.NOTIFICATIONS.id
+                "fragmentId" to NavTarget.NOTIFICATIONS
         )
         val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 

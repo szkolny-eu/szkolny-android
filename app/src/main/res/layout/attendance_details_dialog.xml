@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@{@string/dialog_grade_details_semester_format(attendance.semester)}"
-                            android:textAppearance="@style/NavView.TextView.Helper"
+                            android:textAppearance="?textAppearanceBodySmall"
                             android:textIsSelectable="true"
                             tools:text="semestr 1" />
                     </LinearLayout>
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{attendance.subjectLongName}"
-                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:textAppearance="?textAppearanceTitleLarge"
                         android:textIsSelectable="true"
                         tools:text="matematyka" />
 
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="[ - ] dodano notatki" />
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/attendance_details_teacher"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:id="@+id/teacherName"
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_type"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_date"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_time"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_lesson_topic"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceLabelMedium"
                 android:visibility="@{attendance.lessonTopic == null ? View.GONE : View.VISIBLE}" />
 
             <TextView
@@ -177,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_is_counted"
-                android:textAppearance="@style/NavView.TextView.Helper" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:id="@+id/attendanceIsCounted"
@@ -205,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/attendance_details_id"
-                        android:textAppearance="@style/NavView.TextView.Helper" />
+                        android:textAppearance="?textAppearanceLabelMedium" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -227,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/attendance_details_type_id"
-                        android:textAppearance="@style/NavView.TextView.Helper" />
+                        android:textAppearance="?textAppearanceLabelMedium" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -241,7 +241,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/notesButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

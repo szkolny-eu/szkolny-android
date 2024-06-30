@@ -40,7 +40,6 @@ class MonthViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: AttendanceMonth, position: Int, adapter: AttendanceAdapter) {
         val manager = app.attendanceManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
         b.title.text = listOf(
                 app.resources.getStringArray(R.array.material_calendar_months_array).getOrNull(item.month - 1)?.fixName(),
@@ -63,7 +62,7 @@ class MonthViewHolder(
         b.previewContainer.removeAllViews()
 
         item.typeCountMap.forEach { (type, count) ->
-            val layout = LinearLayout(contextWrapper)
+            val layout = LinearLayout(activity)
             val attendance = Attendance(
                     profileId = 0,
                     id = 0,
@@ -79,8 +78,8 @@ class MonthViewHolder(
                     subjectId = 0,
                     addedDate = 0
             )
-            layout.addView(AttendanceView(contextWrapper, attendance, manager))
-            layout.addView(TextView(contextWrapper).also {
+            layout.addView(AttendanceView(activity, attendance, manager))
+            layout.addView(TextView(activity).also {
                 //it.setText(R.string.attendance_percentage_format, count/sum*100f)
                 it.text = count.toString()
                 it.setPadding(0, 0, 5.dp, 0)

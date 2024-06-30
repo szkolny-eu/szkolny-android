@@ -21,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.data.config.Config
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
@@ -166,7 +166,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         }
 
         b.rebuildConfig.onClick {
-            App.config = Config(App.db)
+            App.config = Config(app)
         }
 
         val profiles = app.db.profileDao().allNow

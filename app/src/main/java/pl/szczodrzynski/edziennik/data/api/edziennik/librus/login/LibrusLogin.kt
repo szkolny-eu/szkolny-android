@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {

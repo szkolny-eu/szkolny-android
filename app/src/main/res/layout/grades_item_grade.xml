@@ -10,18 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="8dp">
+        android:paddingVertical="4dp">
 
         <pl.szczodrzynski.edziennik.ui.grades.GradeView
             android:id="@+id/gradeName"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            tools:background="@drawable/bg_rounded_8dp"
+            android:background="@drawable/bg_circle"
             tools:backgroundTint="#4caf50"
-            tools:textSize="24sp"
             tools:gravity="center"
             tools:text="5+" />
 
@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,6 +43,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -65,13 +65,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="?textAppearanceBodySmall"
                     tools:text="14.10.2015" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -79,8 +81,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textAppearance="?textAppearanceBodySmall"
                     tools:text="waga 30"
                     tools:visibility="visible" />
 
@@ -88,24 +92,23 @@
                     android:id="@+id/gradeCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxWidth="200dp"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     tools:text="Kartkówki - K1" />
 
                 <TextView
                     android:id="@+id/gradeTeacherName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="?textAppearanceBodySmall"
                     tools:text="Jan Kowalski" />
             </LinearLayout>
         </LinearLayout>

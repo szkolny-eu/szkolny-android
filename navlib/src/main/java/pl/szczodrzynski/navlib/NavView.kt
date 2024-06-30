@@ -3,153 +3,76 @@ package pl.szczodrzynski.navlib
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Point
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.children
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.nav_view.view.*
+import androidx.core.view.updateLayoutParams
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
+import pl.szczodrzynski.navlib.databinding.NavViewBinding
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 
+class NavView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+) : FrameLayout(context, attrs, defStyle) {
 
-class NavView : FrameLayout {
-    companion object {
-        const val SOURCE_OTHER = 0
-        const val SOURCE_DRAWER = 1
-        const val SOURCE_BOTTOM_SHEET = 1
-    }
-
+    private val b = NavViewBinding.inflate(LayoutInflater.from(context), this)
     private var contentView: LinearLayout? = null
+    val drawer: NavDrawer
 
-    private lateinit var statusBarBackground: View
-    private lateinit var navigationBarBackground: View
-    private lateinit var mainView: LinearLayout
-    private lateinit var floatingActionButton: FloatingActionButton
-    private lateinit var extendedFloatingActionButton: ExtendedFloatingActionButton
+    val coordinator
+        get() = b.nvCoordinator
+    val toolbar
+        get() = b.nvToolbar
+    val bottomBar: NavBottomBar
+        get() = b.nvBottomBar
+    val nightlyText: TextView
+        get() = b.nvNightlyText
+    val bottomSheet: NavBottomSheet
+        get() = b.nvBottomSheet
 
-    lateinit var drawer: NavDrawer
-    lateinit var toolbar: NavToolbar
-    lateinit var bottomBar: NavBottomBar
-    lateinit var bottomSheet: NavBottomSheet
-    val coordinator by lazy {
-        findViewById<CoordinatorLayout>(R.id.nv_coordinator)
-    }
-
-    var navigationLoader: NavigationLoader? = null
-
-    constructor(context: Context) : super(context) {
-        create(null, 0)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        create(attrs, 0)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-        create(attrs, defStyle)
-    }
-
-    private fun create(attrs: AttributeSet?, defStyle: Int) {
-        // Load attributes
-        val a = context.obtainStyledAttributes(attrs, R.styleable.NavView, defStyle, 0)
-        /*_exampleString = a.getString(
-            R.styleable.NavView_exampleString
-        )*/
-        a.recycle()
-
-        val layoutInflater = LayoutInflater.from(context)
-        layoutInflater.inflate(R.layout.nav_view, this)
-
-        contentView = findViewById<LinearLayout>(R.id.nv_content)
-
-        statusBarBackground = findViewById(R.id.nv_statusBarBackground)
-        navigationBarBackground = findViewById(R.id.nv_navigationBarBackground)
-        mainView = findViewById(R.id.nv_main)
-        floatingActionButton = findViewById(R.id.nv_floatingActionButton)
-        extendedFloatingActionButton = findViewById(R.id.nv_extendedFloatingActionButton)
+    init {
+        contentView = b.nvContent
 
         drawer = NavDrawer(
             context,
-            findViewById(R.id.nv_drawerLayout),
-            findViewById(R.id.nv_drawerContainerLandscape),
-            findViewById(R.id.nv_miniDrawerContainerPortrait),
-            findViewById(R.id.nv_miniDrawerElevation)
+            b.nvDrawerLayout,
+            b.nvDrawerContainerLandscape,
+            b.nvMiniDrawerContainerPortrait,
+            b.nvMiniDrawerElevation,
         )
-        toolbar = findViewById(R.id.nv_toolbar)
-        bottomBar = findViewById(R.id.nv_bottomBar)
-        bottomSheet = findViewById(R.id.nv_bottomSheet)
 
-        drawer.toolbar = toolbar
-        drawer.bottomBar = bottomBar
+        drawer.toolbar = b.nvToolbar
+        drawer.bottomBar = b.nvBottomBar
 
-        toolbar.toolbarImage = findViewById(R.id.nv_toolbar_image)
+        b.nvToolbar.navView = this
+        b.nvToolbar.bottomSheet = b.nvBottomSheet
+        b.nvToolbar.toolbarImage = b.nvToolbarImage
 
-        bottomBar.drawer = drawer
-        bottomBar.bottomSheet = bottomSheet
-        bottomBar.fabView = floatingActionButton
-        bottomBar.fabExtendedView = extendedFloatingActionButton
-
-        ripple.isEnabled = false
-        ripple.children.forEach { it.isEnabled = false }
-
-        //bottomSheetBehavior.peekHeight = displayHeight
-    }
-
-    private fun convertDpToPixel(dp: Float): Float {
-        val resources = context.resources
-        val metrics = resources.displayMetrics
-        return dp * (metrics.densityDpi / 160f)
-    }
-
-    fun gainAttentionOnBottomBar() {
-        var x = ripple.width.toFloat()
-        var y = ripple.height.toFloat()
-        x -= convertDpToPixel(56f) / 2
-        y -= convertDpToPixel(56f) / 2
-        ripple.performRipple(Point(x.toInt(), y.toInt()))
+        b.nvBottomBar.navView = this
+        b.nvBottomBar.bottomSheet = b.nvBottomSheet
+        b.nvBottomBar.fabView = b.nvFloatingActionButton
+        b.nvBottomBar.fabExtendedView = b.nvExtendedFloatingActionButton
     }
 
     fun configSystemBarsUtil(systemBarsUtil: SystemBarsUtil) {
         this.systemBarsUtil = systemBarsUtil.apply {
-            this.statusBarBgView = statusBarBackground
-            this.navigationBarBgView = navigationBarBackground
-            this.statusBarDarkView = nv_statusBarDarker
-            //this.navigationBarDarkView = navigationBarBackground
-            this.insetsListener = nv_drawerLayout
-            this.marginBySystemBars = mainView
-            this.paddingByNavigationBar = bottomSheet.getContentView()
+            this.statusBarBgView = b.nvStatusBarBackground
+            this.navigationBarBgView = b.nvNavigationBarBackground
+            this.statusBarDarkView = b.nvStatusBarDarker
+            this.navigationBarDarkView = b.nvNavigationBarBackground
+            this.insetsListener = b.nvDrawerLayout
+            this.marginBySystemBars = b.nvMain
         }
-    }
-
-
-    var enableBottomSheet = true
-    var enableBottomSheetDrag = true
-
-    var bottomBarEnable = true
-        get() = bottomBar.enable
-        set(value) {
-            field = value
-            bottomBar.enable = value
-            setContentMargins() // TODO combine bottomBarEnable and bottomBar.enable
-        }
-
-    /**
-     * Shows the toolbar and sets the contentView's margin to be
-     * below the toolbar.
-     */
-    var showToolbar = true; set(value) {
-        toolbar.visibility = if (value) View.VISIBLE else View.GONE
-        field = value
-        setContentMargins()
     }
 
     /**
@@ -161,12 +84,17 @@ class NavView : FrameLayout {
 
     internal var systemBarsUtil: SystemBarsUtil? = null
 
-    private fun setContentMargins() {
-        val layoutParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        val actionBarSize = 56 * context.resources.displayMetrics.density
-        layoutParams.topMargin = if (showToolbar) actionBarSize.toInt() else 0
-        layoutParams.bottomMargin = if (bottomBarEnable) actionBarSize.toInt() else 0
-        contentView?.layoutParams = layoutParams
+    internal fun setContentMargins() {
+        contentView?.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            topMargin = if (toolbar.enable) {
+                toolbar.measure(MATCH_PARENT, WRAP_CONTENT)
+                toolbar.measuredHeight
+            } else 0
+            bottomMargin = if (bottomBar.enable) {
+                bottomBar.measure(MATCH_PARENT, WRAP_CONTENT)
+                bottomBar.measuredHeight
+            } else 0
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -174,7 +102,7 @@ class NavView : FrameLayout {
 
         Log.d(
             "NavLib",
-            "CONFIGURATION CHANGED: ${newConfig?.screenWidthDp}x${newConfig?.screenHeightDp} "+if (newConfig?.orientation == ORIENTATION_PORTRAIT) "portrait" else "landscape"
+            "CONFIGURATION CHANGED: ${newConfig?.screenWidthDp}x${newConfig?.screenHeightDp} " + if (newConfig?.orientation == ORIENTATION_PORTRAIT) "portrait" else "landscape"
         )
 
         systemBarsUtil?.commit()
@@ -202,12 +130,6 @@ class NavView : FrameLayout {
         return false
     }
 
-    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if (contentView == null) {
-            super.addView(child, index, params)
-        }
-        else {
-            contentView!!.addView(child, index, params)
-        }
-    }
+    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) =
+        contentView?.addView(child, index, params) ?: super.addView(child, index, params)
 }

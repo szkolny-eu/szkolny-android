@@ -23,11 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawablePadding="16dp"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/notifications_no_data"
-            android:textSize="24sp"
+            android:textAppearance="?textAppearanceHeadlineSmall"
             android:visibility="gone"
             app:drawableTopCompat="@drawable/ic_no_notifications"
             tools:visibility="visible" />

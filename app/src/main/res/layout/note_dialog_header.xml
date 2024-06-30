@@ -20,7 +20,7 @@
             android:layout_marginTop="16dp"
             android:drawableLeftAutoSize="@{true}"
             android:drawablePadding="8dp"
-            android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+            android:textAppearance="?textAppearanceTitleLarge"
             tools:drawableStartCompat="@drawable/ic_grade"
             tools:layout_height="28sp"
             tools:text="Ocena" />

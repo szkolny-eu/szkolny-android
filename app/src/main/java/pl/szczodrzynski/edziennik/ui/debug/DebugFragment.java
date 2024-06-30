@@ -37,7 +37,6 @@ public class DebugFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         app = (App)getActivity().getApplication();
-        getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_debug, container, false);
@@ -211,7 +210,7 @@ public class DebugFragment extends Fragment {
                 mRecyclerView.bindJson(result);
             }
             catch (Exception e) {
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AppTheme_MaterialAlertDialogMonospace)
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AppStyle_M3_MaterialAlertDialog_Monospace)
                         .setTitle("Result")
                         .setMessage(result)
                         .setPositiveButton(R.string.ok, null)

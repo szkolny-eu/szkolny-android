@@ -2,36 +2,60 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2019-11-29
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Title"
-            android:text="@string/card_grades_header_title" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/noData"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:text="@string/card_grades_no_data"
-            android:textSize="16sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                style="?materialIconButtonContainerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-numeric-5-box-outline"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_grades_header_title"
+                    android:textAppearance="?textAppearanceTitleMedium" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/noData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/card_grades_no_data" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/gradeList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"/>
+
     </LinearLayout>
 </layout>

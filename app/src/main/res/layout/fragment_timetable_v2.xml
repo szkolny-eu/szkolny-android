@@ -19,25 +19,25 @@
                 tools:visibility="gone">
 
                 <com.google.android.material.appbar.AppBarLayout
-                    style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?colorSurface">
 
-                    <com.nshmura.recyclertablayout.RecyclerTabLayout
+                    <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@color/colorSurface_1dp"
-                        app:rtl_tabIndicatorColor="?colorPrimary"
-                        app:rtl_tabMaxWidth="300dp"
-                        app:rtl_tabMinWidth="90dp"
-                        app:rtl_tabPaddingBottom="12dp"
-                        app:rtl_tabPaddingEnd="16dp"
-                        app:rtl_tabPaddingStart="16dp"
-                        app:rtl_tabPaddingTop="12dp"
-                        app:rtl_tabSelectedTextColor="?colorPrimary"
-                        app:rtl_tabTextAppearance="@style/rtl_RecyclerTabLayout.Tab" />
+                        android:layout_height="wrap_content"
+                        android:background="?colorSurfaceContainerLow"
+                        app:tabMode="auto"
+                        app:tabIndicatorColor="?colorPrimary"
+                        app:tabMaxWidth="300dp"
+                        app:tabMinWidth="90dp"
+                        app:tabPaddingBottom="12dp"
+                        app:tabPaddingEnd="16dp"
+                        app:tabPaddingStart="16dp"
+                        app:tabPaddingTop="12dp"
+                        app:tabSelectedTextColor="?colorPrimary"
+                        app:tabTextColor="?colorOnBackground" />
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
@@ -66,9 +66,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-light"
                     android:text="@string/timetable_not_public_title"
-                    android:textSize="24sp" />
+                    android:textAppearance="?textAppearanceHeadlineSmall" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,7 +76,7 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@string/timetable_not_public_text"
-                    android:textSize="16sp" />
+                    android:textAppearance="?textAppearanceBodyLarge" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,8 +84,7 @@
                     android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="@string/timetable_not_public_hint"
-                    android:textSize="14sp" />
+                    android:text="@string/timetable_not_public_hint" />
 
             </LinearLayout>
 

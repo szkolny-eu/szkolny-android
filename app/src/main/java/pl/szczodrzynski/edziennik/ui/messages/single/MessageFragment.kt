@@ -22,11 +22,11 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -79,42 +79,16 @@ class MessageFragment : Fragment(), CoroutineScope {
                 }
         )
 
-        b.closeButton.setImageDrawable(
-                IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
-                    colorAttr(activity, android.R.attr.textColorSecondary)
-                    sizeDp = 24
-                }
-        )
-        b.closeButton.setOnClickListener { activity.navigateUp() }
+        b.closeButton.onClick { activity.navigateUp() }
 
         // click to expand subject and sender
         b.subject.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
-        b.sender.onClick {
-            it.maxLines = if (it.maxLines == 30) 2 else 30
+        b.senderContainer.onClick {
+            b.sender.maxLines = if (b.sender.maxLines == 30) 2 else 30
         }
-
-        val replyDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_reply_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val forwardDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_arrow_right).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val deleteDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_delete_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val downloadDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_download_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        b.replyButton.setCompoundDrawables(null, replyDrawable, null, null)
-        b.forwardButton.setCompoundDrawables(null, forwardDrawable, null, null)
-        b.deleteButton.setCompoundDrawables(null, deleteDrawable, null, null)
-        b.downloadButton.setCompoundDrawables(null, downloadDrawable, null, null)
+        // TODO bring back iconics to reply/forward buttons - add modern icons to SzkolnyFont
 
         b.messageStar.onClick {
             launch {
@@ -218,20 +192,6 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         b.replyButton.isVisible = message.isReceived || message.isDeleted
         b.deleteButton.isVisible = message.isReceived
-        if (message.isReceived || message.isDeleted) {
-            activity.navView.apply {
-                bottomBar.apply {
-                    fabEnable = true
-                    fabExtendedText = getString(R.string.messages_reply)
-                    fabIcon = CommunityMaterial.Icon3.cmd_reply_outline
-                }
-
-                setFabOnClickListener {
-                    b.replyButton.performClick()
-                }
-            }
-            activity.gainAttentionFAB()
-        }
 
         val messageRecipients = StringBuilder("<ul>")
         message.recipients?.forEach { recipient ->

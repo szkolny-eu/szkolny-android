@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-24.
   -->
 
@@ -19,46 +18,41 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="8dp"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                android:id="@+id/noTimetableSync"
+                style="?materialIconButtonContainerStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="szf-sync"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_no_timetable"
-                    android:textAppearance="@style/NavView.TextView.Title" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:id="@+id/noTimetableText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="16dp"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:text="@string/home_timetable_no_timetable_text"
-                    android:textSize="16sp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/noTimetableSync"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_no_timetable_sync" />
+                    android:text="@string/home_timetable_no_timetable_text" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                app:srcCompat="@drawable/ic_sync" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,39 +61,42 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
             android:visibility="gone"
-            tools:layout_marginTop="170dp"
+            tools:layout_marginTop="100dp"
             tools:visibility="visible">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                style="?materialIconButtonContainerStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="cmd-calendar-month-outline"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_no_lessons"
-                    android:textAppearance="@style/NavView.TextView.Title" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="16dp"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:text="@string/home_timetable_no_lessons_text"
-                    android:textSize="16sp" />
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:text="@string/home_timetable_no_lessons_text" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                app:srcCompat="@drawable/ic_timetable" />
         </LinearLayout>
 
         <LinearLayout
@@ -108,39 +105,40 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="8dp"
             android:visibility="gone"
-            tools:layout_marginTop="270dp"
+            tools:layout_marginTop="185dp"
             tools:visibility="visible">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                style="?materialIconButtonContainerStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                app:iiv_color="?colorOnPrimaryContainer"
+                app:iiv_icon="szf-sync-error"
+                app:iiv_size="24dp"
+                tools:icon="@sample/settings"
+                tools:iconTint="?colorOnPrimaryContainer" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/home_timetable_not_public"
-                    android:textAppearance="@style/NavView.TextView.Title" />
+                    android:textAppearance="?textAppearanceTitleMedium" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="16dp"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:text="@string/home_timetable_not_public_text"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:text="@string/home_timetable_not_public_text" />
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                app:srcCompat="@drawable/ic_no_timetable" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -148,15 +146,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:layout_marginTop="410dp">
+            android:padding="8dp"
+            tools:layout_marginTop="290dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                    style="?materialIconButtonContainerStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="false"
+                    app:iiv_color="?colorOnPrimaryContainer"
+                    app:iiv_icon="cmd-calendar-month-outline"
+                    app:iiv_size="24dp"
+                    tools:icon="@sample/settings"
+                    tools:iconTint="?colorOnPrimaryContainer" />
+
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -165,14 +177,14 @@
                         android:id="@+id/dayInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="Jutro" />
 
                     <TextView
                         android:id="@+id/lessonInfo"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         tools:text="7 lekcji - 8:10 do 14:45" />
                 </LinearLayout>
 
@@ -182,90 +194,101 @@
                     android:layout_height="48dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="12dp"
-                    android:visibility="gone"
-                    tools:src="@sample/settings" />
-
-                <ImageView
-                    android:id="@+id/bellSync"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    tools:src="@sample/settings" />
-
-                <ImageView
-                    android:id="@+id/showCounter"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    tools:src="@sample/settings" />
+                    android:visibility="gone" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="4dp"
-                android:background="@color/dividerColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:trackCornerRadius="10dp"
+                    tools:max="2700"
+                    tools:progress="2000"
+                    tools:visibility="visible" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/lessonBig"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
-                        tools:text="Pierwsza: informatyka" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/classroom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Small"
-                        tools:text="09a komputerowa" />
+                        <TextView
+                            android:id="@+id/lessonBig"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?textAppearanceTitleMedium"
+                            tools:text="Pierwsza: informatyka" />
 
-                    <ProgressBar
-                        android:id="@+id/progress"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/counter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?textAppearanceBodyMedium"
+                            tools:text="zostały 2 minuty 35 sekund" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:visibility="gone"
-                        tools:max="2700"
-                        tools:progress="780"
-                        tools:visibility="visible" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/classroomHeading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sala"
+                            android:textAppearance="?textAppearanceTitleMedium"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/classroom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="09a komputerowa" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/counter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    tools:text="zostały\n2 minuty\n35 sekund" />
             </LinearLayout>
 
-            <View
+            <TextView
+                android:id="@+id/nextLessonsTitle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="4dp"
-                android:background="@color/dividerColor" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="?textAppearanceLabelLarge"
+                tools:text="Później:"/>
 
             <TextView
                 android:id="@+id/nextLessons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+                tools:text="9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bellSync"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bell_sync_title"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/showCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/counter_activity"/>
         </LinearLayout>
     </FrameLayout>
 </layout>

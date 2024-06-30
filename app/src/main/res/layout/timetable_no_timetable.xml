@@ -16,11 +16,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:drawableTopCompat="@drawable/ic_sync"
             android:drawablePadding="16dp"
-            android:fontFamily="sans-serif-light"
             android:text="@string/timetable_no_timetable_title"
-            android:textSize="24sp" />
+            android:textAppearance="?textAppearanceHeadlineSmall"
+            app:drawableTopCompat="@drawable/ic_sync" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +28,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/timetable_no_timetable_text"
-            android:textSize="16sp" />
+            android:textAppearance="?textAppearanceBodyLarge" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/noTimetableSync"
@@ -42,8 +41,7 @@
             android:id="@+id/noTimetableWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="italic"
+            android:textAppearance="?textAppearanceBodySmall"
             tools:text="@string/timetable_no_timetable_week" />
 
     </LinearLayout>

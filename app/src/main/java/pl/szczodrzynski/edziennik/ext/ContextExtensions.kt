@@ -4,17 +4,18 @@
 
 package pl.szczodrzynski.edziennik.ext
 
+import android.app.UiModeManager
 import android.content.Context
-import android.os.Build
-import java.util.*
+import android.content.res.Configuration
+import androidx.core.content.getSystemService
+import pl.szczodrzynski.edziennik.App
 
-fun Context.setLanguage(language: String) {
-    val locale = Locale(language.lowercase())
-    val configuration = resources.configuration
-    Locale.setDefault(locale)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        configuration.setLocale(locale)
+val Context.app
+    get() = applicationContext as App
+
+val Context.isNightMode: Boolean
+    get() {
+        if (getSystemService<UiModeManager>()?.nightMode == UiModeManager.MODE_NIGHT_YES)
+            return true
+        return (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES) != 0
     }
-    configuration.locale = locale
-    resources.updateConfiguration(configuration, resources.displayMetrics)
-}

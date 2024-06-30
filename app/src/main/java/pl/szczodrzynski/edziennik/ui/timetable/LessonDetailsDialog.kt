@@ -48,8 +48,8 @@ class LessonDetailsDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogLessonDetailsBinding.inflate(layoutInflater)
 
+    // TODO put the "add" button in layout for other dialogs as well
     override fun getPositiveButtonText() = R.string.close
-    override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
     private val manager
@@ -57,7 +57,7 @@ class LessonDetailsDialog(
     private val attendanceManager
         get() = app.attendanceManager
 
-    override suspend fun onNeutralClick(): Boolean {
+    fun openAddEventDialog(): Boolean {
         EventManualDialog(
             activity,
             lesson.profileId,
@@ -252,6 +252,7 @@ class LessonDetailsDialog(
             )
         }
 
+        b.addEventButton.onClick { openAddEventDialog() }
         b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,

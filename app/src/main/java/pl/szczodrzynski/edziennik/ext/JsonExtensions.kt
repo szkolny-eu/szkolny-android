@@ -43,8 +43,8 @@ fun JsonArray.getChar(key: Int): Char? = if (key >= size()) null else get(key)?.
 fun JsonArray.getJsonObject(key: Int): JsonObject? = if (key >= size()) null else get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
 fun JsonArray.getJsonArray(key: Int): JsonArray? = if (key >= size()) null else get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
 
-inline fun <reified E : Enum<E>> JsonObject?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
-fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toInt())
+inline fun <reified E : Enum<E>> JsonObject?.getEnum(key: String) = this?.getString(key)?.toEnumOrNull<E>()
+fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toString())
 
 fun String.toJsonObject(): JsonObject? = try { JsonParser.parseString(this).asJsonObject } catch (ignore: Exception) { null }
 fun String.toJsonArray(): JsonArray? = try { JsonParser.parseString(this).asJsonArray } catch (ignore: Exception) { null }
@@ -72,7 +72,7 @@ fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
                 is Char -> addProperty(key, value)
                 is Number -> addProperty(key, value)
                 is Boolean -> addProperty(key, value)
-                is Enum<*> -> addProperty(key, value.toInt())
+                is Enum<*> -> addProperty(key, value.toString())
                 null -> add(key, null)
                 else -> add(key, value.toJsonElement())
             }
@@ -106,7 +106,7 @@ fun JsonArray(properties: Collection<Any?>): JsonArray {
                 is Char -> add(property as Char?)
                 is Number -> add(property as Number?)
                 is Boolean -> add(property as Boolean?)
-                is Enum<*> -> add(property.toInt())
+                is Enum<*> -> add(property.toString())
                 else -> add(property.toJsonElement())
             }
         }

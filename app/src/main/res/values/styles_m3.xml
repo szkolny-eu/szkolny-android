@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources>
+
+    <style name="AppTheme.M3" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
+        <item name="android:textColorSecondary">?android:textColorHint</item>
+        <item name="android:textViewStyle">@style/AppStyle.TextView</item>
+
+        <item name="nvStatusBarBackground">#ff00ff</item>
+        <item name="nvActionBarBackground">?colorSurfaceContainerHigh</item>
+        <item name="nvBottomBarBackground">#ff00ff</item>
+        <item name="nvNavigationBarBackground">#ff00ff</item>
+
+        <item name="materialButtonSecondaryStyle">
+            @style/Widget.Material3.Button.TonalButton
+        </item>
+        <item name="materialIconButtonSecondaryStyle">
+            @style/Widget.Material3.Button.IconButton.Filled.Tonal
+        </item>
+        <item name="materialIconButtonContainerStyle">
+            @style/AppStyle.M3.Button.IconButton.Filled.Container
+        </item>
+        <item name="materialAlertDialogMonospaceTheme">
+            @style/AppStyle.M3.MaterialAlertDialog.Monospace
+        </item>
+
+        <item name="textAppearanceHeadlineLarge">@style/AppStyle.M3.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/AppStyle.M3.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/AppStyle.M3.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/AppStyle.M3.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/AppStyle.M3.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/AppStyle.M3.TitleSmall</item>
+        <item name="textAppearanceLabelLarge">@style/AppStyle.M3.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/AppStyle.M3.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/AppStyle.M3.LabelSmall</item>
+    </style>
+
+    <style name="AppTheme.M3.Red">
+        <item name="colorPrimary">@color/app_red_primary</item>
+        <item name="colorOnPrimary">@color/app_red_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/app_red_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/app_red_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/app_red_secondary</item>
+        <item name="colorOnSecondary">@color/app_red_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/app_red_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/app_red_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/app_red_tertiary</item>
+        <item name="colorOnTertiary">@color/app_red_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/app_red_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/app_red_onTertiaryContainer</item>
+        <item name="colorError">@color/app_red_error</item>
+        <item name="colorOnError">@color/app_red_onError</item>
+        <item name="colorErrorContainer">@color/app_red_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/app_red_onErrorContainer</item>
+        <item name="android:colorBackground">@color/app_red_background</item>
+        <item name="colorOnBackground">@color/app_red_onBackground</item>
+        <item name="colorSurface">@color/app_red_surface</item>
+        <item name="colorOnSurface">@color/app_red_onSurface</item>
+        <item name="colorSurfaceVariant">@color/app_red_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/app_red_onSurfaceVariant</item>
+        <item name="colorOutline">@color/app_red_outline</item>
+        <item name="colorOutlineVariant">@color/app_red_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/app_red_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/app_red_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/app_red_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/app_red_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/app_red_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/app_red_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/app_red_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/app_red_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/app_red_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/app_red_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/app_red_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/app_red_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/app_red_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/app_red_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/app_red_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/app_red_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/app_red_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/app_red_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/app_red_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/app_red_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/app_red_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/app_red_surfaceContainerHighest</item>
+    </style>
+
+    <style name="AppTheme.M3.Green">
+        <item name="colorPrimary">@color/app_green_primary</item>
+        <item name="colorOnPrimary">@color/app_green_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/app_green_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/app_green_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/app_green_secondary</item>
+        <item name="colorOnSecondary">@color/app_green_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/app_green_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/app_green_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/app_green_tertiary</item>
+        <item name="colorOnTertiary">@color/app_green_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/app_green_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/app_green_onTertiaryContainer</item>
+        <item name="colorError">@color/app_green_error</item>
+        <item name="colorOnError">@color/app_green_onError</item>
+        <item name="colorErrorContainer">@color/app_green_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/app_green_onErrorContainer</item>
+        <item name="android:colorBackground">@color/app_green_background</item>
+        <item name="colorOnBackground">@color/app_green_onBackground</item>
+        <item name="colorSurface">@color/app_green_surface</item>
+        <item name="colorOnSurface">@color/app_green_onSurface</item>
+        <item name="colorSurfaceVariant">@color/app_green_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/app_green_onSurfaceVariant</item>
+        <item name="colorOutline">@color/app_green_outline</item>
+        <item name="colorOutlineVariant">@color/app_green_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/app_green_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/app_green_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/app_green_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/app_green_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/app_green_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/app_green_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/app_green_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/app_green_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/app_green_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/app_green_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/app_green_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/app_green_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/app_green_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/app_green_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/app_green_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/app_green_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/app_green_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/app_green_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/app_green_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/app_green_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/app_green_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/app_green_surfaceContainerHighest</item>
+    </style>
+
+    <style name="AppTheme.M3.Blue">
+        <item name="colorPrimary">@color/app_blue_primary</item>
+        <item name="colorOnPrimary">@color/app_blue_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/app_blue_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/app_blue_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/app_blue_secondary</item>
+        <item name="colorOnSecondary">@color/app_blue_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/app_blue_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/app_blue_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/app_blue_tertiary</item>
+        <item name="colorOnTertiary">@color/app_blue_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/app_blue_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/app_blue_onTertiaryContainer</item>
+        <item name="colorError">@color/app_blue_error</item>
+        <item name="colorOnError">@color/app_blue_onError</item>
+        <item name="colorErrorContainer">@color/app_blue_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/app_blue_onErrorContainer</item>
+        <item name="android:colorBackground">@color/app_blue_background</item>
+        <item name="colorOnBackground">@color/app_blue_onBackground</item>
+        <item name="colorSurface">@color/app_blue_surface</item>
+        <item name="colorOnSurface">@color/app_blue_onSurface</item>
+        <item name="colorSurfaceVariant">@color/app_blue_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/app_blue_onSurfaceVariant</item>
+        <item name="colorOutline">@color/app_blue_outline</item>
+        <item name="colorOutlineVariant">@color/app_blue_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/app_blue_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/app_blue_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/app_blue_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/app_blue_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/app_blue_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/app_blue_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/app_blue_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/app_blue_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/app_blue_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/app_blue_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/app_blue_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/app_blue_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/app_blue_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/app_blue_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/app_blue_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/app_blue_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/app_blue_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/app_blue_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/app_blue_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/app_blue_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/app_blue_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/app_blue_surfaceContainerHighest</item>
+    </style>
+
+    <style name="AppTheme.M3.Purple">
+        <item name="colorPrimary">@color/app_purple_primary</item>
+        <item name="colorOnPrimary">@color/app_purple_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/app_purple_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/app_purple_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/app_purple_secondary</item>
+        <item name="colorOnSecondary">@color/app_purple_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/app_purple_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/app_purple_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/app_purple_tertiary</item>
+        <item name="colorOnTertiary">@color/app_purple_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/app_purple_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/app_purple_onTertiaryContainer</item>
+        <item name="colorError">@color/app_purple_error</item>
+        <item name="colorOnError">@color/app_purple_onError</item>
+        <item name="colorErrorContainer">@color/app_purple_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/app_purple_onErrorContainer</item>
+        <item name="android:colorBackground">@color/app_purple_background</item>
+        <item name="colorOnBackground">@color/app_purple_onBackground</item>
+        <item name="colorSurface">@color/app_purple_surface</item>
+        <item name="colorOnSurface">@color/app_purple_onSurface</item>
+        <item name="colorSurfaceVariant">@color/app_purple_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/app_purple_onSurfaceVariant</item>
+        <item name="colorOutline">@color/app_purple_outline</item>
+        <item name="colorOutlineVariant">@color/app_purple_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/app_purple_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/app_purple_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/app_purple_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/app_purple_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/app_purple_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/app_purple_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/app_purple_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/app_purple_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/app_purple_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/app_purple_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/app_purple_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/app_purple_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/app_purple_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/app_purple_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/app_purple_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/app_purple_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/app_purple_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/app_purple_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/app_purple_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/app_purple_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/app_purple_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/app_purple_surfaceContainerHighest</item>
+    </style>
+
+    <style name="AppTheme.M3.Teal">
+        <item name="colorPrimary">@color/app_teal_primary</item>
+        <item name="colorOnPrimary">@color/app_teal_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/app_teal_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/app_teal_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/app_teal_secondary</item>
+        <item name="colorOnSecondary">@color/app_teal_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/app_teal_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/app_teal_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/app_teal_tertiary</item>
+        <item name="colorOnTertiary">@color/app_teal_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/app_teal_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/app_teal_onTertiaryContainer</item>
+        <item name="colorError">@color/app_teal_error</item>
+        <item name="colorOnError">@color/app_teal_onError</item>
+        <item name="colorErrorContainer">@color/app_teal_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/app_teal_onErrorContainer</item>
+        <item name="android:colorBackground">@color/app_teal_background</item>
+        <item name="colorOnBackground">@color/app_teal_onBackground</item>
+        <item name="colorSurface">@color/app_teal_surface</item>
+        <item name="colorOnSurface">@color/app_teal_onSurface</item>
+        <item name="colorSurfaceVariant">@color/app_teal_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/app_teal_onSurfaceVariant</item>
+        <item name="colorOutline">@color/app_teal_outline</item>
+        <item name="colorOutlineVariant">@color/app_teal_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/app_teal_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/app_teal_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/app_teal_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/app_teal_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/app_teal_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/app_teal_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/app_teal_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/app_teal_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/app_teal_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/app_teal_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/app_teal_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/app_teal_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/app_teal_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/app_teal_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/app_teal_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/app_teal_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/app_teal_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/app_teal_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/app_teal_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/app_teal_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/app_teal_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/app_teal_surfaceContainerHighest</item>
+    </style>
+
+    <style name="AppTheme.M3.Red.Classic">
+        <item name="android:colorBackground">@color/windowBackgroundRed</item>
+        <item name="colorSurface">@color/colorSurfaceRed</item>
+    </style>
+
+    <style name="AppTheme.M3.Red.Full">
+        <item name="android:colorBackground">@color/windowBackgroundRedFull</item>
+        <item name="colorSurface">@color/colorSurfaceRedFull</item>
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+    </style>
+
+    <style name="AppTheme.M3.Green.Classic">
+        <item name="android:colorBackground">@color/windowBackgroundGreen</item>
+        <item name="colorSurface">@color/colorSurfaceGreen</item>
+    </style>
+
+    <style name="AppTheme.M3.Green.Full">
+        <item name="android:colorBackground">@color/windowBackgroundGreenFull</item>
+        <item name="colorSurface">@color/colorSurfaceGreenFull</item>
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+    </style>
+
+    <style name="AppTheme.M3.Blue.Classic">
+        <item name="android:colorBackground">@color/windowBackgroundBlue</item>
+        <item name="colorSurface">@color/colorSurfaceBlue</item>
+    </style>
+
+    <style name="AppTheme.M3.Blue.Full">
+        <item name="android:colorBackground">@color/windowBackgroundBlueFull</item>
+        <item name="colorSurface">@color/colorSurfaceBlueFull</item>
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+    </style>
+
+    <style name="AppTheme.M3.Purple.Classic">
+        <item name="android:colorBackground">@color/windowBackgroundPurple</item>
+        <item name="colorSurface">@color/colorSurfacePurple</item>
+    </style>
+
+    <style name="AppTheme.M3.Purple.Full">
+        <item name="android:colorBackground">@color/windowBackgroundPurpleFull</item>
+        <item name="colorSurface">@color/colorSurfacePurpleFull</item>
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+    </style>
+
+    <style name="AppTheme.M3.Teal.Classic">
+        <item name="android:colorBackground">@color/windowBackgroundTeal</item>
+        <item name="colorSurface">@color/colorSurfaceTeal</item>
+    </style>
+
+    <style name="AppTheme.M3.Teal.Full">
+        <item name="android:colorBackground">@color/windowBackgroundTealFull</item>
+        <item name="colorSurface">@color/colorSurfaceTealFull</item>
+        <item name="colorTertiary">?colorSurface</item>
+        <item name="colorTertiaryContainer">?colorSurface</item>
+        <item name="colorSecondaryContainer">?colorSurface</item>
+    </style>
+
+</resources>

@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 
 const val SYNC_NEVER = 0L
 const val SYNC_ALWAYS = 1L

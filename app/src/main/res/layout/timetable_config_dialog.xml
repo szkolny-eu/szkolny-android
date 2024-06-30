@@ -7,11 +7,11 @@
 
     <data>
 
-        <import type="pl.szczodrzynski.edziennik.data.db.enums.FeatureType" />
+        <import type="pl.szczodrzynski.edziennik.data.enums.FeatureType" />
 
         <variable
             name="config"
-            type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+            type="pl.szczodrzynski.edziennik.data.config.ProfileConfig.UI" />
 
         <variable
             name="features"
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/config_appearance"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"

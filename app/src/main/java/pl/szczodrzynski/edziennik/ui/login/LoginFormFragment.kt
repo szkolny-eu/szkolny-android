@@ -26,8 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
@@ -228,7 +228,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         val qrDecoderClass = credential.qrDecoderClass ?: return
         app.permissionManager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
             QrScannerDialog(activity, onCodeScanned = { code ->
-                val decoder = qrDecoderClass.newInstance()
+                val decoder = qrDecoderClass.getDeclaredConstructor().newInstance()
                 val values = decoder.decode(code)
                 if (values == null) {
                     Toast.makeText(activity, R.string.login_qr_decoding_error, Toast.LENGTH_SHORT).show()

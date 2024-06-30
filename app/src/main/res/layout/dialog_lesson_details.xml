@@ -34,21 +34,6 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="24dp">
 
-            <TextView
-                android:id="@+id/annotation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/timetable_lesson_annotation"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingHorizontal="8dp"
-                android:text="@string/timetable_lesson_cancelled"
-                android:textColor="#000"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
-                tools:text="Zastępstwo: zamiast lekcji język polski z Adam Dodatkowy"
-                tools:visibility="visible" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{oldSubjectName}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Medium"
+                        android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?android:textColorTertiary"
                         android:visibility="@{oldSubjectName == null ? View.GONE : View.VISIBLE}"
                         app:strikeThrough="@{true}"
@@ -79,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{subjectName}"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:textAppearance="?textAppearanceTitleLarge"
                         android:visibility="@{subjectName == null ? View.GONE : View.VISIBLE}"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
@@ -88,9 +73,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"
-                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:textAppearance="?textAppearanceTitleMedium"
                         tools:text="czwartek, 14 listopada 2019"
                         tools:visibility="visible" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/annotation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                        app:chipBackgroundColor="?colorError"
+                        android:textColor="?colorOnError"
+                        style="?chipStyle"
+                        app:chipStrokeWidth="0dp"
+                        android:text="@string/timetable_lesson_cancelled"/>
 
                 </LinearLayout>
 
@@ -98,21 +94,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="right">
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@string/dialog_lesson_details_number"
-                        android:visibility="@{lesson.displayLessonNumber == null ? View.GONE : View.VISIBLE}"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
                         android:text="@{lesson.displayLessonNumber.toString()}"
-                        android:textSize="36sp"
+                        android:textAppearance="?textAppearanceHeadlineLarge"
                         android:visibility="@{lesson.displayLessonNumber == null ? View.GONE : View.VISIBLE}"
                         tools:text="4" />
 
@@ -135,20 +124,20 @@
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/shiftedText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:textStyle="italic"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Lekcja przeniesiona na czwartek, 17 października" />
 
                 <Button
                     android:id="@+id/shiftedGoTo"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_go_to_button" />
@@ -160,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:text="[ - ] dodano notatki" />
 
             <LinearLayout
@@ -182,13 +171,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_teacher" />
                     <TextView
                         android:id="@+id/oldTeacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldTeacherName}"
                         android:textIsSelectable="true"
                         android:singleLine="true"
@@ -214,12 +203,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_team" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldTeamName}"
                         android:textIsSelectable="true"
                         android:visibility="@{oldTeamName != null ? View.VISIBLE : View.GONE}"
@@ -253,12 +242,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_classroom" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldClassroom}"
                         android:textIsSelectable="true"
                         android:visibility="@{oldClassroom != null ? View.VISIBLE : View.GONE}"
@@ -285,7 +274,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textAppearance="?textAppearanceLabelMedium"
                         android:text="@string/dialog_lesson_details_id" />
 
                     <TextView
@@ -335,7 +324,7 @@
                     android:gravity="center"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textSize="16sp"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="nieobecność usprawiedliweniowsza1234324" />
 
                 <ImageView
@@ -347,7 +336,7 @@
 
                 <Button
                     android:id="@+id/attendanceDetails"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_attendance_details" />
@@ -370,24 +359,23 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="8dp"
+                    app:srcCompat="@drawable/ic_timetable" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    app:drawableTopCompat="@drawable/ic_no_events"
-                    android:drawablePadding="16dp"
-                    android:fontFamily="sans-serif-light"
                     android:text="@string/dialog_lesson_no_events"
-                    android:textSize="24sp" />
+                    android:textAppearance="?textAppearanceHeadlineSmall" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/dialog_no_events_hint"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textStyle="italic"/>
+                    android:text="@string/dialog_no_events_hint" />
 
             </LinearLayout>
 
@@ -399,13 +387,34 @@
                 tools:visibility="visible"
                 tools:listitem="@layout/event_list_item" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/notesButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/notes_button" />
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addEventButton"
+                    style="?materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:text="@string/add"
+                    app:icon="@drawable/ic_action_add"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/notesButton"
+                    style="?materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:text="@string/notes_button"
+                    android:visibility="gone"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
