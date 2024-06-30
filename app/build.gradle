@@ -124,7 +124,6 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.10.2"
         }
     }
 
@@ -134,7 +133,7 @@ android {
 }
 
 tasks.whenTaskAdded { task ->
-    if (!task.name.endsWith("Release") && !task.name.endsWith("ReleaseWithR8"))
+    if (!(task.name == "minifyUnofficialReleaseWithR8" || task.name == "minifyOfficialReleaseWithR8" || task.name == "signPlayReleaseBundle"))
         return
 
     def renameTaskName = "rename${task.name.capitalize()}"
@@ -146,6 +145,8 @@ tasks.whenTaskAdded { task ->
         flavor = task.name.substring("assemble".length(), task.name.indexOf("Release")).uncapitalize()
     if (task.name.startsWith("minify"))
         flavor = task.name.substring("minify".length(), task.name.indexOf("Release")).uncapitalize()
+    if (task.name.startsWith("sign"))
+        flavor = task.name.substring("sign".length(), task.name.indexOf("Release")).uncapitalize()
 
     def taskName = "package${flavor.capitalize()}Release"
 
@@ -153,9 +154,9 @@ tasks.whenTaskAdded { task ->
         tasks.register(renameTaskName, Copy) {
             dependsOn(taskName)
             from file("${projectDir}/${flavor}/release/"),
-                    file("${layout.buildDirectory}/outputs/mapping/${flavor}Release/"),
-                    file("${layout.buildDirectory}/outputs/apk/${flavor}/release/"),
-                    file("${layout.buildDirectory}/outputs/bundle/${flavor}Release/")
+                    file("${buildDir}/outputs/mapping/${flavor}Release/"),
+                    file("${buildDir}/outputs/apk/${flavor}/release/"),
+                    file("${buildDir}/outputs/bundle/${flavor}Release/")
             include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
             destinationDir file("${projectDir}/release/")
             rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'

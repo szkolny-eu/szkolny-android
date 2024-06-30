@@ -1,0 +1,42 @@
+name: Schedule/dispatch
+on:
+  schedule:
+    # 23:30 UTC, 0:30 or 1:30 CET/CEST
+    - cron: "30 23 * * *"
+  workflow_dispatch:
+jobs:
+  check:
+    name: Check new changes
+    runs-on: ubuntu-latest
+    outputs:
+      hasNewChanges: ${{ steps.nightly.outputs.hasNewChanges }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          clean: false
+      - name: Setup Python
+        uses: actions/setup-python@v4
+      - name: Install packages
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            requests
+      - name: Check new changes
+        id: nightly
+        run: python $GITHUB_WORKSPACE/.github/utils/check_nightly.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT
+
+  build:
+    name: Build nightly release (APK)
+    needs:
+      - check
+    if: ${{ needs.check.outputs.hasNewChanges }}
+    uses: szkolny-eu/szkolny-android/.github/workflows/_build.yml@develop
+    with:
+      nightly: true
+      build-apk: true
+      release-ssh: true
+      release-firebase: true
+      release-discord: true
+    secrets: inherit
