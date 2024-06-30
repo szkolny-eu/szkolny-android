@@ -53,7 +53,11 @@ abstract class BaseConfig<T>(
         var dataVersion = this.currentDataVersion
         while (dataVersion < this.dataVersion) {
             @Suppress("UNCHECKED_CAST")
-            migrations[++dataVersion]?.migrate(this as T)
+            migrations[++dataVersion]?.let {
+                it.db = app.db
+                it.profileId = profileId
+                it.migrate(this as T)
+            }
         }
         this.currentDataVersion = dataVersion
         this.hash = ""

@@ -9,8 +9,8 @@ import pl.szczodrzynski.edziennik.data.db.AppDb
 abstract class BaseMigration<T> {
 
     lateinit var db: AppDb
-    var profileId: Int = -1
-    val profile by lazy { db.profileDao().getByIdNow(profileId) }
+    var profileId: Int? = null
+    val profile by lazy { db.profileDao().getByIdNow(profileId ?: -1) }
 
     abstract fun migrate(config: T): Any
 }

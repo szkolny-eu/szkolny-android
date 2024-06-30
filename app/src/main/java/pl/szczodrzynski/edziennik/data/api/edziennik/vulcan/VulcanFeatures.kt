@@ -30,49 +30,40 @@ const val ENDPOINT_VULCAN_HEBE_MESSAGES_SENT      = 3520
 
 val VulcanFeatures = listOf(
         // timetable
-        Feature(
-            LoginType.VULCAN, FeatureType.TIMETABLE, listOf(
+        Feature(LoginType.VULCAN, FeatureType.TIMETABLE, listOf(
                 ENDPOINT_VULCAN_HEBE_TIMETABLE to LoginMethod.VULCAN_HEBE
         )),
         // agenda
-        Feature(
-            LoginType.VULCAN, FeatureType.AGENDA, listOf(
+        Feature(LoginType.VULCAN, FeatureType.AGENDA, listOf(
                 ENDPOINT_VULCAN_HEBE_EXAMS to LoginMethod.VULCAN_HEBE
         )),
         // grades
-        Feature(
-            LoginType.VULCAN, FeatureType.GRADES, listOf(
+        Feature(LoginType.VULCAN, FeatureType.GRADES, listOf(
                 ENDPOINT_VULCAN_HEBE_GRADES to LoginMethod.VULCAN_HEBE,
                 ENDPOINT_VULCAN_HEBE_GRADE_SUMMARY to LoginMethod.VULCAN_HEBE
         )),
         // homework
-        Feature(
-            LoginType.VULCAN, FeatureType.HOMEWORK, listOf(
+        Feature(LoginType.VULCAN, FeatureType.HOMEWORK, listOf(
                 ENDPOINT_VULCAN_HEBE_HOMEWORK to LoginMethod.VULCAN_HEBE
         )),
         // behaviour
-        Feature(
-            LoginType.VULCAN, FeatureType.BEHAVIOUR, listOf(
+        Feature(LoginType.VULCAN, FeatureType.BEHAVIOUR, listOf(
                 ENDPOINT_VULCAN_HEBE_NOTICES to LoginMethod.VULCAN_HEBE
         )),
         // attendance
-        Feature(
-            LoginType.VULCAN, FeatureType.ATTENDANCE, listOf(
+        Feature(LoginType.VULCAN, FeatureType.ATTENDANCE, listOf(
                 ENDPOINT_VULCAN_HEBE_ATTENDANCE to LoginMethod.VULCAN_HEBE
         )),
         // messages
-        Feature(
-            LoginType.VULCAN, FeatureType.MESSAGES_INBOX, listOf(
+        Feature(LoginType.VULCAN, FeatureType.MESSAGES_INBOX, listOf(
                 ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX to LoginMethod.VULCAN_HEBE
         )),
-        Feature(
-            LoginType.VULCAN, FeatureType.MESSAGES_SENT, listOf(
+        Feature(LoginType.VULCAN, FeatureType.MESSAGES_SENT, listOf(
                 ENDPOINT_VULCAN_HEBE_MESSAGES_SENT to LoginMethod.VULCAN_HEBE
         )),
 
         // push config
-        Feature(
-            LoginType.VULCAN, FeatureType.PUSH_CONFIG, listOf(
+        Feature(LoginType.VULCAN, FeatureType.PUSH_CONFIG, listOf(
                 ENDPOINT_VULCAN_HEBE_PUSH_CONFIG to LoginMethod.VULCAN_HEBE
         )).withShouldSync { data ->
                 !data.app.config.sync.tokenVulcanList.contains(data.profileId)
@@ -81,8 +72,7 @@ val VulcanFeatures = listOf(
         /**
          * Lucky number - using WEB Main.
          */
-        Feature(
-            LoginType.VULCAN, FeatureType.LUCKY_NUMBER, listOf(
+        Feature(LoginType.VULCAN, FeatureType.LUCKY_NUMBER, listOf(
                 ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS to LoginMethod.VULCAN_WEB_MAIN
         ))
                 .withShouldSync { data -> data.shouldSyncLuckyNumber() }
@@ -90,15 +80,13 @@ val VulcanFeatures = listOf(
         /**
          * Lucky number - using Hebe API
          */
-        Feature(
-            LoginType.VULCAN, FeatureType.LUCKY_NUMBER, listOf(
+        Feature(LoginType.VULCAN, FeatureType.LUCKY_NUMBER, listOf(
                 ENDPOINT_VULCAN_HEBE_LUCKY_NUMBER to LoginMethod.VULCAN_HEBE
         ))
                 .withShouldSync { data -> data.shouldSyncLuckyNumber() }
                 .withPriority(1),
 
-        Feature(
-            LoginType.VULCAN, FeatureType.ALWAYS_NEEDED, listOf(
+        Feature(LoginType.VULCAN, FeatureType.ALWAYS_NEEDED, listOf(
                 ENDPOINT_VULCAN_HEBE_MAIN to LoginMethod.VULCAN_HEBE,
                 ENDPOINT_VULCAN_HEBE_ADDRESSBOOK to LoginMethod.VULCAN_HEBE,
                 ENDPOINT_VULCAN_HEBE_TEACHERS to LoginMethod.VULCAN_HEBE,

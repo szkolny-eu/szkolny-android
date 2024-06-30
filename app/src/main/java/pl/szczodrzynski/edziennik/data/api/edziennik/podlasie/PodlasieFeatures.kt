@@ -12,8 +12,7 @@ import pl.szczodrzynski.edziennik.data.enums.LoginType
 const val ENDPOINT_PODLASIE_API_MAIN = 1001
 
 val PodlasieFeatures = listOf(
-        Feature(
-            LoginType.PODLASIE, FeatureType.ALWAYS_NEEDED, listOf(
+        Feature(LoginType.PODLASIE, FeatureType.ALWAYS_NEEDED, listOf(
                 ENDPOINT_PODLASIE_API_MAIN to LoginMethod.PODLASIE_API
         ))
 )

@@ -60,14 +60,12 @@ const val ENDPOINT_LIBRUS_MESSAGES_TRASH                               = 3030
 
 val LibrusFeatures = listOf(
 
-        Feature(
-            LoginType.LIBRUS, FeatureType.ALWAYS_NEEDED, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.ALWAYS_NEEDED, listOf(
                 ENDPOINT_LIBRUS_API_LESSONS to LoginMethod.LIBRUS_API
         )),
 
         // push config
-        Feature(
-            LoginType.LIBRUS, FeatureType.PUSH_CONFIG, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.PUSH_CONFIG, listOf(
                 ENDPOINT_LIBRUS_API_PUSH_CONFIG to LoginMethod.LIBRUS_API
         )).withShouldSync { data ->
                 (data as DataLibrus).isPremium && !data.app.config.sync.tokenLibrusList.contains(data.profileId)
@@ -80,8 +78,7 @@ val LibrusFeatures = listOf(
         /**
          * Timetable - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.TIMETABLE, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.TIMETABLE, listOf(
                 ENDPOINT_LIBRUS_API_TIMETABLES to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_SUBSTITUTIONS to LoginMethod.LIBRUS_API
         )),
@@ -89,8 +86,7 @@ val LibrusFeatures = listOf(
          * Agenda - using API.
          * Events, Parent-teacher meetings, free days (teacher/school/class).
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.AGENDA, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.AGENDA, listOf(
                 ENDPOINT_LIBRUS_API_EVENTS to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_EVENT_TYPES to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_PT_MEETINGS to LoginMethod.LIBRUS_API,
@@ -103,8 +99,7 @@ val LibrusFeatures = listOf(
          * Grades - using API.
          * All grades + categories.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.GRADES, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.GRADES, listOf(
                 ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES to LoginMethod.LIBRUS_API,
@@ -133,23 +128,20 @@ val LibrusFeatures = listOf(
         /**
          * Behaviour - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.BEHAVIOUR, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.BEHAVIOUR, listOf(
                 ENDPOINT_LIBRUS_API_NOTICES to LoginMethod.LIBRUS_API
         )),
         /**
          * Attendance - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.ATTENDANCE, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.ATTENDANCE, listOf(
                 ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_ATTENDANCES to LoginMethod.LIBRUS_API
         )),
         /**
          * Announcements - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.ANNOUNCEMENTS, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.ANNOUNCEMENTS, listOf(
                 ENDPOINT_LIBRUS_API_ANNOUNCEMENTS to LoginMethod.LIBRUS_API
         )),
 
@@ -160,73 +152,63 @@ val LibrusFeatures = listOf(
         /**
          * Student info - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.STUDENT_INFO, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.STUDENT_INFO, listOf(
                 ENDPOINT_LIBRUS_API_ME to LoginMethod.LIBRUS_API
         )),
         /**
          * School info - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.SCHOOL_INFO, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.SCHOOL_INFO, listOf(
                 ENDPOINT_LIBRUS_API_SCHOOLS to LoginMethod.LIBRUS_API,
                 ENDPOINT_LIBRUS_API_UNITS to LoginMethod.LIBRUS_API
         )),
         /**
          * Class info - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.CLASS_INFO, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.CLASS_INFO, listOf(
                 ENDPOINT_LIBRUS_API_CLASSES to LoginMethod.LIBRUS_API
         )),
         /**
          * Team info - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.TEAM_INFO, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.TEAM_INFO, listOf(
                 ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES to LoginMethod.LIBRUS_API
         )),
         /**
          * Lucky number - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.LUCKY_NUMBER, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.LUCKY_NUMBER, listOf(
                 ENDPOINT_LIBRUS_API_LUCKY_NUMBER to LoginMethod.LIBRUS_API
         )).withShouldSync { data -> data.shouldSyncLuckyNumber() },
         /**
          * Teacher list - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.TEACHERS, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.TEACHERS, listOf(
                 ENDPOINT_LIBRUS_API_USERS to LoginMethod.LIBRUS_API
         )),
         /**
          * Subject list - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.SUBJECTS, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.SUBJECTS, listOf(
                 ENDPOINT_LIBRUS_API_SUBJECTS to LoginMethod.LIBRUS_API
         )),
         /**
          * Classroom list - using API.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.CLASSROOMS, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.CLASSROOMS, listOf(
                 ENDPOINT_LIBRUS_API_CLASSROOMS to LoginMethod.LIBRUS_API
         )),
 
         /**
          * Student info - using synergia scrapper.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.STUDENT_INFO, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.STUDENT_INFO, listOf(
                 ENDPOINT_LIBRUS_SYNERGIA_INFO to LoginMethod.LIBRUS_SYNERGIA
         )),
         /**
          * Student number - using synergia scrapper.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.STUDENT_NUMBER, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.STUDENT_NUMBER, listOf(
                 ENDPOINT_LIBRUS_SYNERGIA_INFO to LoginMethod.LIBRUS_SYNERGIA
         )),
 
@@ -247,8 +229,7 @@ val LibrusFeatures = listOf(
          * Homework - using scrapper.
          * Sync only if account has not premium access.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.HOMEWORK, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.HOMEWORK, listOf(
                 ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK to LoginMethod.LIBRUS_SYNERGIA
         ))/*.withShouldSync { data ->
                 !(data as DataLibrus).isPremium
@@ -257,15 +238,13 @@ val LibrusFeatures = listOf(
         /**
          * Messages inbox - using messages website.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.MESSAGES_INBOX, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.MESSAGES_INBOX, listOf(
                 ENDPOINT_LIBRUS_MESSAGES_RECEIVED to LoginMethod.LIBRUS_MESSAGES
         )),
         /**
          * Messages sent - using messages website.
          */
-        Feature(
-            LoginType.LIBRUS, FeatureType.MESSAGES_SENT, listOf(
+        Feature(LoginType.LIBRUS, FeatureType.MESSAGES_SENT, listOf(
                 ENDPOINT_LIBRUS_MESSAGES_SENT to LoginMethod.LIBRUS_MESSAGES
         ))
 )

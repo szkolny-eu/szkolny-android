@@ -19,28 +19,24 @@ val UsosFeatures = listOf(
     /*
     * Student information
     */
-    Feature(
-        LoginType.USOS, FeatureType.STUDENT_INFO, listOf(
+    Feature(LoginType.USOS, FeatureType.STUDENT_INFO, listOf(
         ENDPOINT_USOS_API_USER to LoginMethod.USOS_API,
     )),
 
     /*
     * Terms & courses
     */
-    Feature(
-        LoginType.USOS, FeatureType.SCHOOL_INFO, listOf(
+    Feature(LoginType.USOS, FeatureType.SCHOOL_INFO, listOf(
         ENDPOINT_USOS_API_TERMS to LoginMethod.USOS_API,
     )),
-    Feature(
-        LoginType.USOS, FeatureType.TEAM_INFO, listOf(
+    Feature(LoginType.USOS, FeatureType.TEAM_INFO, listOf(
         ENDPOINT_USOS_API_COURSES to LoginMethod.USOS_API,
     )),
 
     /*
      * Timetable
      */
-    Feature(
-        LoginType.USOS, FeatureType.TIMETABLE, listOf(
+    Feature(LoginType.USOS, FeatureType.TIMETABLE, listOf(
         ENDPOINT_USOS_API_TIMETABLE to LoginMethod.USOS_API,
     )),
 )
