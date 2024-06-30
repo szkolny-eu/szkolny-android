@@ -10,8 +10,10 @@ apply from: 'git-info.gradle'
 android {
     compileSdkVersion setup.compileSdk
 
+    namespace "pl.szczodrzynski.edziennik"
+
     defaultConfig {
-        applicationId 'pl.szczodrzynski.edziennik'
+        applicationId "pl.szczodrzynski.edziennik"
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
 
@@ -129,8 +131,6 @@ android {
     lint {
         checkReleaseBuilds false
     }
-
-    namespace 'pl.szczodrzynski.edziennik'
 }
 
 tasks.whenTaskAdded { task ->
@@ -233,7 +233,6 @@ dependencies {
     implementation "eu.szkolny:szkolny-font:95eabe7"
 
     // Other dependencies
-    debugApi "com.mikepenz:materialize:1.2.1" // required for all R.color.md_* colors
     implementation "cat.ereza:customactivityoncrash:2.3.0"
     implementation "com.android.volley:volley:1.2.1"
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
@@ -258,11 +257,4 @@ dependencies {
 
     // Debug-only dependencies
     debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6"
-
-    // NavLib dependencies
-    // TODO: try to move these dependencies to NavLib build.gradle file
-    implementation "com.mikepenz:materialize:1.2.1"
-    implementation "com.mikepenz:itemanimators:1.1.0"
-
-    testImplementation 'junit:junit:4.13.2'
 }
