@@ -4,12 +4,6 @@
 
 package pl.szczodrzynski.edziennik
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
-import android.graphics.drawable.Icon
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -20,10 +14,6 @@ import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.mikepenz.iconics.Iconics
 import im.wangchao.mhttp.MHttp
@@ -39,12 +29,14 @@ import pl.szczodrzynski.edziennik.core.manager.AttendanceManager
 import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager
 import pl.szczodrzynski.edziennik.core.manager.BuildManager
 import pl.szczodrzynski.edziennik.core.manager.EventManager
+import pl.szczodrzynski.edziennik.core.manager.FirebaseManager
 import pl.szczodrzynski.edziennik.core.manager.GradesManager
 import pl.szczodrzynski.edziennik.core.manager.LoggingManager
 import pl.szczodrzynski.edziennik.core.manager.MessageManager
 import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.core.manager.NotificationManager
 import pl.szczodrzynski.edziennik.core.manager.PermissionManager
+import pl.szczodrzynski.edziennik.core.manager.ShortcutManager
 import pl.szczodrzynski.edziennik.core.manager.TextStylingManager
 import pl.szczodrzynski.edziennik.core.manager.TimetableManager
 import pl.szczodrzynski.edziennik.core.manager.UiManager
@@ -61,10 +53,6 @@ import pl.szczodrzynski.edziennik.data.config.Config
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.LoginType
-import pl.szczodrzynski.edziennik.data.enums.NavTarget
-import pl.szczodrzynski.edziennik.ext.DAY
-import pl.szczodrzynski.edziennik.ext.MS
-import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.PermissionChecker
@@ -98,12 +86,14 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val availabilityManager by lazy { AvailabilityManager(this) }
     val buildManager by lazy { BuildManager(this) }
     val eventManager by lazy { EventManager(this) }
+    val firebaseManager by lazy { FirebaseManager(this) }
     val gradesManager by lazy { GradesManager(this) }
     val loggingManager by lazy { LoggingManager(this) }
     val messageManager by lazy { MessageManager(this) }
     val noteManager by lazy { NoteManager(this) }
     val notificationManager by lazy { NotificationManager(this) }
     val permissionManager by lazy { PermissionManager(this) }
+    val shortcutManager by lazy { ShortcutManager(this) }
     val textStylingManager by lazy { TextStylingManager(this) }
     val timetableManager by lazy { TimetableManager(this) }
     val uiManager by lazy { UiManager(this) }
@@ -247,8 +237,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
 
         launch(Dispatchers.Default) {
+            buildManager.fetchInstalledTime()
+            firebaseManager.initializeApps()
             loggingManager.cleanupIfNeeded()
             loggingManager.cleanupHyperLogDatabase()
+            notificationManager.registerAllChannels()
+            shortcutManager.createShortcuts()
 
             SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 
@@ -261,175 +255,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 UpdateWorker.scheduleNext(this@App, false)
             else
                 UpdateWorker.cancelNext(this@App)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                val shortcutManager = getSystemService(ShortcutManager::class.java)
-
-                val shortcutTimetable = ShortcutInfo.Builder(this@App, "item_timetable")
-                    .setShortLabel(getString(R.string.shortcut_timetable))
-                    .setLongLabel(getString(R.string.shortcut_timetable))
-                    .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_timetable))
-                    .setIntent(
-                        Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                            .putExtras("fragmentId" to NavTarget.TIMETABLE)
-                    )
-                    .build()
-
-                val shortcutAgenda = ShortcutInfo.Builder(this@App, "item_agenda")
-                    .setShortLabel(getString(R.string.shortcut_agenda))
-                    .setLongLabel(getString(R.string.shortcut_agenda))
-                    .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_agenda))
-                    .setIntent(
-                        Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                            .putExtras("fragmentId" to NavTarget.AGENDA)
-                    )
-                    .build()
-
-                val shortcutGrades = ShortcutInfo.Builder(this@App, "item_grades")
-                    .setShortLabel(getString(R.string.shortcut_grades))
-                    .setLongLabel(getString(R.string.shortcut_grades))
-                    .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_grades))
-                    .setIntent(
-                        Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                            .putExtras("fragmentId" to NavTarget.GRADES)
-                    )
-                    .build()
-
-                val shortcutHomework = ShortcutInfo.Builder(this@App, "item_homeworks")
-                    .setShortLabel(getString(R.string.shortcut_homework))
-                    .setLongLabel(getString(R.string.shortcut_homework))
-                    .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_homework))
-                    .setIntent(
-                        Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                            .putExtras("fragmentId" to NavTarget.HOMEWORK)
-                    )
-                    .build()
-
-                val shortcutMessages = ShortcutInfo.Builder(this@App, "item_messages")
-                    .setShortLabel(getString(R.string.shortcut_messages))
-                    .setLongLabel(getString(R.string.shortcut_messages))
-                    .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_messages))
-                    .setIntent(
-                        Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                            .putExtras("fragmentId" to NavTarget.MESSAGES)
-                    )
-                    .build()
-
-                shortcutManager.dynamicShortcuts = listOf(
-                    shortcutTimetable,
-                    shortcutAgenda,
-                    shortcutGrades,
-                    shortcutHomework,
-                    shortcutMessages
-                )
-            } // shortcuts - end
-
-            notificationManager.registerAllChannels()
-
-
-            if (config.appInstalledTime == 0L)
-                try {
-                    config.appInstalledTime =
-                        packageManager.getPackageInfo(packageName, 0).firstInstallTime
-                    config.appRateSnackbarTime = config.appInstalledTime + 7 * DAY * MS
-                } catch (e: PackageManager.NameNotFoundException) {
-                    Timber.e(e)
-                }
-
-            val pushMobidziennikApp = FirebaseApp.initializeApp(
-                this@App,
-                FirebaseOptions.Builder()
-                    .setProjectId("mobidziennik")
-                    .setStorageBucket("mobidziennik.appspot.com")
-                    .setDatabaseUrl("https://mobidziennik.firebaseio.com")
-                    .setGcmSenderId("747285019373")
-                    .setApiKey("AIzaSyCi5LmsZ5BBCQnGtrdvWnp1bWLCNP8OWQE")
-                    .setApplicationId("1:747285019373:android:f6341bf7b158621d")
-                    .build(),
-                "Mobidziennik2"
-            )
-
-            val pushLibrusApp = FirebaseApp.initializeApp(
-                this@App,
-                FirebaseOptions.Builder()
-                    .setProjectId("synergiadru")
-                    .setStorageBucket("synergiadru.appspot.com")
-                    .setDatabaseUrl("https://synergiadru.firebaseio.com")
-                    .setGcmSenderId("513056078587")
-                    .setApiKey("AIzaSyDfTuEoYPKdv4aceEws1CO3n0-HvTndz-o")
-                    .setApplicationId("1:513056078587:android:1e29083b760af544")
-                    .build(),
-                "Librus"
-            )
-
-            val pushVulcanApp = FirebaseApp.initializeApp(
-                this@App,
-                FirebaseOptions.Builder()
-                    .setProjectId("dzienniczekplus")
-                    .setStorageBucket("dzienniczekplus.appspot.com")
-                    .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
-                    .setGcmSenderId("987828170337")
-                    .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
-                    .setApplicationId("1:987828170337:android:ac97431a0a4578c3")
-                    .build(),
-                "Vulcan"
-            )
-
-            val pushVulcanHebeApp = FirebaseApp.initializeApp(
-                this@App,
-                FirebaseOptions.Builder()
-                    .setProjectId("dzienniczekplus")
-                    .setStorageBucket("dzienniczekplus.appspot.com")
-                    .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
-                    .setGcmSenderId("987828170337")
-                    .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
-                    .setApplicationId("1:987828170337:android:7e16404b9e5deaaa")
-                    .build(),
-                "VulcanHebe"
-            )
-
-            try {
-                FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
-                    val token = instanceIdResult.token
-                    Timber.i("Got App token: $token")
-                    config.sync.tokenApp = token
-                }
-                FirebaseInstanceId.getInstance(pushMobidziennikApp).instanceId.addOnSuccessListener { instanceIdResult ->
-                    val token = instanceIdResult.token
-                    Timber.i("Got Mobidziennik2 token: $token")
-                    if (token != config.sync.tokenMobidziennik) {
-                        config.sync.tokenMobidziennik = token
-                        config.sync.tokenMobidziennikList = listOf()
-                    }
-                }
-                FirebaseInstanceId.getInstance(pushLibrusApp).instanceId.addOnSuccessListener { instanceIdResult ->
-                    val token = instanceIdResult.token
-                    Timber.i("Got Librus token: $token")
-                    if (token != config.sync.tokenLibrus) {
-                        config.sync.tokenLibrus = token
-                        config.sync.tokenLibrusList = listOf()
-                    }
-                }
-                FirebaseInstanceId.getInstance(pushVulcanApp).instanceId.addOnSuccessListener { instanceIdResult ->
-                    val token = instanceIdResult.token
-                    Timber.i("Got Vulcan token: $token")
-                    if (token != config.sync.tokenVulcan) {
-                        config.sync.tokenVulcan = token
-                        config.sync.tokenVulcanList = listOf()
-                    }
-                }
-                FirebaseInstanceId.getInstance(pushVulcanHebeApp).instanceId.addOnSuccessListener { instanceIdResult ->
-                    val token = instanceIdResult.token
-                    Timber.i("Got VulcanHebe token: $token")
-                    if (token != config.sync.tokenVulcanHebe) {
-                        config.sync.tokenVulcanHebe = token
-                        config.sync.tokenVulcanHebeList = listOf()
-                    }
-                }
-                FirebaseMessaging.getInstance().subscribeToTopic(packageName)
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
         }
 
         db.metadataDao().countUnseen().observeForever { count: Int ->

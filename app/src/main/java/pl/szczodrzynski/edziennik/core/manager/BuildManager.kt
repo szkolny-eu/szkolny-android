@@ -20,7 +20,9 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.asBoldSpannable
 import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.concat
@@ -99,6 +101,18 @@ class BuildManager(val app: App) : CoroutineScope {
         BuildConfig.VERSION_BASE.contains("-beta.") -> Update.Type.BETA
         BuildConfig.VERSION_BASE.contains("-rc.") -> Update.Type.RC
         else -> Update.Type.RELEASE
+    }
+
+    fun fetchInstalledTime() {
+        if (app.config.appInstalledTime != 0L)
+            return
+        try {
+            app.config.appInstalledTime =
+                app.packageManager.getPackageInfo(app.packageName, 0).firstInstallTime
+            app.config.appRateSnackbarTime = app.config.appInstalledTime + 7 * DAY * MS
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.e(e)
+        }
     }
 
     fun showVersionDialog(activity: AppCompatActivity) {
