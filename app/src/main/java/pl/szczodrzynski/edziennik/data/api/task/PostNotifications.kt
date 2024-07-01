@@ -51,7 +51,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                     else
                         it.setDefaults(NotificationCompat.DEFAULT_ALL)
                 }
-                .setGroup(if (quiet) app.notificationChannelsManager.dataQuiet.key else app.notificationChannelsManager.data.key)
+                .setGroup(if (quiet) app.notificationManager.dataQuiet.key else app.notificationManager.data.key)
     }
 
     private fun buildSummaryText(summaryCounts: Map<NotificationType, Int>): CharSequence {
@@ -79,7 +79,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                 MainActivity::class.java,
                 "fragmentId" to NavTarget.NOTIFICATIONS
         )
-        val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
+        val summaryIntent = PendingIntent.getActivity(app, app.notificationManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 
         // On Nougat or newer - show maximum 8 notifications
         // On Marshmallow or older - show maximum 4 notifications
@@ -95,7 +95,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             }
 
             // Create a summary to show *instead* of notifications
-            val combined = NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
+            val combined = NotificationCompat.Builder(app, app.notificationManager.data.key)
                     .setContentTitle(app.getString(R.string.app_name))
                     .setContentText(buildSummaryText(summaryCounts))
                     .setTicker(newNotificationsText)
@@ -128,7 +128,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             // Less than 8 notifications
             val notifications = nList.map {
                 summaryCounts[it.type] = summaryCounts.getOrDefault(it.type, 0) + 1
-                NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
+                NotificationCompat.Builder(app, app.notificationManager.data.key)
                         .setContentTitle(it.profileName ?: app.getString(R.string.app_name))
                         .setContentText(it.text)
                         .setSubText(if (it.type == NotificationType.SERVER_MESSAGE) null else it.title)
@@ -155,7 +155,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val summary = NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
+                val summary = NotificationCompat.Builder(app, app.notificationManager.data.key)
                         .setContentTitle(newNotificationsText)
                         .setContentText(buildSummaryText(summaryCounts))
                         .setTicker(newNotificationsText)
@@ -170,7 +170,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setAutoCancel(true)
                         .build()
 
-                notificationManager.notify(app.notificationChannelsManager.data.id, summary)
+                notificationManager.notify(app.notificationManager.data.id, summary)
             }
         }
     }}

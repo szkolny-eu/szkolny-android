@@ -313,7 +313,7 @@ class ApiService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("Foreground service onStartCommand")
-        startForeground(app.notificationChannelsManager.sync.id, notification.notification)
+        startForeground(app.notificationManager.sync.id, notification.notification)
         return START_NOT_STICKY
     }
 

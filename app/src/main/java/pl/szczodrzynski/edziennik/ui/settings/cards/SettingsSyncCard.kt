@@ -172,7 +172,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
                 subText = R.string.settings_sync_notifications_settings_subtext,
                 icon = CommunityMaterial.Icon.cmd_cog_outline
             ) {
-                val channel = app.notificationChannelsManager.data.key
+                val channel = app.notificationManager.data.key
                 val intent = Intent().apply {
                     when {
                         SDK_INT >= VERSION_CODES.O -> {

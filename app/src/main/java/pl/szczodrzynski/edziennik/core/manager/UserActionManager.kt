@@ -55,7 +55,7 @@ class UserActionManager(val app: App) {
         )
 
         val notification =
-            NotificationCompat.Builder(app, app.notificationChannelsManager.userAttention.key)
+            NotificationCompat.Builder(app, app.notificationManager.userAttention.key)
                 .setContentTitle(app.getString(R.string.notification_user_action_required_title))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_error_outline)
