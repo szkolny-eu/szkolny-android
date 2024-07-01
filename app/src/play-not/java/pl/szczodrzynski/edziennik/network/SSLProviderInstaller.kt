@@ -21,8 +21,7 @@ object SSLProviderInstaller {
                 rebuildCallback()
             },
             onError = {
-                Timber.e("Failed to install SSLProvider: $it")
-                it.printStackTrace()
+                Timber.e(it, "Failed to install SSLProvider")
             }
         )
     }

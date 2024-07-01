@@ -69,6 +69,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             b.resetEventTypes.isVisible = false
             b.unarchive.isVisible = false
             b.profile.isVisible = false
+            b.clearConfigProfile.isVisible = false
         }
 
         b.last10unseen.onClick {
@@ -165,8 +166,15 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             }
         }
 
+        b.clearConfigProfile.onClick {
+            app.db.configDao().clear(app.profileId)
+        }
+        b.clearConfigGlobal.onClick {
+            app.db.configDao().clear(-1)
+        }
         b.rebuildConfig.onClick {
             App.config = Config(app)
+            App.config.migrate()
         }
 
         val profiles = app.db.profileDao().allNow

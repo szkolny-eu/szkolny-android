@@ -43,6 +43,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
+import timber.log.Timber
 import java.lang.reflect.InvocationTargetException
 
 
@@ -168,13 +169,13 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                     }
                 }
             } catch (e: ClassNotFoundException) {
-                e.printStackTrace()
+                Timber.e(e)
             } catch (e: InvocationTargetException) {
-                e.printStackTrace()
+                Timber.e(e)
             } catch (e: IllegalAccessException) {
-                e.printStackTrace()
+                Timber.e(e)
             } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
+                Timber.e(e)
             }
         }
 

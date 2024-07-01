@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos.login
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.enums.LoginMethod
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {
     companion object {
@@ -43,7 +43,7 @@ class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {
             onSuccess(null)
             return
         }
-        d(TAG, "Using login method $loginMethod")
+        Timber.d("Using login method $loginMethod")
         when (loginMethod) {
             LoginMethod.USOS_API -> {
                 data.startProgress(R.string.edziennik_progress_login_usos_api)

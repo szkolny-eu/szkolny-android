@@ -25,6 +25,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 import java.io.File
 
 class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -58,8 +59,8 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(PodlasieFeatures, featureTypes, onlyEndpoints)
-        Utils.d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
-        Utils.d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
+        Timber.d("LoginMethod IDs: ${data.targetLoginMethods}")
+        Timber.d("Endpoint IDs: ${data.targetEndpoints}")
         PodlasieLogin(data) {
             PodlasieData(data) {
                 completed()
@@ -133,7 +134,7 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     }
 
     override fun cancel() {
-        Utils.d(TAG, "Cancelled")
+        Timber.d("Cancelled")
         data.cancel()
     }
 

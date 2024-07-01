@@ -22,9 +22,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import timber.log.Timber
 import java.net.HttpURLConnection
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.URLEncoder
@@ -189,7 +189,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     ) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
-        d(tag, "Request: Vulcan/Hebe - $url")
+        Timber.tag(tag).d("Request: Vulcan/Hebe - $url")
 
         val privateKey = data.hebePrivateKey
         val publicHash = data.hebePublicHash

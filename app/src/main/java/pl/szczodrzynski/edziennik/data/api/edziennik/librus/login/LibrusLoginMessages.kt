@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.LibrusRecaptchaHelpe
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.getUnixDate
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
@@ -108,7 +108,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
      * XML (Flash messages website) login method. Uses a Synergia login and password.
      */
     private fun loginWithCredentials() {
-        d(TAG, "Request: Librus/Login/Messages - $LIBRUS_MESSAGES_URL/Login")
+        Timber.d("Request: Librus/Login/Messages - $LIBRUS_MESSAGES_URL/Login")
 
         val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val doc = docBuilder.newDocument()
@@ -152,7 +152,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
      * A login method using the Synergia website (/wiadomosci2 Auto Login).
      */
     private fun loginWithSynergia(url: String = "https://synergia.librus.pl/wiadomosci2") {
-        d(TAG, "Request: Librus/Login/Messages - $url")
+        Timber.d("Request: Librus/Login/Messages - $url")
 
         Request.builder()
                 .url(url)

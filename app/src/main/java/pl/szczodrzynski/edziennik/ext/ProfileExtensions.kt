@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
 import pl.szczodrzynski.navlib.getDrawableFromRes
+import timber.log.Timber
 
 // TODO refactor Data* fields and make the receiver non-nullable
 operator fun Profile?.set(key: String, value: JsonElement) = this?.studentData?.add(key, value)
@@ -101,7 +102,7 @@ fun Profile.getDrawable(context: Context): Drawable {
                 RoundedBitmapDrawableFactory.create(context.resources, image ?: "")
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
         }
     }
 

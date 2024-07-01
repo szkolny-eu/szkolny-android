@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.util.Base64
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.ext.sha256
+import timber.log.Timber
 import java.security.MessageDigest
 
 object Signing {
@@ -32,7 +33,7 @@ object Signing {
                 appCertificate = Base64.encodeToString(md.digest(), Base64.NO_WRAP)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
         }
     }}
 

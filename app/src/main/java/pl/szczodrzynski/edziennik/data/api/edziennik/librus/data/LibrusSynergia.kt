@@ -10,7 +10,7 @@ import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
     companion object {
@@ -25,7 +25,7 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
 
     fun synergiaGet(tag: String, endpoint: String, method: Int = GET,
                     parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
-        d(tag, "Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL/$endpoint")
+        Timber.tag(tag).d("Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL/$endpoint")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
@@ -91,7 +91,7 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
     }
 
     fun redirectUrlGet(tag: String, url: String, onSuccess: (url: String) -> Unit) {
-        d(tag, "Request: Librus/Synergia - $url")
+        Timber.tag(tag).d("Request: Librus/Synergia - $url")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response) {

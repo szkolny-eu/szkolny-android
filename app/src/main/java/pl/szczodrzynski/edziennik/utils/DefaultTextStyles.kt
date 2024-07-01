@@ -8,7 +8,7 @@ import android.text.style.StrikethroughSpan
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextButtonsBinding
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.span.*
 
 object DefaultTextStyles {

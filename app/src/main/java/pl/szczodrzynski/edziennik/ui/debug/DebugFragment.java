@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.utils.Themes;
+import timber.log.Timber;
 
 public class DebugFragment extends Fragment {
     App app;
@@ -193,7 +194,7 @@ public class DebugFragment extends Fragment {
                     temp = target;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Timber.e(e);
                 return Log.getStackTraceString(e);
             }
         }

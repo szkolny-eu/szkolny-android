@@ -15,9 +15,8 @@ import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
 import pl.szczodrzynski.edziennik.ext.isNightMode
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig
 
 class StyledTextDialog(
     activity: AppCompatActivity,

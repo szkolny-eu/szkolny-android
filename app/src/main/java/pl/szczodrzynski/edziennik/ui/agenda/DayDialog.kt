@@ -28,7 +28,7 @@ import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week

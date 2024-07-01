@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.HOUR
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-1) {
     companion object {
@@ -49,7 +49,7 @@ class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-
                 notifications.sharedEventNotifications()
             }
         }
-        d(TAG, "Created ${notificationList.count()} notifications.")
+        Timber.d("Created ${notificationList.count()} notifications.")
 
         // filter notifications
         notificationList
@@ -70,7 +70,7 @@ class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-
 
         // post all notifications
         PostNotifications(app, notificationList)
-        d(TAG, "SzkolnyTask: finished in ${System.currentTimeMillis()-startTime} ms.")
+        Timber.d("SzkolnyTask: finished in ${System.currentTimeMillis()-startTime} ms.")
         taskCallback.onCompleted()
     }
 }

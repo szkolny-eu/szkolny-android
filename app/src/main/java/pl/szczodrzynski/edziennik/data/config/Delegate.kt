@@ -4,15 +4,14 @@
 
 package pl.szczodrzynski.edziennik.data.config
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import timber.log.Timber
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.WildcardType
 import kotlin.reflect.KProperty
@@ -108,8 +107,7 @@ class ConfigDelegate<T>(
             value = config[key]?.let(::deserialize)
         } catch (e: Exception) {
             value = getDefault()
-            d(TAG, "Couldn't deserialize '$key'")
-            e.printStackTrace()
+            Timber.e(e, "Couldn't deserialize '$key'")
         }
         if (value == null && !nullable)
             value = getDefault()

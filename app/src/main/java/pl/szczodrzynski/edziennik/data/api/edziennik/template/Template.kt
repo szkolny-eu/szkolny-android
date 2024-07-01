@@ -22,7 +22,7 @@ import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -55,8 +55,8 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(TemplateFeatures, featureTypes, onlyEndpoints)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
+        Timber.d("LoginMethod IDs: ${data.targetLoginMethods}")
+        Timber.d("Endpoint IDs: ${data.targetEndpoints}")
         TemplateLogin(data) {
             TemplateData(data) {
                 completed()
@@ -99,7 +99,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     }
 
     override fun cancel() {
-        d(TAG, "Cancelled")
+        Timber.d("Cancelled")
         data.cancel()
     }
 

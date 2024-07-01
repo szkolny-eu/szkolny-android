@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
+import timber.log.Timber
 
 abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
     companion object {
@@ -159,11 +160,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         }
     }
 
-    private fun d(message: String) {
-        if (DEBUG)
-            Utils.d(TAG, message)
-    }
-
     fun clear() {
         loginMethods.clear()
 
@@ -201,7 +197,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             return // return on first login
         val totalStart = System.currentTimeMillis()
         var startTime = System.currentTimeMillis()
-        d("Saving data to DB")
+        Timber.d("Saving data to DB")
 
         profile.userCode = generateUserCode()
 
@@ -233,7 +229,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             }
         }
 
-        d("Profiles saved in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("Profiles saved in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
         // always present and not empty, during every sync
@@ -250,7 +246,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
 
-        d("Maps saved in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("Maps saved in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
         // may be empty - extracted from DB on demand, by an endpoint
@@ -267,12 +263,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (librusLessons.size > 0)
             db.librusLessonDao().addAll(librusLessons.values())
 
-        d("On-demand maps saved in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("On-demand maps saved in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
         // clear DB with DataRemoveModels added by endpoints
         for (model in toRemove) {
-            d("Clearing DB with $model")
+            Timber.d("Clearing DB with $model")
             when (model) {
                 is DataRemoveModel.Timetable -> model.commit(profileId, db.timetableDao())
                 is DataRemoveModel.Grades -> model.commit(profileId, db.gradeDao())
@@ -281,7 +277,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             }
         }
 
-        d("DB cleared in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("DB cleared in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
         if (metadataList.isNotEmpty())
@@ -289,7 +285,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (setSeenMetadataList.isNotEmpty())
             db.metadataDao().setSeen(setSeenMetadataList)
 
-        d("Metadata saved in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("Metadata saved in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
         db.timetableDao().putAll(lessonList, removeNotKept = true)
@@ -310,9 +306,9 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (messageRecipientIgnoreList.isNotEmpty())
             db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
 
-        d("Other data saved in ${System.currentTimeMillis()-startTime} ms")
+        Timber.d("Other data saved in ${System.currentTimeMillis()-startTime} ms")
 
-        d("Total save time: ${System.currentTimeMillis()-totalStart} ms")
+        Timber.d("Total save time: ${System.currentTimeMillis()-totalStart} ms")
     }
 
     fun setSyncNext(endpointId: Int, syncIn: Long? = null, forceFeatureType: FeatureType? = null, syncAt: Long? = null) {
@@ -339,7 +335,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     abstract fun generateUserCode(): String
 
     fun cancel() {
-        d("Cancelled")
+        Timber.d("Cancelled")
         cancelled = true
         saveData()
     }

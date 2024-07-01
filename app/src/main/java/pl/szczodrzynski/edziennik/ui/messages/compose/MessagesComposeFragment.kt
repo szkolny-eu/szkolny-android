@@ -6,9 +6,6 @@ package pl.szczodrzynski.edziennik.ui.messages.compose
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.*
-import android.text.Spanned.*
-import android.text.style.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,12 +37,10 @@ import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.COMPATIBLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
-import pl.szczodrzynski.edziennik.utils.span.*
+import pl.szczodrzynski.edziennik.core.manager.MessageManager.UIConfig
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.COMPATIBLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.ORIGINAL
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext

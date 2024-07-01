@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 
 class GradeDetailsDialog(
     activity: AppCompatActivity,

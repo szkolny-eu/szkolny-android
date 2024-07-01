@@ -20,7 +20,7 @@ import pl.szczodrzynski.edziennik.ext.join
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.managers.EventManager
+import pl.szczodrzynski.edziennik.core.manager.EventManager
 
 class AgendaEventRenderer(
     val manager: EventManager,

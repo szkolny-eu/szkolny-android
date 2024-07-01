@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaInfo
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
@@ -41,7 +42,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
+        Timber.d("Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             /**
              * API

@@ -20,7 +20,6 @@ import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.config.AppData
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
@@ -50,8 +49,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 

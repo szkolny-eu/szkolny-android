@@ -38,6 +38,7 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
+import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
@@ -394,7 +395,7 @@ class GenerateBlockTimetableDialog(
                 }
                 uri
             } catch (e: Exception) {
-                Log.e("SAVE_IMAGE", e.message, e)
+                Timber.e(e)
                 return@withContext null
             }
 

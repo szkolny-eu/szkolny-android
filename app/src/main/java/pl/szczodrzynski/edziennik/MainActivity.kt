@@ -45,10 +45,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateStateEvent
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.core.work.SyncWorker
+import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
+import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
@@ -66,9 +66,8 @@ import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
-import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
@@ -76,6 +75,7 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
+import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
@@ -123,18 +123,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        d(TAG, "Activity created")
+        Timber.i("Activity created")
 
         app.uiManager.applyTheme(this)
         app.uiManager.applyLanguage(this)
         app.buildManager.validateBuild(this)
 
         if (App.profileId == 0) {
+            Timber.i("Profile is not loaded")
             onProfileListEmptyEvent(ProfileListEmptyEvent())
             return
         }
 
-        d(TAG, "Profile is valid, inflating views")
+        Timber.i("Profile is valid, inflating views")
 
         setContentView(b.root)
 
@@ -542,7 +543,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onProfileListEmptyEvent(event: ProfileListEmptyEvent) {
-        d(TAG, "Profile list is empty. Launch LoginActivity.")
         app.config.loginFinished = false
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
@@ -617,7 +617,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     try {
                         startActivity(Intent(Settings.ACTION_SETTINGS))
                     } catch (e: Exception) {
-                        e.printStackTrace()
+                        Timber.e(e)
                         Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -665,11 +665,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun handleIntent(extras: Bundle?) {
-        d(TAG, "handleIntent() {")
-        extras?.keySet()?.forEach { key ->
-            d(TAG, "    \"$key\": " + extras.get(key))
-        }
-        d(TAG, "}")
+        Timber.d("handleIntent() ${extras?.keySet()}")
 
         val intentProfileId = extras.getIntOrNull("profileId").takePositive()
         var intentNavTarget = extras.getEnum<NavTarget>("fragmentId")
@@ -783,17 +779,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onStart() {
-        d(TAG, "Activity started")
+        Timber.i("Activity started")
         super.onStart()
     }
 
     override fun onStop() {
-        d(TAG, "Activity stopped")
+        Timber.i("Activity stopped")
         super.onStop()
     }
 
     override fun onResume() {
-        d(TAG, "Activity resumed")
+        Timber.i("Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
         ContextCompat.registerReceiver(
@@ -807,14 +803,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onPause() {
-        d(TAG, "Activity paused")
+        Timber.i("Activity paused")
         unregisterReceiver(intentReceiver)
         EventBus.getDefault().unregister(this)
         super.onPause()
     }
 
     override fun onDestroy() {
-        d(TAG, "Activity destroyed")
+        Timber.i("Activity destroyed")
         super.onDestroy()
     }
 
@@ -868,7 +864,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         args: Bundle? = null,
         skipBeforeNavigate: Boolean = false,
     ): Boolean {
-        d(TAG, "navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
+        Timber.d("navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
         if (!(skipBeforeNavigate || navTarget == this.navTarget) && !canNavigate()) {
             bottomSheet.close()
             drawer.close()
@@ -901,7 +897,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         args: Bundle?,
         profileChanged: Boolean,
     ) {
-        d(TAG, "navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
+        Timber.d("navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
 
         if (navTarget.featureType != null && !profile.hasUIFeature(navTarget.featureType)) {
             navigateImpl(profile, NavTarget.HOME, args, profileChanged)
@@ -954,7 +950,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
+        Timber.d("Navigating from ${this.navTarget.name} to ${navTarget.name}")
 
         val fragment = navTarget.fragmentClass?.getDeclaredConstructor()?.newInstance() ?: return
         fragment.arguments = arguments
@@ -1014,9 +1010,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        d("NavDebug", "Current fragment ${navTarget.name}, back stack:")
+        Timber.d("Current fragment ${navTarget.name}, back stack:")
         navBackStack.forEachIndexed { index, item ->
-            d("NavDebug", " - $index: ${item.first.name}")
+            Timber.d(" - $index: ${item.first.name}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -1099,8 +1095,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     BitmapDrawable.createFromPath(it)
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 
@@ -1141,7 +1137,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun setDrawerItems() {
-        d("NavDebug", "setDrawerItems() app.profile = ${app.profile}")
+        Timber.d("setDrawerItems() app.profile = ${app.profile}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
         val drawerItemsMore = arrayListOf<IDrawerItem<*>>()
         val drawerItemsBottom = arrayListOf<IDrawerItem<*>>()

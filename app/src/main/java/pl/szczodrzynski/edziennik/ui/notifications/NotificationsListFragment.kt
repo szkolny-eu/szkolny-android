@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class NotificationsListFragment : Fragment(), CoroutineScope {
@@ -67,7 +68,7 @@ class NotificationsListFragment : Fragment(), CoroutineScope {
             val intent = Intent("android.intent.action.MAIN")
             notification.fillIntent(intent)
 
-            Utils.d(TAG, "notification with item " + notification.navTarget + " extras " + if (intent.extras == null) "null" else intent.extras!!.toString())
+            Timber.d("notification with item " + notification.navTarget + " extras " + if (intent.extras == null) "null" else intent.extras!!.toString())
             if (notification.profileId != null && notification.profileId != -1 && notification.profileId != app.profile.id && context is Activity) {
                 Toast.makeText(app, app.getString(R.string.toast_changing_profile), Toast.LENGTH_LONG).show()
             }

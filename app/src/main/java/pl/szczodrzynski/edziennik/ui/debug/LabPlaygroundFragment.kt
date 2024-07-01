@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class LabPlaygroundFragment : LazyFragment(), CoroutineScope {
@@ -50,7 +50,7 @@ class LabPlaygroundFragment : LazyFragment(), CoroutineScope {
 
     override fun onPageCreated(): Boolean {
 
-        d(TAG, "textColorSecondary: ${android.R.attr.textColorSecondary.resolveAttr(activity)}")
+        Timber.d("textColorSecondary: ${android.R.attr.textColorSecondary.resolveAttr(activity)}")
         b.spanTest1.text = listOf(
             "Text:", "android:textColorSecondary spannable (activity)".asColoredSpannable(
                 android.R.attr.textColorSecondary.resolveAttr(activity)

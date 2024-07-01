@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.databinding.WidgetProfileDialogItemBinding;
 import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
+import timber.log.Timber;
 
 public class WidgetConfigActivity extends Activity {
 
@@ -217,7 +218,7 @@ public class WidgetConfigActivity extends Activity {
             b.wallpaper.setImageDrawable(wallpaperManager.getDrawable());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
         b.theme.check(R.id.themeLight);

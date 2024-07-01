@@ -23,6 +23,7 @@ import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 import java.io.File
 
 class AttachmentsView @JvmOverloads constructor(
@@ -121,7 +122,7 @@ class AttachmentsView @JvmOverloads constructor(
                 }
                 else false
             } catch (e: Exception) {
-                e.printStackTrace()
+                Timber.e(e)
                 false
             }
         } else false

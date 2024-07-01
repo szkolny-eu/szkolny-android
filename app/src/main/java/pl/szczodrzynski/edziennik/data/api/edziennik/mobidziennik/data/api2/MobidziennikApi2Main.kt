@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class MobidziennikApi2Main(val data: DataMobidziennik,
                            val lastSync: Long?,
@@ -33,7 +34,7 @@ class MobidziennikApi2Main(val data: DataMobidziennik,
         get() = data.profile
 
     init {
-        Utils.d(TAG, "Request: Mobidziennik/Api2/Main - https://${data.loginServerName}.mobidziennik.pl/api2/logowanie")
+        Timber.d("Request: Mobidziennik/Api2/Main - https://${data.loginServerName}.mobidziennik.pl/api2/logowanie")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {

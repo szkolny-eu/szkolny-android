@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class AttendanceViewHolder(

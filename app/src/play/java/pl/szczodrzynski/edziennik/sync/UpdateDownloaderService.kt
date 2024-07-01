@@ -8,6 +8,7 @@ import android.app.IntentService
 import android.content.Intent
 import android.widget.Toast
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.java.simpleName) {
 
@@ -16,7 +17,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             Utils.openGooglePlay(this, application.packageName)
         }
         catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
             Toast.makeText(this, "Nie znaleziono Google Play. Pobierz aktualizację ręcznie.", Toast.LENGTH_SHORT).show()
         }
     }

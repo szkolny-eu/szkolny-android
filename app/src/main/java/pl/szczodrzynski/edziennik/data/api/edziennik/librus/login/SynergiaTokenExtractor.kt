@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusPortal
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusPortal(data) {
     companion object {
@@ -45,7 +45,7 @@ class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () ->
         val accountLogin = data.apiLogin ?: return false
         data.portalAccessToken ?: return false
 
-        d(TAG, "Request: Librus/SynergiaTokenExtractor - ${if (data.fakeLogin) FAKE_LIBRUS_ACCOUNT else LIBRUS_ACCOUNT_URL}$accountLogin")
+        Timber.d("Request: Librus/SynergiaTokenExtractor - ${if (data.fakeLogin) FAKE_LIBRUS_ACCOUNT else LIBRUS_ACCOUNT_URL}$accountLogin")
 
         val onSuccess = { json: JsonObject, response: Response? ->
             // synergiaAccount is executed when a synergia token needs a refresh

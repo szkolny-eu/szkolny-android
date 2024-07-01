@@ -12,12 +12,11 @@ import android.os.Build.VERSION_CODES
 import android.provider.Settings
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.work.SyncWorker
+import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.NotificationFilterDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.QuietHoursConfigDialog
@@ -173,7 +172,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
                 subText = R.string.settings_sync_notifications_settings_subtext,
                 icon = CommunityMaterial.Icon.cmd_cog_outline
             ) {
-                val channel = app.notificationChannelsManager.data.key
+                val channel = app.notificationManager.data.key
                 val intent = Intent().apply {
                     when {
                         SDK_INT >= VERSION_CODES.O -> {
