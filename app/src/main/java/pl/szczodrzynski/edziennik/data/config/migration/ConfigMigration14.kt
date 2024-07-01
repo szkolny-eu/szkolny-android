@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.data.enums.Theme.TEAL
 import pl.szczodrzynski.edziennik.data.enums.Theme.Type.M3
 import pl.szczodrzynski.edziennik.ext.toJsonArray
 
-class ConfigMigration13 : BaseMigration<Config>() {
+class ConfigMigration14 : BaseMigration<Config>() {
 
     override fun migrate(config: Config) = config.apply {
         get("theme")?.toIntOrNull()?.let {
@@ -65,7 +65,7 @@ class ConfigMigration13 : BaseMigration<Config>() {
             try {
                 ui.miniMenuButtons = it.map { id -> NavTarget.getById(id.asInt) }.toSet()
             } catch (e: Exception) {
-                ui.miniMenuButtons = NavTarget.getDefaultConfig()
+                ui.miniMenuButtons = ui.miniMenuButtons
             }
         }
     }

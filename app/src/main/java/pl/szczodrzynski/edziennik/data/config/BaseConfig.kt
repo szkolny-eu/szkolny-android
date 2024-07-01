@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.config
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,6 +33,7 @@ abstract class BaseConfig<T>(
     val values = hashMapOf<String, String?>()
 
     private var currentDataVersion: Int by config<Int>("dataVersion") {
+        Log.d(TAG, "Initializing ${this::class.java.simpleName} version $dataVersion")
         currentDataVersion = dataVersion
         dataVersion
     }
@@ -45,15 +47,28 @@ abstract class BaseConfig<T>(
             entries = app.db.configDao().getAllNow()
         values.clear()
         for ((profileId, key, value) in entries!!) {
-            if (profileId.takePositive() != this.profileId)
+            if (profileId != (this.profileId ?: -1))
                 continue
             values[key] = value
+            Log.d(
+                TAG,
+                "Loaded ${this::class.java.simpleName} profile $profileId key $key value $value"
+            )
         }
     }
 
     fun migrate() {
-        if (this.dataVersion == this.currentDataVersion)
+        if (this.dataVersion == this.currentDataVersion) {
+            Log.d(
+                TAG,
+                "Config ${this::class.java.simpleName} is up to date (${this.currentDataVersion})"
+            )
             return
+        }
+        Log.d(
+            TAG,
+            "Migrating ${this::class.java.simpleName} ${this.currentDataVersion} -> ${this.dataVersion}"
+        )
         var dataVersion = this.currentDataVersion
         while (dataVersion < this.dataVersion) {
             @Suppress("UNCHECKED_CAST")

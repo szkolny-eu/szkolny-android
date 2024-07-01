@@ -177,6 +177,22 @@
                 app:backgroundTint="@color/windowBackgroundRed" />
 
             <Button
+                android:id="@+id/clearConfigProfile"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear profile config"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/clearConfigGlobal"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear global config"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/rebuildConfig"
                 style="?materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
