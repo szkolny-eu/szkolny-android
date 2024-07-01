@@ -33,10 +33,6 @@ class MyFirebaseService : FirebaseService(), CoroutineScope {
     override fun onMessageReceived(message: Message) {
         launch(Dispatchers.Default) {
             Timber.d("Message received from ${message.from}: $message")
-            app.getSharedPreferences("firebase_service_log", Context.MODE_PRIVATE).edit().apply {
-                putString(System.currentTimeMillis().toString(), message.toString())
-                apply()
-            }
             val profiles = app.db.profileDao().profilesForFirebaseNow
             when (message.from) {
                 "640759989760" -> SzkolnyAppFirebase(app, profiles, message)

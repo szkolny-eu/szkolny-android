@@ -58,6 +58,7 @@ class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
     var apiKeyCustom by config<String?>(null)
     var appInstalledTime by config<Long>(0L)
     var appRateSnackbarTime by config<Long>(0L)
+    var lastLogCleanupTime by config<Long>(0L)
     var appVersion by config<Int>(BuildConfig.VERSION_CODE)
     var validation by config<String?>(null, "buildValidation")
 

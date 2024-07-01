@@ -203,6 +203,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.config.migrate()
         // add database logging to Timber
         Timber.plant(loggingManager.databaseTree)
+        Timber.i("Initialized Szkolny.eu app v${BuildConfig.VERSION_NAME}")
 
         devMode = config.devMode ?: BuildConfig.DEBUG
         if (config.devModePassword != null)
@@ -239,6 +240,9 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
         launch {
             withContext(Dispatchers.Default) {
+                loggingManager.cleanupIfNeeded()
+                loggingManager.cleanupHyperLogDatabase()
+
                 SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 
                 if (config.sync.enabled)
