@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.sync
+package pl.szczodrzynski.edziennik.core.sync
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -49,8 +49,8 @@ import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.sync.SyncWorker
+import pl.szczodrzynski.edziennik.core.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.DebugLogFormat

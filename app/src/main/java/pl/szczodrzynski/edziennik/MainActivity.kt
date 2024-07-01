@@ -45,10 +45,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateStateEvent
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.sync.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.core.sync.SyncWorker
+import pl.szczodrzynski.edziennik.core.sync.UpdateStateEvent
+import pl.szczodrzynski.edziennik.core.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation

@@ -19,6 +19,7 @@ import androidx.core.content.getSystemService
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.sync.UpdateStateEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File

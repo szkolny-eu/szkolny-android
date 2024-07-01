@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-22.
  */
 
-package pl.szczodrzynski.edziennik.sync
+package pl.szczodrzynski.edziennik.core.sync
 
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 

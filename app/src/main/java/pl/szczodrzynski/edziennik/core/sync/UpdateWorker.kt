@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-1-18.
  */
 
-package pl.szczodrzynski.edziennik.sync
+package pl.szczodrzynski.edziennik.core.sync
 
 import android.annotation.SuppressLint
 import android.content.Context

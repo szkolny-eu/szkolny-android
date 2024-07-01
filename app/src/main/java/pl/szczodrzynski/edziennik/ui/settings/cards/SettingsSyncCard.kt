@@ -16,8 +16,8 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.sync.SyncWorker
+import pl.szczodrzynski.edziennik.core.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.NotificationFilterDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.QuietHoursConfigDialog
