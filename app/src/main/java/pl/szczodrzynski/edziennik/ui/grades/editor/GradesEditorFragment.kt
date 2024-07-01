@@ -22,10 +22,10 @@ import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.input
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_AVG
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_SEM
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_SEM_2_AVG
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_ALL_GRADES
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.floor

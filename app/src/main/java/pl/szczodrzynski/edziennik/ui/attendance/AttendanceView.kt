@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.setTintColor
-import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager
+import pl.szczodrzynski.edziennik.core.manager.AttendanceManager
 
 class AttendanceView : AppCompatTextView {
 

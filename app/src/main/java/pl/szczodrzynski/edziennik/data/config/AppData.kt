@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.mergeWith
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode
 
 data class AppData(
     val configOverrides: Map<String, String>,

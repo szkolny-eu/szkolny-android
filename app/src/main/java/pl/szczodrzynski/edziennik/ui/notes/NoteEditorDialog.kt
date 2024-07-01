@@ -24,8 +24,8 @@ import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfigBase
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

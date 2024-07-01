@@ -28,7 +28,7 @@ import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.core.manager.GradesManager
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext

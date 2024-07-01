@@ -45,10 +45,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.core.sync.AppManagerDetectedEvent
-import pl.szczodrzynski.edziennik.core.sync.SyncWorker
-import pl.szczodrzynski.edziennik.core.sync.UpdateStateEvent
-import pl.szczodrzynski.edziennik.core.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.core.work.SyncWorker
+import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
+import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
@@ -67,8 +67,8 @@ import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
-import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet

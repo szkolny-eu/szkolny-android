@@ -32,7 +32,7 @@ import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginProgressFragmentBinding
 import pl.szczodrzynski.edziennik.ext.getEnum
 import pl.szczodrzynski.edziennik.ext.joinNotNullStrings
-import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 

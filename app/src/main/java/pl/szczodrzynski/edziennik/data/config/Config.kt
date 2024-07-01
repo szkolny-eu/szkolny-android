@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.config.migration.ConfigMigration14
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.Theme
 import pl.szczodrzynski.edziennik.ext.HOUR
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.ORDER_BY_DATE_DESC
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class Config(app: App) : BaseConfig<Config>(app, profileId = null) {

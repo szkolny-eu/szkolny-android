@@ -31,7 +31,7 @@ import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ext.isBeforeYear
 import pl.szczodrzynski.edziennik.ext.shouldArchive
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {

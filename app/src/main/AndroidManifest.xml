@@ -173,7 +173,7 @@
              | | \ \  __/ (_|  __/ |\ V /  __/ |  \__ \
              |_|  \_\___|\___\___|_| \_/ \___|_|  |___/
         -->
-        <receiver android:name=".receivers.UserPresentReceiver"
+        <receiver android:name=".core.receiver.UserPresentReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -186,7 +186,7 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.SzkolnyReceiver"
+        <receiver android:name=".core.receiver.SzkolnyReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="pl.szczodrzynski.edziennik.SZKOLNY_MAIN" />
@@ -201,7 +201,7 @@
              |_____/ \___|_|    \_/ |_|\___\___||___/
         -->
         <service android:name=".data.api.ApiService" android:foregroundServiceType="dataSync"/>
-        <service android:name=".data.firebase.MyFirebaseService"
+        <service android:name=".core.firebase.MyFirebaseService"
             android:exported="false" android:foregroundServiceType="dataSync">
             <intent-filter android:priority="10000000">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
