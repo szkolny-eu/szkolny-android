@@ -90,7 +90,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             get() = profile.id
 
         var enableChucker = false
-        var debugMode = false
         var devMode = false
     }
 
@@ -213,8 +212,11 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.db = AppDb(this)
         App.config = Config(this)
         App.config.migrate()
-        debugMode = BuildConfig.DEBUG
-        devMode = config.devMode ?: debugMode
+
+        devMode = config.devMode ?: BuildConfig.DEBUG
+        if (config.devModePassword != null)
+            checkDevModePassword()
+
         enableChucker = config.enableChucker ?: devMode
         uiManager.applyNightMode()
         uiManager.applyLanguage(this)
@@ -239,9 +241,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         launch {
             withContext(Dispatchers.Default) {
                 SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
-
-                if (config.devModePassword != null)
-                    checkDevModePassword()
 
                 if (config.sync.enabled)
                     SyncWorker.scheduleNext(this@App, false)
@@ -474,8 +473,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     }
 
     fun checkDevModePassword() {
-        devMode = try {
-            Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", config.devModePassword) == "ok here you go it's enabled now" || BuildConfig.DEBUG
+        devMode = devMode || try {
+            Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", config.devModePassword) == "ok here you go it's enabled now"
         } catch (e: Exception) {
             e.printStackTrace()
             false

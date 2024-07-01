@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.ConfigEntry
 import pl.szczodrzynski.edziennik.ext.takePositive
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseConfig<T>(
@@ -19,6 +20,9 @@ abstract class BaseConfig<T>(
     val profileId: Int? = null,
     protected var entries: List<ConfigEntry>? = null,
 ) : CoroutineScope {
+    companion object {
+        private const val TAG = "BaseConfig"
+    }
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -66,6 +70,7 @@ abstract class BaseConfig<T>(
     operator fun set(key: String, value: String?) {
         values[key] = value
         launch(Dispatchers.IO) {
+            d(TAG, "Setting config value ($profileId): $key = $value")
             app.db.configDao().add(ConfigEntry(profileId ?: -1, key, value))
         }
     }

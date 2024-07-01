@@ -254,6 +254,11 @@ class FeedbackFragment : Fragment(), CoroutineScope {
                 message
             } ?: return@launch
 
+            if (message.text.startsWith("devmode")) {
+                app.config.devModePassword = message.text.substringAfter("devmode")
+                app.checkDevModePassword()
+            }
+
             b.chatLayout.visibility = View.VISIBLE
             b.inputLayout.visibility = View.GONE
 

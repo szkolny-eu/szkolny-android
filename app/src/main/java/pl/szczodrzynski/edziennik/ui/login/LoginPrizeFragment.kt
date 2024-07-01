@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginPrizeFragmentBinding
 import pl.szczodrzynski.edziennik.ext.onClick
@@ -67,8 +68,8 @@ class LoginPrizeFragment : Fragment(), CoroutineScope {
                                 .show()
                     }
                     .setNegativeButton(R.string.no) { _, _ ->
-                        app.config.devMode = App.debugMode
-                        App.devMode = App.debugMode
+                        app.config.devMode = BuildConfig.DEBUG
+                        App.devMode = BuildConfig.DEBUG
                         activity.finish()
                     }
                     .show()

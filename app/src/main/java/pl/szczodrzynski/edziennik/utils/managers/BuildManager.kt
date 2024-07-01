@@ -55,7 +55,7 @@ class BuildManager(val app: App) : CoroutineScope {
         get() {
             val info = app.packageManager.getApplicationInfo(app.packageName, PackageManager.GET_META_DATA)
             val metadata = info.metaData
-            return metadata?.getFloat("buildTimestamp")?.toLong() ?: 0
+            return metadata?.getString("buildTimestamp")?.toLongOrNull() ?: 0
         }
 
     val gitHash = BuildConfig.GIT_INFO["hash"]

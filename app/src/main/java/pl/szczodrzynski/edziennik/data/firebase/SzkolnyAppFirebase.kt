@@ -114,6 +114,10 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         }
         withContext(Dispatchers.Default) {
             app.db.feedbackMessageDao().add(message)
+            if (message.text.startsWith("devmode")) {
+                app.config.devModePassword = message.text.substringAfter("devmode")
+                app.checkDevModePassword()
+            }
             if (!EventBus.getDefault().hasSubscriberForEvent(FeedbackMessageEvent::class.java)) {
                 val notification = Notification(
                         id = System.currentTimeMillis(),

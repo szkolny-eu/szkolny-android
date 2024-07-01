@@ -31,7 +31,7 @@ jobs:
     name: Build nightly release (APK)
     needs:
       - check
-    if: ${{ needs.check.outputs.hasNewChanges }}
+    if: ${{ needs.check.outputs.hasNewChanges == 'true' }}
     uses: szkolny-eu/szkolny-android/.github/workflows/_build.yml@develop
     with:
       nightly: true
