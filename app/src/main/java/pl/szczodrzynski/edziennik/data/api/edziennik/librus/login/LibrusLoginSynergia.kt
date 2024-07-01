@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ext.getUnixDate
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusApi(data, null) {
@@ -58,7 +58,7 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
      * A login method using the Synergia API (AutoLoginToken endpoint).
      */
     private fun loginWithApi() {
-        d(TAG, "Request: Librus/Login/Synergia - $LIBRUS_API_URL/AutoLoginToken")
+        Timber.d("Request: Librus/Login/Synergia - $LIBRUS_API_URL/AutoLoginToken")
 
         val onSuccess = { json: JsonObject ->
             loginWithToken(json.getString("Token"))
@@ -73,7 +73,7 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
             return
         }
 
-        d(TAG, "Request: Librus/Login/Synergia - " + LIBRUS_SYNERGIA_TOKEN_LOGIN_URL.replace("TOKEN", token) + "/uczen/widok/centrum_powiadomien")
+        Timber.d("Request: Librus/Login/Synergia - " + LIBRUS_SYNERGIA_TOKEN_LOGIN_URL.replace("TOKEN", token) + "/uczen/widok/centrum_powiadomien")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(json: String?, response: Response?) {

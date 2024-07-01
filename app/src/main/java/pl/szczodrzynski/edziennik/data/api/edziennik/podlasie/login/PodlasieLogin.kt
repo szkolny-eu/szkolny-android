@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class PodlasieLogin(val data: DataPodlasie, val onSuccess: () -> Unit) {
     companion object {
@@ -43,7 +44,7 @@ class PodlasieLogin(val data: DataPodlasie, val onSuccess: () -> Unit) {
             onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethod")
+        Timber.d("Using login method $loginMethod")
         when (loginMethod) {
             LoginMethod.PODLASIE_API -> {
                 data.startProgress(R.string.edziennik_progress_login_podlasie_api)

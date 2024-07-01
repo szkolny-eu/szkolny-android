@@ -277,14 +277,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
         ),
 
         license(
-            "HyperLog Android",
-            "2018",
-            "HyperTrack",
-            OpenSourceLicense.MIT,
-            "https://github.com/hypertrack/hyperlog-android"
-        ),
-
-        license(
             "Color Picker",
             "2016 Jared Rummler,",
             "2015 Daniel Nilsson",

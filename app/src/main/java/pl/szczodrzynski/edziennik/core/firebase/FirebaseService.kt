@@ -14,6 +14,7 @@ import com.google.firebase.iid.zzaz
 import com.google.firebase.messaging.zzc
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.ext.*
+import timber.log.Timber
 import java.util.*
 import com.google.firebase.messaging.zzo.zza as logNotificationOpen
 import com.google.firebase.messaging.zzo.zza as logNotificationReceived
@@ -44,7 +45,7 @@ open class FirebaseService : zzc() {
                 try {
                     it.send()
                 } catch (e: CanceledException) {
-                    Log.e(TAG, "Notification pending intent canceled")
+                    Timber.e("Notification pending intent canceled")
                 }
             }
 
@@ -59,7 +60,7 @@ open class FirebaseService : zzc() {
     final override fun zzc(intent: Intent?) {
         val action = intent?.action
         val json = intent?.toJsonObject()
-        Log.d(TAG, "zzc Intent(action=$action, extras=$json)")
+        Timber.d("zzc Intent(action=$action, extras=$json)")
         if (action == null || json == null)
             return
 
@@ -73,12 +74,13 @@ open class FirebaseService : zzc() {
                 onNewToken(json.getString("token"))
             }
             "com.google.android.c2dm.intent.RECEIVE",
-            "com.google.firebase.messaging.RECEIVE_DIRECT_BOOT" -> {
+            "com.google.firebase.messaging.RECEIVE_DIRECT_BOOT",
+            -> {
                 val messageId = json.getString("google.message_id")
                 if (messageId != null) {
                     // send back an acknowledgement to Google Play Services
                     val ackBundle = Bundle(
-                            "google.message_id" to messageId
+                        "google.message_id" to messageId
                     )
                     zzad.zza(this).zza(2, ackBundle)
                 }
@@ -86,7 +88,7 @@ open class FirebaseService : zzc() {
                 // and add it to queue
                 if (messageId.isNotNullNorEmpty()) {
                     if (messageQueue.contains(messageId)) {
-                        Log.d(TAG, "Received duplicate message: $messageId")
+                        Timber.d("Received duplicate message: $messageId")
                         return
                     }
                     if (messageQueue.size >= 10)
@@ -97,7 +99,7 @@ open class FirebaseService : zzc() {
                 processMessage(messageId, json, intent)
             }
             else -> {
-                Log.d(TAG, "Unknown intent action: $action")
+                Timber.d("Unknown intent action: $action")
             }
         }
     }
@@ -128,7 +130,7 @@ open class FirebaseService : zzc() {
                 )
             }
             else -> {
-                Log.w(TAG, "Received message with unknown type: $it")
+                Timber.w("Received message with unknown type: $it")
                 return
             }
         }

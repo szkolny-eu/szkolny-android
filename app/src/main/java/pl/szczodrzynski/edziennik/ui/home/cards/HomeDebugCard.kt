@@ -15,7 +15,6 @@ import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
 import androidx.work.WorkManager
 import com.chuckerteam.chucker.api.Chucker
-import com.hypertrack.hyperlog.HyperLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -83,19 +82,6 @@ class HomeDebugCard(
 
         b.runChucker.onClick {
             app.startActivity(Chucker.getLaunchIntent(activity, 1));
-        }
-
-        b.getLogs.onClick {
-            val logs = HyperLog.getDeviceLogsInFile(activity, true)
-            val intent = Intent(Intent.ACTION_SEND)
-
-            if (logs.exists()) {
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + logs.absolutePath))
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Share debug logs")
-                intent.putExtra(Intent.EXTRA_TEXT, "Share debug logs")
-                app.startActivity(Intent.createChooser(intent, "Share debug logs"))
-            }
         }
 
         b.refreshWidget.onClick {

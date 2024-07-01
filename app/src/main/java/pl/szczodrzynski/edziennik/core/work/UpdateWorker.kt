@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
@@ -43,7 +44,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             val syncInterval = 4 * DAY;
 
             val syncAt = System.currentTimeMillis() + syncInterval*1000
-            Utils.d(TAG, "Scheduling work at ${syncAt.formatDate()}")
+            Timber.d("Scheduling work at ${syncAt.formatDate()}")
 
             val constraints = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -62,7 +63,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
          * Cancel any scheduled sync job.
          */
         fun cancelNext(app: App) {
-            Utils.d(TAG, "Cancelling work by tag $TAG")
+            Timber.d("Cancelling work by tag $TAG")
             WorkManager.getInstance(app).cancelAllWorkByTag(TAG)
         }
     }
@@ -72,7 +73,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
         get() = job + Dispatchers.Main
 
     override fun doWork(): Result {
-        Utils.d(TAG, "Running worker ID ${params.id}")
+        Timber.d("Running worker ID ${params.id}")
         val app = context as App
         if (!app.config.sync.notifyAboutUpdates) {
             return Result.success()

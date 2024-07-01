@@ -34,7 +34,7 @@ import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.ext.toJsonObject
 import pl.szczodrzynski.edziennik.ui.base.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -235,7 +235,7 @@ class BuildManager(val app: App) : CoroutineScope {
     fun validateBuild(activity: AppCompatActivity) {
         launch {
             gitRemote = getRemoteRepo()
-            d("BuildManager", "isSigned = $isSigned, buildType = $buildType, buildFlavor = $buildFlavor, remote = $gitRemote")
+            Timber.d("isSigned = $isSigned, buildType = $buildType, buildFlavor = $buildFlavor, remote = $gitRemote")
 
             // officially signed package
             if (isSigned)

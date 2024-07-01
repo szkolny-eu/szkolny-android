@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
+import timber.log.Timber;
+
 public class Time implements Comparable<Time> {
     public int hour = 0;
     public int minute = 0;
@@ -88,7 +90,7 @@ public class Time implements Comparable<Time> {
             return new Time(Integer.parseInt(time.substring(0, 2)), Integer.parseInt(time.substring(2, 4)), Integer.parseInt(time.substring(4, 6)));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return new Time(0, 0, 0);
         }
     }
@@ -102,7 +104,7 @@ public class Time implements Comparable<Time> {
             return new Time(Integer.parseInt(time.substring(0, 2)), Integer.parseInt(time.substring(3, 5)), 0);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return new Time(0, 0, 0);
         }
     }
@@ -116,7 +118,7 @@ public class Time implements Comparable<Time> {
             return new Time(Integer.parseInt(time.substring(0, 2)), Integer.parseInt(time.substring(3, 5)), Integer.parseInt(time.substring(6, 8)));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return new Time(0, 0, 0);
         }
     }

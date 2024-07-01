@@ -30,8 +30,8 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ext.isBeforeYear
 import pl.szczodrzynski.edziennik.ext.shouldArchive
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import timber.log.Timber
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -80,16 +80,16 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     internal fun run(app: App, taskCallback: EdziennikCallback) {
         profile?.let { profile ->
             if (profile.archived) {
-                d(TAG, "The profile $profileId is archived")
+                Timber.d("The profile $profileId is archived")
                 taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))
                 return
             }
             else if (profile.shouldArchive()) {
-                d(TAG, "The profile $profileId's year ended on ${profile.dateYearEnd}, archiving")
+                Timber.d("The profile $profileId's year ended on ${profile.dateYearEnd}, archiving")
                 ProfileArchiver(app, profile)
             }
             if (profile.isBeforeYear()) {
-                d(TAG, "The profile $profileId's school year has not started yet; aborting sync")
+                Timber.d("The profile $profileId's school year has not started yet; aborting sync")
                 cancel()
                 taskCallback.onCompleted()
                 return
@@ -143,7 +143,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     }
 
     override fun cancel() {
-        d(TAG, "Task ${toString()} cancelling...")
+        Timber.d("Task ${toString()} cancelling...")
         edziennikInterface?.cancel()
     }
 

@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.ext.crc16
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.set
 import kotlin.coroutines.CoroutineContext
@@ -212,7 +213,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             else
                 Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).also { bmp ->
                     launch {
-                        Log.d(TAG, "Created image for $userName")
+                        Timber.d("Created image for " + userName)
                         val request = ImageRequest.Builder(activity)
                             .data(image)
                             .target {

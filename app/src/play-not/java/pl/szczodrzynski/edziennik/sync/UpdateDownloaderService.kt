@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 import java.io.File
 
 class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.java.simpleName) {
@@ -39,7 +40,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             true
         }
         catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
             false
         }
     }
@@ -118,8 +119,8 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         request.setDescription(app.getString(R.string.notification_downloading_update))
         try {
             request.setDestinationInExternalFilesDir(app, null, downloadFilename)
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Timber.e(e)
             Toast.makeText(app, "Nie można znaleźć katalogu docelowego. Pobierz aktualizację ręcznie z Google Play.", Toast.LENGTH_LONG).show()
             return
         }

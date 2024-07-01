@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.getString
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 open class LibrusPortal(open val data: DataLibrus) {
@@ -24,7 +24,7 @@ open class LibrusPortal(open val data: DataLibrus) {
 
     fun portalGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject, response: Response?) -> Unit) {
 
-        d(tag, "Request: Librus/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_PORTAL else LIBRUS_PORTAL_URL}$endpoint")
+        Timber.tag(tag).d("Request: Librus/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_PORTAL else LIBRUS_PORTAL_URL}$endpoint")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
@@ -59,8 +59,8 @@ open class LibrusPortal(open val data: DataLibrus) {
                 if (response?.code() == HttpURLConnection.HTTP_OK) {
                     try {
                         onSuccess(json, response)
-                    } catch (e: NullPointerException) {
-                        e.printStackTrace()
+                    } catch (e: Exception) {
+                        Timber.e(e)
                         data.error(ApiError(tag, EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN)
                                 .withResponse(response)
                                 .withThrowable(e)

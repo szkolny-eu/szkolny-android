@@ -19,12 +19,6 @@
             android:text="Warning! Do not move this debug card, or you will probably confuse the internal card ID list, thus resulting in a weird and (maybe)non-undoable card order."/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/getLogs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Debug Logs" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/librusCaptchaButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

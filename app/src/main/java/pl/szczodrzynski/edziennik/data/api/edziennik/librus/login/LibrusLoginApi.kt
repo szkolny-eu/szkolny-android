@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.data.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ext.getUnixDate
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection.*
 
 @Suppress("ConvertSecondaryConstructorToPrimary")
@@ -171,7 +171,7 @@ class LibrusLoginApi {
     }
 
     private fun synergiaGetToken() {
-        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
+        Timber.d("Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
 
         Request.builder()
                 .url(LIBRUS_API_TOKEN_URL)
@@ -192,7 +192,7 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun synergiaRefreshToken() {
-        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
+        Timber.d("Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
 
         Request.builder()
                 .url(LIBRUS_API_TOKEN_URL)
@@ -211,7 +211,7 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun jstGetToken() {
-        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
+        Timber.d("Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
 
         Request.builder()
                 .url(LIBRUS_API_TOKEN_JST_URL)
@@ -233,7 +233,7 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun jstRefreshToken() {
-        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
+        Timber.d("Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
 
         Request.builder()
                 .url(LIBRUS_API_TOKEN_JST_URL)

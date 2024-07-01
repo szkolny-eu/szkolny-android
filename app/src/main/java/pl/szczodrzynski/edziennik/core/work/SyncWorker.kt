@@ -6,7 +6,7 @@ import androidx.work.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.ext.formatDate
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class SyncWorker(val context: Context, val params: WorkerParameters) : Worker(context, params) {
@@ -38,7 +38,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) : Worker(co
             val syncInterval = app.config.sync.interval.toLong()
 
             val syncAt = System.currentTimeMillis() + syncInterval*1000
-            d(TAG, "Scheduling work at ${syncAt.formatDate()}")
+            Timber.d("Scheduling work at ${syncAt.formatDate()}")
 
             val constraints = Constraints.Builder()
                     .setRequiredNetworkType(
@@ -61,14 +61,14 @@ class SyncWorker(val context: Context, val params: WorkerParameters) : Worker(co
          * Cancel any scheduled sync job.
          */
         fun cancelNext(app: App) {
-            d(TAG, "Cancelling work by tag $TAG")
+            Timber.d("Cancelling work by tag $TAG")
             WorkManager.getInstance(app).cancelAllWorkByTag(TAG)
             //WorkManager.getInstance(app).pruneWork() // do not prune the work in order to look for failed tasks
         }
     }
 
     override fun doWork(): Result {
-        d(TAG, "Running worker ID ${params.id}")
+        Timber.d("Running worker ID ${params.id}")
         EdziennikTask.sync().enqueue(context)
         rescheduleNext(context as App)
         return Result.success()

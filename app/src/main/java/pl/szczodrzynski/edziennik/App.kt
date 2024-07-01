@@ -25,7 +25,6 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
 import im.wangchao.mhttp.MHttp
 import kotlinx.coroutines.CoroutineScope
@@ -53,15 +52,14 @@ import pl.szczodrzynski.edziennik.core.work.SyncWorker
 import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
-import pl.szczodrzynski.edziennik.utils.DebugLogFormat
 import pl.szczodrzynski.edziennik.utils.PermissionChecker
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.core.manager.AttendanceManager
 import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager
 import pl.szczodrzynski.edziennik.core.manager.BuildManager
 import pl.szczodrzynski.edziennik.core.manager.EventManager
 import pl.szczodrzynski.edziennik.core.manager.GradesManager
+import pl.szczodrzynski.edziennik.core.manager.LoggingManager
 import pl.szczodrzynski.edziennik.core.manager.MessageManager
 import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.core.manager.NotificationChannelsManager
@@ -71,6 +69,7 @@ import pl.szczodrzynski.edziennik.core.manager.UiManager
 import pl.szczodrzynski.edziennik.core.manager.TimetableManager
 import pl.szczodrzynski.edziennik.core.manager.UpdateManager
 import pl.szczodrzynski.edziennik.core.manager.UserActionManager
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.system.exitProcess
@@ -99,6 +98,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val buildManager by lazy { BuildManager(this) }
     val eventManager by lazy { EventManager(this) }
     val gradesManager by lazy { GradesManager(this) }
+    val loggingManager by lazy { LoggingManager(this) }
     val messageManager by lazy { MessageManager(this) }
     val noteManager by lazy { NoteManager(this) }
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
@@ -191,6 +191,24 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
           \___/|_| |_|\_____|_|  \___|\__,_|\__\__*/
     override fun onCreate() {
         super.onCreate()
+
+        // initialize Timber to enable basic logging
+        Timber.plant(loggingManager.logcatTree)
+        Timber.i("Initializing Szkolny.eu app v${BuildConfig.VERSION_NAME}")
+        // initialize core objects
+        AppData.read(this)
+        App.db = AppDb(this)
+        // read and migrate global config
+        App.config = Config(this)
+        App.config.migrate()
+        // add database logging to Timber
+        Timber.plant(loggingManager.databaseTree)
+
+        devMode = config.devMode ?: BuildConfig.DEBUG
+        if (config.devModePassword != null)
+            checkDevModePassword()
+        enableChucker = config.enableChucker ?: devMode
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
@@ -206,37 +224,18 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .apply()
         Iconics.init(applicationContext)
         Iconics.respectFontBoundsDefault = true
+        Signing.getCert(this)
+        Utils.initializeStorageDir(this)
+        buildHttp()
 
-        // initialize companion object values
-        AppData.read(this)
-        App.db = AppDb(this)
-        App.config = Config(this)
-        App.config.migrate()
-
-        devMode = config.devMode ?: BuildConfig.DEBUG
-        if (config.devModePassword != null)
-            checkDevModePassword()
-
-        enableChucker = config.enableChucker ?: devMode
         uiManager.applyNightMode()
         uiManager.applyLanguage(this)
-
-        if (devMode) {
-            HyperLog.initialize(this)
-            HyperLog.setLogLevel(Log.VERBOSE)
-            HyperLog.setLogFormat(DebugLogFormat(this))
-        }
 
         if (!profileLoadById(config.lastProfileId)) {
             val success = db.profileDao().firstId?.let { profileLoadById(it) }
             if (success != true)
                 profileLoad(Profile(0, 0, LoginType.TEMPLATE, ""))
         }
-
-        buildHttp()
-
-        Signing.getCert(this)
-        Utils.initializeStorageDir(this)
 
         launch {
             withContext(Dispatchers.Default) {
@@ -307,7 +306,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                         config.appInstalledTime = packageManager.getPackageInfo(packageName, 0).firstInstallTime
                         config.appRateSnackbarTime = config.appInstalledTime + 7 * DAY * MS
                     } catch (e: PackageManager.NameNotFoundException) {
-                        e.printStackTrace()
+                        Timber.e(e)
                     }
 
                 val pushMobidziennikApp = FirebaseApp.initializeApp(
@@ -365,12 +364,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 try {
                     FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
-                        d("Firebase", "Got App token: $token")
+                        Timber.i("Got App token: $token")
                         config.sync.tokenApp = token
                     }
                     FirebaseInstanceId.getInstance(pushMobidziennikApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
-                        d("Firebase", "Got Mobidziennik2 token: $token")
+                        Timber.i("Got Mobidziennik2 token: $token")
                         if (token != config.sync.tokenMobidziennik) {
                             config.sync.tokenMobidziennik = token
                             config.sync.tokenMobidziennikList = listOf()
@@ -378,7 +377,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     }
                     FirebaseInstanceId.getInstance(pushLibrusApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
-                        d("Firebase", "Got Librus token: $token")
+                        Timber.i("Got Librus token: $token")
                         if (token != config.sync.tokenLibrus) {
                             config.sync.tokenLibrus = token
                             config.sync.tokenLibrusList = listOf()
@@ -386,7 +385,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     }
                     FirebaseInstanceId.getInstance(pushVulcanApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
-                        d("Firebase", "Got Vulcan token: $token")
+                        Timber.i("Got Vulcan token: $token")
                         if (token != config.sync.tokenVulcan) {
                             config.sync.tokenVulcan = token
                             config.sync.tokenVulcanList = listOf()
@@ -394,15 +393,15 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     }
                     FirebaseInstanceId.getInstance(pushVulcanHebeApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
-                        d("Firebase", "Got VulcanHebe token: $token")
+                        Timber.i("Got VulcanHebe token: $token")
                         if (token != config.sync.tokenVulcanHebe) {
                             config.sync.tokenVulcanHebe = token
                             config.sync.tokenVulcanHebeList = listOf()
                         }
                     }
                     FirebaseMessaging.getInstance().subscribeToTopic(packageName)
-                } catch (e: IllegalStateException) {
-                    e.printStackTrace()
+                } catch (e: Exception) {
+                    Timber.e(e)
                 }
             }
 
@@ -418,7 +417,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.config.lastProfileId = profile.id
         try {
             App.data = AppData.get(profile.loginStoreType)
-            d("App", "Loaded AppData: ${App.data}")
+            Timber.d("Loaded AppData: ${App.data}")
             // apply newly-added config overrides, if not changed by the user yet
             for ((key, value) in App.data.configOverrides) {
                 val config = App.profile.config
@@ -426,7 +425,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     config[key] = value
             }
         } catch (e: Exception) {
-            Log.e("App", "Cannot load AppData", e)
+            Timber.e(e, "Cannot load AppData")
             Toast.makeText(this, R.string.app_cannot_load_data, Toast.LENGTH_LONG).show()
             exitProcess(0)
         }
@@ -476,7 +475,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         devMode = devMode || try {
             Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", config.devModePassword) == "ok here you go it's enabled now"
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e)
             false
         }
     }

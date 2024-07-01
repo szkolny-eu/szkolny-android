@@ -24,7 +24,7 @@ import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginActivity
 import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginResult
 import pl.szczodrzynski.edziennik.ui.login.recaptcha.RecaptchaActivity
 import pl.szczodrzynski.edziennik.ui.login.recaptcha.RecaptchaResult
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class UserActionManager(val app: App) {
     companion object {
@@ -82,7 +82,7 @@ class UserActionManager(val app: App) {
         event: UserActionRequiredEvent,
         callback: UserActionCallback,
     ) {
-        d(TAG, "Running user action (${event.type}) with params: ${event.params}")
+        Timber.d("Running user action (${event.type}) with params: ${event.params}")
         val isSuccessful = when (event.type) {
             UserActionRequiredEvent.Type.RECAPTCHA -> executeRecaptcha(activity, event, callback)
             UserActionRequiredEvent.Type.OAUTH -> executeOauth(activity, event, callback)

@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class MyFirebaseService : FirebaseService(), CoroutineScope {
@@ -25,13 +26,13 @@ class MyFirebaseService : FirebaseService(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     override fun onNewToken(token: String?) {
-        Log.d(TAG, "Got new token: $token")
+        Timber.d("Got new token: $token")
         app.config.sync.tokenApp = token
     }
 
     override fun onMessageReceived(message: Message) {
         launch(Dispatchers.Default) {
-            Log.d(TAG, "Message received from ${message.from}: $message")
+            Timber.d("Message received from ${message.from}: $message")
             app.getSharedPreferences("firebase_service_log", Context.MODE_PRIVATE).edit().apply {
                 putString(System.currentTimeMillis().toString(), message.toString())
                 apply()

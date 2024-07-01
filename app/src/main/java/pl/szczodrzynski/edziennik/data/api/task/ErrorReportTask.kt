@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.EdziennikNotification
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class ErrorReportTask : IApiTask(-1) {
     override fun prepare(app: App) {
@@ -23,7 +24,7 @@ class ErrorReportTask : IApiTask(-1) {
 
     fun run(app: App, taskCallback: EdziennikCallback, notification: EdziennikNotification, errorList: MutableList<ApiError>) {
         errorList.forEach { error ->
-            Utils.d(ApiService.TAG, "Error ${error.tag} profile ${error.profileId}: code ${error.errorCode}")
+            Timber.d("Error ${error.tag} profile ${error.profileId}: code ${error.errorCode}")
         }
         errorList.clear()
 

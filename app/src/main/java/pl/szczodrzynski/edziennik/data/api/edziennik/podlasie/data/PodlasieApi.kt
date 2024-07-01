@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.toHexString
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +35,7 @@ open class PodlasieApi(open val data: DataPodlasie, open val lastSync: Long?) {
     fun apiGet(tag: String, endpoint: String, onSuccess: (json: JsonObject) -> Unit) {
         val url = PODLASIE_API_URL + endpoint
 
-        Utils.d(tag, "Request: Podlasie/Api - $url")
+        Timber.tag(tag).d("Request: Podlasie/Api - $url")
 
         if (data.apiToken == null) {
             data.error(tag, ERROR_PODLASIE_API_NO_TOKEN)

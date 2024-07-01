@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection.*
 import java.util.*
 import java.util.regex.Pattern
@@ -63,7 +63,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }}
 
     private fun authorize(url: String, referer: String? = null) {
-        d(TAG, "Request: Librus/Login/Portal - $url")
+        Timber.d("Request: Librus/Login/Portal - $url")
 
         Request.builder()
                 .url(url)
@@ -176,7 +176,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
             return
         }
 
-        d(TAG, "Request: Librus/Login/Portal - $url")
+        Timber.d("Request: Librus/Login/Portal - $url")
 
         val recaptchaCode = data.arguments?.getString("recaptchaCode") ?: data.loginStore.getLoginData("recaptchaCode", null)
         val recaptchaTime = data.arguments?.getLong("recaptchaTime") ?: data.loginStore.getLoginData("recaptchaTime", 0L)
@@ -239,7 +239,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun accessToken(code: String?, refreshToken: String?) {
-        d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_TOKEN else LIBRUS_TOKEN_URL}")
+        Timber.d("Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_TOKEN else LIBRUS_TOKEN_URL}")
 
         val onSuccess = { json: JsonObject, response: Response? ->
             data.portalAccessToken = json.getString("access_token")

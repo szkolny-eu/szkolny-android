@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.data.enums.Theme
 import pl.szczodrzynski.edziennik.data.enums.Theme.Mode
 import pl.szczodrzynski.edziennik.data.enums.Theme.Type
 import pl.szczodrzynski.edziennik.ext.isNightMode
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.util.Locale
 
 class UiManager(val app: App) {
@@ -63,7 +63,7 @@ class UiManager(val app: App) {
             ) {
                 color = Theme.BLUE
             }
-            d(TAG, "Applying theme $color($type, $mode)")
+            Timber.d("Applying theme $color($type, $mode)")
             color.styleRes[type to mode] ?: color.styleRes[Type.M3 to Mode.DAYNIGHT]!!
         }
         activity.setTheme(themeRes)

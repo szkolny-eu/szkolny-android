@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import timber.log.Timber
 
 @Entity(tableName = "notifications")
 data class Notification(
@@ -74,8 +75,8 @@ data class Notification(
                     intent.putExtra(key, primitive.asString)
                 }
             }
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 

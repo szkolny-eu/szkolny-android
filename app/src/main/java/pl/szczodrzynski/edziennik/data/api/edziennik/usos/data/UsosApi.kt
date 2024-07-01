@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLoginApi
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection.*
 import java.util.UUID
 
@@ -89,7 +89,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
         onSuccess: (data: T, response: Response?) -> Unit,
     ) {
         val url = "${data.instanceUrl}services/$service"
-        d(tag, "Request: Usos/Api - $url")
+        Timber.tag(tag).d("Request: Usos/Api - $url")
 
         val formData = mutableMapOf<String, String>()
         if (params != null)

@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.getUnixDate
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -36,7 +36,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
     }}
 
     private fun loginWithCredentials() {
-        d(TAG, "Request: Mobidziennik/Login/Web - https://${data.loginServerName}.mobidziennik.pl/api/")
+        Timber.d("Request: Mobidziennik/Login/Web - https://${data.loginServerName}.mobidziennik.pl/api/")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
