@@ -6,13 +6,13 @@
 [![Oficjalna strona](https://img.shields.io/badge/-website-orange?style=for-the-badge&logo=internet-explorer&logoColor=white)](https://szkolny.eu/)
 [![Facebook Fanpage](https://img.shields.io/badge/-facebook-blue?style=for-the-badge&logo=facebook&logoColor=white)](https://szkolny.eu/facebook)
 
-![Wersja Androida](https://img.shields.io/badge/android-4.1%2B-orange?style=for-the-badge&logo=android)
+![Wersja Androida](https://img.shields.io/badge/android-4.4%2B-orange?style=for-the-badge&logo=android)
 [![Najnowsza wersja](https://img.shields.io/github/v/release/szkolny-eu/szkolny-android?color=%2344CC11&include_prereleases&logo=github&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/releases/latest)
 ![Licencja](https://img.shields.io/github/license/szkolny-eu/szkolny-android?color=blue&logo=github&logoColor=white&style=for-the-badge)
 
-[![Release build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-release-apk.yml?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-apk.yml)
-[![Play build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-release-aab-play.yml?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-aab-play.yml)
-[![Nightly build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/build-nightly-apk.yml?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-nightly-apk.yml)
+[![Release build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/release.yml?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/release.yml)
+[![Play build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/push-master.yml?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/push-master.yml)
+[![Nightly build](https://img.shields.io/github/actions/workflow/status/szkolny-eu/szkolny-android/schedule-dispatch.yml?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/schedule-dispatch.yml)
 
 </div>
 
