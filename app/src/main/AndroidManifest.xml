@@ -126,7 +126,7 @@
               / ____ \ (__| |_| |\ V /| | |_| |  __/\__ \
              /_/    \_\___|\__|_| \_/ |_|\__|_|\___||___/
         -->
-        <activity android:name=".ui.base.CrashActivity"
+        <activity android:name=".ui.main.CrashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:exported="false"
@@ -163,7 +163,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
-        <activity android:name=".ui.base.BuildInvalidActivity" android:exported="false" />
+        <activity android:name=".ui.main.BuildInvalidActivity" android:exported="false" />
         <activity android:name=".ui.settings.contributors.ContributorsActivity" android:exported="false" />
 
         <!--  _____               _

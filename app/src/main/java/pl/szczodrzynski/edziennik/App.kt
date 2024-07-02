@@ -54,7 +54,7 @@ import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
-import pl.szczodrzynski.edziennik.ui.base.CrashActivity
+import pl.szczodrzynski.edziennik.ui.main.CrashActivity
 import pl.szczodrzynski.edziennik.utils.PermissionChecker
 import pl.szczodrzynski.edziennik.utils.Utils
 import timber.log.Timber

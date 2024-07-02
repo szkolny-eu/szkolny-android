@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2021-3-27.
  */
 
-package pl.szczodrzynski.edziennik.ui.base
+package pl.szczodrzynski.edziennik.ui.main
 
 import android.graphics.Color
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.mikepenz.iconics.utils.colorInt
 import pl.szczodrzynski.edziennik.databinding.ActivityBuildInvalidBinding
 import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class BuildInvalidActivity : AppCompatActivity() {
 

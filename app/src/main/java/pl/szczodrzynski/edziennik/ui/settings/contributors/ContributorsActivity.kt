@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.onLongClick
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext
 import kotlin.system.exitProcess
 

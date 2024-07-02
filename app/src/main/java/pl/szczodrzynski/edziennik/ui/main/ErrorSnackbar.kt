@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-13.
  */
 
-package pl.szczodrzynski.edziennik.ui.error
+package pl.szczodrzynski.edziennik.ui.main
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
 import pl.szczodrzynski.navlib.getColorFromAttr
 import kotlin.coroutines.CoroutineContext
 

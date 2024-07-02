@@ -34,7 +34,7 @@ import pl.szczodrzynski.edziennik.ext.md5
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.ext.toJsonObject
-import pl.szczodrzynski.edziennik.ui.base.BuildInvalidActivity
+import pl.szczodrzynski.edziennik.ui.main.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import timber.log.Timber
 import java.time.Instant

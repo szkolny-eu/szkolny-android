@@ -49,7 +49,7 @@ import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.core.work.SyncWorker
 import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
 import pl.szczodrzynski.edziennik.core.work.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
+import pl.szczodrzynski.edziennik.ui.main.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
@@ -59,8 +59,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateProgressDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -76,7 +76,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import timber.log.Timber
-import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 

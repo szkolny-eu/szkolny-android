@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.base
+package pl.szczodrzynski.edziennik.ui.main
 
 import android.content.ClipData
 import android.content.ClipboardManager

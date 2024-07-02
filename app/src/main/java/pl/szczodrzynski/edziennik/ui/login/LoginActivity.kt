@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import kotlin.coroutines.CoroutineContext
 

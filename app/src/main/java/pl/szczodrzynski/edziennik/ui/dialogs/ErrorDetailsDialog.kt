@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-2-16.
  */
 
-package pl.szczodrzynski.edziennik.ui.error
+package pl.szczodrzynski.edziennik.ui.dialogs
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity

@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-12-22.
  */
 
-package pl.szczodrzynski.edziennik.ui.base
+package pl.szczodrzynski.edziennik.ui.main
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
