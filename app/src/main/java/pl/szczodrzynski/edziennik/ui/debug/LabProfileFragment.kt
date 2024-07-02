@@ -4,10 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.debug
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +12,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -28,33 +20,17 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class LabProfileFragment : LazyFragment(), CoroutineScope {
+class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppCompatActivity>(
+    inflater = TemplateListPageFragmentBinding::inflate,
+) {
     companion object {
         private const val TAG = "LabProfileFragment"
     }
 
-    private lateinit var app: App
-    private lateinit var activity: AppCompatActivity
-    private lateinit var b: TemplateListPageFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
     private lateinit var adapter: LabJsonAdapter
     private val loginStore by lazy {
         app.db.loginStoreDao().getByIdNow(app.profile.loginStoreId)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as AppCompatActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = TemplateListPageFragmentBinding.inflate(inflater)
-        return b.root
     }
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {

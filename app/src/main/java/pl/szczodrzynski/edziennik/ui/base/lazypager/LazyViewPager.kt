@@ -33,7 +33,7 @@ class LazyViewPager @JvmOverloads constructor(
                 (adapter as? LazyPagerAdapter)?.let {
                     it.swipeRefreshLayout?.isEnabled = scrollState == SCROLL_STATE_IDLE && it.enabledList[pageSelection, true]
                     val fragment = adapter?.instantiateItem(this@LazyViewPager, position)
-                    val lazyFragment = fragment as? LazyFragment
+                    val lazyFragment = fragment as? LazyFragment<*, *>
                     lazyFragment?.createPage()
                 }
             }

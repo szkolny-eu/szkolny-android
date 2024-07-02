@@ -4,39 +4,24 @@
 
 package pl.szczodrzynski.edziennik.ui.webpush
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.databinding.WebPushFragmentBinding
 import pl.szczodrzynski.edziennik.ext.crc32
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class WebPushFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "TemplateFragment"
-    }
-
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: WebPushFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+class WebPushFragment : BaseFragment<WebPushFragmentBinding, MainActivity>(
+    inflater = WebPushFragmentBinding::inflate,
+) {
 
     private lateinit var adapter: WebPushBrowserAdapter
     private val api by lazy {
@@ -46,20 +31,7 @@ class WebPushFragment : Fragment(), CoroutineScope {
     private val manager
         get() = app.permissionManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        // activity, context and profile is valid
-        b = WebPushFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    @SuppressLint("DefaultLocale")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded)
-            return
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         b.scanQrCode.onClick {
             manager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
                 QrScannerDialog(activity, {
@@ -88,12 +60,10 @@ class WebPushFragment : Fragment(), CoroutineScope {
                 }
         )
 
-        launch {
-            val browsers = api.runCatching(activity.errorSnackbar) {
-                listBrowsers()
-            } ?: return@launch
-            updateBrowserList(browsers)
-        }
+        val browsers = api.runCatching(activity.errorSnackbar) {
+            listBrowsers()
+        } ?: return
+        updateBrowserList(browsers)
     }
 
     private fun updateBrowserList(browsers: List<WebPushResponse.Browser>) {

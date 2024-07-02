@@ -4,53 +4,35 @@
 
 package pl.szczodrzynski.edziennik.ui.messages.list
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.annotation.SuppressLint
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
-import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class MessagesListFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "MessagesListFragment"
-    }
+class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActivity>(
+    inflater = MessagesListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: MessagesListFragmentBinding
     private lateinit var adapter: MessagesAdapter
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
     private val manager
         get() = app.messageManager
     var teachers = listOf<Teacher>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = MessagesListFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
+    @SuppressLint("RestrictedApi")
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
         var recyclerViewState =

@@ -5,10 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.attendance
 
 import android.graphics.Color
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.Transformation
@@ -19,8 +15,12 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceSummaryFragmentBinding
@@ -34,35 +34,18 @@ import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.text.DecimalFormat
-import kotlin.coroutines.CoroutineContext
 
-class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
+class AttendanceSummaryFragment : LazyFragment<AttendanceSummaryFragmentBinding, MainActivity>(
+    inflater = AttendanceSummaryFragmentBinding::inflate,
+) {
     companion object {
-        private const val TAG = "AttendanceSummaryFragment"
         private var periodSelection = 0
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: AttendanceSummaryFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
     private val manager
         get() = app.attendanceManager
     private var expandSubjectId = 0L
     private var attendance = listOf<AttendanceFull>()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = AttendanceSummaryFragmentBinding.inflate(inflater)
-        return b.root
-    }
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         if (!isAdded) return@startCoroutineTimer

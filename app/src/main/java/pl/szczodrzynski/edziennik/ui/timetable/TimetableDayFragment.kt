@@ -5,10 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.timetable
 
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
@@ -22,7 +19,6 @@ import com.linkedin.android.tachyon.DayViewConfig
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -30,12 +26,13 @@ import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
-import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoLessonsBinding
@@ -59,28 +56,18 @@ import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 import pl.szczodrzynski.edziennik.utils.mutableLazy
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 import kotlin.math.min
 
-class TimetableDayFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "TimetableDayFragment"
-    }
+class TimetableDayFragment : LazyFragment<TimetableDayFragmentBinding, MainActivity>(
+    inflater = TimetableDayFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
     private lateinit var inflater: AsyncLayoutInflater
-    private lateinit var b: TimetableDayFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
 
     private var timeIndicatorJob: Job? = null
 
@@ -117,21 +104,13 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     }
     private val dayView by dayViewDelegate
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
+    override fun onPageCreated(): Boolean {
         this.inflater = AsyncLayoutInflater(requireContext())
 
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
         startHour = arguments?.getInt("startHour") ?: DEFAULT_START_HOUR
         endHour = arguments?.getInt("endHour") ?: DEFAULT_END_HOUR
 
-        b = TimetableDayFragmentBinding.inflate(inflater, null, false)
-        return b.root
-    }
-
-    override fun onPageCreated(): Boolean {
         // observe lesson database
         app.db.timetableDao().getAllForDate(App.profileId, date).observe(this) { lessons ->
             launch {

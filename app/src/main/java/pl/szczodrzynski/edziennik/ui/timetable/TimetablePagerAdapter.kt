@@ -25,7 +25,7 @@ class TimetablePagerAdapter(
     private val weekStart by lazy { today.weekStart }
     private val weekEnd by lazy { weekStart.clone().stepForward(0, 0, 6) }
 
-    override fun getPage(position: Int): LazyFragment {
+    override fun getPage(position: Int): LazyFragment<*, *> {
         return TimetableDayFragment().apply {
             arguments = Bundle().apply {
                 putInt("date", items[position].value)

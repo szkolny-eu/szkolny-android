@@ -5,10 +5,17 @@
 package pl.szczodrzynski.edziennik.ui.base.lazypager
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 
-abstract class LazyFragment : Fragment() {
+abstract class LazyFragment<B : ViewBinding, A : AppCompatActivity>(
+    inflater: (LayoutInflater, ViewGroup?, Boolean) -> B,
+) : BaseFragment<B, A>(inflater) {
+
     private var isPageCreated = false
     internal var position = -1
     internal var swipeRefreshLayoutCallback: ((position: Int, isEnabled: Boolean) -> Unit)? = null

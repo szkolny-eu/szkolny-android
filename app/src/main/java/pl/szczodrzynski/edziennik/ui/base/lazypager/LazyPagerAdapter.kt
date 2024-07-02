@@ -17,12 +17,12 @@ abstract class LazyPagerAdapter(fragmentManager: FragmentManager, val swipeRefre
         if (position > -1)
             enabledList[position] = isEnabled
     }
-    final override fun getItem(position: Int): LazyFragment {
+    final override fun getItem(position: Int): LazyFragment<*, *> {
         return getPage(position).also {
             it.position = position
             it.swipeRefreshLayoutCallback = refreshLayoutCallback
         }
     }
-    abstract fun getPage(position: Int): LazyFragment
+    abstract fun getPage(position: Int): LazyFragment<*, *>
     abstract override fun getPageTitle(position: Int): CharSequence
 }

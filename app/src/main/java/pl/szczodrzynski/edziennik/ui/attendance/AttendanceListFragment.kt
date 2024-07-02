@@ -4,14 +4,12 @@
 
 package pl.szczodrzynski.edziennik.ui.attendance
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
@@ -25,34 +23,13 @@ import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceTypeGroup
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.models.Date
-import kotlin.coroutines.CoroutineContext
 
-class AttendanceListFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "AttendanceListFragment"
-    }
+class AttendanceListFragment : LazyFragment<AttendanceListFragmentBinding, MainActivity>(
+    inflater = AttendanceListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: AttendanceListFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-    private val manager
-        get() = app.attendanceManager
     private var viewType = AttendanceFragment.VIEW_DAYS
     private var expandSubjectId = 0L
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = AttendanceListFragmentBinding.inflate(inflater)
-        return b.root
-    }
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         if (!isAdded) return@startCoroutineTimer

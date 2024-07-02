@@ -4,47 +4,19 @@
 
 package pl.szczodrzynski.edziennik.ui.template
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class TemplateListPageFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "TemplateListPagerFragment"
-    }
-
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: TemplateListPageFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = TemplateListPageFragmentBinding.inflate(inflater)
-        return b.root
-    }
+class TemplateListPageFragment : LazyFragment<TemplateListPageFragmentBinding, MainActivity>(
+    inflater = TemplateListPageFragmentBinding::inflate,
+) {
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         val adapter = TemplateAdapter(activity)
