@@ -3,6 +3,7 @@ import os
 import sys
 from datetime import datetime
 from time import time
+from zoneinfo import ZoneInfo
 
 import mysql.connector as mysql
 from dotenv import load_dotenv
@@ -59,7 +60,10 @@ def save_version(
             build_date = int(os.stat(file).st_mtime)
             bundle_name_play = output_aab_play
 
-    build_date = datetime.fromtimestamp(build_date).strftime("%Y-%m-%d %H:%M:%S")
+    build_date = datetime.fromtimestamp(
+        build_date,
+        tz=ZoneInfo("Europe/Warsaw"),
+    ).strftime("%Y-%m-%d %H:%M:%S")
 
     if build_type in ["nightly", "daily"]:
         download_url = apk_server_nightly + apk_name if apk_name else None

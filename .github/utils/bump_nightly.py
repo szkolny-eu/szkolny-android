@@ -1,7 +1,7 @@
-import os
 import re
 import sys
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from _utils import (
     get_commit_log,
@@ -15,19 +15,12 @@ if __name__ == "__main__":
         print("usage: bump_nightly.py <project dir>")
         exit(-1)
 
-    repo = os.getenv("GITHUB_REPOSITORY")
-    sha = os.getenv("GITHUB_SHA")
-
-    if not repo or not sha:
-        print("Missing GitHub environment variables.")
-        exit(-1)
-
     project_dir = get_project_dir()
 
     (version_code, version_name) = read_gradle_version(project_dir)
     version_name = version_name.split("+")[0]
 
-    date = datetime.now()
+    date = datetime.now(tz=ZoneInfo("Europe/Warsaw"))
     if date.hour > 6:
         version_name += "+daily." + date.strftime("%Y%m%d-%H%M")
     else:

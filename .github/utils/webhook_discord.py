@@ -1,6 +1,7 @@
 import os
 import sys
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import requests
 from dotenv import load_dotenv
@@ -27,7 +28,10 @@ def post_webhook(
     if testing:
         build_date = int(os.stat(apk_file).st_mtime)
         if build_date:
-            build_date = datetime.fromtimestamp(build_date).strftime("%Y-%m-%d %H:%M")
+            build_date = datetime.fromtimestamp(
+                build_date,
+                tz=ZoneInfo("Europe/Warsaw"),
+            ).strftime("%Y-%m-%d %H:%M")
 
         # untagged release, get commit log
         if build_type in ["nightly", "daily"]:
