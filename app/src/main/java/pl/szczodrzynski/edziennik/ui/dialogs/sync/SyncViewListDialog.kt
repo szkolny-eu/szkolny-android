@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.ext.hasFeature
 import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 
 class SyncViewListDialog(

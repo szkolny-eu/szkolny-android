@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.RecaptchaDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

@@ -9,7 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.resolveString
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class NotificationFilterDialog(
     activity: AppCompatActivity,

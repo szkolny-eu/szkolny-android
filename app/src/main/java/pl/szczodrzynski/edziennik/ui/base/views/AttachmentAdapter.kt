@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-4-1.
  */
 
-package pl.szczodrzynski.edziennik.ui.views
+package pl.szczodrzynski.edziennik.ui.base.views
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -29,9 +29,9 @@ import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class AttachmentAdapter(
-        val context: Context,
-        val onAttachmentClick: (item: Item) -> Unit,
-        val onAttachmentLongClick: ((view: Chip, item: Item) -> Unit)? = null
+    val context: Context,
+    val onAttachmentClick: (item: Item) -> Unit,
+    val onAttachmentLongClick: ((view: Chip, item: Item) -> Unit)? = null
 ) : RecyclerView.Adapter<AttachmentAdapter.ViewHolder>(), CoroutineScope {
     companion object {
         private const val TAG = "AttachmentAdapter"

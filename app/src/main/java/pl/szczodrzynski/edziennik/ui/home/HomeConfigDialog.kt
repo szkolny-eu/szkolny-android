@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_EVENTS
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_GRADES
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_LUCKY_NUMBER

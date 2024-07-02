@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class MiniMenuConfigDialog(
     activity: AppCompatActivity,

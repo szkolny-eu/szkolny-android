@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2021-10-18.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.base
+package pl.szczodrzynski.edziennik.ui.base.dialog
 
 import android.view.View
 import androidx.appcompat.app.AlertDialog

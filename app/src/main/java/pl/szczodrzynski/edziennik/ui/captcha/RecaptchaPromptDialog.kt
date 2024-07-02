@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.RecaptchaViewBinding
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 
 class RecaptchaPromptDialog(
     activity: AppCompatActivity,

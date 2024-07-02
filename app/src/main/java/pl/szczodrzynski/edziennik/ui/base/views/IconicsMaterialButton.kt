@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2024-6-20.
  */
 
-package pl.szczodrzynski.edziennik.ui.views
+package pl.szczodrzynski.edziennik.ui.base.views
 
 import android.content.Context
 import android.util.AttributeSet

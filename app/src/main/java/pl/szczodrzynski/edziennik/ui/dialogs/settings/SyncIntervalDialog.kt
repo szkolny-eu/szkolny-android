@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ext.MINUTE
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class SyncIntervalDialog(
     activity: AppCompatActivity,

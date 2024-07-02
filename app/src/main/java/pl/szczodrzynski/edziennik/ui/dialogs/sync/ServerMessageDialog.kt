@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.sync
 
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class ServerMessageDialog(
     activity: AppCompatActivity,

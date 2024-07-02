@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteListDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
 class NoteListDialog(
