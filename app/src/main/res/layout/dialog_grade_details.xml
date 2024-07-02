@@ -108,7 +108,7 @@
                         android:text="@{weightText}"
                         android:textAppearance="?textAppearanceTitleMedium"
                         android:textIsSelectable="true"
-                        android:visibility="@{weightText != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{weightText != null}"
                         tools:text="waga 3"
                         tools:visibility="visible" />
 
@@ -175,7 +175,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_class_average"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{grade.classAverage != null &amp;&amp; grade.classAverage != -1 ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{grade.classAverage != null &amp;&amp; grade.classAverage != -1}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -183,7 +183,7 @@
                 android:layout_marginTop="0dp"
                 android:text="@{@string/dialog_grade_details_class_average_format(grade.classAverage)}"
                 android:textIsSelectable="true"
-                android:visibility="@{grade.classAverage != null &amp;&amp; grade.classAverage != -1 ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{grade.classAverage != null &amp;&amp; grade.classAverage != -1}"
                 tools:text="1.72" />
 
             <TextView
@@ -192,14 +192,14 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_comment"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{commentVisible ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{commentVisible}" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:textIsSelectable="true"
-                android:visibility="@{commentVisible ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{commentVisible}"
                 tools:text="Uczeń jest idiotą i nie umie robić nic w excelu. Niestety nie zdał tej klasy więc ta ocena i tak mu nic nie da, więc a cotam, dam mu jedynkę kolejną.. XDD" />
 
             <TextView
@@ -208,7 +208,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_value"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{gradeValue != -1 ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{gradeValue != -1}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -216,7 +216,7 @@
                 android:layout_marginTop="0dp"
                 android:text="@{@string/dialog_grade_details_class_average_format(gradeValue)}"
                 android:textIsSelectable="true"
-                android:visibility="@{gradeValue != -1 ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{gradeValue != -1}"
                 tools:text="4.75" />
 
             <TextView
@@ -240,7 +240,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_id"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{devMode ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{devMode}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -248,7 +248,7 @@
                 android:layout_marginTop="0dp"
                 android:text="@{Long.toString(grade.id)}"
                 android:textIsSelectable="true"
-                android:visibility="@{devMode ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{devMode}"
                 tools:text="12345" />
 
             <TextView
@@ -257,7 +257,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_improved"
                 android:textAppearance="?textAppearanceBodySmall"
-                android:visibility="@{grade.parentId instanceof Long ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{grade.parentId instanceof Long}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -265,7 +265,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/dialog_grade_details_history"
                 android:textAppearance="?textAppearanceTitleMedium"
-                android:visibility="@{historyVisible ? View.VISIBLE : View.GONE}" />
+                android:isVisible="@{historyVisible}" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/gradeHistoryNest"
@@ -273,7 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="-8dp"
-                android:visibility="@{historyVisible ? View.VISIBLE : View.GONE}">
+                android:isVisible="@{historyVisible}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/gradeHistoryList"

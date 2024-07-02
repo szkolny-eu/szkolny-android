@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:visibility="@{message.image != null ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{message.image != null}"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
@@ -64,7 +64,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
                     android:text="@string/register_unavailable_read_more"
-                    android:visibility="@{message.url != null ? View.VISIBLE : View.GONE}" />
+                    android:isVisible="@{message.url != null}" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

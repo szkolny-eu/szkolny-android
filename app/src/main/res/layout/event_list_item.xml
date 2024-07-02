@@ -95,7 +95,7 @@
                 android:ellipsize="middle"
                 android:singleLine="true"
                 android:textAppearance="?textAppearanceBodySmall"
-                android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"
+                android:isVisible="@{!simpleMode}"
                 tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
         </LinearLayout>
         <com.google.android.material.button.MaterialButton

@@ -59,7 +59,7 @@
                         android:text="@{name}"
                         android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceTitleLarge"
-                        android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"
+                        android:isVisible="@{event.typeName != null}"
                         tools:text="sprawdzian" />
 
                     <TextView
@@ -69,7 +69,7 @@
                         android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceTitleMedium"
                         android:text="@{details}"
-                        android:visibility="@{details == null ? View.GONE : View.VISIBLE}"
+                        android:isVisible="@{details != null}"
                         tools:text="język angielski • 2B3T a2"
                         tools:visibility="visible" />
 
@@ -124,14 +124,14 @@
                 android:layout_marginTop="8dp"
                 android:textAppearance="?textAppearanceLabelMedium"
                 android:text="@string/dialog_event_details_teacher"
-                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
+                android:isVisible="@{event.teacherName != null}"/>
             <TextView
                 android:id="@+id/teacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{event.teacherName}"
                 android:textIsSelectable="true"
-                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"
+                android:isVisible="@{event.teacherName != null}"
                 tools:text="Janósz Kowalski" />
 
             <TextView

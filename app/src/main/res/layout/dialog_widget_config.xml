@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{profileName == null ? View.GONE : View.VISIBLE}"
+                android:isVisible="@{profileName != null}"
                 android:text="@string/dialog_widget_config_profile" />
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_marginTop="0dp"
                 android:text="@{profileName}"
                 android:textIsSelectable="true"
-                android:visibility="@{profileName == null ? View.GONE : View.VISIBLE}"
+                android:isVisible="@{profileName != null}"
                 tools:text="Władca Androida" />
 
             <TextView

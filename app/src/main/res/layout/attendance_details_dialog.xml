@@ -161,7 +161,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/attendance_details_lesson_topic"
                 android:textAppearance="?textAppearanceLabelMedium"
-                android:visibility="@{attendance.lessonTopic == null ? View.GONE : View.VISIBLE}" />
+                android:isVisible="@{attendance.lessonTopic != null}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -169,7 +169,7 @@
                 android:layout_marginTop="0dp"
                 android:text="@{attendance.lessonTopic}"
                 android:textIsSelectable="true"
-                android:visibility="@{attendance.lessonTopic == null ? View.GONE : View.VISIBLE}"
+                android:isVisible="@{attendance.lessonTopic != null}"
                 tools:text="Malowanie autoportretu na ścianie sali gimnastycznej. Modlitwa w terenie." />
 
             <TextView
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:baselineAligned="false"
-                android:visibility="@{devMode ? View.VISIBLE : View.GONE}">
+                android:isVisible="@{devMode}">
 
                 <LinearLayout
                     android:layout_width="0dp"

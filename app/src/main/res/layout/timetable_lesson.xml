@@ -83,7 +83,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginHorizontal="8dp"
                                 android:background="@drawable/unread_red_circle"
-                                android:visibility="@{unread ? View.VISIBLE : View.GONE}" />
+                                android:isVisible="@{unread}" />
 
                             <ImageView
                                 android:id="@+id/attendanceIcon"
@@ -103,7 +103,7 @@
                                 android:paddingHorizontal="4dp"
                                 android:text="@{Integer.toString(lessonNumber)}"
                                 android:textAppearance="?textAppearanceTitleLarge"
-                                android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
+                                android:isVisible="@{lessonNumber != null}"
                                 tools:text="3" />
                         </LinearLayout>
 
@@ -185,7 +185,7 @@
                         android:textAppearance="?textAppearanceLabelMedium"
                         android:textColor="?colorOnError"
                         android:textAlignment="center"
-                        android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{annotationVisible}"
                         app:chipBackgroundColor="?colorError"
                         app:chipStrokeWidth="0dp"
                         tools:text="@string/timetable_lesson_cancelled" />

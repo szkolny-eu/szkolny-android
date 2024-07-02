@@ -93,7 +93,7 @@
                 android:layout_marginHorizontal="32dp"
                 android:text="@string/agenda_config_mode_unavailable"
                 android:textAppearance="?textAppearanceBodySmall"
-                android:visibility="@{isAgendaMode ? View.GONE : View.VISIBLE}" />
+                android:isVisible="@{!isAgendaMode}" />
 
             <TextView
                 android:layout_width="match_parent"

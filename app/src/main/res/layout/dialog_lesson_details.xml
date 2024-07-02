@@ -55,7 +55,7 @@
                         android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?android:textColorTertiary"
-                        android:visibility="@{oldSubjectName == null ? View.GONE : View.VISIBLE}"
+                        android:isVisible="@{oldSubjectName != null}"
                         app:strikeThrough="@{true}"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
@@ -65,7 +65,7 @@
                         android:text="@{subjectName}"
                         android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceTitleLarge"
-                        android:visibility="@{subjectName == null ? View.GONE : View.VISIBLE}"
+                        android:isVisible="@{subjectName != null}"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
                     <TextView
@@ -81,7 +81,7 @@
                         android:id="@+id/annotation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{annotationVisible}"
                         app:chipBackgroundColor="?colorError"
                         android:textColor="?colorOnError"
                         style="?chipStyle"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{lesson.displayLessonNumber.toString()}"
                         android:textAppearance="?textAppearanceHeadlineLarge"
-                        android:visibility="@{lesson.displayLessonNumber == null ? View.GONE : View.VISIBLE}"
+                        android:isVisible="@{lesson.displayLessonNumber != null}"
                         tools:text="4" />
 
                     <TextView
@@ -167,7 +167,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:orientation="vertical"
-                    android:visibility="@{teacherName != null || oldTeacherName != null ? View.VISIBLE : View.GONE}">
+                    android:isVisible="@{teacherName != null || oldTeacherName != null}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                         android:text="@{oldTeacherName}"
                         android:textIsSelectable="true"
                         android:singleLine="true"
-                        android:visibility="@{oldTeacherName != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{oldTeacherName != null}"
                         app:strikeThrough="@{true}"
                         tools:text="Janósz Kowalski" />
                     <TextView
@@ -190,7 +190,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{teacherName}"
                         android:textIsSelectable="true"
-                        android:visibility="@{teacherName != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{teacherName != null}"
                         tools:text="Janósz Kowalski" />
                 </LinearLayout>
 
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:visibility="@{teamName != null || oldTeamName != null ? View.VISIBLE : View.GONE}">
+                    android:isVisible="@{teamName != null || oldTeamName != null}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                         android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldTeamName}"
                         android:textIsSelectable="true"
-                        android:visibility="@{oldTeamName != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{oldTeamName != null}"
                         app:strikeThrough="@{true}"
                         tools:text="013 informatyczna" />
                     <TextView
@@ -219,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{teamName}"
                         android:textIsSelectable="true"
-                        android:visibility="@{teamName != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{teamName != null}"
                         tools:text="013 informatyczna" />
                 </LinearLayout>
 
@@ -237,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:visibility="@{classroom != null || oldClassroom != null ? View.VISIBLE : View.GONE}">
+                    android:isVisible="@{classroom != null || oldClassroom != null}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
                         android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{oldClassroom}"
                         android:textIsSelectable="true"
-                        android:visibility="@{oldClassroom != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{oldClassroom != null}"
                         app:strikeThrough="@{true}"
                         tools:text="013 informatyczna" />
                     <TextView
@@ -258,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{classroom}"
                         android:textIsSelectable="true"
-                        android:visibility="@{classroom != null ? View.VISIBLE : View.GONE}"
+                        android:isVisible="@{classroom != null}"
                         tools:text="013 informatyczna" />
                 </LinearLayout>
 
