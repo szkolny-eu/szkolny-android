@@ -172,7 +172,7 @@
                     android:text="Załączniki:"
                     android:textAppearance="?textAppearanceTitleMedium" />
 
-                <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
+                <pl.szczodrzynski.edziennik.ui.base.views.AttachmentsView
                     android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     android:visibility="visible"
                     tools:visibility="visible">
 
-                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                    <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                         android:id="@+id/replyButton"
                         style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"
@@ -204,7 +204,7 @@
                         app:iiv_top_size="24dp"
                         tools:drawableTop="@android:drawable/ic_menu_revert" />
 
-                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                    <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                         android:id="@+id/forwardButton"
                         style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"
@@ -219,7 +219,7 @@
                         app:iiv_top_size="24dp"
                         tools:drawableTop="@android:drawable/ic_media_ff" />
 
-                    <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                    <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                         android:id="@+id/deleteButton"
                         style="?materialButtonOutlinedStyle"
                         android:layout_width="0dp"

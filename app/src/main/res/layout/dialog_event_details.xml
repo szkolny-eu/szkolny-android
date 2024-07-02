@@ -201,7 +201,7 @@
                 android:text="@string/dialog_event_details_attachments"
                 android:textAppearance="?textAppearanceLabelMedium" />
 
-            <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
+            <pl.szczodrzynski.edziennik.ui.base.views.AttachmentsView
                 android:id="@+id/attachmentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
