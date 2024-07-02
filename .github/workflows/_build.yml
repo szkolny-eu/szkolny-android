@@ -80,49 +80,39 @@ jobs:
             pycryptodome
             mysql-connector-python
             requests
-      - name: Set executable permissions to gradlew
-        run: chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Bump nightly version
         if: ${{ inputs.nightly }}
         run: python $GITHUB_WORKSPACE/.github/utils/bump_nightly.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT
-      - name: Write signing passwords
+      - name: Write signing passwords and keystore
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           DB_NAME: ${{ secrets.DB_NAME }}
-        run: python $GITHUB_WORKSPACE/.github/utils/sign.py $GITHUB_WORKSPACE commit >> $GITHUB_OUTPUT
+          KEY_STORE: ${{ secrets.KEY_STORE }}
+        run: |
+          python $GITHUB_WORKSPACE/.github/utils/sign.py $GITHUB_WORKSPACE commit >> $GITHUB_OUTPUT
+          echo $KEY_STORE | base64 --decode > keystore.jks
       - name: Clean build artifacts
         run: |
           rm -rf app/release/*
           rm -rf app/build/outputs/apk/*
           rm -rf app/build/outputs/bundle/*
 
-      - name: Build APK with Gradle
-        if: ${{ inputs.build-apk }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assembleOfficialRelease
-      - name: Build AAB with Gradle
-        if: ${{ inputs.build-aab }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: bundlePlayRelease
-
-      - name: Sign build artifacts
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/release
-          signingKeyBase64: ${{ secrets.KEY_STORE }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "34.0.0"
-      - name: Rename signed artifacts
-        id: artifacts
-        run: python $GITHUB_WORKSPACE/.github/utils/rename_artifacts.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT
+      - name: Build app with Gradle
+        if: ${{ inputs.build-apk || inputs.build-aab }}
+        run: |
+          chmod +x ./gradlew
+          ./gradlew \
+            ${{ inputs.build-apk && 'assembleOfficialRelease' || '' }} \
+            ${{ inputs.build-aab && 'bundlePlayRelease' || '' }} \
+            -P android.injected.signing.store.file=${{ github.workspace }}/keystore.jks \
+            -P android.injected.signing.store.password=${{ secrets.KEY_STORE_PASSWORD }} \
+            -P android.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -P android.injected.signing.key.password=${{ secrets.KEY_ALIAS_PASSWORD }}
 
       - name: Upload release to server
         if: ${{ inputs.release-ssh }}
@@ -131,9 +121,12 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_IP }}
           REMOTE_USER: ${{ secrets.SSH_USERNAME }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          SOURCE: ${{ steps.artifacts.outputs.signedReleaseFileRelative }}
+          SOURCE: app/release/
           TARGET: ${{ inputs.nightly && secrets.SSH_PATH_NIGHTLY || secrets.SSH_PATH_RELEASE }}
 
+      - name: Find signed artifacts
+        id: artifacts
+        run: python $GITHUB_WORKSPACE/.github/utils/find_artifacts.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT
       - name: Extract release changelogs
         id: changelog
         run: python $GITHUB_WORKSPACE/.github/utils/extract_changelogs.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT

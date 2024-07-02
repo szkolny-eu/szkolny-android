@@ -153,9 +153,10 @@ tasks.whenTaskAdded { task ->
             dependsOn(task.name)
             duplicatesStrategy DuplicatesStrategy.FAIL
             from file("${projectDir}/${flavor}/release/"),
-                    file("${buildDir}/outputs/mapping/${flavor}Release/"),
-                    file("${buildDir}/outputs/bundle/${flavor}Release/")
-            include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
+                    file("${projectDir}/build/outputs/apk/${flavor}/release/"),
+                    file("${projectDir}/build/outputs/mapping/${flavor}Release/"),
+                    file("${projectDir}/build/outputs/bundle/${flavor}Release/")
+            include "*-release.aab", "*-release.apk", "mapping.txt", "output-metadata.json"
             destinationDir file("${projectDir}/release/")
             rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'
         }

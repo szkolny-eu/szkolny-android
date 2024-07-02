@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     files = glob.glob(f"{project_dir}/app/release/*.*")
     for file in files:
-        file_relative = file.replace(sys.argv[1] + "/", "")
+        file_relative = file.replace(project_dir + "/", "")
         if "-aligned.apk" in file:
             os.unlink(file)
         elif "-signed.apk" in file:
