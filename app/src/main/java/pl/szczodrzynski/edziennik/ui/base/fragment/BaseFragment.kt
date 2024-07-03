@@ -34,7 +34,9 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     internal lateinit var app: App
     internal lateinit var activity: A
     internal lateinit var b: B
+
     private var isViewReady: Boolean = false
+    private var inState: Bundle? = null
 
     private var job = Job()
     final override val coroutineContext: CoroutineContext
@@ -50,10 +52,12 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         activity = getActivity() as? A ?: return null
         context ?: return null
         app = activity.application as App
+        // inflate using the constructor parameter or the body method
         b = this.inflater?.invoke(inflater, container, false)
             ?: inflate(inflater, container, false)
             ?: return null
-        isViewReady = false
+        isViewReady = false // reinitialize the view in onResume()
+        inState = savedInstanceState // save the instance state for onResume()
         return b.root
     }
 
@@ -73,7 +77,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         startCoroutineTimer(100L) {
             if (!isAdded)
                 return@startCoroutineTimer
-            onViewCreated(null)
+            onViewCreated(inState)
             (activity as? MainActivity)?.gainAttention()
             (activity as? MainActivity)?.gainAttentionFAB()
         }
