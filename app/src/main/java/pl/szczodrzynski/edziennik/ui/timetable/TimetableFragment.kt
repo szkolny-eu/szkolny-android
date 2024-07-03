@@ -8,25 +8,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -37,14 +27,15 @@ import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ext.getStudentData
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import kotlin.coroutines.CoroutineContext
 
-class TimetableFragment : Fragment(), CoroutineScope {
+class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>(
+    inflater = FragmentTimetableV2Binding::inflate,
+) {
     companion object {
         private const val TAG = "TimetableFragment"
         const val ACTION_SCROLL_TO_DATE = "pl.szczodrzynski.edziennik.timetable.SCROLL_TO_DATE"
@@ -54,26 +45,70 @@ class TimetableFragment : Fragment(), CoroutineScope {
         var pageSelection: Date? = null
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: FragmentTimetableV2Binding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getMarkAsReadType() = MetadataType.LESSON_CHANGE
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_timetable_sync)
+            .withIcon(CommunityMaterial.Icon.cmd_calendar_sync_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                val date = pageSelection ?: Date.getToday()
+                val weekStart = date.weekStart.stringY_m_d
+                EdziennikTask.syncProfile(
+                    profileId = App.profileId,
+                    featureTypes = setOf(FeatureType.TIMETABLE),
+                    arguments = JsonObject(
+                        "weekStart" to weekStart
+                    )
+                ).enqueue(activity)
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.timetable_select_day)
+            .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)
+            .withOnClickListener { _ ->
+                activity.bottomSheet.close()
+                val date = pageSelection ?: Date.getToday()
+                MaterialDatePicker.Builder.datePicker()
+                    .setSelection(date.inMillisUtc)
+                    .setCalendarConstraints(app.profile.getSchoolYearConstrains())
+                    .build()
+                    .apply {
+                        addOnPositiveButtonClickListener { millis ->
+                            val dateSelected = Date.fromMillisUtc(millis)
+                            val index = items.indexOfFirst { it == dateSelected }
+                            if (index != -1)
+                                b.viewPager.setCurrentItem(index, true)
+                        }
+                    }
+                    .show(activity.supportFragmentManager, TAG)
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_add_event)
+            .withDescription(R.string.menu_add_event_desc)
+            .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                EventManualDialog(activity, App.profileId, defaultDate = pageSelection).show()
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_generate_block_timetable)
+            .withDescription(R.string.menu_generate_block_timetable_desc)
+            .withIcon(CommunityMaterial.Icon3.cmd_table_large)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                GenerateBlockTimetableDialog(activity)
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_timetable_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                TimetableConfigDialog(activity, false, null, null).show()
+            }
+    )
 
     private var fabShown = false
     private val items = mutableListOf<Date>()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = FragmentTimetableV2Binding.inflate(inflater)
-        // TODO: 2020-01-05 resolve issues with page scrolling (and scrolling up) with viewpager and swipe to refresh
-        //b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, i: Intent) {
@@ -111,14 +146,11 @@ class TimetableFragment : Fragment(), CoroutineScope {
         activity.unregisterReceiver(broadcastReceiver)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { launch {
-        if (!isAdded)
-            return@launch
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         if (app.profile.getStudentData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.timetableNotPublicLayout.visibility = View.VISIBLE
-            return@launch
+            return
         }
         b.timetableLayout.visibility = View.VISIBLE
         b.timetableNotPublicLayout.visibility = View.GONE
@@ -155,7 +187,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         }
         deferred.await()
         if (!isAdded)
-            return@launch
+            return
 
         val pagerAdapter = TimetablePagerAdapter(
             parentFragmentManager,
@@ -194,83 +226,13 @@ class TimetableFragment : Fragment(), CoroutineScope {
         b.tabLayout.setupWithViewPager(b.viewPager)
         b.viewPager.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 
-        activity.navView.bottomSheet.prependItems(
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_timetable_sync)
-                        .withIcon(CommunityMaterial.Icon.cmd_calendar_sync_outline)
-                        .withOnClickListener {
-                            activity.bottomSheet.close()
-                            val date = pageSelection ?: Date.getToday()
-                            val weekStart = date.weekStart.stringY_m_d
-                            EdziennikTask.syncProfile(
-                                profileId = App.profileId,
-                                featureTypes = setOf(FeatureType.TIMETABLE),
-                                arguments = JsonObject(
-                                    "weekStart" to weekStart
-                                )
-                            ).enqueue(activity)
-                        },
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.timetable_select_day)
-                        .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)
-                        .withOnClickListener { _ ->
-                            activity.bottomSheet.close()
-                            val date = pageSelection ?: Date.getToday()
-                            MaterialDatePicker.Builder.datePicker()
-                                .setSelection(date.inMillisUtc)
-                                .setCalendarConstraints(app.profile.getSchoolYearConstrains())
-                                .build()
-                                .apply {
-                                    addOnPositiveButtonClickListener { millis ->
-                                        val dateSelected = Date.fromMillisUtc(millis)
-                                        val index = items.indexOfFirst { it == dateSelected }
-                                        if (index != -1)
-                                            b.viewPager.setCurrentItem(index, true)
-                                    }
-                                }
-                                .show(activity.supportFragmentManager, TAG)
-                        },
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_add_event)
-                        .withDescription(R.string.menu_add_event_desc)
-                        .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            EventManualDialog(activity, App.profileId, defaultDate = pageSelection).show()
-                        }),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_generate_block_timetable)
-                        .withDescription(R.string.menu_generate_block_timetable_desc)
-                        .withIcon(CommunityMaterial.Icon3.cmd_table_large)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            GenerateBlockTimetableDialog(activity)
-                        }),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_timetable_config)
-                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener {
-                            activity.bottomSheet.close()
-                            TimetableConfigDialog(activity, false, null, null).show()
-                        },
-                BottomSheetSeparatorItem(true),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, MetadataType.LESSON_CHANGE, true) }
-                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
-                        })
-        )
-
         //activity.navView.bottomBar.fabEnable = true
         activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
         activity.navView.bottomBar.fabIcon = SzkolnyFont.Icon.szf_calendar_today_outline
-        activity.navView.setFabOnClickListener(View.OnClickListener {
+        activity.navView.setFabOnClickListener {
             b.viewPager.setCurrentItem(items.indexOfFirst { it.value == today }, true)
-        })
-    }}
+        }
+    }
 
     /*private fun markLessonsAsSeen() = pageSelection?.let { date ->
         app.db.timetableDao().getForDate(App.profileId, date).observeOnce(this@TimetableFragment, Observer { lessons ->

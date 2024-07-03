@@ -6,20 +6,18 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.github.bassaer.chatmessageview.model.IChatUser
 import com.github.bassaer.chatmessageview.model.Message
 import com.github.bassaer.chatmessageview.view.ChatView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -31,25 +29,16 @@ import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
 import pl.szczodrzynski.edziennik.ext.crc16
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
 import timber.log.Timber
-import java.util.*
+import java.util.Calendar
 import kotlin.collections.set
-import kotlin.coroutines.CoroutineContext
 
-class FeedbackFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "FeedbackFragment"
-    }
-
-    private lateinit var app: App
-    private lateinit var activity: AppCompatActivity
-    private lateinit var b: FragmentFeedbackBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+class FeedbackFragment : BaseFragment<FragmentFeedbackBinding, AppCompatActivity>(
+    inflater = FragmentFeedbackBinding::inflate,
+) {
 
     private val chatView: ChatView by lazy { b.chatView }
     private val api by lazy { SzkolnyApi(app) }
@@ -57,18 +46,6 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     private var currentDeviceId: String? = null
 
     private var receiver: BroadcastReceiver? = null
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as AppCompatActivity?) ?: return null
-        if (context == null)
-            return null
-        app = activity.application as App
-        // activity, context and profile is valid
-        b = FragmentFeedbackBinding.inflate(inflater)
-        // prevent doubled received messages on enter
-        EventBus.getDefault().removeStickyEvent(FeedbackMessageEvent::class.java)
-        return b.root
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onFeedbackMessageEvent(event: FeedbackMessageEvent) {
@@ -143,10 +120,8 @@ class FeedbackFragment : Fragment(), CoroutineScope {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (!isAdded)
-            return
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+        EventBus.getDefault().removeStickyEvent(FeedbackMessageEvent::class.java)
 
         b.faqText.setOnClickListener { openFaq() }
         b.faqButton.setOnClickListener { openFaq() }
@@ -163,46 +138,44 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             setMessageMarginBottom(5)
         }
 
-        launch {
-            val messages = withContext(Dispatchers.Default) {
-                val messages = app.db.feedbackMessageDao().allNow
-                isDev = App.devMode && messages.any { it.deviceId != null }
-                messages
-            }
+        val messages = withContext(Dispatchers.IO) {
+            val messages = app.db.feedbackMessageDao().allNow
+            isDev = App.devMode && messages.any { it.deviceId != null }
+            messages
+        }
 
-            b.targetDeviceLayout.visibility = if (isDev) View.VISIBLE else View.GONE
-            b.targetDeviceDropDown.onClick {
-                launchDeviceSelection()
-            }
+        b.targetDeviceLayout.visibility = if (isDev) View.VISIBLE else View.GONE
+        b.targetDeviceDropDown.onClick {
+            launchDeviceSelection()
+        }
 
-            if (isDev) {
-                messages.firstOrNull { it.received && it.devId == null }?.let {
-                    currentDeviceId = it.deviceId
+        if (isDev) {
+            messages.firstOrNull { it.received && it.devId == null }?.let {
+                currentDeviceId = it.deviceId
+                b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
+            }
+            // handle notification intent
+            arguments?.getString("feedbackMessageDeviceId")?.let { deviceId ->
+                messages.firstOrNull { it.received && it.deviceId == deviceId && it.devId == null }?.let {
+                    currentDeviceId = deviceId
                     b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
                 }
-                // handle notification intent
-                arguments?.getString("feedbackMessageDeviceId")?.let { deviceId ->
-                    messages.firstOrNull { it.received && it.deviceId == deviceId && it.devId == null }?.let {
-                        currentDeviceId = deviceId
-                        b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
-                    }
-                }
-                b.chatLayout.visibility = View.VISIBLE
-                b.inputLayout.visibility = View.GONE
             }
-            else if (messages.isEmpty()) {
-                b.chatLayout.visibility = View.GONE
-                b.inputLayout.visibility = View.VISIBLE
-            }
+            b.chatLayout.visibility = View.VISIBLE
+            b.inputLayout.visibility = View.GONE
+        }
+        else if (messages.isEmpty()) {
+            b.chatLayout.visibility = View.GONE
+            b.inputLayout.visibility = View.VISIBLE
+        }
 
-            loadMessages(messages)
+        loadMessages(messages)
 
-            b.sendButton.onClick {
-                send(b.textInput.text.toString())
-            }
-            chatView.setOnClickSendButtonListener(View.OnClickListener {
-                send(chatView.inputText)
-            })
+        b.sendButton.onClick {
+            send(b.textInput.text.toString())
+        }
+        chatView.setOnClickSendButtonListener {
+            send(chatView.inputText)
         }
     }
 

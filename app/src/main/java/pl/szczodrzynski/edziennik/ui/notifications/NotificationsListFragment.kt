@@ -6,64 +6,45 @@ package pl.szczodrzynski.edziennik.ui.notifications
 
 import android.app.Activity
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.launch
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.NotificationsListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
-class NotificationsListFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "NotificationsListFragment"
-    }
+class NotificationsListFragment : BaseFragment<NotificationsListFragmentBinding, MainActivity>(
+    inflater = NotificationsListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: NotificationsListFragmentBinding
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_remove_notifications)
+            .withIcon(CommunityMaterial.Icon.cmd_delete_sweep_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                launch(Dispatchers.IO) {
+                    app.db.notificationDao().clearAll()
+                }
+                Toast.makeText(
+                    activity,
+                    R.string.menu_remove_notifications_success,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    )
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = NotificationsListFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
-
-        activity.bottomSheet.prependItems(
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_remove_notifications)
-                        .withIcon(CommunityMaterial.Icon.cmd_delete_sweep_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            AsyncTask.execute { app.db.notificationDao().clearAll() }
-                            Toast.makeText(activity, R.string.menu_remove_notifications_success, Toast.LENGTH_SHORT).show()
-                        }))
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         val adapter = NotificationsAdapter(activity) { notification ->
             val intent = Intent("android.intent.action.MAIN")
             notification.fillIntent(intent)
@@ -100,5 +81,5 @@ class NotificationsListFragment : Fragment(), CoroutineScope {
                 b.noData.isVisible = false
             }
         })
-    }}
+    }
 }

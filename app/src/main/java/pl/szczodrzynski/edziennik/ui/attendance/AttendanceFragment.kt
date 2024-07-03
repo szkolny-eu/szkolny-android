@@ -4,33 +4,23 @@
 
 package pl.szczodrzynski.edziennik.ui.attendance
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.AttendanceFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import kotlin.coroutines.CoroutineContext
 
-class AttendanceFragment : Fragment(), CoroutineScope {
+class AttendanceFragment : BaseFragment<AttendanceFragmentBinding, MainActivity>(
+    inflater = AttendanceFragmentBinding::inflate,
+) {
     companion object {
-        private const val TAG = "AttendanceFragment"
         const val VIEW_SUMMARY = 0
         const val VIEW_DAYS = 1
         const val VIEW_MONTHS = 2
@@ -39,48 +29,19 @@ class AttendanceFragment : Fragment(), CoroutineScope {
         var pageSelection = 1
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: AttendanceFragmentBinding
+    override fun getRefreshLayout() = b.refreshLayout
+    override fun getMarkAsReadType() = MetadataType.ATTENDANCE
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_attendance_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                AttendanceConfigDialog(activity, true, null, null).show()
+            },
+    )
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = AttendanceFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded) return
-
-        activity.bottomSheet.prependItems(
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_attendance_config)
-                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            AttendanceConfigDialog(activity, true, null, null).show()
-                        }),
-                BottomSheetSeparatorItem(true),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, MetadataType.ATTENDANCE, true) }
-                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
-                        })
-        )
-        activity.gainAttention()
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         if (pageSelection == 1)
             pageSelection = app.profile.config.attendance.attendancePageSelection
 

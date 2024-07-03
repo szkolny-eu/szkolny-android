@@ -1,53 +1,39 @@
 package pl.szczodrzynski.edziennik.ui.messages.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
-import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import kotlin.coroutines.CoroutineContext
 
-class MessagesFragment : Fragment(), CoroutineScope {
+class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
+    inflater = MessagesFragmentBinding::inflate,
+) {
     companion object {
-        private const val TAG = "MessagesFragment"
         var pageSelection = 0
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: MessagesFragmentBinding
+    override fun getRefreshLayout() = b.refreshLayout
+    override fun getFab() = R.string.compose to CommunityMaterial.Icon3.cmd_pencil_outline
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_messages_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                MessagesConfigDialog(activity, false, null, null).show()
+            }
+    )
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = MessagesFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded) return
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         val messageId = arguments?.getLong("messageId", -1L) ?: -1L
         if (messageId != -1L) {
             val args = Bundle()
@@ -105,30 +91,10 @@ class MessagesFragment : Fragment(), CoroutineScope {
             }
             b.tabLayout.setupWithViewPager(this)
         }
+    }
 
-        activity.navView.apply {
-            bottomBar.apply {
-                fabEnable = true
-                fabExtendedText = getString(R.string.compose)
-                fabIcon = CommunityMaterial.Icon3.cmd_pencil_outline
-            }
-
-            bottomSheet.prependItem(
-                BottomSheetPrimaryItem(true)
-                    .withTitle(R.string.menu_messages_config)
-                    .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                    .withOnClickListener {
-                        activity.bottomSheet.close()
-                        MessagesConfigDialog(activity, false, null, null).show()
-                    }
-            )
-
-            setFabOnClickListener {
-                activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE)
-            }
-        }
-
-        activity.gainAttentionFAB()
+    override suspend fun onFabClick() {
+        activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE)
     }
 
     private val onPageDestroy = { position: Int, outState: Bundle? ->

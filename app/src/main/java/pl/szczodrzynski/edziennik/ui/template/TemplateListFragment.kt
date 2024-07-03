@@ -5,54 +5,26 @@
 package pl.szczodrzynski.edziennik.ui.template
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplateListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.onScrollListener
-import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class TemplateListFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "TemplateListFragment"
-    }
+class TemplateListFragment : BaseFragment<TemplateListFragmentBinding, MainActivity>(
+    inflater = TemplateListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: TemplateListFragmentBinding
+    override fun getRefreshLayout() = b.refreshLayout
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = TemplateListFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         val adapter = TemplateAdapter(activity)
 
-        app.db.notificationDao().getAll().observe(this@TemplateListFragment, Observer { items ->
+        app.db.notificationDao().getAll().observe(viewLifecycleOwner, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter
@@ -79,5 +51,5 @@ class TemplateListFragment : Fragment(), CoroutineScope {
                 b.noData.isVisible = false
             }
         })
-    }}
+    }
 }

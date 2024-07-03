@@ -5,28 +5,30 @@
 package pl.szczodrzynski.edziennik.ui.messages.single
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.attachToastHint
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -37,48 +39,27 @@ import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.colorAttr
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
-class MessageFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "MessageFragment"
-    }
+class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
+    inflater = MessageFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: MessageFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_messages_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                MessagesConfigDialog(activity, false, null, null).show()
+            }
+    )
 
     private val manager
         get() = app.messageManager
     private lateinit var message: MessageFull
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = MessageFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded) return
-
-        activity.bottomSheet.prependItem(
-            BottomSheetPrimaryItem(true)
-                .withTitle(R.string.menu_messages_config)
-                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                .withOnClickListener {
-                    activity.bottomSheet.close()
-                    MessagesConfigDialog(activity, false, null, null).show()
-                }
-        )
-
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         b.closeButton.onClick { activity.navigateUp() }
 
         // click to expand subject and sender
@@ -88,7 +69,6 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.senderContainer.onClick {
             b.sender.maxLines = if (b.sender.maxLines == 30) 2 else 30
         }
-        // TODO bring back iconics to reply/forward buttons - add modern icons to SzkolnyFont
 
         b.messageStar.onClick {
             launch {
@@ -129,14 +109,12 @@ class MessageFragment : Fragment(), CoroutineScope {
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
         }
 
-        launch {
-            message = manager.getMessage(App.profileId, arguments) ?: run {
-                activity.navigateUp()
-                return@launch
-            }
-            b.subject.text = message.subject
-            checkMessage()
+        message = manager.getMessage(App.profileId, arguments) ?: run {
+            activity.navigateUp()
+            return
         }
+        b.subject.text = message.subject
+        checkMessage()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -261,9 +239,5 @@ class MessageFragment : Fragment(), CoroutineScope {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 }
