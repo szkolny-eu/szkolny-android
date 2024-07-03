@@ -57,7 +57,7 @@ abstract class LazyFragment<B : ViewBinding, A : AppCompatActivity>(
     }
 
     override fun onResume() {
-        createPage()
         super.onResume()
+        createPage()
     }
 }

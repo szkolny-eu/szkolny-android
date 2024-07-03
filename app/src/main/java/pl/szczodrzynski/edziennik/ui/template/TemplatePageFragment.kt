@@ -4,20 +4,20 @@
 
 package pl.szczodrzynski.edziennik.ui.template
 
+import android.os.Bundle
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplatePageFragmentBinding
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 
-class TemplatePageFragment : LazyFragment<TemplatePageFragmentBinding, MainActivity>(
+class TemplatePageFragment : BaseFragment<TemplatePageFragmentBinding, MainActivity>(
     inflater = TemplatePageFragmentBinding::inflate,
 ) {
 
-    override fun onPageCreated(): Boolean {
-        b.text.text = "Fragment $position"
+    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+        b.text.text = "Fragment VIEW READY"
 
         b.button.addOnCheckedChangeListener { button, isChecked ->
-            setSwipeToRefresh(isChecked)
+//            setSwipeToRefresh(isChecked)
         }
-        return true
     }
 }

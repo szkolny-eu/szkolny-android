@@ -231,13 +231,4 @@ class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
             }, owner = message)
         }
     }
-
-    override fun onStart() {
-        EventBus.getDefault().register(this)
-        super.onStart()
-    }
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
 }

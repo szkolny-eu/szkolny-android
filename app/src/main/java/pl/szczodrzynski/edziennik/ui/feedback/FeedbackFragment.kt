@@ -248,14 +248,4 @@ class FeedbackFragment : BaseFragment<FragmentFeedbackBinding, AppCompatActivity
     private fun openFaq() {
         openUrl(activity, "http://szkolny.eu/pomoc/")
     }
-
-    override fun onResume() {
-        super.onResume()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        EventBus.getDefault().unregister(this)
-    }
 }
