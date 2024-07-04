@@ -164,7 +164,6 @@
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity android:name=".ui.main.BuildInvalidActivity" android:exported="false" />
-        <activity android:name=".ui.settings.contributors.ContributorsActivity" android:exported="false" />
 
         <!--  _____               _
              |  __ \             (_)

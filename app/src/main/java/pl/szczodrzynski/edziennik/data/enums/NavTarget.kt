@@ -30,6 +30,7 @@ import pl.szczodrzynski.edziennik.ui.notes.NotesFragment
 import pl.szczodrzynski.edziennik.ui.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
+import pl.szczodrzynski.edziennik.ui.settings.contributors.ContributorsFragment
 import pl.szczodrzynski.edziennik.ui.teachers.TeachersListFragment
 import pl.szczodrzynski.edziennik.ui.template.TemplateFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
@@ -253,6 +254,11 @@ enum class NavTarget(
         id = 140,
         fragmentClass = WebPushFragment::class.java,
         nameRes = R.string.menu_web_push,
+    ),
+    CONTRIBUTORS(
+        id = 150,
+        fragmentClass = ContributorsFragment::class.java,
+        nameRes = R.string.contributors,
     );
 
     companion object {
