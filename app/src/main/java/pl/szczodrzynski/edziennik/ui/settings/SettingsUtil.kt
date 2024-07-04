@@ -15,8 +15,8 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class SettingsUtil(
     val activity: MainActivity,
@@ -29,7 +29,7 @@ class SettingsUtil(
         IconicsDrawable(activity).apply {
             icon = this@asDrawable
             sizeDp = size
-            colorInt = color ?: Themes.getPrimaryTextColor(activity)
+            colorInt = color ?: android.R.attr.textColorPrimary.resolveAttr(activity)
         }
 
     fun createCard(

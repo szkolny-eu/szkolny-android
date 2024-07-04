@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.utils.Themes;
 import timber.log.Timber;
 
 public class DebugFragment extends Fragment {

@@ -14,8 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
-import pl.szczodrzynski.navlib.getColorFromAttr
 import kotlin.coroutines.CoroutineContext
 
 class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
@@ -39,8 +39,8 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
             errors = mutableListOf()
         }
         val bgColor = ColorUtils.compositeColors(
-                getColorFromAttr(activity, R.attr.colorOnSurface) and 0xcfffffff.toInt(),
-                getColorFromAttr(activity, R.attr.colorSurface)
+            R.attr.colorOnSurface.resolveAttr(activity) and 0xcfffffff.toInt(),
+            R.attr.colorSurface.resolveAttr(activity),
         )
         snackbar?.setBackgroundTint(bgColor)
         showAbove?.let { snackbar?.anchorView = it }

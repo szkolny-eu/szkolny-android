@@ -19,7 +19,6 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.SYSTEM_USER_AGENT
 import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.isNightMode
-import pl.szczodrzynski.edziennik.utils.Themes
 import java.nio.charset.Charset
 
 class RecaptchaActivity : AppCompatActivity() {

@@ -24,7 +24,6 @@ import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class SubjectViewHolder(
     inflater: LayoutInflater,

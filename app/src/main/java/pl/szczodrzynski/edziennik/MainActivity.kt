@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.navView.apply {
             drawer.init(this@MainActivity)
 
-            val statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
+            val statusBarColor = android.R.attr.colorBackground.resolveAttr(context)
             // fix for setting status bar color to window color, outside of navlib
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.statusBarColor = statusBarColor
@@ -332,12 +332,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
-                    .theme(CafeBarTheme.Custom(getColorFromAttr(this, R.attr.colorSurfaceInverse)))
+                    .theme(CafeBarTheme.Custom(R.attr.colorSurfaceInverse.resolveAttr(this)))
                     .content(R.string.rate_snackbar_text)
                     .icon(IconicsDrawable(this).apply {
                         icon = CommunityMaterial.Icon3.cmd_star_outline
                         sizeDp = 24
-                        colorInt = Themes.getPrimaryTextColor(this@MainActivity)
+                        colorInt = android.R.attr.textColorPrimary.resolveAttr(this@MainActivity)
                     })
                     .positiveText(R.string.rate_snackbar_positive)
                     .positiveColor(-0xb350b0)
@@ -1029,7 +1029,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     getString(R.string.app_task_format, getString(navTarget.nameRes)),
                 bm,
-                getColorFromAttr(this, R.attr.colorPrimary)
+                R.attr.colorPrimary.resolveAttr(this)
             )
             setTaskDescription(taskDesc)
         }

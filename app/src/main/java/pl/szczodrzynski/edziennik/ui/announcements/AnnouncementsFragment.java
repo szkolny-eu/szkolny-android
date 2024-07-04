@@ -34,7 +34,6 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
-import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 public class AnnouncementsFragment extends Fragment {
