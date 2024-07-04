@@ -61,6 +61,12 @@ fun @receiver:AttrRes Int.resolveAttr(context: Context?): Int {
     }
     return typedValue.data
 }
+@StyleRes
+fun @receiver:AttrRes Int.resolveStyleAttr(context: Context?): Int {
+    val typedValue = TypedValue()
+    context?.theme?.resolveAttribute(this, typedValue, true)
+    return typedValue.data
+}
 @Dimension
 fun @receiver:AttrRes Int.resolveDimenAttr(context: Context): Float {
     val typedValue = TypedValue()

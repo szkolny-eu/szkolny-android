@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.resolveStyleAttr
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
@@ -88,7 +89,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
 
         val moreInfoButton = findViewById<Button>(R.id.crash_details_btn)
         moreInfoButton.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.attr.materialAlertDialogMonospaceTheme.resolveAttr(this))
+            MaterialAlertDialogBuilder(this, R.attr.materialAlertDialogMonospaceTheme.resolveStyleAttr(this))
                 .setTitle(R.string.crash_details)
                 .setMessage(BetterHtml.fromHtml(context = null, getErrorString(intent, false)))
                 .setPositiveButton(R.string.close, null)
