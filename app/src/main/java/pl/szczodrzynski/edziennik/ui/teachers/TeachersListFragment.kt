@@ -22,7 +22,7 @@ class TeachersListFragment : BaseFragment<TeachersListFragmentBinding, MainActiv
     inflater = TeachersListFragmentBinding::inflate,
 ) {
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = TeachersAdapter(activity)
 
         adapter.subjectList = withContext(Dispatchers.IO) {

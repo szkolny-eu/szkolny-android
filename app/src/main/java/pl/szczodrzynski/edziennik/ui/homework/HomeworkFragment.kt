@@ -41,7 +41,7 @@ class HomeworkFragment : BaseFragment<HomeworkFragmentBinding, MainActivity>(
             }
     )
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
                 null,

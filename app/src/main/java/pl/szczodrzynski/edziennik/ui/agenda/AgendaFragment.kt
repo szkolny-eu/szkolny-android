@@ -88,7 +88,7 @@ class AgendaFragment : BaseFragment<ViewDataBinding, MainActivity>(
 
     private var agendaDefault: AgendaFragmentDefault? = null
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         when (app.profile.config.ui.agendaViewType) {
             Profile.AGENDA_DEFAULT -> createDefaultAgendaView(
                 b as? FragmentAgendaDefaultBinding ?: return

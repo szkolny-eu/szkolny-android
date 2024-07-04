@@ -20,7 +20,7 @@ class TemplatePageFragment : BaseFragment<TemplatePageFragmentBinding, MainActiv
             super.canRefresh = value
         }
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.text.text = "Fragment VIEW READY"
         b.editText.setText(savedInstanceState.getString("editText", "default"))
 

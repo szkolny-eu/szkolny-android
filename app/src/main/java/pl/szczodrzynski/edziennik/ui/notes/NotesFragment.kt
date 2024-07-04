@@ -30,7 +30,7 @@ class NotesFragment : BaseFragment<NotesFragmentBinding, MainActivity>(
     private val manager
         get() = app.noteManager
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = NoteListAdapter(
             activity = activity,
             onNoteClick = this::onNoteClick,

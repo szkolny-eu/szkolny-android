@@ -87,7 +87,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         startCoroutineTimer(100L) {
             if (!isAdded)
                 return@startCoroutineTimer
-            onViewCreated(inState)
+            onViewReady(inState)
             (activity as? MainActivity)?.gainAttention()
             (activity as? MainActivity)?.gainAttentionFAB()
         }
@@ -128,7 +128,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     open fun getMarkAsReadType(): MetadataType? = null
     open fun getBottomSheetItems() = listOf<IBottomSheetItem<*>>()
 
-    open suspend fun onViewCreated(savedInstanceState: Bundle?) {}
+    open suspend fun onViewReady(savedInstanceState: Bundle?) {}
 
     open suspend fun onFabClick() {}
 }

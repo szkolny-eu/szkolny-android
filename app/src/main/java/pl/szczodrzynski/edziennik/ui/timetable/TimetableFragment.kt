@@ -146,7 +146,7 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
         activity.unregisterReceiver(broadcastReceiver)
     }
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (app.profile.getStudentData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.timetableNotPublicLayout.visibility = View.VISIBLE

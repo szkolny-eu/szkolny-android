@@ -31,7 +31,7 @@ class WebPushFragment : BaseFragment<WebPushFragmentBinding, MainActivity>(
     private val manager
         get() = app.permissionManager
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.scanQrCode.onClick {
             manager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
                 QrScannerDialog(activity, {

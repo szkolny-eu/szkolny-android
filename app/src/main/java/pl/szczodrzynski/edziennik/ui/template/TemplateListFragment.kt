@@ -20,7 +20,7 @@ class TemplateListFragment : BaseFragment<TemplateListFragmentBinding, MainActiv
 
     override fun getRefreshScrollingView() = b.list
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = TemplateAdapter(activity)
 
         app.db.notificationDao().getAll().observe(viewLifecycleOwner, Observer { items ->

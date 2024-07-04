@@ -19,7 +19,7 @@ class LabFragment : BaseFragment<TemplateFragmentBinding, AppCompatActivity>(
         var pageSelection = 0
     }
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (!isAdded) return
 
         val pagerAdapter = FragmentLazyPagerAdapter(

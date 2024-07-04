@@ -59,7 +59,7 @@ class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
         get() = app.messageManager
     private lateinit var message: MessageFull
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.closeButton.onClick { activity.navigateUp() }
 
         // click to expand subject and sender

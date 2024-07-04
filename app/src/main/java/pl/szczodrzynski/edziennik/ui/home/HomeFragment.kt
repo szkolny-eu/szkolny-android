@@ -121,7 +121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
     private val manager
         get() = app.permissionManager
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (!manager.isNotificationPermissionGranted) {
             manager.requestNotificationsPermission(activity, 0, false){}
         }

@@ -9,6 +9,6 @@ class ProfileManagerFragment : BaseFragment<FragmentProfileManagerBinding, MainA
     inflater = FragmentProfileManagerBinding::inflate,
 ) {
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
     }
 }

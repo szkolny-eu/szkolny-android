@@ -57,7 +57,7 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
         get() = manager.dontCountGrades
     private var expandSubjectId = 0L
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
         val adapter = GradesAdapter(activity)

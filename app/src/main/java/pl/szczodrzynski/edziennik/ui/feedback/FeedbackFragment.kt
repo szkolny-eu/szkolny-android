@@ -120,7 +120,7 @@ class FeedbackFragment : BaseFragment<FragmentFeedbackBinding, AppCompatActivity
         }
     }
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         EventBus.getDefault().removeStickyEvent(FeedbackMessageEvent::class.java)
 
         b.faqText.setOnClickListener { openFaq() }

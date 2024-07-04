@@ -32,7 +32,7 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
             }
     )
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val messageId = arguments?.getLong("messageId", -1L) ?: -1L
         if (messageId != -1L) {
             val args = Bundle()

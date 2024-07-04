@@ -40,7 +40,7 @@ class AttendanceFragment : BaseFragment<AttendanceFragmentBinding, MainActivity>
             },
     )
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (pageSelection == 1)
             pageSelection = app.profile.config.attendance.attendancePageSelection
 

@@ -54,7 +54,7 @@ class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActiv
     private var averageMode = YEAR_ALL_GRADES // this means the container should be gone
     private var yearAverageBefore = 0.0f
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         subjectId = arguments.getLong("subjectId", -1)
         semester = arguments.getInt("semester", 1)
 

@@ -26,7 +26,7 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
     private var displayMode = MODE_YEAR
     private var noticeList: List<NoticeFull>? = null
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.toggleGroup.check(when (displayMode) {
             0 -> R.id.allYear
             1 -> R.id.semester1

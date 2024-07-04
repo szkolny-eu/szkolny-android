@@ -44,7 +44,7 @@ class NotificationsListFragment : BaseFragment<NotificationsListFragmentBinding,
             }
     )
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = NotificationsAdapter(activity) { notification ->
             val intent = Intent("android.intent.action.MAIN")
             notification.fillIntent(intent)

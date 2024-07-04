@@ -22,7 +22,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     private lateinit var pages: List<Pair<Fragment, String>>
     private val fragmentCache = mutableMapOf<Int, Fragment>()
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         pages = onCreatePages()
 
         val adapter = object : FragmentStateAdapter(this) {

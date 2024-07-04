@@ -96,7 +96,7 @@ class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, Mai
     private var discardDraftItem: BottomSheetPrimaryItem? = null
     private var draftMessageId: Long? = null
 
-    override suspend fun onViewCreated(savedInstanceState: Bundle?) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.breakpoints.visibility = if (App.devMode) View.VISIBLE else View.GONE
         b.breakpoints.setOnClickListener {
             b.breakpoints.isEnabled = true
