@@ -38,7 +38,15 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     private var inState: Bundle? = null
 
     private var canRefreshSent = false
-    open var canRefresh = false
+
+    /**
+     * Enables or disables the activity's SwipeRefreshLayout.
+     * Use only if [getRefreshScrollingView] is not used.
+     *
+     * The [PagerFragment] manages its [canRefresh] state
+     * based on the value of the currently selected page.
+     */
+    internal var canRefresh = false
         set(value) {
             if (field == value && canRefreshSent) // broadcast only if changed
                 return
@@ -47,7 +55,12 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
                 !canRefreshDisabled && value
             canRefreshSent = true
         }
-    protected var canRefreshDisabled = false
+
+    /**
+     * Forcefully disables the activity's SwipeRefreshLayout
+     * if [getRefreshScrollingView] is used.
+     */
+    internal var canRefreshDisabled = false
         set(value) {
             field = value
             canRefresh = canRefresh
@@ -126,18 +139,49 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     final override fun onDestroy() = super.onDestroy()
     final override fun onDetach() = super.onDetach()
 
+    /**
+     * Called if there is no inflater passed in the constructor.
+     * Must return a non-null value.
+     */
     open fun inflate(
         inflater: LayoutInflater,
         parent: ViewGroup?,
         attachToParent: Boolean,
     ): B? = null
 
+    /**
+     * Called to retrieve the scrolling view contained in the fragment.
+     * The scrolling view is configured to act nicely with the SwipeRefreshLayout.
+     */
     open fun getRefreshScrollingView(): View? = null
+
+    /**
+     * Called to retrieve the FAB label resource and the icon.
+     * If provided, a FAB is added and shown automatically.
+     */
     open fun getFab(): Pair<Int, IIcon>? = null
+
+    /**
+     * Called to retrieve the [MetadataType] of items displayed by the fragment.
+     * If provided, a "mark as read" item is added to the bottom sheet.
+     */
     open fun getMarkAsReadType(): MetadataType? = null
+
+    /**
+     * Called to retrieve any extra bottom sheet items that should be displayed.
+     */
     open fun getBottomSheetItems() = listOf<IBottomSheetItem<*>>()
 
+    /**
+     * Called after the fragment is initialized (default) or when is becomes visible (pager).
+     *
+     * Perform view initialization and other tasks, if necessary. Remember to call super
+     * if used in a [PagerFragment].
+     */
     open suspend fun onViewReady(savedInstanceState: Bundle?) {}
 
+    /**
+     * Called when the FAB is clicked (if enabled).
+     */
     open suspend fun onFabClick() {}
 }

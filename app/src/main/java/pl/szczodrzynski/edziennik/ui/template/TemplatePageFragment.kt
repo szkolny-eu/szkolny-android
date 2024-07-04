@@ -14,16 +14,11 @@ class TemplatePageFragment : BaseFragment<TemplatePageFragmentBinding, MainActiv
     inflater = TemplatePageFragmentBinding::inflate,
 ) {
 
-    override var canRefresh = true
-        set(value) {
-            field = value
-            super.canRefresh = value
-        }
-
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.text.text = "Fragment VIEW READY"
         b.editText.setText(savedInstanceState.getString("editText", "default"))
 
+        canRefresh = true
         b.button.addOnCheckedChangeListener { button, isChecked ->
             canRefresh = isChecked
         }

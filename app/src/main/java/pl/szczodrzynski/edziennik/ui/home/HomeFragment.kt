@@ -171,7 +171,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
 
         val adapter = HomeCardAdapter(items)
         val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter) {
-            canRefresh = it
+            canRefreshDisabled = !it
         })
         adapter.itemTouchHelper = itemTouchHelper
         b.list.layoutManager = LinearLayoutManager(activity)

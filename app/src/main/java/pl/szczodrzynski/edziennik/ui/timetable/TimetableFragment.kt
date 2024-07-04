@@ -11,7 +11,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
@@ -24,16 +23,18 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
+import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ext.getStudentData
-import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.PagerFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Week
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 
-class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>(
+class TimetableFragment : PagerFragment<FragmentTimetableV2Binding, MainActivity>(
     inflater = FragmentTimetableV2Binding::inflate,
 ) {
     companion object {
@@ -45,6 +46,7 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
         var pageSelection: Date? = null
     }
 
+    override fun getFab() = R.string.timetable_today to SzkolnyFont.Icon.szf_calendar_today_outline
     override fun getMarkAsReadType() = MetadataType.LESSON_CHANGE
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
@@ -88,7 +90,11 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
             .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                EventManualDialog(activity, App.profileId, defaultDate = pageSelection).show()
+                EventManualDialog(
+                    activity,
+                    App.profileId,
+                    defaultDate = items[savedPageSelection]
+                ).show()
             },
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_generate_block_timetable)
@@ -107,8 +113,34 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
             }
     )
 
-    private var fabShown = false
+    override fun getTabLayout() = b.tabLayout
+    override fun getViewPager() = b.viewPager
+
+    override fun getPageCount() = items.size
+    override fun getPageFragment(position: Int) = TimetableDayFragment().apply {
+        arguments = Bundle(
+            "date" to items[position].value,
+            "startHour" to startHour,
+            "endHour" to endHour,
+        )
+    }
+
+    override fun getPageTitle(position: Int): String {
+        val date = items[position]
+        var pageTitle = Week.getFullDayName(date.weekDay)
+        if (date > weekEnd || date < weekStart) {
+            pageTitle += ", ${date.stringDm}"
+        }
+        return pageTitle
+    }
+
+    private var startHour = DEFAULT_START_HOUR
+    private var endHour = DEFAULT_END_HOUR
+    private val today by lazy { Date.getToday() }
+    private val weekStart by lazy { today.weekStart }
+    private val weekEnd by lazy { weekStart.clone().stepForward(0, 0, 6) }
     private val items = mutableListOf<Date>()
+    private var fabShown = false
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, i: Intent) {
@@ -118,14 +150,16 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
                 ACTION_SCROLL_TO_DATE -> {
                     val dateStr = i.extras?.getString("timetableDate", null) ?: return
                     val date = Date.fromY_m_d(dateStr)
-                    b.viewPager.setCurrentItem(items.indexOf(date), true)
+                    goToPage(items.indexOf(date))
                 }
+
                 ACTION_RELOAD_PAGES -> {
                     b.viewPager.adapter?.notifyDataSetChanged()
                 }
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
         ContextCompat.registerReceiver(
@@ -141,6 +175,7 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
     }
+
     override fun onPause() {
         super.onPause()
         activity.unregisterReceiver(broadcastReceiver)
@@ -155,9 +190,6 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
         b.timetableLayout.visibility = View.VISIBLE
         b.timetableNotPublicLayout.visibility = View.GONE
 
-        val today = Date.getToday().value
-        var startHour = DEFAULT_START_HOUR
-        var endHour = DEFAULT_END_HOUR
         val deferred = async(Dispatchers.Default) {
             items.clear()
 
@@ -167,7 +199,7 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
             val yearEnd = app.profile.dateYearEnd
             while (yearStart.value <= yearEnd.value) {
                 items += yearStart.clone()
-                var maxDays = monthDayCount[yearStart.month-1]
+                var maxDays = monthDayCount[yearStart.month - 1]
                 if (yearStart.month == 2 && yearStart.isLeap)
                     maxDays++
                 yearStart.day++
@@ -189,48 +221,22 @@ class TimetableFragment : BaseFragment<FragmentTimetableV2Binding, MainActivity>
         if (!isAdded)
             return
 
-        val pagerAdapter = TimetablePagerAdapter(
-            parentFragmentManager,
-                items,
-                startHour,
-                endHour
-        )
-        b.viewPager.offscreenPageLimit = 1
-        b.viewPager.adapter = pagerAdapter
-        b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-                // TODO: 2020-01-05 resolve issues with page scrolling (and scrolling up) with viewpager and swipe to refresh
-                /*if (b.refreshLayout != null) {
-                    b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
-                }*/
-            }
+        val selectedDate = arguments?.getString("timetableDate", "")
+            ?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
+        savedPageSelection = items.indexOfFirst { it == (selectedDate ?: today) }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        super.onViewReady(savedInstanceState)
+    }
 
-            }
+    override suspend fun onFabClick() {
+        b.viewPager.setCurrentItem(items.indexOfFirst { it == today }, true)
+    }
 
-            override fun onPageSelected(position: Int) {
-                pageSelection = items[position]
-                activity.navView.bottomBar.fabEnable = items[position].value != today
-                if (activity.navView.bottomBar.fabEnable && !fabShown) {
-                    activity.gainAttentionFAB()
-                    fabShown = true
-                }
-                //markLessonsAsSeen()
-            }
-        })
-
-        val selectedDate = arguments?.getString("timetableDate", "")?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
-
-        // TODO bring back RecyclerTabLayout
-        b.tabLayout.setupWithViewPager(b.viewPager)
-        b.viewPager.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
-
-        //activity.navView.bottomBar.fabEnable = true
-        activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
-        activity.navView.bottomBar.fabIcon = SzkolnyFont.Icon.szf_calendar_today_outline
-        activity.navView.setFabOnClickListener {
-            b.viewPager.setCurrentItem(items.indexOfFirst { it.value == today }, true)
+    override suspend fun onPageSelected(position: Int) {
+        activity.navView.bottomBar.fabEnable = items[position] != today
+        if (activity.navView.bottomBar.fabEnable && !fabShown) {
+            activity.gainAttentionFAB()
+            fabShown = true
         }
     }
 

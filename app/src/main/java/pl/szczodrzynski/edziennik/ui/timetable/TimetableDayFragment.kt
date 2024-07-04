@@ -85,17 +85,19 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         get() = app.attendanceManager
 
     private val dayViewDelegate = mutableLazy {
-        val dayView = DayView(activity, DayViewConfig(
-            startHour = startHour,
-            endHour = endHour,
-            dividerHeight = 1.dp,
-            halfHourHeight = app.data.uiConfig.lessonHeight.dp,
-            hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
-            halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
-            hourLabelWidth = 40.dp,
-            hourLabelMarginEnd = 10.dp,
-            eventMargin = 2.dp
-        ), true)
+        val dayView = DayView(
+            activity, DayViewConfig(
+                startHour = startHour,
+                endHour = endHour,
+                dividerHeight = 1.dp,
+                halfHourHeight = app.data.uiConfig.lessonHeight.dp,
+                hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
+                halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
+                hourLabelWidth = 40.dp,
+                hourLabelMarginEnd = 10.dp,
+                eventMargin = 2.dp
+            ), true
+        )
         dayView.setPadding(10.dp)
         return@mutableLazy dayView
     }
@@ -126,7 +128,11 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         }
     }
 
-    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
+    private fun processLessonList(
+        lessons: List<LessonFull>,
+        events: List<EventFull>,
+        attendanceList: List<AttendanceFull>,
+    ) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
             inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
@@ -139,11 +145,11 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
                 b.noTimetableSync.onClick {
                     it.isEnabled = false
                     EdziennikTask.syncProfile(
-                            profileId = App.profileId,
-                            featureTypes = setOf(FeatureType.TIMETABLE),
-                            arguments = JsonObject(
-                                    "weekStart" to weekStart
-                            )
+                        profileId = App.profileId,
+                        featureTypes = setOf(FeatureType.TIMETABLE),
+                        arguments = JsonObject(
+                            "weekStart" to weekStart
+                        )
                     ).enqueue(activity)
                 }
                 b.noTimetableWeek.setText(R.string.timetable_no_timetable_week, weekStart)
@@ -194,7 +200,8 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         val lessonsActual = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
 
         val minStartHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
-        val maxEndHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
+        val maxEndHour =
+            lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
 
         if (app.profile.config.ui.timetableTrimHourRange) {
             dayViewDelegate.deinitialize()
@@ -215,7 +222,8 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         for (i in dayView.startHour..dayView.endHour) {
             if (!isAdded)
                 continue
-            val hourLabelView = layoutInflater.inflate(R.layout.timetable_hour_label, dayView, false) as TextView
+            val hourLabelView =
+                layoutInflater.inflate(R.layout.timetable_hour_label, dayView, false) as TextView
             hourLabelView.text = "$i:00"
             hourLabelViews.add(hourLabelView)
         }
@@ -231,7 +239,11 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         buildLessonViews(lessonsActual, events, attendanceList)
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
+    private fun buildLessonViews(
+        lessons: List<LessonFull>,
+        events: List<EventFull>,
+        attendanceList: List<AttendanceFull>,
+    ) {
         if (!isAdded)
             return
 
@@ -283,12 +295,14 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
 
             val eventIcons = listOf(lb.event1, lb.event2, lb.event3)
             if (app.profile.config.ui.timetableShowEvents) {
-                val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
+                val eventList =
+                    events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
                 for ((i, eventIcon) in eventIcons.withIndex()) {
                     eventList.getOrNull(i).let {
                         eventIcon.isVisible = it != null
                         eventIcon.background = it?.let {
-                            R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+                            R.drawable.bg_circle.resolveDrawable(activity)
+                                .setTintColor(it.eventColor)
                         }
                     }
                 }
@@ -299,13 +313,15 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
             }
 
 
-            val timeRange = "${startTime.stringHM} - ${endTime.stringHM}".asColoredSpannable(colorSecondary)
+            val timeRange =
+                "${startTime.stringHM} - ${endTime.stringHM}".asColoredSpannable(colorSecondary)
 
             // teacher
-            val teacherInfo = if (lesson.teacherId != null && lesson.teacherId == lesson.oldTeacherId)
-                lesson.teacherName ?: "?"
-            else
-                lesson.teacherName
+            val teacherInfo =
+                if (lesson.teacherId != null && lesson.teacherId == lesson.oldTeacherId)
+                    lesson.teacherName ?: "?"
+                else
+                    lesson.teacherName
                     ?: lesson.oldTeacherName?.asStrikethroughSpannable()
                     ?: ""
 
@@ -314,14 +330,15 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
                 lesson.teamName ?: "?"
             else
                 lesson.teamName
-                    ?: lesson.oldTeamName?.asStrikethroughSpannable()
-                    ?: ""
+                ?: lesson.oldTeamName?.asStrikethroughSpannable()
+                ?: ""
 
             // classroom
-            val classroomInfo = if (lesson.classroom != null && lesson.classroom == lesson.oldClassroom)
-                lesson.classroom ?: "?"
-            else
-                lesson.classroom
+            val classroomInfo =
+                if (lesson.classroom != null && lesson.classroom == lesson.oldClassroom)
+                    lesson.classroom ?: "?"
+                else
+                    lesson.classroom
                     ?: lesson.oldClassroom?.asStrikethroughSpannable()
                     ?: ""
 
@@ -331,7 +348,8 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
                 lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
 
             val (subjectTextPrimary, subjectTextSecondary) = if (app.profile.config.ui.timetableColorSubjectName) {
-                val subjectColor = lesson.color ?: Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
+                val subjectColor =
+                    lesson.color ?: Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
                 if (lb.annotationVisible) {
                     lb.subjectContainer.background = ColorDrawable(subjectColor)
                 } else {
@@ -432,6 +450,8 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
 
     override fun onResume() {
         super.onResume()
+        if (!::date.isInitialized)
+            return
         val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
         b.scrollView.scrollTo(0, firstEventTop.toInt())
         updateTimeIndicator()
