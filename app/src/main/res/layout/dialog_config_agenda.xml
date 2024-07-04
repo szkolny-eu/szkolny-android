@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -91,9 +92,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
+                android:isVisible="@{!isAgendaMode}"
                 android:text="@string/agenda_config_mode_unavailable"
-                android:textAppearance="?textAppearanceBodySmall"
-                android:isVisible="@{!isAgendaMode}" />
+                android:textAppearance="?textAppearanceBodySmall" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -115,8 +116,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:minHeight="32dp"
                 android:checked="@={config.shareByDefault}"
+                android:minHeight="32dp"
                 android:text="@string/settings_register_share_by_default_text" />
 
             <TextView

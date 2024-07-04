@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-29.
   -->
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="simpleMode"
             type="Boolean" />
@@ -49,7 +51,6 @@
             app:layout_constraintStart_toEndOf="@+id/attendanceView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nieobecność nieusprawiedliwiona" />
-
 
         <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/subjectName"

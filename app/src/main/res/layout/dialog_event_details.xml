@@ -1,29 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-18.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
-        <import type="pl.szczodrzynski.edziennik.App"/>
+
+        <import type="android.view.View" />
+
+        <import type="pl.szczodrzynski.edziennik.App" />
+
         <variable
             name="appCompanion"
             type="pl.szczodrzynski.edziennik.App.Companion" />
+
         <variable
             name="event"
             type="pl.szczodrzynski.edziennik.data.db.full.EventFull" />
-        <variable name="eventShared" type="boolean" />
-        <variable name="eventOwn" type="boolean" />
-        <variable name="name" type="java.lang.CharSequence" />
-        <variable name="details" type="java.lang.CharSequence" />
-        <variable name="monthName" type="String" />
+
+        <variable
+            name="eventShared"
+            type="boolean" />
+
+        <variable
+            name="eventOwn"
+            type="boolean" />
+
+        <variable
+            name="name"
+            type="java.lang.CharSequence" />
+
+        <variable
+            name="details"
+            type="java.lang.CharSequence" />
+
+        <variable
+            name="monthName"
+            type="String" />
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,46 +69,45 @@
                     android:background="@drawable/unread_red_circle" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{name}"
-                        android:textIsSelectable="true"
-                        android:textAppearance="?textAppearanceTitleLarge"
                         android:isVisible="@{event.typeName != null}"
+                        android:text="@{name}"
+                        android:textAppearance="?textAppearanceTitleLarge"
+                        android:textIsSelectable="true"
                         tools:text="sprawdzian" />
 
                     <TextView
                         android:id="@+id/lessonDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textIsSelectable="true"
-                        android:textAppearance="?textAppearanceTitleMedium"
-                        android:text="@{details}"
                         android:isVisible="@{details != null}"
+                        android:text="@{details}"
+                        android:textAppearance="?textAppearanceTitleMedium"
+                        android:textIsSelectable="true"
                         tools:text="język angielski • 2B3T a2"
                         tools:visibility="visible" />
-
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
-                        tools:text="14:50"/>
+                        android:textAppearance="?textAppearanceBodySmall"
+                        tools:text="14:50" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -100,9 +121,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{monthName}"
                         tools:text="listopada" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
             <com.mikepenz.iconics.view.IconicsTextView
@@ -116,49 +135,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider"/>
+                android:background="@drawable/divider" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="?textAppearanceLabelMedium"
+                android:isVisible="@{event.teacherName != null}"
                 android:text="@string/dialog_event_details_teacher"
-                android:isVisible="@{event.teacherName != null}"/>
+                android:textAppearance="?textAppearanceLabelMedium" />
+
             <TextView
                 android:id="@+id/teacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:isVisible="@{event.teacherName != null}"
                 android:text="@{event.teacherName}"
                 android:textIsSelectable="true"
-                android:isVisible="@{event.teacherName != null}"
                 tools:text="Janósz Kowalski" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="?textAppearanceLabelMedium"
-                android:text="@string/dialog_event_details_added_by"/>
+                android:text="@string/dialog_event_details_added_by"
+                android:textAppearance="?textAppearanceLabelMedium" />
+
             <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/addedBy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textIsSelectable="true"
-                tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
-
-            <!--<View
+                tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />            <!--<View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/dividerColor"/>-->
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?textAppearanceLabelMedium"
-                android:text="@string/dialog_event_details_topic"/>
+                android:background="@color/dividerColor"/>-->            <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/dialog_event_details_topic"
+            android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:id="@+id/topic"
@@ -204,21 +221,19 @@
             <pl.szczodrzynski.edziennik.ui.base.views.AttachmentsView
                 android:id="@+id/attachmentsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider"/>
+                android:background="@drawable/divider" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:flexWrap="wrap"
-                app:justifyContent="center">
-
-                <!-- cmd_eye_check_outline -->
+                app:justifyContent="center">                <!-- cmd_eye_check_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkDoneButton"
                     style="?materialButtonOutlinedStyle"
@@ -229,9 +244,7 @@
                     android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
                     android:text="\uf4df"
-                    android:textSize="20sp" />
-
-                <!-- cmd_pencil_outline -->
+                    android:textSize="20sp" />                <!-- cmd_pencil_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/editButton"
                     style="?materialButtonOutlinedStyle"
@@ -241,9 +254,7 @@
                     android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
                     android:text="\uf2f4"
-                    android:textSize="20sp" />
-
-                <!-- cmd_calendar_export -->
+                    android:textSize="20sp" />                <!-- cmd_calendar_export -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveInCalendarButton"
                     style="?materialButtonOutlinedStyle"
@@ -253,9 +264,7 @@
                     android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
                     android:text="\uf97a"
-                    android:textSize="20sp" />
-
-                <!-- cmd_cursor_default_click_outline -->
+                    android:textSize="20sp" />                <!-- cmd_cursor_default_click_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/goToTimetableButton"
                     style="?materialButtonOutlinedStyle"
@@ -265,9 +274,7 @@
                     android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
                     android:text="\ufc90"
-                    android:textSize="20sp" />
-
-                <!-- cmd_download_outline -->
+                    android:textSize="20sp" />                <!-- cmd_download_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/downloadButton"
                     style="?materialButtonOutlinedStyle"

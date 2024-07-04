@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-12.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -133,8 +135,8 @@
                             android:id="@+id/date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingHorizontal="8dp"
                             android:layout_marginTop="4dp"
+                            android:paddingHorizontal="8dp"
                             android:textAppearance="?textAppearanceBodySmall"
                             tools:text="20 lis 2021 • 14:26" />
                     </LinearLayout>

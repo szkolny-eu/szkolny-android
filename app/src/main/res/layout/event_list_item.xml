@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-15.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,9 +19,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginRight="8dp"
         android:gravity="center_vertical"
-        android:layout_marginRight="8dp">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -93,11 +95,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
+                android:isVisible="@{!simpleMode}"
                 android:singleLine="true"
                 android:textAppearance="?textAppearanceBodySmall"
-                android:isVisible="@{!simpleMode}"
                 tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
         </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editButton"
             style="?materialIconButtonSecondaryStyle"

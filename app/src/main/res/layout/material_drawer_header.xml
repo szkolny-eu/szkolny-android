@@ -1,4 +1,5 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/material_drawer_account_header"
@@ -28,22 +29,22 @@
 
     <com.mikepenz.materialdrawer.view.BezelImageView
         android:id="@+id/material_drawer_account_header_current"
+        style="@style/BezelImageView"
         android:layout_width="@dimen/material_drawer_account_header_selected"
         android:layout_height="@dimen/material_drawer_account_header_selected"
-        style="@style/BezelImageView"
-        app:materialDrawerDrawCircularShadow="false"
         android:layout_marginStart="@dimen/material_drawer_vertical_padding"
         android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
-        android:layout_marginBottom="@dimen/material_drawer_account_header_horizontal_bottom"
         android:layout_marginTop="@dimen/material_drawer_account_header_horizontal_top"
+        android:layout_marginBottom="@dimen/material_drawer_account_header_horizontal_bottom"
         android:clickable="true"
         android:elevation="2dp"
         android:focusable="true"
         android:scaleType="centerCrop"
-        app:materialDrawerSelectorOnPress="#80ffffff"
+        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name" />
+        app:materialDrawerDrawCircularShadow="false"
+        app:materialDrawerSelectorOnPress="#80ffffff" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_current_badge"
@@ -55,9 +56,9 @@
         android:minWidth="20dp"
         android:paddingHorizontal="1dp"
         android:singleLine="true"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintBottom_toBottomOf="@id/material_drawer_account_header_current"
         app:layout_constraintStart_toStartOf="@id/material_drawer_account_header_current"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         tools:text="99" />
 
     <com.mikepenz.materialdrawer.view.BezelImageView
@@ -73,9 +74,9 @@
         android:focusable="true"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        app:materialDrawerSelectorOnPress="#80ffffff"
+        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name"
         app:layout_constraintEnd_toStartOf="@id/material_drawer_account_header_small_second"
-        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name" />
+        app:materialDrawerSelectorOnPress="#80ffffff" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_first_badge"
@@ -106,9 +107,9 @@
         android:focusable="true"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        app:materialDrawerSelectorOnPress="#80ffffff"
+        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name"
         app:layout_constraintEnd_toStartOf="@id/material_drawer_account_header_small_third"
-        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name" />
+        app:materialDrawerSelectorOnPress="#80ffffff" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_second_badge"
@@ -139,9 +140,9 @@
         android:focusable="true"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        app:materialDrawerSelectorOnPress="#80ffffff"
+        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/material_drawer_account_header_name" />
+        app:materialDrawerSelectorOnPress="#80ffffff" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_account_header_small_third_badge"

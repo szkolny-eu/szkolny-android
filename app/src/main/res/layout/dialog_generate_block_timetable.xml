@@ -2,7 +2,8 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2020-1-5
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/divider"/>
+            android:background="@drawable/divider" />
 
         <CheckBox
             android:id="@+id/showProfileNameCheckbox"

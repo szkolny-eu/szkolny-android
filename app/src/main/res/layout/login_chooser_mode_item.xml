@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-10.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -19,8 +19,8 @@
             android:id="@+id/logo"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:adjustViewBounds="true"
             android:layout_marginStart="16dp"
+            android:adjustViewBounds="true"
             tools:src="@drawable/login_mode_librus_email" />
 
         <View
@@ -32,8 +32,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/badge"
@@ -64,4 +64,3 @@
         </LinearLayout>
     </LinearLayout>
 </layout>
-

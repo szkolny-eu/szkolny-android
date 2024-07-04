@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-3-30.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -26,8 +26,8 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/homework_no_data"
-            android:visibility="gone"
             android:textAppearance="?textAppearanceHeadlineSmall"
+            android:visibility="gone"
             app:drawableTopCompat="@drawable/ic_no_homework"
             tools:visibility="visible" />
 

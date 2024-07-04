@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-9-3.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="pl.szczodrzynski.edziennik.utils.html.BetterHtml" />
+
         <variable
             name="message"
             type="pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus.Message" />
@@ -28,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
                 android:isVisible="@{message.image != null}"
+                android:scaleType="fitXY"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
@@ -63,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
-                    android:text="@string/register_unavailable_read_more"
-                    android:isVisible="@{message.url != null}" />
+                    android:isVisible="@{message.url != null}"
+                    android:text="@string/register_unavailable_read_more" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

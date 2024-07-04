@@ -1,47 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-9-3.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:orientation="vertical">
+        android:paddingTop="8dp">
+
         <ImageView
             android:id="@+id/homeAvailabilityIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginBottom="8dp"
             app:srcCompat="@drawable/ic_update" />
-            <TextView
-                android:id="@+id/homeAvailabilityTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/home_availability_title"
-                android:textAppearance="?textAppearanceTitleMedium" />
 
-            <TextView
-                android:id="@+id/homeAvailabilityText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/home_availability_text"
-                tools:text="Zaktualizuj aplikację do najnowszej wersji 4.3.1." />
+        <TextView
+            android:id="@+id/homeAvailabilityTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_availability_title"
+            android:textAppearance="?textAppearanceTitleMedium" />
+
+        <TextView
+            android:id="@+id/homeAvailabilityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_availability_text"
+            tools:text="Zaktualizuj aplikację do najnowszej wersji 4.3.1." />
 
         <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_availability_update" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityInfo"
                 style="?materialButtonSecondaryStyle"

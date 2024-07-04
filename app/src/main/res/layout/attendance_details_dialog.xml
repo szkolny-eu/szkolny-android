@@ -1,19 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-5-9.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
-        <import type="pl.szczodrzynski.edziennik.utils.Utils"/>
-        <import type="pl.szczodrzynski.edziennik.utils.models.Date"/>
-        <import type="pl.szczodrzynski.edziennik.utils.models.Time"/>
+
+        <import type="android.view.View" />
+
+        <import type="pl.szczodrzynski.edziennik.utils.Utils" />
+
+        <import type="pl.szczodrzynski.edziennik.utils.models.Date" />
+
+        <import type="pl.szczodrzynski.edziennik.utils.models.Time" />
+
         <variable
             name="attendance"
             type="pl.szczodrzynski.edziennik.data.db.full.AttendanceFull" />
+
         <variable
             name="devMode"
             type="boolean" />
@@ -45,8 +52,8 @@
                     android:text="@{attendance.typeShort}"
                     android:textIsSelectable="true"
                     android:textSize="36sp"
-                    app:autoSizeMinTextSize="18sp"
                     app:autoSizeMaxTextSize="56sp"
+                    app:autoSizeMinTextSize="18sp"
                     app:autoSizeTextType="uniform"
                     tools:background="#ff673ab7"
                     tools:text="e" />
@@ -82,7 +89,6 @@
                         android:textAppearance="?textAppearanceTitleLarge"
                         android:textIsSelectable="true"
                         tools:text="matematyka" />
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -159,17 +165,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:isVisible="@{attendance.lessonTopic != null}"
                 android:text="@string/attendance_details_lesson_topic"
-                android:textAppearance="?textAppearanceLabelMedium"
-                android:isVisible="@{attendance.lessonTopic != null}" />
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
+                android:isVisible="@{attendance.lessonTopic != null}"
                 android:text="@{attendance.lessonTopic}"
                 android:textIsSelectable="true"
-                android:isVisible="@{attendance.lessonTopic != null}"
                 tools:text="Malowanie autoportretu na ścianie sali gimnastycznej. Modlitwa w terenie." />
 
             <TextView
@@ -190,9 +196,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:baselineAligned="false"
-                android:isVisible="@{devMode}">
+                android:isVisible="@{devMode}"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"

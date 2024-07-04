@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-22.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_margin="8dp"
-        tools:ignore="HardcodedText">
+        tools:ignore="HardcodedText"
+        tools:layout_margin="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Warning! Do not move this debug card, or you will probably confuse the internal card ID list, thus resulting in a weird and (maybe)non-undoable card order."/>
+            android:text="Warning! Do not move this debug card, or you will probably confuse the internal card ID list, thus resulting in a weird and (maybe)non-undoable card order." />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/librusCaptchaButton"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Network"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/runChucker"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Messages"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/migrate71"
@@ -66,13 +66,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sync"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pruneWorkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Prune finished work" />
-
     </LinearLayout>
 </layout>

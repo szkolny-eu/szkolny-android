@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kacper Ziubryniewicz 2019-12-20
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:keepScreenOn="true"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:keepScreenOn="true">
+        android:padding="24dp">
 
         <TextView
             android:id="@+id/bellSyncHowto"

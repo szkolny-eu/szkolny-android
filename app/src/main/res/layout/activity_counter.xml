@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootFrame"
     android:layout_width="match_parent"
@@ -9,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
-        android:keepScreenOn="true">
+        android:keepScreenOn="true"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -20,20 +21,22 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/counter_activity_sync"
-                android:textSize="12sp"
-                android:textColor="#ff606060" />
+                android:textColor="#ff606060"
+                android:textSize="12sp" />
+
             <ImageView
                 android:id="@+id/bellSync"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="10dp"
-                tools:tint="#ff404040"
-                tools:src="@sample/settings" />
+                tools:src="@sample/settings"
+                tools:tint="#ff404040" />
         </LinearLayout>
 
         <TextView

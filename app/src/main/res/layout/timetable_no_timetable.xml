@@ -2,9 +2,10 @@
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-15.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/noTimetableLayout"
@@ -43,6 +44,5 @@
             android:layout_height="wrap_content"
             android:textAppearance="?textAppearanceBodySmall"
             tools:text="@string/timetable_no_timetable_week" />
-
     </LinearLayout>
 </layout>

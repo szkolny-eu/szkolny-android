@@ -1,19 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-3-1.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:textAppearance="?textAppearanceBodyLarge"
-            android:text="@string/grades_empty_text"/>
+            android:text="@string/grades_empty_text"
+            android:textAppearance="?textAppearanceBodyLarge" />
     </LinearLayout>
 </layout>

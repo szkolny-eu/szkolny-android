@@ -1,32 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-11.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
-        <import type="pl.szczodrzynski.edziennik.App"/>
+
+        <import type="android.view.View" />
+
+        <import type="pl.szczodrzynski.edziennik.App" />
+
         <variable
             name="annotationVisible"
-            type="boolean"/>
+            type="boolean" />
+
         <variable
             name="lesson"
             type="pl.szczodrzynski.edziennik.data.db.full.LessonFull" />
-        <variable name="oldSubjectName" type="String" />
-        <variable name="subjectName" type="String" />
-        <variable name="oldTeacherName" type="String" />
-        <variable name="teacherName" type="String" />
-        <variable name="oldClassroom" type="String" />
-        <variable name="classroom" type="String" />
-        <variable name="oldTeamName" type="String" />
-        <variable name="teamName" type="String" />
+
+        <variable
+            name="oldSubjectName"
+            type="String" />
+
+        <variable
+            name="subjectName"
+            type="String" />
+
+        <variable
+            name="oldTeacherName"
+            type="String" />
+
+        <variable
+            name="teacherName"
+            type="String" />
+
+        <variable
+            name="oldClassroom"
+            type="String" />
+
+        <variable
+            name="classroom"
+            type="String" />
+
+        <variable
+            name="oldTeamName"
+            type="String" />
+
+        <variable
+            name="teamName"
+            type="String" />
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,67 +73,65 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:isVisible="@{oldSubjectName != null}"
                         android:text="@{oldSubjectName}"
-                        android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?android:textColorTertiary"
-                        android:isVisible="@{oldSubjectName != null}"
+                        android:textIsSelectable="true"
                         app:strikeThrough="@{true}"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{subjectName}"
-                        android:textIsSelectable="true"
-                        android:textAppearance="?textAppearanceTitleLarge"
                         android:isVisible="@{subjectName != null}"
+                        android:text="@{subjectName}"
+                        android:textAppearance="?textAppearanceTitleLarge"
+                        android:textIsSelectable="true"
                         tools:text="pracownia urządzeń techniki komputerowej" />
 
                     <TextView
                         android:id="@+id/lessonDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textIsSelectable="true"
                         android:textAppearance="?textAppearanceTitleMedium"
+                        android:textIsSelectable="true"
                         tools:text="czwartek, 14 listopada 2019"
                         tools:visibility="visible" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/annotation"
+                        style="?chipStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:isVisible="@{annotationVisible}"
-                        app:chipBackgroundColor="?colorError"
+                        android:text="@string/timetable_lesson_cancelled"
                         android:textColor="?colorOnError"
-                        style="?chipStyle"
-                        app:chipStrokeWidth="0dp"
-                        android:text="@string/timetable_lesson_cancelled"/>
-
+                        app:chipBackgroundColor="?colorError"
+                        app:chipStrokeWidth="0dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="right">
-
+                    android:gravity="right"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:isVisible="@{lesson.displayLessonNumber != null}"
                         android:text="@{lesson.displayLessonNumber.toString()}"
                         android:textAppearance="?textAppearanceHeadlineLarge"
-                        android:isVisible="@{lesson.displayLessonNumber != null}"
                         tools:text="4" />
 
                     <TextView
@@ -110,9 +139,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{lesson.displayStartTime.stringHM + ` - ` + lesson.displayEndTime.stringHM}"
                         tools:text="14:55 - 15:40" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -141,7 +168,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_go_to_button" />
-
             </LinearLayout>
 
             <com.mikepenz.iconics.view.IconicsTextView
@@ -163,34 +189,37 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:orientation="vertical"
-                    android:isVisible="@{teacherName != null || oldTeacherName != null}">
+                    android:layout_weight="1"
+                    android:isVisible="@{teacherName != null || oldTeacherName != null}"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceLabelMedium"
-                        android:text="@string/dialog_lesson_details_teacher" />
+                        android:text="@string/dialog_lesson_details_teacher"
+                        android:textAppearance="?textAppearanceLabelMedium" />
+
                     <TextView
                         android:id="@+id/oldTeacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@{oldTeacherName}"
-                        android:textIsSelectable="true"
-                        android:singleLine="true"
                         android:isVisible="@{oldTeacherName != null}"
+                        android:singleLine="true"
+                        android:text="@{oldTeacherName}"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textIsSelectable="true"
                         app:strikeThrough="@{true}"
                         tools:text="Janósz Kowalski" />
+
                     <TextView
                         android:id="@+id/teacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:isVisible="@{teacherName != null}"
                         android:text="@{teacherName}"
                         android:textIsSelectable="true"
-                        android:isVisible="@{teacherName != null}"
                         tools:text="Janósz Kowalski" />
                 </LinearLayout>
 
@@ -198,31 +227,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:isVisible="@{teamName != null || oldTeamName != null}">
+                    android:isVisible="@{teamName != null || oldTeamName != null}"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceLabelMedium"
-                        android:text="@string/dialog_lesson_details_team" />
+                        android:text="@string/dialog_lesson_details_team"
+                        android:textAppearance="?textAppearanceLabelMedium" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@{oldTeamName}"
-                        android:textIsSelectable="true"
                         android:isVisible="@{oldTeamName != null}"
+                        android:text="@{oldTeamName}"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textIsSelectable="true"
                         app:strikeThrough="@{true}"
                         tools:text="013 informatyczna" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:isVisible="@{teamName != null}"
                         android:text="@{teamName}"
                         android:textIsSelectable="true"
-                        android:isVisible="@{teamName != null}"
                         tools:text="013 informatyczna" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -236,29 +267,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:isVisible="@{classroom != null || oldClassroom != null}">
+                    android:isVisible="@{classroom != null || oldClassroom != null}"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="?textAppearanceLabelMedium"
-                        android:text="@string/dialog_lesson_details_classroom" />
+                        android:text="@string/dialog_lesson_details_classroom"
+                        android:textAppearance="?textAppearanceLabelMedium" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@{oldClassroom}"
-                        android:textIsSelectable="true"
                         android:isVisible="@{oldClassroom != null}"
+                        android:text="@{oldClassroom}"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textIsSelectable="true"
                         app:strikeThrough="@{true}"
                         tools:text="013 informatyczna" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:isVisible="@{classroom != null}"
                         android:text="@{classroom}"
                         android:textIsSelectable="true"
-                        android:isVisible="@{classroom != null}"
                         tools:text="013 informatyczna" />
                 </LinearLayout>
 
@@ -270,12 +304,13 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     tools:visibility="visible">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="?textAppearanceLabelMedium"
-                        android:text="@string/dialog_lesson_details_id" />
+                        android:text="@string/dialog_lesson_details_id"
+                        android:textAppearance="?textAppearanceLabelMedium" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -285,7 +320,6 @@
                         android:textIsSelectable="true"
                         tools:text="12345" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <View
@@ -293,7 +327,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider"/>
+                android:background="@drawable/divider" />
 
             <LinearLayout
                 android:id="@+id/attendanceLayout"
@@ -321,9 +355,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:ellipsize="end"
                     android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="nieobecność usprawiedliweniowsza1234324" />
 
@@ -346,7 +380,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider"/>
+                android:background="@drawable/divider" />
 
             <LinearLayout
                 android:id="@+id/eventsNoData"
@@ -376,7 +410,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_no_events_hint" />
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -384,8 +417,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                tools:visibility="visible"
-                tools:listitem="@layout/event_list_item" />
+                tools:listitem="@layout/event_list_item"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -403,7 +436,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:text="@string/add"
-                    app:icon="@drawable/ic_action_add"/>
+                    app:icon="@drawable/ic_action_add" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/notesButton"
@@ -413,7 +446,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:text="@string/notes_button"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

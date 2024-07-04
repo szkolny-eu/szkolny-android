@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-9.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -53,9 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
+            android:gravity="center"
             android:text="@string/login_copyright_notice"
-            android:textAppearance="?textAppearanceBodySmall"
-            android:gravity="center" />
+            android:textAppearance="?textAppearanceBodySmall" />
 
         <LinearLayout
             android:layout_width="match_parent"

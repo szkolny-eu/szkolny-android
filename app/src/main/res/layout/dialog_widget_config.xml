@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,33 +18,33 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceLabelMedium"
                 android:isVisible="@{profileName != null}"
-                android:text="@string/dialog_widget_config_profile" />
+                android:text="@string/dialog_widget_config_profile"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
+                android:isVisible="@{profileName != null}"
                 android:text="@{profileName}"
                 android:textIsSelectable="true"
-                android:isVisible="@{profileName != null}"
                 tools:text="Władca Androida" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="?textAppearanceLabelMedium"
-                android:text="@string/dialog_widget_timetable_config_theme" />
+                android:text="@string/dialog_widget_timetable_config_theme"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <RadioGroup
                 android:id="@+id/theme"
@@ -78,8 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="?textAppearanceLabelMedium"
-                android:text="@string/dialog_widget_timetable_config_opacity" />
+                android:text="@string/dialog_widget_timetable_config_opacity"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
             <SeekBar
                 android:id="@+id/opacity"
@@ -93,14 +94,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:textIsSelectable="true"
                 android:gravity="end"
+                android:textIsSelectable="true"
                 tools:text="100%" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
                 <ImageView
                     android:id="@+id/wallpaper"

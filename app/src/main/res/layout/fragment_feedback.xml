@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +50,6 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/feedback_faq_button"
                 android:visibility="gone" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -97,7 +97,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/feedback_send" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -121,6 +120,5 @@
                 android:layout_height="match_parent"
                 android:layout_marginVertical="8dp" />
         </LinearLayout>
-
     </LinearLayout>
 </layout>

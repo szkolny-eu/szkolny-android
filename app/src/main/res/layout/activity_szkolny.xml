@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
     tools:theme="@style/AppTheme.Black">
@@ -27,10 +28,7 @@
 
                     <include layout="@layout/fragment_loading" />
                 </FrameLayout>
-
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
         </pl.szczodrzynski.navlib.NavView>
     </FrameLayout>
-
 </layout>

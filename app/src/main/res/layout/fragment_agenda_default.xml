@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,24 +15,23 @@
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
-            <com.github.tibolte.agendacalendarview.AgendaCalendarView
-                android:id="@+id/agenda_default_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                agendaCalendar:agendaCurrentDayTextColor="?colorPrimaryDark"
-                agendaCalendar:calendarColor="?colorSurface"
-                agendaCalendar:calendarCurrentDayTextColor="?colorPrimaryDark"
-                agendaCalendar:calendarDayTextColor="?android:textColorPrimary"
-                agendaCalendar:calendarHeaderColor="?colorSurface"
-                agendaCalendar:calendarHeaderTextColor="?colorOnSurface"
-                agendaCalendar:calendarPastDayTextColor="?android:textColorSecondary"
-                agendaCalendar:fabColor="?colorPrimaryContainer"
-                agendaCalendar:layout_constraintBottom_toBottomOf="parent"
-                agendaCalendar:layout_constraintEnd_toEndOf="parent"
-                agendaCalendar:layout_constraintHorizontal_bias="1.0"
-                agendaCalendar:layout_constraintStart_toStartOf="parent"
-                agendaCalendar:layout_constraintTop_toTopOf="parent"
-                agendaCalendar:layout_constraintVertical_bias="1.0" >
-            </com.github.tibolte.agendacalendarview.AgendaCalendarView>
+        <com.github.tibolte.agendacalendarview.AgendaCalendarView
+            android:id="@+id/agenda_default_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            agendaCalendar:agendaCurrentDayTextColor="?colorPrimaryDark"
+            agendaCalendar:calendarColor="?colorSurface"
+            agendaCalendar:calendarCurrentDayTextColor="?colorPrimaryDark"
+            agendaCalendar:calendarDayTextColor="?android:textColorPrimary"
+            agendaCalendar:calendarHeaderColor="?colorSurface"
+            agendaCalendar:calendarHeaderTextColor="?colorOnSurface"
+            agendaCalendar:calendarPastDayTextColor="?android:textColorSecondary"
+            agendaCalendar:fabColor="?colorPrimaryContainer"
+            agendaCalendar:layout_constraintBottom_toBottomOf="parent"
+            agendaCalendar:layout_constraintEnd_toEndOf="parent"
+            agendaCalendar:layout_constraintHorizontal_bias="1.0"
+            agendaCalendar:layout_constraintStart_toStartOf="parent"
+            agendaCalendar:layout_constraintTop_toTopOf="parent"
+            agendaCalendar:layout_constraintVertical_bias="1.0"></com.github.tibolte.agendacalendarview.AgendaCalendarView>
     </LinearLayout>
 </layout>

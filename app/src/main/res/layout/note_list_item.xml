@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-23.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,9 +31,7 @@
                 android:maxLines="4"
                 android:minLines="2"
                 android:textAppearance="?textAppearanceBodyLarge"
-                tools:text="Temat notatki. Ale może też\nbyć treść tutaj." />
-
-            <!-- cmd_pencil_outline -->
+                tools:text="Temat notatki. Ale może też\nbyć treść tutaj." />            <!-- cmd_pencil_outline -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editButton"
                 style="?materialIconButtonSecondaryStyle"

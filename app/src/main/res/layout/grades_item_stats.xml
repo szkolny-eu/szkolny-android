@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-3-3.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,11 +13,9 @@
         android:layout_margin="16dp"
         android:orientation="vertical">
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="@string/grades_stats_title"
             android:textAppearance="?textAppearanceTitleLarge" />
 
@@ -218,12 +217,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester1Layout"
                 style="?materialCardViewFilledStyle"
-                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorSecondaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -259,12 +258,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester2Layout"
                 style="?materialCardViewFilledStyle"
-                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorSecondaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -300,11 +299,11 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointYearlyLayout"
                 style="?materialCardViewFilledStyle"
-                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardBackgroundColor="?colorSecondaryContainer">
+                app:cardBackgroundColor="?colorSecondaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
                 <LinearLayout
                     android:layout_width="match_parent"

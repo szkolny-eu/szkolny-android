@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-4.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -39,4 +40,3 @@
             tools:visibility="visible" />
     </FrameLayout>
 </layout>
-

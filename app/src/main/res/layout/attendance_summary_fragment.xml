@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:singleSelection="true"
+            android:gravity="center_horizontal"
             app:selectionRequired="true"
-            android:gravity="center_horizontal">
+            app:singleSelection="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/semester1"
@@ -75,16 +75,16 @@
                         android:layout_height="80dp"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginBottom="16dp"
+                        android:visibility="invisible"
                         app:direction="clockwise"
                         app:drawDot="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:progressBackgroundStrokeWidth="9dp"
-                        app:progressStrokeWidth="10dp"
                         app:progressCap="butt"
+                        app:progressStrokeWidth="10dp"
                         app:textSize="0sp"
-                        android:visibility="invisible"
                         tools:visibility="visible" />
 
                     <pl.szczodrzynski.edziennik.ui.attendance.AttendanceBar
@@ -93,10 +93,10 @@
                         android:layout_height="20dp"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginTop="4dp"
+                        android:visibility="invisible"
                         app:layout_constraintEnd_toStartOf="@+id/percentageCircle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/percentage"
-                        android:visibility="invisible"
                         tools:visibility="visible" />
 
                     <com.google.android.flexbox.FlexboxLayout

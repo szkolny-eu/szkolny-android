@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <com.daimajia.swipe.SwipeLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/swipeLayout">
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <!-- Surface View Start -->
         <LinearLayout
             android:id="@+id/bottom_wrapper"
             android:layout_width="120dp"
-            android:weightSum="1"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
+
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/buttonRemove"
                 android:layout_width="60dp"
@@ -21,6 +26,7 @@
                 app:iiv_color="@color/md_white_1000"
                 app:iiv_icon="cmd-delete"
                 tools:srcCompat="@tools:sample/avatars" />
+
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/buttonEdit"
                 android:layout_width="60dp"
@@ -49,8 +55,8 @@
                 android:background="@drawable/bg_rounded_8dp"
                 android:gravity="center"
                 android:textSize="24sp"
-                app:autoSizeMinTextSize="14sp"
                 app:autoSizeMaxTextSize="32sp"
+                app:autoSizeMinTextSize="14sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +100,6 @@
                 app:layout_constraintStart_toEndOf="@+id/gradesListWeight"
                 app:layout_constraintTop_toBottomOf="@+id/gradesListCategory"
                 tools:text="wartość: 4.75" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.daimajia.swipe.SwipeLayout>
 </layout>
