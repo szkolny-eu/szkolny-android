@@ -6,16 +6,14 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
-import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
+import pl.szczodrzynski.edziennik.databinding.BasePagerFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
-import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
-import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
-import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
+import pl.szczodrzynski.edziennik.ui.base.fragment.PagerFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 
-class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
-    inflater = MessagesFragmentBinding::inflate,
+class MessagesFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>(
+    inflater = BasePagerFragmentBinding::inflate,
 ) {
     companion object {
         var pageSelection = 0
@@ -23,6 +21,13 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
 
     override fun getFab() = R.string.compose to CommunityMaterial.Icon3.cmd_pencil_outline
     override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_message_compose)
+            .withIcon(CommunityMaterial.Icon3.cmd_pencil_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE)
+            },
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_messages_config)
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
@@ -32,6 +37,23 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
             }
     )
 
+    override fun getTabLayout() = b.tabLayout
+    override fun getViewPager() = b.viewPager
+    override suspend fun onCreatePages() = listOf(
+        MessagesListFragment().apply {
+            arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
+        } to getString(R.string.messages_tab_received),
+        MessagesListFragment().apply {
+            arguments = Bundle("messageType" to Message.TYPE_SENT)
+        } to getString(R.string.messages_tab_sent),
+        MessagesListFragment().apply {
+            arguments = Bundle("messageType" to Message.TYPE_DELETED)
+        } to getString(R.string.messages_tab_deleted),
+        MessagesListFragment().apply {
+            arguments = Bundle("messageType" to Message.TYPE_DRAFT)
+        } to getString(R.string.messages_tab_draft),
+    )
+
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val messageId = arguments?.getLong("messageId", -1L) ?: -1L
         if (messageId != -1L) {
@@ -39,53 +61,9 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
             args.putLong("messageId", messageId)
             arguments?.remove("messageId")
             activity.navigate(navTarget = NavTarget.MESSAGE, args = args)
-            return
         }
 
-        val args = arguments
-
-        val pagerAdapter = FragmentLazyPagerAdapter(
-            fragmentManager = parentFragmentManager,
-            swipeRefreshLayout = null,
-            fragments = listOf(
-                MessagesListFragment().apply {
-                    arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
-                    args?.getBundle("page0")?.let {
-                        arguments?.putAll(it)
-                    }
-                } to getString(R.string.messages_tab_received),
-
-                MessagesListFragment().apply {
-                    arguments = Bundle("messageType" to Message.TYPE_SENT)
-                    args?.getBundle("page1")?.let {
-                        arguments?.putAll(it)
-                    }
-                } to getString(R.string.messages_tab_sent),
-
-                MessagesListFragment().apply {
-                    arguments = Bundle("messageType" to Message.TYPE_DELETED)
-                    args?.getBundle("page2")?.let {
-                        arguments?.putAll(it)
-                    }
-                } to getString(R.string.messages_tab_deleted),
-
-                MessagesListFragment().apply {
-                    arguments = Bundle("messageType" to Message.TYPE_DRAFT)
-                    args?.getBundle("page3")?.let {
-                        arguments?.putAll(it)
-                    }
-                } to getString(R.string.messages_tab_draft),
-            ),
-        )
-        b.viewPager.apply {
-            offscreenPageLimit = 1
-            adapter = pagerAdapter
-            currentItem = pageSelection
-            addOnPageSelectedListener {
-                pageSelection = it
-            }
-            b.tabLayout.setupWithViewPager(this)
-        }
+        super.onViewReady(savedInstanceState)
     }
 
     override suspend fun onFabClick() {

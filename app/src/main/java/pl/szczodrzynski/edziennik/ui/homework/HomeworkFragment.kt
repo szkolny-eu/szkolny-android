@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.homework
 
-import android.os.Bundle
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
@@ -13,20 +12,15 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
-import pl.szczodrzynski.edziennik.databinding.HomeworkFragmentBinding
+import pl.szczodrzynski.edziennik.databinding.BasePagerFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
-import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
-import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
-import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
+import pl.szczodrzynski.edziennik.ui.base.fragment.PagerFragment
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 
-class HomeworkFragment : BaseFragment<HomeworkFragmentBinding, MainActivity>(
-    inflater = HomeworkFragmentBinding::inflate,
+class HomeworkFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>(
+    inflater = BasePagerFragmentBinding::inflate,
 ), CoroutineScope {
-    companion object {
-        var pageSelection = 0
-    }
 
     override fun getFab() = R.string.add to CommunityMaterial.Icon3.cmd_plus
     override fun getMarkAsReadType() = MetadataType.HOMEWORK
@@ -41,30 +35,16 @@ class HomeworkFragment : BaseFragment<HomeworkFragmentBinding, MainActivity>(
             }
     )
 
-    override suspend fun onViewReady(savedInstanceState: Bundle?) {
-        val pagerAdapter = FragmentLazyPagerAdapter(
-            parentFragmentManager,
-                null,
-                listOf(
-                        HomeworkListFragment().apply {
-                            arguments = Bundle("homeworkDate" to HomeworkDate.CURRENT)
-                        } to getString(R.string.homework_tab_current),
-
-                        HomeworkListFragment().apply {
-                            arguments = Bundle("homeworkDate" to HomeworkDate.PAST)
-                        } to getString(R.string.homework_tab_past)
-                )
-        )
-        b.viewPager.apply {
-            offscreenPageLimit = 1
-            adapter = pagerAdapter
-            currentItem = pageSelection
-            addOnPageSelectedListener {
-                pageSelection = it
-            }
-            b.tabLayout.setupWithViewPager(this)
-        }
-    }
+    override fun getTabLayout() = b.tabLayout
+    override fun getViewPager() = b.viewPager
+    override suspend fun onCreatePages() = listOf(
+        HomeworkListFragment().apply {
+            arguments = Bundle("homeworkDate" to HomeworkDate.CURRENT)
+        } to getString(R.string.homework_tab_current),
+        HomeworkListFragment().apply {
+            arguments = Bundle("homeworkDate" to HomeworkDate.PAST)
+        } to getString(R.string.homework_tab_past)
+    )
 
     override suspend fun onFabClick() {
         EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK).show()
