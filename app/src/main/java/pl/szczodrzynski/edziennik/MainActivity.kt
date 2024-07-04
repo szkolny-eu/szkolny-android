@@ -938,6 +938,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val arguments = args
             ?: navBackStack.firstOrNull { it.first == navTarget }?.second
             ?: Bundle()
+        swipeRefreshLayout.isEnabled = false
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false

@@ -60,7 +60,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
                         ViewPager2.SCROLL_STATE_IDLE -> {
                             val fragment =
                                 fragmentCache[it.currentItem] as? BaseFragment<*, *>
-                            fragment != null && fragment.canRefreshDisabled && fragment.canRefresh
+                            fragment != null && !fragment.canRefreshDisabled && fragment.canRefresh
                         }
 
                         else -> false

@@ -37,8 +37,6 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     private var isViewReady: Boolean = false
     private var inState: Bundle? = null
 
-    private var canRefreshSent = false
-
     /**
      * Enables or disables the activity's SwipeRefreshLayout.
      * Use only if [getRefreshScrollingView] is not used.
@@ -48,12 +46,9 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      */
     internal var canRefresh = false
         set(value) {
-            if (field == value && canRefreshSent) // broadcast only if changed
-                return
             field = value
             (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
                 !canRefreshDisabled && value
-            canRefreshSent = true
         }
 
     /**
