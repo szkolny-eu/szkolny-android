@@ -19,7 +19,6 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
-import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -46,7 +45,7 @@ class AttachmentsView @JvmOverloads constructor(
         val activity = context as? AppCompatActivity ?: return
         val list = this as? RecyclerView ?: return
 
-        val profileId = arguments.get<Int>("profileId") ?: return
+        val profileId = arguments.getInt("profileId")
         val attachmentIds = arguments.getLongArray("attachmentIds") ?: return
         val attachmentNames = arguments.getStringArray("attachmentNames") ?: return
         val attachmentSizes = arguments.getLongArray("attachmentSizes")

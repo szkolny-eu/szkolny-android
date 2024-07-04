@@ -96,7 +96,12 @@ class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppComp
                                 is JsonArray -> {
 
                                 }
-                                is HashMap<*, *> -> app.config[objName] = input
+                                is HashMap<*, *> -> {
+                                    if ("(profile)" in item.key)
+                                        app.profile.config[objName] = input
+                                    else
+                                        app.config[objName] = input
+                                }
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true

@@ -43,7 +43,8 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
             if (field == value && canRefreshSent) // broadcast only if changed
                 return
             field = value
-            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled = !canRefreshDisabled && value
+            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
+                !canRefreshDisabled && value
             canRefreshSent = true
         }
     protected var canRefreshDisabled = false
@@ -106,7 +107,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         }
     }
 
-    override fun onDestroyView() {
+    final override fun onDestroyView() {
         super.onDestroyView()
         isViewReady = false
         job.cancel()
@@ -115,11 +116,14 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) =
         super.onViewCreated(view, savedInstanceState)
 
+    final override fun onViewStateRestored(savedInstanceState: Bundle?) =
+        super.onViewStateRestored(savedInstanceState)
+
     final override fun onAttach(context: Context) = super.onAttach(context)
     final override fun onCreate(savedInstanceState: Bundle?) = super.onCreate(savedInstanceState)
     final override fun onStart() = super.onStart()
     final override fun onStop() = super.onStop()
-    override fun onDestroy() = super.onDestroy()
+    final override fun onDestroy() = super.onDestroy()
     final override fun onDetach() = super.onDetach()
 
     open fun inflate(

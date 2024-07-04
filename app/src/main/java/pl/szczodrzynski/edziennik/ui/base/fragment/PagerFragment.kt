@@ -14,6 +14,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import pl.szczodrzynski.edziennik.ext.set
 
 abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     inflater: ((inflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean) -> B)?,
@@ -22,7 +23,12 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     private lateinit var pages: List<Pair<Fragment, String>>
     private val fragmentCache = mutableMapOf<Int, Fragment>()
 
+    protected open var savedPageSelection = -1
+
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
+        if (savedPageSelection == -1)
+            savedPageSelection = savedInstanceState?.getInt("pageSelection") ?: 0
+
         pages = onCreatePages()
 
         val adapter = object : FragmentStateAdapter(this) {
@@ -37,6 +43,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
         getViewPager().let {
             it.offscreenPageLimit = 1
             it.adapter = adapter
+            it.currentItem = savedPageSelection
             it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
                     canRefresh = when (state) {
@@ -46,6 +53,10 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
 
                         else -> false
                     }
+                }
+
+                override fun onPageSelected(position: Int) {
+                    savedPageSelection = position
                 }
             })
         }
@@ -62,4 +73,9 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     open fun getPageCount() = pages.size
     open fun getPageFragment(position: Int) = pages[position].first
     open fun getPageTitle(position: Int) = pages[position].second
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState["pageSelection"] = getViewPager().currentItem
+    }
 }
