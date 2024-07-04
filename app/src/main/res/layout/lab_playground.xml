@@ -2,7 +2,7 @@
   ~ Copyright (c) Kuba Szczodrzyński 2024-6-22.
   -->
 
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -234,7 +234,7 @@
                     tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
             </LinearLayout>
 
-            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 style="?materialIconButtonSecondaryStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -506,4 +506,4 @@
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

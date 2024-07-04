@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danimahardhika.cafebar.CafeBar
 import com.danimahardhika.cafebar.CafeBarTheme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -49,7 +50,7 @@ import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.core.work.SyncWorker
 import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
 import pl.szczodrzynski.edziennik.core.work.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
+import pl.szczodrzynski.edziennik.ui.main.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
@@ -59,8 +60,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateProgressDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -76,7 +77,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import timber.log.Timber
-import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
     val requestHandler by lazy { MainActivityRequestHandler(this) }
 
-    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    val swipeRefreshLayout: SwipeRefreshLayout by lazy { b.swipeRefreshLayout }
 
     var onBeforeNavigate: (() -> Boolean)? = null
     private var pausedNavigationData: PausedNavigationData? = null
@@ -264,9 +264,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             drawer.setUnreadCounterList(unreadCounters)
         }
 
-        b.swipeRefreshLayout.isEnabled = true
-        b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
-        b.swipeRefreshLayout.setColorSchemeResources(
+        swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
+        swipeRefreshLayout.setColorSchemeResources(
             R.color.md_blue_500,
             R.color.md_amber_500,
             R.color.md_green_500
@@ -939,6 +938,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val arguments = args
             ?: navBackStack.firstOrNull { it.first == navTarget }?.second
             ?: Bundle()
+        swipeRefreshLayout.isEnabled = false
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false

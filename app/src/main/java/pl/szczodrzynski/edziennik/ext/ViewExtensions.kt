@@ -13,7 +13,6 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.button.MaterialButton
 
@@ -151,16 +150,6 @@ inline fun ViewPager.addOnPageSelectedListener(crossinline block: (position: Int
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
     override fun onPageSelected(position: Int) { block(position) }
 })
-
-val SwipeRefreshLayout.onScrollListener: RecyclerView.OnScrollListener
-    get() = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (recyclerView.canScrollVertically(-1))
-                this@onScrollListener.isEnabled = false
-            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
-                this@onScrollListener.isEnabled = true
-        }
-    }
 
 fun View.removeFromParent() {
     (parent as? ViewGroup)?.removeView(this)

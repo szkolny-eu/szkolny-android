@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/dialog_event_manual_date">
-            <pl.szczodrzynski.edziennik.ui.views.DateDropdown
+            <pl.szczodrzynski.edziennik.ui.base.views.DateDropdown
                 android:id="@+id/dateDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_time">
-            <pl.szczodrzynski.edziennik.ui.views.TimeDropdown
+            <pl.szczodrzynski.edziennik.ui.base.views.TimeDropdown
                 android:id="@+id/timeDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_team">
 
-            <pl.szczodrzynski.edziennik.ui.views.TeamDropdown
+            <pl.szczodrzynski.edziennik.ui.base.views.TeamDropdown
                 android:id="@+id/teamDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                 android:layout_weight="1"
                 android:hint="@string/dialog_event_manual_type">
 
-                <pl.szczodrzynski.edziennik.ui.views.EventTypeDropdown
+                <pl.szczodrzynski.edziennik.ui.base.views.EventTypeDropdown
                     android:id="@+id/typeDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_subject">
 
-                <pl.szczodrzynski.edziennik.ui.views.SubjectDropdown
+                <pl.szczodrzynski.edziennik.ui.base.views.SubjectDropdown
                     android:id="@+id/subjectDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_teacher">
 
-                <pl.szczodrzynski.edziennik.ui.views.TeacherDropdown
+                <pl.szczodrzynski.edziennik.ui.base.views.TeacherDropdown
                     android:id="@+id/teacherDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

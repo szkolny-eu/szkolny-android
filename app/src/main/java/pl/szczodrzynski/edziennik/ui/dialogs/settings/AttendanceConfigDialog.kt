@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AttendanceConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.onChange
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 
 class AttendanceConfigDialog(
     activity: AppCompatActivity,

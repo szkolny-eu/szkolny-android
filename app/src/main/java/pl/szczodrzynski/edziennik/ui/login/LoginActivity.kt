@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +20,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
-import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     lateinit var navOptionsBuilder: NavOptions.Builder
     val nav by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
-    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    val swipeRefreshLayout: SwipeRefreshLayout by lazy { b.swipeRefreshLayout }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext

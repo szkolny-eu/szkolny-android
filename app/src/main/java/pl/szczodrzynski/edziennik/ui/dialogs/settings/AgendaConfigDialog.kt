@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.DialogConfigAgendaBinding
 import pl.szczodrzynski.edziennik.ext.onChange
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 
 class AgendaConfigDialog(
     activity: AppCompatActivity,

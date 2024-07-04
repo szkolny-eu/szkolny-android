@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.Theme
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class ThemeChooserDialog(
     activity: AppCompatActivity,

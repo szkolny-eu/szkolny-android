@@ -7,10 +7,11 @@ package pl.szczodrzynski.edziennik.ext
 import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import pl.szczodrzynski.edziennik.App
 
-val Context.app
+val AppCompatActivity.app
     get() = applicationContext as App
 
 val Context.isNightMode: Boolean

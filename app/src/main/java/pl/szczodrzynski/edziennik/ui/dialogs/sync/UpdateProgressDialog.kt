@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.databinding.UpdateProgressDialogBinding
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class UpdateProgressDialog(

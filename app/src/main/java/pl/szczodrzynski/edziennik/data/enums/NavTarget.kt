@@ -30,7 +30,9 @@ import pl.szczodrzynski.edziennik.ui.notes.NotesFragment
 import pl.szczodrzynski.edziennik.ui.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
+import pl.szczodrzynski.edziennik.ui.settings.contributors.ContributorsFragment
 import pl.szczodrzynski.edziennik.ui.teachers.TeachersListFragment
+import pl.szczodrzynski.edziennik.ui.template.TemplateFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.webpush.WebPushFragment
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -177,6 +179,15 @@ enum class NavTarget(
         popTo = HOME,
         devModeOnly = true,
     ),
+    TEMPLATE(
+        id = 1001,
+        fragmentClass = TemplateFragment::class.java,
+        location = NavTargetLocation.DRAWER_BOTTOM,
+        nameRes = R.string.menu_template,
+        icon = CommunityMaterial.Icon.cmd_code_braces,
+        popTo = HOME,
+        devModeOnly = true,
+    ),
     PROFILE_ADD(
         id = 200,
         fragmentClass = null,
@@ -243,6 +254,11 @@ enum class NavTarget(
         id = 140,
         fragmentClass = WebPushFragment::class.java,
         nameRes = R.string.menu_web_push,
+    ),
+    CONTRIBUTORS(
+        id = 150,
+        fragmentClass = ContributorsFragment::class.java,
+        nameRes = R.string.contributors,
     );
 
     companion object {

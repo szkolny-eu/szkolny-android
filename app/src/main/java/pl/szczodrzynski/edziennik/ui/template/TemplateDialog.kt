@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogTemplateBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 
 /**
  * This class represents a sample dialog using the new style.

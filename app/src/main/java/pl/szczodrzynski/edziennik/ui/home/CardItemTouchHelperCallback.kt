@@ -5,16 +5,22 @@
 package pl.szczodrzynski.edziennik.ui.home
 
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.*
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
+import androidx.recyclerview.widget.ItemTouchHelper.DOWN
+import androidx.recyclerview.widget.ItemTouchHelper.LEFT
+import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment.Companion.removeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment.Companion.swapCards
-import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
 
-class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, private val refreshLayout: SwipeRefreshLayoutNoIndicator?) : ItemTouchHelper.Callback() {
+class CardItemTouchHelperCallback(
+    private val cardAdapter: HomeCardAdapter,
+    private val onCanRefresh: ((canRefresh: Boolean) -> Unit)?,
+) : ItemTouchHelper.Callback() {
     companion object {
-        private const val TAG = "CardItemTouchHelperCallback"
         private const val DRAG_FLAGS = UP or DOWN
         private const val SWIPE_FLAGS = LEFT
     }
@@ -45,10 +51,10 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
         if (viewHolder != null && (actionState == ACTION_STATE_DRAG || actionState == ACTION_STATE_SWIPE)) {
             dragCardView = viewHolder.itemView as MaterialCardView
             dragCardView?.isDragged = true
-            refreshLayout?.isEnabled = false
+            onCanRefresh?.invoke(false)
         }
         else if (actionState == ACTION_STATE_IDLE && dragCardView != null) {
-            refreshLayout?.isEnabled = true
+            onCanRefresh?.invoke(true)
             dragCardView?.isDragged = false
             dragCardView = null
         }

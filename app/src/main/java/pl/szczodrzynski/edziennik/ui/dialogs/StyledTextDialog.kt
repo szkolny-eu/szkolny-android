@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
 import pl.szczodrzynski.edziennik.ext.isNightMode
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
 import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig

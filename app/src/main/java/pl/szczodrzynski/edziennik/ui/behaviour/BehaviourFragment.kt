@@ -1,63 +1,32 @@
 package pl.szczodrzynski.edziennik.ui.behaviour
 
 import android.graphics.Color
-import android.os.AsyncTask
 import android.os.Bundle
-import android.view.*
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.App.Companion.profileId
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
-import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
-import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import java.util.*
+import java.util.Locale
 
-class BehaviourFragment : Fragment() {
+class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
+    inflater = FragmentBehaviourBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: FragmentBehaviourBinding
+    override fun getMarkAsReadType() = MetadataType.NOTICE
     
     private var displayMode = MODE_YEAR
     private var noticeList: List<NoticeFull>? = null
-    
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_behaviour, container, false)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (app == null || activity == null || b == null || !isAdded) return
-        activity.bottomSheet.prependItems(
-            BottomSheetPrimaryItem(true)
-                .withTitle(R.string.menu_mark_as_read)
-                .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                .withOnClickListener { v3: View? ->
-                    activity.bottomSheet.close()
-                    AsyncTask.execute {
-                        App.db.metadataDao().setAllSeen(profileId, MetadataType.NOTICE, true)
-                    }
-                    Toast.makeText(
-                        activity,
-                        R.string.main_menu_mark_as_read_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-        )
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.toggleGroup.check(when (displayMode) {
             0 -> R.id.allYear
             1 -> R.id.semester1
@@ -81,18 +50,8 @@ class BehaviourFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context)
         b.noticesView.setHasFixedSize(true)
         b.noticesView.layoutManager = linearLayoutManager
-        b.noticesView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (recyclerView.canScrollVertically(-1)) {
-                    b.refreshLayout.isEnabled = false
-                }
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    b.refreshLayout.isEnabled = true
-                }
-            }
-        })
         App.db.noticeDao().getAll(profileId).observe(viewLifecycleOwner) { notices: List<NoticeFull>? ->
-            if (app == null || activity == null || b == null || !isAdded) return@observe
+            if (!isAdded) return@observe
             if (notices == null) {
                 b.noticesView.visibility = View.GONE
                 b.noticesNoData.visibility = View.VISIBLE

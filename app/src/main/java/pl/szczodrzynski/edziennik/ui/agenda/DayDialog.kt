@@ -22,7 +22,7 @@ import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesEventRend
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceEvent
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceEventRenderer
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog

@@ -22,7 +22,7 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 android:id="@+id/noTimetableSync"
                 style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             tools:layout_marginTop="100dp"
             tools:visibility="visible">
 
-            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             tools:layout_marginTop="185dp"
             tools:visibility="visible">
 
-            <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <pl.szczodrzynski.edziennik.ui.views.IconicsMaterialButton
+                <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                     style="?materialIconButtonContainerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

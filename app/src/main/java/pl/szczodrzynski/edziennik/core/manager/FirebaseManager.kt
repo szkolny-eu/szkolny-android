@@ -69,6 +69,14 @@ class FirebaseManager(val app: App) {
     )
 
     fun initializeApps() {
+        try {
+            // skip Firebase setup if the default app is not initialized
+            // (e.g. in the crash process)
+            FirebaseApp.getInstance()
+        } catch (e: IllegalStateException) {
+            return
+        }
+
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { result ->
             val token = result.token
             Timber.i("Got App token: $token")

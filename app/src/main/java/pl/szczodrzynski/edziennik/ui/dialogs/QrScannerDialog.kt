@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.dp
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 
 class QrScannerDialog(
     activity: AppCompatActivity,

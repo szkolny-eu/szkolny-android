@@ -4,41 +4,34 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_AVG
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_SEM
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_SEM_2_AVG
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_ALL_GRADES
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.ext.getFloat
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.input
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_AVG
-import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AVG_2_SEM
-import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_SEM_2_AVG
-import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_ALL_GRADES
 import timber.log.Timber
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Locale
 import kotlin.math.floor
 
-class GradesEditorFragment : Fragment() {
-
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: FragmentGradesEditorBinding
-/*
-    private val navController: NavController by lazy { Navigation.findNavController(b.root) }
-*/
+class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActivity>(
+    inflater = FragmentGradesEditorBinding::inflate,
+) {
 
     private val config by lazy { app.profile.config.grades }
 
@@ -61,20 +54,7 @@ class GradesEditorFragment : Fragment() {
     private var averageMode = YEAR_ALL_GRADES // this means the container should be gone
     private var yearAverageBefore = 0.0f
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
-        app = activity.application as App
-        // activity, context and profile is valid
-        b = FragmentGradesEditorBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded)
-            return
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         subjectId = arguments.getLong("subjectId", -1)
         semester = arguments.getInt("semester", 1)
 

@@ -19,17 +19,10 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.ui.settings.cards.*
 import kotlin.coroutines.CoroutineContext
 
-class SettingsFragment : MaterialAboutFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "SettingsFragment"
-    }
+class SettingsFragment : MaterialAboutFragment() {
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
 
     private val util by lazy {
         SettingsUtil(activity) {

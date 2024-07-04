@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.TimetableConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 
 class TimetableConfigDialog(

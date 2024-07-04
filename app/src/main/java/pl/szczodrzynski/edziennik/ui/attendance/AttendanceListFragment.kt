@@ -5,13 +5,12 @@
 package pl.szczodrzynski.edziennik.ui.attendance
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
@@ -22,41 +21,20 @@ import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceTypeGroup
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.models.Date
-import kotlin.coroutines.CoroutineContext
 
-class AttendanceListFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "AttendanceListFragment"
-    }
+class AttendanceListFragment : BaseFragment<AttendanceListFragmentBinding, MainActivity>(
+    inflater = AttendanceListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: AttendanceListFragmentBinding
+    override fun getRefreshScrollingView() = b.list
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-    private val manager
-        get() = app.attendanceManager
     private var viewType = AttendanceFragment.VIEW_DAYS
     private var expandSubjectId = 0L
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = AttendanceListFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         viewType = arguments?.getInt("viewType") ?: AttendanceFragment.VIEW_DAYS
         expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
@@ -77,11 +55,9 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
-                    addOnScrollListener(onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
-            setSwipeToRefresh(adapter.items.isNullOrEmpty())
 
             if (firstRun) {
                 expandSubject(adapter)
@@ -90,7 +66,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
 
             // show/hide relevant views
             b.progressBar.isVisible = false
-            if (adapter.items.isNullOrEmpty()) {
+            if (adapter.items.isEmpty()) {
                 b.list.isVisible = false
                 b.noData.isVisible = true
             } else {
@@ -102,7 +78,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         adapter.onAttendanceClick = {
             AttendanceDetailsDialog(activity, it).show()
         }
-    }; return true}
+    }
 
     private fun expandSubject(adapter: AttendanceAdapter) {
         var expandSubjectModel: GradesSubject? = null
