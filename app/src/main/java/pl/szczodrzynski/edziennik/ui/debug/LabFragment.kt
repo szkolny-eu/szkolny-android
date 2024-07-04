@@ -19,14 +19,12 @@ class LabFragment : BaseFragment<TemplateFragmentBinding, AppCompatActivity>(
         var pageSelection = 0
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
-
     override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         if (!isAdded) return
 
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
-                b.refreshLayout,
+                null,
                 listOf(
                         LabPageFragment() to "click me",
                         LabProfileFragment() to "JSON",

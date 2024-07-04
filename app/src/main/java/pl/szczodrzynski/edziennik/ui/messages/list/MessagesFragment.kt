@@ -21,7 +21,6 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
         var pageSelection = 0
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getFab() = R.string.compose to CommunityMaterial.Icon3.cmd_pencil_outline
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
@@ -47,7 +46,7 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
 
         val pagerAdapter = FragmentLazyPagerAdapter(
             fragmentManager = parentFragmentManager,
-            swipeRefreshLayout = b.refreshLayout,
+            swipeRefreshLayout = null,
             fragments = listOf(
                 MessagesListFragment().apply {
                     onPageDestroy = this@MessagesFragment.onPageDestroy

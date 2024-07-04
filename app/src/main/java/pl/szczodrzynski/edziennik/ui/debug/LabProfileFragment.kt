@@ -28,6 +28,8 @@ class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppComp
         private const val TAG = "LabProfileFragment"
     }
 
+    override fun getRefreshScrollingView() = b.list
+
     private lateinit var adapter: LabJsonAdapter
     private val loginStore by lazy {
         app.db.loginStoreDao().getByIdNow(app.profile.loginStoreId)
@@ -141,7 +143,6 @@ class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppComp
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(SimpleDividerItemDecoration(context))
-            addOnScrollListener(onScrollListener)
         }
 
         // show/hide relevant views

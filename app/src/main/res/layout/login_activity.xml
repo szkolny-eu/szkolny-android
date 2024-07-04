@@ -19,7 +19,7 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     app:defaultNavHost="false"
                     app:navGraph="@navigation/nav_login" />
-            </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.button.MaterialButton

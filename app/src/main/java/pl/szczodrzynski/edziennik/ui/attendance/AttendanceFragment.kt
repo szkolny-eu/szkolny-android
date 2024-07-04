@@ -29,7 +29,6 @@ class AttendanceFragment : BaseFragment<AttendanceFragmentBinding, MainActivity>
         var pageSelection = 1
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getMarkAsReadType() = MetadataType.ATTENDANCE
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
@@ -47,7 +46,7 @@ class AttendanceFragment : BaseFragment<AttendanceFragmentBinding, MainActivity>
 
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
-                b.refreshLayout,
+                null,
                 listOf(
                         AttendanceSummaryFragment() to getString(R.string.attendance_tab_summary),
 

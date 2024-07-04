@@ -21,7 +21,6 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
     inflater = FragmentBehaviourBinding::inflate,
 ) {
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getMarkAsReadType() = MetadataType.NOTICE
     
     private var displayMode = MODE_YEAR
@@ -51,16 +50,6 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
         val linearLayoutManager = LinearLayoutManager(context)
         b.noticesView.setHasFixedSize(true)
         b.noticesView.layoutManager = linearLayoutManager
-        b.noticesView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (recyclerView.canScrollVertically(-1)) {
-                    b.refreshLayout.isEnabled = false
-                }
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    b.refreshLayout.isEnabled = true
-                }
-            }
-        })
         App.db.noticeDao().getAll(profileId).observe(viewLifecycleOwner) { notices: List<NoticeFull>? ->
             if (!isAdded) return@observe
             if (notices == null) {

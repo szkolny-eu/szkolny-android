@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.debug
 
 import androidx.appcompat.app.AppCompatActivity
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.LabPlaygroundBinding
 import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.concat
@@ -16,6 +15,8 @@ import timber.log.Timber
 class LabPlaygroundFragment : LazyFragment<LabPlaygroundBinding, AppCompatActivity>(
     inflater = LabPlaygroundBinding::inflate,
 ) {
+
+    override fun getRefreshScrollingView() = b.root
 
     override fun onPageCreated(): Boolean {
         Timber.d("textColorSecondary: ${android.R.attr.textColorSecondary.resolveAttr(activity)}")

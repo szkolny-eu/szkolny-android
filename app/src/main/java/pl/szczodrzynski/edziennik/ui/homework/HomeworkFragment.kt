@@ -28,7 +28,6 @@ class HomeworkFragment : BaseFragment<HomeworkFragmentBinding, MainActivity>(
         var pageSelection = 0
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getFab() = R.string.add to CommunityMaterial.Icon3.cmd_plus
     override fun getMarkAsReadType() = MetadataType.HOMEWORK
     override fun getBottomSheetItems() = listOf(
@@ -45,7 +44,7 @@ class HomeworkFragment : BaseFragment<HomeworkFragmentBinding, MainActivity>(
     override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
-                b.refreshLayout,
+                null,
                 listOf(
                         HomeworkListFragment().apply {
                             arguments = Bundle("homeworkDate" to HomeworkDate.CURRENT)

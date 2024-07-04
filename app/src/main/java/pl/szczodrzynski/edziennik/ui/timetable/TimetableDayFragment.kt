@@ -84,9 +84,6 @@ class TimetableDayFragment : LazyFragment<TimetableDayFragmentBinding, MainActiv
     private val attendanceManager
         get() = app.attendanceManager
 
-    // find SwipeRefreshLayout in the hierarchy
-    private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
-
     private val dayViewDelegate = mutableLazy {
         val dayView = DayView(activity, DayViewConfig(
             startHour = startHour,

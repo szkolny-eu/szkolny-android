@@ -51,7 +51,6 @@ public class AnnouncementsFragment extends Fragment {
         app = (App) activity.getApplication();
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
-        b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }
 
@@ -77,10 +76,6 @@ public class AnnouncementsFragment extends Fragment {
                         })
         );
 
-        /*b.refreshLayout.setOnRefreshListener(() -> {
-            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_ANNOUNCEMENTS, b.refreshLayout);
-        });*/
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         //RecyclerViewExpandableItemManager expMgr = new RecyclerViewExpandableItemManager(null);
@@ -89,18 +84,6 @@ public class AnnouncementsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (recyclerView.canScrollVertically(-1)) {
-                    b.refreshLayout.setEnabled(false);
-                }
-                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
-                    b.refreshLayout.setEnabled(true);
-                }
-            }
-        });
 
         app.getDb().announcementDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), announcements -> {
             if (app == null || activity == null || b == null || !isAdded())

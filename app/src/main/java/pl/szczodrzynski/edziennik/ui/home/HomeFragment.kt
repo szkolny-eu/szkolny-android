@@ -78,7 +78,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
         }
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_add_remove_cards)
@@ -131,10 +130,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
             HomeConfigDialog(activity, reloadOnDismiss = true).show()
         }
 
-        b.scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
-            b.refreshLayout.isEnabled = scrollY == 0
-        }
-
         val cards = app.profile.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
             cards += listOfNotNull(
@@ -175,7 +170,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
         }
 
         val adapter = HomeCardAdapter(items)
-        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
+        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter) {
+            canRefresh = it
+        })
         adapter.itemTouchHelper = itemTouchHelper
         b.list.layoutManager = LinearLayoutManager(activity)
         b.list.adapter = adapter

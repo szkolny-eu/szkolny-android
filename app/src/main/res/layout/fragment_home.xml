@@ -1,67 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-23.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
-        android:id="@+id/refreshLayout"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="1"
+                tools:listitem="@layout/card_home_timetable" />
+
+            <View
+                android:id="@+id/configHintDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="?colorOutlineVariant" />
 
             <LinearLayout
+                android:id="@+id/configHint"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
-                    android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/card_home_timetable" />
-                <View
-                    android:id="@+id/configHintDivider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="?colorOutlineVariant" />
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/home_configure_notice"
+                    android:textAppearance="?textAppearanceBodySmall" />
 
-                <LinearLayout
-                    android:id="@+id/configHint"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/configureCards"
+                    style="?materialButtonSecondaryStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_weight="1"
-                        android:text="@string/home_configure_notice"
-                        android:textAppearance="?textAppearanceBodySmall" />
-
-                    <Button
-                        android:id="@+id/configureCards"
-                        style="?materialButtonSecondaryStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="@string/home_configure_add_remove" />
-                </LinearLayout>
-
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/home_configure_add_remove" />
             </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

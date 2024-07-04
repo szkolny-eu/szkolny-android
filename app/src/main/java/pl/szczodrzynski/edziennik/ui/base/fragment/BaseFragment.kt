@@ -22,7 +22,6 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
-import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
 import pl.szczodrzynski.navlib.bottomsheet.items.IBottomSheetItem
 import kotlin.coroutines.CoroutineContext
 
@@ -124,7 +123,6 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         attachToParent: Boolean,
     ): B? = null
 
-    open fun getRefreshLayout(): SwipeRefreshLayoutNoIndicator? = null
     open fun getRefreshScrollingView(): View? = null
     open fun getFab(): Pair<Int, IIcon>? = null
     open fun getMarkAsReadType(): MetadataType? = null

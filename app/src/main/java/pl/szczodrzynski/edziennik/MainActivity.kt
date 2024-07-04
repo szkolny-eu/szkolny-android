@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danimahardhika.cafebar.CafeBar
 import com.danimahardhika.cafebar.CafeBarTheme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
     val requestHandler by lazy { MainActivityRequestHandler(this) }
 
-    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    val swipeRefreshLayout: SwipeRefreshLayout by lazy { b.swipeRefreshLayout }
 
     var onBeforeNavigate: (() -> Boolean)? = null
     private var pausedNavigationData: PausedNavigationData? = null
@@ -263,9 +264,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             drawer.setUnreadCounterList(unreadCounters)
         }
 
-        b.swipeRefreshLayout.isEnabled = true
-        b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
-        b.swipeRefreshLayout.setColorSchemeResources(
+        swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
+        swipeRefreshLayout.setColorSchemeResources(
             R.color.md_blue_500,
             R.color.md_amber_500,
             R.color.md_green_500

@@ -19,7 +19,6 @@ class TemplateFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>(
         var pageSelection = 0
     }
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getTabLayout() = b.tabLayout
     override fun getViewPager() = b.viewPager
 

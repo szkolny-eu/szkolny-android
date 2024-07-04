@@ -24,7 +24,6 @@ import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.averageOrNull
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ext.onScrollListener
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
@@ -39,7 +38,6 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
     inflater = GradesListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshLayout() = b.refreshLayout
     override fun getMarkAsReadType() = MetadataType.GRADE
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
@@ -84,7 +82,6 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
-                    addOnScrollListener(b.refreshLayout.onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
