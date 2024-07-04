@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.base.lazypager
 import android.content.Context
 import android.util.AttributeSet
 import androidx.viewpager.widget.ViewPager
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 
 class LazyViewPager @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null
@@ -32,9 +33,7 @@ class LazyViewPager @JvmOverloads constructor(
                 pageSelection = position
                 (adapter as? LazyPagerAdapter)?.let {
                     it.swipeRefreshLayout?.isEnabled = scrollState == SCROLL_STATE_IDLE && it.enabledList[pageSelection, true]
-                    val fragment = adapter?.instantiateItem(this@LazyViewPager, position)
-                    val lazyFragment = fragment as? LazyFragment<*, *>
-                    lazyFragment?.createPage()
+                    adapter?.instantiateItem(this@LazyViewPager, position)
                 }
             }
         })

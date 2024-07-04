@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.ui.homework
 
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,19 +9,20 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.HomeworkListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.getInt
-import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class HomeworkListFragment : LazyFragment<HomeworkListFragmentBinding, MainActivity>(
+class HomeworkListFragment : BaseFragment<HomeworkListFragmentBinding, MainActivity>(
     inflater = HomeworkListFragmentBinding::inflate,
 ) {
 
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+    override fun getRefreshScrollingView() = b.list
+
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
 
         val today = Date.getToday()
@@ -61,7 +63,6 @@ class HomeworkListFragment : LazyFragment<HomeworkListFragmentBinding, MainActiv
             }
 
             // show/hide relevant views
-            setSwipeToRefresh(events.isEmpty())
             b.progressBar.isVisible = false
             b.list.isVisible = events.isNotEmpty()
             b.noData.isVisible = events.isEmpty()
@@ -78,7 +79,6 @@ class HomeworkListFragment : LazyFragment<HomeworkListFragmentBinding, MainActiv
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
-                    addOnScrollListener(onScrollListener)
                     this.adapter = adapter
                 }
             }
@@ -86,5 +86,5 @@ class HomeworkListFragment : LazyFragment<HomeworkListFragmentBinding, MainActiv
             // reapply the filter
             adapter.getSearchField()?.applyTo(adapter)
         })
-    }; return true }
+    }
 }

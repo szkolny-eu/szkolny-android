@@ -49,7 +49,6 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
             swipeRefreshLayout = null,
             fragments = listOf(
                 MessagesListFragment().apply {
-                    onPageDestroy = this@MessagesFragment.onPageDestroy
                     arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
                     args?.getBundle("page0")?.let {
                         arguments?.putAll(it)
@@ -57,7 +56,6 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
                 } to getString(R.string.messages_tab_received),
 
                 MessagesListFragment().apply {
-                    onPageDestroy = this@MessagesFragment.onPageDestroy
                     arguments = Bundle("messageType" to Message.TYPE_SENT)
                     args?.getBundle("page1")?.let {
                         arguments?.putAll(it)
@@ -65,7 +63,6 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
                 } to getString(R.string.messages_tab_sent),
 
                 MessagesListFragment().apply {
-                    onPageDestroy = this@MessagesFragment.onPageDestroy
                     arguments = Bundle("messageType" to Message.TYPE_DELETED)
                     args?.getBundle("page2")?.let {
                         arguments?.putAll(it)
@@ -73,7 +70,6 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
                 } to getString(R.string.messages_tab_deleted),
 
                 MessagesListFragment().apply {
-                    onPageDestroy = this@MessagesFragment.onPageDestroy
                     arguments = Bundle("messageType" to Message.TYPE_DRAFT)
                     args?.getBundle("page3")?.let {
                         arguments?.putAll(it)
@@ -94,16 +90,5 @@ class MessagesFragment : BaseFragment<MessagesFragmentBinding, MainActivity>(
 
     override suspend fun onFabClick() {
         activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE)
-    }
-
-    private val onPageDestroy = { position: Int, outState: Bundle? ->
-        arguments?.putBundle("page$position", outState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (b.viewPager.adapter as? FragmentLazyPagerAdapter)?.fragments?.forEach {
-            it.first.onDestroy()
-        }
     }
 }

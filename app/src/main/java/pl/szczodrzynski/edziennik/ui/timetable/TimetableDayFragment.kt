@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.timetable
 
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -43,7 +44,6 @@ import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.asStrikethroughSpannable
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.dp
-import pl.szczodrzynski.edziennik.ext.findParentById
 import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.listOfNotEmpty
 import pl.szczodrzynski.edziennik.ext.onClick
@@ -52,7 +52,7 @@ import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.Colors
@@ -63,7 +63,7 @@ import pl.szczodrzynski.edziennik.utils.mutableLazy
 import kotlin.math.max
 import kotlin.math.min
 
-class TimetableDayFragment : LazyFragment<TimetableDayFragmentBinding, MainActivity>(
+class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActivity>(
     inflater = TimetableDayFragmentBinding::inflate,
 ) {
 
@@ -101,7 +101,7 @@ class TimetableDayFragment : LazyFragment<TimetableDayFragmentBinding, MainActiv
     }
     private val dayView by dayViewDelegate
 
-    override fun onPageCreated(): Boolean {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         this.inflater = AsyncLayoutInflater(requireContext())
 
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
@@ -124,8 +124,6 @@ class TimetableDayFragment : LazyFragment<TimetableDayFragmentBinding, MainActiv
                 processLessonList(lessons, events, attendanceList)
             }
         }
-
-        return true
     }
 
     private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {

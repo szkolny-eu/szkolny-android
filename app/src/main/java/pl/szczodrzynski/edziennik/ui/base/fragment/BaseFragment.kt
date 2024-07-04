@@ -38,13 +38,18 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     private var inState: Bundle? = null
 
     private var canRefreshSent = false
-    open var canRefresh: Boolean = false
+    open var canRefresh = false
         set(value) {
             if (field == value && canRefreshSent) // broadcast only if changed
                 return
             field = value
-            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled = value
+            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled = !canRefreshDisabled && value
             canRefreshSent = true
+        }
+    protected var canRefreshDisabled = false
+        set(value) {
+            field = value
+            canRefresh = canRefresh
         }
 
     private var job = Job()

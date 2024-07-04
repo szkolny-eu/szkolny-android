@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.ui.timetable
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyPagerAdapter
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -25,7 +25,7 @@ class TimetablePagerAdapter(
     private val weekStart by lazy { today.weekStart }
     private val weekEnd by lazy { weekStart.clone().stepForward(0, 0, 6) }
 
-    override fun getPage(position: Int): LazyFragment<*, *> {
+    override fun getPage(position: Int): BaseFragment<*, *> {
         return TimetableDayFragment().apply {
             arguments = Bundle().apply {
                 putInt("date", items[position].value)

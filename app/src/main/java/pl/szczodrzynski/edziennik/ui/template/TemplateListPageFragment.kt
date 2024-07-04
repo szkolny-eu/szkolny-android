@@ -4,21 +4,23 @@
 
 package pl.szczodrzynski.edziennik.ui.template
 
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
-class TemplateListPageFragment : LazyFragment<TemplateListPageFragmentBinding, MainActivity>(
+class TemplateListPageFragment : BaseFragment<TemplateListPageFragmentBinding, MainActivity>(
     inflater = TemplateListPageFragmentBinding::inflate,
 ) {
 
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+    override fun getRefreshScrollingView() = b.list
+
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = TemplateAdapter(activity)
 
         app.db.notificationDao().getAll().observe(this@TemplateListPageFragment, Observer { items ->
@@ -32,11 +34,9 @@ class TemplateListPageFragment : LazyFragment<TemplateListPageFragmentBinding, M
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
-                    addOnScrollListener(onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
-            setSwipeToRefresh(items.isNullOrEmpty())
 
             // show/hide relevant views
             b.progressBar.isVisible = false
@@ -48,5 +48,5 @@ class TemplateListPageFragment : LazyFragment<TemplateListPageFragmentBinding, M
                 b.noData.isVisible = false
             }
         })
-    }; return true }
+    }
 }

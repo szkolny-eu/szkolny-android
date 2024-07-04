@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.attendance
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.Transformation
@@ -30,26 +31,26 @@ import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment.Companion.VIEW_SUMMARY
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceSubject
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.text.DecimalFormat
 
-class AttendanceSummaryFragment : LazyFragment<AttendanceSummaryFragmentBinding, MainActivity>(
+class AttendanceSummaryFragment : BaseFragment<AttendanceSummaryFragmentBinding, MainActivity>(
     inflater = AttendanceSummaryFragmentBinding::inflate,
 ) {
     companion object {
         private var periodSelection = 0
     }
 
+    override fun getRefreshScrollingView() = b.list
+
     private val manager
         get() = app.attendanceManager
     private var expandSubjectId = 0L
     private var attendance = listOf<AttendanceFull>()
 
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
         val adapter = AttendanceAdapter(activity, VIEW_SUMMARY)
@@ -74,7 +75,6 @@ class AttendanceSummaryFragment : LazyFragment<AttendanceSummaryFragmentBinding,
                 }
             }
             adapter.notifyDataSetChanged()
-            setSwipeToRefresh(adapter.items.isNullOrEmpty())
 
             if (firstRun) {
                 expandSubject(adapter)
@@ -83,7 +83,7 @@ class AttendanceSummaryFragment : LazyFragment<AttendanceSummaryFragmentBinding,
 
             // show/hide relevant views
             b.progressBar.isVisible = false
-            if (adapter.items.isNullOrEmpty()) {
+            if (adapter.items.isEmpty()) {
                 b.statsLayout.isVisible = false
                 b.list.isVisible = false
                 b.noData.isVisible = true
@@ -127,7 +127,7 @@ class AttendanceSummaryFragment : LazyFragment<AttendanceSummaryFragmentBinding,
                 adapter.notifyDataSetChanged()
             }
         }
-    }; return true}
+    }
 
     private fun expandSubject(adapter: AttendanceAdapter) {
         var expandSubjectModel: GradesSubject? = null

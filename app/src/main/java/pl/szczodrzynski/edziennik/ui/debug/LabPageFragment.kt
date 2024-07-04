@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.debug
 
+import android.os.Bundle
 import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -12,7 +13,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.chuckerteam.chucker.api.Chucker
 import com.chuckerteam.chucker.api.Chucker.SCREEN_HTTP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
@@ -32,17 +32,19 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ext.takeValue
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
 import kotlin.system.exitProcess
 
-class LabPageFragment : LazyFragment<LabFragmentBinding, AppCompatActivity>(
+class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
     inflater = LabFragmentBinding::inflate,
 ) {
 
-    override fun onPageCreated(): Boolean {
+    override fun getRefreshScrollingView() = b.scrollView
+
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.app = app
 
         if (app.profile.id == 0) {
@@ -208,7 +210,5 @@ class LabPageFragment : LazyFragment<LabFragmentBinding, AppCompatActivity>(
                 }.concat("\n\n")
             b.cookies.text = text
         }
-
-        return true
     }
 }

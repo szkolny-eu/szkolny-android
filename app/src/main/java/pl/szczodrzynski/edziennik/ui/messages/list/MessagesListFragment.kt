@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.messages.list
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,13 +20,14 @@ import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getInt
-import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
-class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActivity>(
+class MessagesListFragment : BaseFragment<MessagesListFragmentBinding, MainActivity>(
     inflater = MessagesListFragmentBinding::inflate,
 ) {
+
+    override fun getRefreshScrollingView() = b.list
 
     private lateinit var adapter: MessagesAdapter
     private val manager
@@ -33,11 +35,11 @@ class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActiv
     var teachers = listOf<Teacher>()
 
     @SuppressLint("RestrictedApi")
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
         var recyclerViewState =
-            arguments?.getParcelable<LinearLayoutManager.SavedState>("recyclerViewState")
-        val searchText = arguments?.getString("searchText")
+            savedInstanceState?.getParcelable<LinearLayoutManager.SavedState>("recyclerViewState")
+        val searchText = savedInstanceState?.getString("searchText")
 
         teachers = withContext(Dispatchers.Default) {
             app.db.teacherDao().getAllNow(App.profileId)
@@ -73,8 +75,10 @@ class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActiv
                 }
             }
 
+            if (messageType != Message.TYPE_RECEIVED && messageType != Message.TYPE_SENT)
+                canRefreshDisabled = true
+
             // show/hide relevant views
-            setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT)
             b.progressBar.isVisible = false
             b.list.isVisible = messages.isNotEmpty()
             b.noData.isVisible = messages.isEmpty()
@@ -91,8 +95,6 @@ class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActiv
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
-                    if (messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT)
-                        addOnScrollListener(onScrollListener)
                     this.adapter = this@MessagesListFragment.adapter
                 }
             }
@@ -108,18 +110,15 @@ class MessagesListFragment : LazyFragment<MessagesListFragmentBinding, MainActiv
                 recyclerViewState = null
             }
         })
-    }; return true }
+    }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         if (!isAdded || !this::adapter.isInitialized)
             return
         val layoutManager = (b.list.layoutManager as? LinearLayoutManager)
         val searchField = adapter.getSearchField()
-
-        onPageDestroy?.invoke(position, Bundle(
-            "recyclerViewState" to layoutManager?.onSaveInstanceState(),
-            "searchText" to searchField?.searchText?.toString()
-        ))
+        outState.putParcelable("recyclerViewState", layoutManager?.onSaveInstanceState())
+        outState.putString("searchText", searchField?.searchText?.toString())
     }
 }

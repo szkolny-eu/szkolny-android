@@ -9,6 +9,7 @@ import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 
 abstract class LazyPagerAdapter(fragmentManager: FragmentManager, val swipeRefreshLayout: SwipeRefreshLayout? = null) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     internal val enabledList = SparseBooleanArray()
@@ -17,12 +18,9 @@ abstract class LazyPagerAdapter(fragmentManager: FragmentManager, val swipeRefre
         if (position > -1)
             enabledList[position] = isEnabled
     }
-    final override fun getItem(position: Int): LazyFragment<*, *> {
-        return getPage(position).also {
-            it.position = position
-            it.swipeRefreshLayoutCallback = refreshLayoutCallback
-        }
+    final override fun getItem(position: Int): BaseFragment<*, *> {
+        return getPage(position)
     }
-    abstract fun getPage(position: Int): LazyFragment<*, *>
+    abstract fun getPage(position: Int): BaseFragment<*, *>
     abstract override fun getPageTitle(position: Int): CharSequence
 }

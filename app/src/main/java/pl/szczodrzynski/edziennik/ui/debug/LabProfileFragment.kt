@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.debug
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +18,11 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
-class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppCompatActivity>(
+class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppCompatActivity>(
     inflater = TemplateListPageFragmentBinding::inflate,
 ) {
     companion object {
@@ -35,7 +36,7 @@ class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppComp
         app.db.loginStoreDao().getByIdNow(app.profile.loginStoreId)
     }
 
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         adapter = LabJsonAdapter(activity, onJsonElementClick = { item ->
             try {
                 var parent: Any = Unit
@@ -149,8 +150,7 @@ class LabProfileFragment : LazyFragment<TemplateListPageFragmentBinding, AppComp
         b.progressBar.isVisible = false
         b.list.isVisible = true
         b.noData.isVisible = false
-
-    }; return true }
+    }
 
     private fun showJson() {
         val json = JsonObject().also { json ->
