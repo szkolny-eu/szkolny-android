@@ -20,18 +20,34 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
 ) : BaseFragment<B, A>(inflater) {
 
     private lateinit var pages: List<Pair<Fragment, String>>
+    private val fragmentCache = mutableMapOf<Int, Fragment>()
 
     override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         pages = onCreatePages()
 
         val adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount() = getPageCount()
-            override fun createFragment(position: Int) = getPageFragment(position)
+            override fun createFragment(position: Int): Fragment {
+                val fragment = getPageFragment(position)
+                fragmentCache[position] = fragment
+                return fragment
+            }
         }
 
         getViewPager().let {
             it.offscreenPageLimit = 1
             it.adapter = adapter
+            it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrollStateChanged(state: Int) {
+                    canRefresh = when (state) {
+                        ViewPager2.SCROLL_STATE_IDLE ->
+                            (fragmentCache[it.currentItem] as? BaseFragment<*, *>)?.canRefresh
+                            ?: false
+
+                        else -> false
+                    }
+                }
+            })
         }
 
         TabLayoutMediator(getTabLayout(), getViewPager()) { tab, position ->

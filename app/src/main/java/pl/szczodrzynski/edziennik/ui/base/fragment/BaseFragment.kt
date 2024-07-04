@@ -38,6 +38,16 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     private var isViewReady: Boolean = false
     private var inState: Bundle? = null
 
+    private var canRefreshSent = false
+    open var canRefresh: Boolean = false
+        set(value) {
+            if (field == value && canRefreshSent) // broadcast only if changed
+                return
+            field = value
+            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled = value
+            canRefreshSent = true
+        }
+
     private var job = Job()
     final override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -71,6 +81,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
+        setupCanRefresh()
         (activity as? MainActivity)?.let(::setupMainActivity)
         (activity as? LoginActivity)?.let(::setupLoginActivity)
         // let the UI transition for a moment
@@ -114,6 +125,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     ): B? = null
 
     open fun getRefreshLayout(): SwipeRefreshLayoutNoIndicator? = null
+    open fun getRefreshScrollingView(): View? = null
     open fun getFab(): Pair<Int, IIcon>? = null
     open fun getMarkAsReadType(): MetadataType? = null
     open fun getBottomSheetItems() = listOf<IBottomSheetItem<*>>()

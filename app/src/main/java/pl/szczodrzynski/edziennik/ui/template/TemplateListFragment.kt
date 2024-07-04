@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplateListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ext.onScrollListener
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
@@ -19,7 +18,7 @@ class TemplateListFragment : BaseFragment<TemplateListFragmentBinding, MainActiv
     inflater = TemplateListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshLayout() = b.refreshLayout
+    override fun getRefreshScrollingView() = b.list
 
     override suspend fun onViewCreated(savedInstanceState: Bundle?) {
         val adapter = TemplateAdapter(activity)
@@ -35,11 +34,9 @@ class TemplateListFragment : BaseFragment<TemplateListFragmentBinding, MainActiv
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
-                    addOnScrollListener(b.refreshLayout.onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
-            b.refreshLayout.isEnabled = false // TODO
 
             // show/hide relevant views
             b.progressBar.isVisible = false
