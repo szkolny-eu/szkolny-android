@@ -12,9 +12,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import pl.szczodrzynski.navlib.Anim
 import pl.szczodrzynski.navlib.bottomsheet.items.IBottomSheetItem
 import pl.szczodrzynski.navlib.databinding.NavBottomSheetBinding
 import pl.szczodrzynski.navlib.elevateSurface
@@ -25,7 +25,7 @@ class NavBottomSheet @JvmOverloads constructor(
     defStyle: Int = 0,
 ) : CoordinatorLayout(context, attrs, defStyle) {
 
-    private val b = NavBottomSheetBinding.inflate(LayoutInflater.from(context), this, false)
+    private val b = NavBottomSheetBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val scrimView
         get() = b.bsScrim
@@ -39,7 +39,6 @@ class NavBottomSheet @JvmOverloads constructor(
         get() = b.bsList
 
     private var bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
-    private var bottomSheetVisible = false
 
     private val items = ArrayList<IBottomSheetItem<*>>()
     private val adapter = BottomSheetAdapter(items)
@@ -63,21 +62,25 @@ class NavBottomSheet @JvmOverloads constructor(
             isOpen = false
         }
 
+        var bottomSheetVisible = false
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(v: View, p1: Float) {}
-            override fun onStateChanged(v: View, newState: Int) {
+            override fun onSlide(view: View, slideOffset: Float) {
+                val alpha = (1.0f + slideOffset).coerceIn(0.0f, 1.0f)
+                scrimView.alpha = alpha
+                scrimView.isInvisible = alpha == 0.0f
+            }
+
+            override fun onStateChanged(view: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN && bottomSheetVisible) {
                     bottomSheetVisible = false
                     bottomSheet.scrollTo(0, 0)
-                    Anim.fadeOut(scrimView, 300, null)
                     // steal the focus from any EditTexts
                     dragBar.requestFocus()
                     hideKeyboard()
                     onCloseListener?.invoke()
                 } else if (!bottomSheetVisible) {
                     bottomSheetVisible = true
-                    Anim.fadeIn(scrimView, 300, null)
                 }
             }
         })
