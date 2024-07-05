@@ -20,7 +20,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.elevateSurface
 
 class MessagesComposeChipCreator(
@@ -139,6 +138,6 @@ class MessagesComposeChipCreator(
     override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
         super.configureChip(chip, chipConfiguration)
         chip.setBackgroundColor(elevateSurface(context, 8).toColorStateList())
-        chip.setTextColor(Themes.getPrimaryTextColor(context))
+        chip.setTextColor(android.R.attr.textColorPrimary.resolveAttr(context))
     }
 }

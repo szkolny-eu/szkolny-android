@@ -10,7 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.snackbar.Snackbar
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.navlib.getColorFromAttr
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 
 class MainSnackbar(val activity: AppCompatActivity) {
     companion object {
@@ -27,8 +27,8 @@ class MainSnackbar(val activity: AppCompatActivity) {
 
         }
         val bgColor = ColorUtils.compositeColors(
-                getColorFromAttr(activity, R.attr.colorOnSurface) and 0xcfffffff.toInt(),
-                getColorFromAttr(activity, R.attr.colorSurface)
+            R.attr.colorOnSurface.resolveAttr(activity) and 0xcfffffff.toInt(),
+            R.attr.colorSurface.resolveAttr(activity),
         )
         snackbar?.setBackgroundTint(bgColor)
         showAbove?.let { snackbar?.anchorView = it }

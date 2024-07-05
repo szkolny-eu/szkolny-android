@@ -212,12 +212,6 @@ class NavDrawer(
             profileSelectionOpen()
             open()
         }
-        toolbar.drawerClickListener = {
-            open()
-        }
-        bottomBar.drawerClickListener = {
-            open()
-        }
 
         val configuration = context.resources.configuration
         decideDrawerMode(
@@ -225,69 +219,6 @@ class NavDrawer(
             configuration.screenWidthDp,
             configuration.screenHeightDp
         )
-    }
-
-    /*    _____ _
-         |_   _| |
-           | | | |_ ___ _ __ ___  ___
-           | | | __/ _ \ '_ ` _ \/ __|
-          _| |_| ||  __/ | | | | \__ \
-         |_____|\__\___|_| |_| |_|__*/
-    operator fun plusAssign(item: IDrawerItem<*>) {
-        appendItem(item)
-    }
-    fun appendItem(item: IDrawerItem<*>) {
-        drawer.addItems(item)
-        updateMiniDrawer()
-    }
-    fun appendItems(vararg items: IDrawerItem<*>) {
-        drawer.addItems(*items)
-        updateMiniDrawer()
-    }
-    fun prependItem(item: IDrawerItem<*>) {
-        drawer.addItemAtPosition(0, item)
-        updateMiniDrawer()
-    }
-    fun prependItems(vararg items: IDrawerItem<*>) {
-        drawer.addItemsAtPosition(0, *items)
-        updateMiniDrawer()
-    }
-    fun addItemAt(index: Int, item: IDrawerItem<*>) {
-        drawer.addItemAtPosition(index, item)
-        updateMiniDrawer()
-    }
-    fun addItemsAt(index: Int, vararg items: IDrawerItem<*>) {
-        drawer.addItemsAtPosition(index, *items)
-        updateMiniDrawer()
-    }
-    fun removeItemById(id: Int) {
-        drawer.removeItems(id.toLong())
-        updateMiniDrawer()
-    }
-    fun removeItemAt(index: Int) {
-        drawer.removeItemByPosition(index)
-        updateMiniDrawer()
-    }
-    fun removeAllItems() {
-        drawer.removeAllItems()
-        updateMiniDrawer()
-    }
-
-    fun getItemById(id: Int, run: (it: IDrawerItem<*>?) -> Unit) {
-        drawer.getDrawerItem(id.toLong()).also {
-            run(it)
-            if (it != null)
-                drawer.updateItem(it)
-            updateMiniDrawer()
-        }
-    }
-    fun getItemByIndex(index: Int, run: (it: IDrawerItem<*>?) -> Unit) {
-        drawer.itemAdapter.itemList.get(index).also {
-            run(it)
-            if (it != null)
-                drawer.updateItem(it)
-            updateMiniDrawer()
-        }
     }
 
     fun setItems(vararg items: IDrawerItem<*>) {

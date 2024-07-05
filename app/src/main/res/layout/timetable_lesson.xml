@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -42,17 +43,16 @@
                 android:paddingBottom="8dp"
                 tools:layout_height="90dp">
 
-            <LinearLayout
-                android:id="@+id/subjectContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingHorizontal="8dp">
+                <LinearLayout
+                    android:id="@+id/subjectContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingTop="4dp">
                     <!--tools:background="@drawable/timetable_subject_color_rounded"-->
-
                     <com.mikepenz.iconics.view.IconicsTextView
                         android:id="@+id/subjectName"
                         android:layout_width="0dp"
@@ -100,21 +100,21 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:includeFontPadding="false"
+                                android:isVisible="@{lessonNumber != null}"
                                 android:paddingHorizontal="4dp"
                                 android:text="@{Integer.toString(lessonNumber)}"
                                 android:textAppearance="?textAppearanceTitleLarge"
-                                android:isVisible="@{lessonNumber != null}"
                                 tools:text="3" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="4dp"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:orientation="horizontal"
-                            android:layout_marginRight="4dp"
-                            android:layout_marginTop="2dp">
+                            android:orientation="horizontal">
 
                             <View
                                 android:id="@+id/event3"
@@ -154,8 +154,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginRight="4dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -182,14 +182,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
                         android:layout_weight="0"
+                        android:isVisible="@{annotationVisible}"
+                        android:textAlignment="center"
                         android:textAppearance="?textAppearanceLabelMedium"
                         android:textColor="?colorOnError"
-                        android:textAlignment="center"
-                        android:isVisible="@{annotationVisible}"
                         app:chipBackgroundColor="?colorError"
                         app:chipStrokeWidth="0dp"
                         tools:text="@string/timetable_lesson_cancelled" />
-
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

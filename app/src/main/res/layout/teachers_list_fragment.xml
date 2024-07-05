@@ -1,42 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Antoni Czaplicki 2021-10-15.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/noData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="16dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/teachers_no_data"
+        android:textAppearance="?textAppearanceHeadlineSmall"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/ic_no_grades"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/noData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawablePadding="16dp"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/teachers_no_data"
-            android:textAppearance="?textAppearanceHeadlineSmall"
-            android:visibility="gone"
-            app:drawableTopCompat="@drawable/ic_no_grades"
-            tools:visibility="visible" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:listitem="@layout/teacher_item"
-            tools:visibility="visible" />
-    </FrameLayout>
-</layout>
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:listitem="@layout/teacher_item"
+        tools:visibility="visible" />
+</FrameLayout>

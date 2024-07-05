@@ -1,11 +1,15 @@
 package pl.szczodrzynski.navlib
 
 import android.app.Activity
+import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.View.*
@@ -349,6 +353,42 @@ class SystemBarsUtil(private val activity: Activity) {
             // app not fullscreen
             // TODO statusBarColor & navigationBarColor if not fullscreen (it's possible)
         }
+    }
+
+    private fun isTablet(c: Context): Boolean {
+        return (c.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+    }
+
+    private fun hasNavigationBar(context: Context): Boolean {
+        val id = context.resources.getIdentifier("config_showNavigationBar", "bool", "android")
+        var hasNavigationBar = id > 0 && context.resources.getBoolean(id)
+
+        if (!hasNavigationBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            val d = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+
+            val realDisplayMetrics = DisplayMetrics()
+            d.getRealMetrics(realDisplayMetrics)
+
+            val realHeight = realDisplayMetrics.heightPixels
+            val realWidth = realDisplayMetrics.widthPixels
+
+            val displayMetrics = DisplayMetrics()
+            d.getMetrics(displayMetrics)
+
+            val displayHeight = displayMetrics.heightPixels
+            val displayWidth = displayMetrics.widthPixels
+
+            hasNavigationBar = realWidth - displayWidth > 0 || realHeight - displayHeight > 0
+        }
+
+        // Allow a system property to override this. Used by the emulator.
+        // See also hasNavigationBar().
+        val navBarOverride = System.getProperty("qemu.hw.mainkeys")
+        if (navBarOverride == "1")
+            hasNavigationBar = true
+        else if (navBarOverride == "0") hasNavigationBar = false
+
+        return hasNavigationBar
     }
 
     private fun applyPadding(left: Int, top: Int, right: Int, bottom: Int) {

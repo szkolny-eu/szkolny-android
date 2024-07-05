@@ -17,9 +17,6 @@ import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -52,6 +49,7 @@ import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
@@ -384,12 +382,7 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
             lb.attendanceIcon.isVisible = attendance?.let {
                 val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false
                 val color = attendanceManager.getAttendanceColor(it)
-                lb.attendanceIcon.setImageDrawable(
-                    IconicsDrawable(activity, icon).apply {
-                        colorInt = color
-                        sizeDp = 24
-                    }
-                )
+                lb.attendanceIcon.setImageDrawable(icon.toDrawable(color))
                 true
             } ?: false
 

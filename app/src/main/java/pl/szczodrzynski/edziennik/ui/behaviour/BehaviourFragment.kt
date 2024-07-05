@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.App.Companion.profileId
 import pl.szczodrzynski.edziennik.MainActivity
@@ -13,8 +12,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
-import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
 import java.util.Locale
 
 class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
@@ -93,7 +92,7 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
         if (warningsCount >= 3) {
             b.noticesWarningsCount.setTextColor(Color.RED)
         } else {
-            b.noticesWarningsCount.setTextColor(getPrimaryTextColor(activity))
+            b.noticesWarningsCount.setTextColor(android.R.attr.textColorPrimary.resolveAttr(activity))
         }
     }
 

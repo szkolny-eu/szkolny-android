@@ -21,7 +21,6 @@ import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.getColorFromAttr
 
 class MessageViewHolder(
     inflater: LayoutInflater,
@@ -46,7 +45,10 @@ class MessageViewHolder(
 
         val isRead = item.isSent || item.isDraft || item.seen
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
-        val textColor = if (isRead) getColorFromAttr(b.root.context, R.attr.colorOnSurfaceVariant) else getColorFromAttr(b.root.context, R.attr.colorOnSurface)
+        val textColor = if (isRead)
+            R.attr.colorOnSurfaceVariant.resolveAttr(b.root.context)
+        else
+            R.attr.colorOnSurface.resolveAttr(b.root.context)
         // set text styles
         b.messageSender.setTextColor(textColor)
         b.messageSender.typeface = typeface

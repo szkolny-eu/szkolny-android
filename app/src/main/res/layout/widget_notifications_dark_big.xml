@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,28 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/widget_background_top"
-        android:orientation="horizontal"><!--#b52196F3-->
+        android:orientation="horizontal"><!--#b52196F3-->        <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/widgetTimetableOldSubjectName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/widgetTimetableOldSubjectName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:paddingHorizontal="15dp"
-                android:text="@string/widget_notifications_title"
-                android:textColor="@color/primaryTextDark"
-                android:textSize="24sp" />
-
-        </LinearLayout>
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingHorizontal="15dp"
+            android:text="@string/widget_notifications_title"
+            android:textColor="@color/primaryTextDark"
+            android:textSize="24sp" />
+    </LinearLayout>
 
         <ImageButton
             android:id="@+id/widgetNotificationsSync"
@@ -50,9 +48,9 @@
             android:id="@+id/widgetNotificationsListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/secondaryTextDark"
             android:background="@drawable/widget_background_dark_bottom"
-            android:dividerHeight="1.0dip" ><!--#b5ffffff-->
+            android:divider="@color/secondaryTextDark"
+            android:dividerHeight="1.0dip"><!--#b5ffffff-->
         </ListView>
 
         <TextView
@@ -64,7 +62,5 @@
             android:textColor="@color/primaryTextDark"
             android:textSize="22sp"
             android:textStyle="italic" />
-
     </FrameLayout>
-
 </LinearLayout>

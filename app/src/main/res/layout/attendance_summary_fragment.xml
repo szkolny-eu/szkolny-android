@@ -1,172 +1,169 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleGroup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleGroup"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/semester1"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Semestr 1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/semester2"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Semestr 2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allYear"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cały rok" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:singleSelection="true"
-            app:selectionRequired="true"
-            android:gravity="center_horizontal">
+            android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/semester1"
-                style="?materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Semestr 1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/semester2"
-                style="?materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Semestr 2" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/allYear"
-                style="?materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cały rok" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/statsLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/statsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/percentage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:textAppearance="?textAppearanceTitleMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Obecność w tym okresie: 99,7%" />
 
-                    <TextView
-                        android:id="@+id/percentage"
-                        android:layout_width="0dp"
+                <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
+                    android:id="@+id/percentageCircle"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="invisible"
+                    app:direction="clockwise"
+                    app:drawDot="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:progressBackgroundStrokeWidth="9dp"
+                    app:progressCap="butt"
+                    app:progressStrokeWidth="10dp"
+                    app:textSize="0sp"
+                    tools:visibility="visible" />
+
+                <pl.szczodrzynski.edziennik.ui.attendance.AttendanceBar
+                    android:id="@+id/attendanceBar"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toStartOf="@+id/percentageCircle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/percentage"
+                    tools:visibility="visible" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/previewContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal"
+                    app:flexWrap="wrap"
+                    app:layout_constraintEnd_toStartOf="@+id/percentageCircle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/attendanceBar">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:textAppearance="?textAppearanceTitleMedium"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Obecność w tym okresie: 99,7%" />
+                        android:paddingBottom="8dp">
 
-                    <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
-                        android:id="@+id/percentageCircle"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginBottom="16dp"
-                        app:direction="clockwise"
-                        app:drawDot="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:progressBackgroundStrokeWidth="9dp"
-                        app:progressStrokeWidth="10dp"
-                        app:progressCap="butt"
-                        app:textSize="0sp"
-                        android:visibility="invisible"
-                        tools:visibility="visible" />
-
-                    <pl.szczodrzynski.edziennik.ui.attendance.AttendanceBar
-                        android:id="@+id/attendanceBar"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintEnd_toStartOf="@+id/percentageCircle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/percentage"
-                        android:visibility="invisible"
-                        tools:visibility="visible" />
-
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/previewContainer"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:orientation="horizontal"
-                        app:flexWrap="wrap"
-                        app:layout_constraintEnd_toStartOf="@+id/percentageCircle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/attendanceBar">
-
-                        <LinearLayout
+                        <pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="8dp">
+                            tools:background="@drawable/bg_rounded_4dp"
+                            tools:backgroundTint="#43a047"
+                            tools:layout_marginEnd="5dp"
+                            tools:layout_marginRight="5dp"
+                            tools:paddingHorizontal="5dp"
+                            tools:singleLine="true"
+                            tools:text="w"
+                            tools:textSize="14sp" />
 
-                            <pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:background="@drawable/bg_rounded_4dp"
-                                tools:backgroundTint="#43a047"
-                                tools:layout_marginEnd="5dp"
-                                tools:layout_marginRight="5dp"
-                                tools:paddingHorizontal="5dp"
-                                tools:singleLine="true"
-                                tools:text="w"
-                                tools:textSize="14sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:layout_marginEnd="5dp"
+                            tools:layout_marginRight="5dp"
+                            tools:text="6,8%" />
+                    </LinearLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:layout_marginEnd="5dp"
-                                tools:layout_marginRight="5dp"
-                                tools:text="6,8%" />
-                        </LinearLayout>
-                    </com.google.android.flexbox.FlexboxLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="64dp"
+                tools:visibility="gone" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="64dp"
-                    tools:visibility="gone" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/noData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="16dp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/attendances_no_data"
+                android:textAppearance="?textAppearanceHeadlineSmall"
+                android:visibility="gone"
+                app:drawableTopCompat="@drawable/ic_no_grades"
+                tools:visibility="visible" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/noData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:drawablePadding="16dp"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="@string/attendances_no_data"
-                    android:textAppearance="?textAppearanceHeadlineSmall"
-                    android:visibility="gone"
-                    app:drawableTopCompat="@drawable/ic_no_grades"
-                    tools:visibility="visible" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:listitem="@layout/attendance_item_attendance"
-                    tools:visibility="visible" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
-</layout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/attendance_item_attendance"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

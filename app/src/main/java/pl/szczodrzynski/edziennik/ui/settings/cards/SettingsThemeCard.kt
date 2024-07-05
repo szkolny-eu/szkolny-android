@@ -14,7 +14,6 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
 import pl.szczodrzynski.edziennik.utils.BigNightUtil
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {

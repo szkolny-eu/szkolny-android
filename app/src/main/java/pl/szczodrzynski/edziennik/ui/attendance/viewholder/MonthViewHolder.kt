@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter.Companion.STAT
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MonthViewHolder(

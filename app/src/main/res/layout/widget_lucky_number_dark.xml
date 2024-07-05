@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widgetLuckyNumberRoot"
     android:layout_width="match_parent"
@@ -49,9 +50,7 @@
                     android:textSize="16sp"
                     tools:text="24" />
             </FrameLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
     <TextView
@@ -77,5 +76,4 @@
             tools:text="24"
             tools:visibility="gone" />
     </FrameLayout>
-
 </LinearLayout>

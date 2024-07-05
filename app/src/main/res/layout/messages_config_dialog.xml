@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -64,8 +65,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine|textShortMessage|textAutoCorrect|textAutoComplete"
-                    android:minLines="3"
                     android:maxLines="10"
+                    android:minLines="3"
                     tools:text="\n\nZ poważaniem\nJan Kowalski" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

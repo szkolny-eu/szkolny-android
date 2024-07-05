@@ -2,24 +2,20 @@ package pl.szczodrzynski.navlib
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
-import com.mikepenz.iconics.typeface.library.navlibfont.NavLibFont
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
-import pl.szczodrzynski.navlib.drawer.NavDrawer
 
+@SuppressLint("ClickableViewAccessibility")
 class NavBottomBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -27,8 +23,6 @@ class NavBottomBar @JvmOverloads constructor(
 ) : BottomAppBar(context, attrs, defStyle), NavMenuBarBase {
 
     internal lateinit var navView: NavView
-    override lateinit var bottomSheet: NavBottomSheet
-    internal lateinit var fabView: FloatingActionButton
     internal lateinit var fabExtendedView: ExtendedFloatingActionButton
 
     /**
@@ -42,6 +36,7 @@ class NavBottomBar @JvmOverloads constructor(
             setFabParams()
             navView.setContentMargins()
         }
+
     /**
      * Whether the FAB should be visible.
      */
@@ -50,17 +45,7 @@ class NavBottomBar @JvmOverloads constructor(
             field = value
             setFabVisibility()
         }
-    /**
-     * Whether an ExtendableFloatingActionButton should be used
-     * instead of a normal FloatingActionButton.
-     * Note that the extendable button does not support end alignment/gravity
-     * when used together with the bottom app bar.
-     */
-    var fabExtendable = true
-        set(value) {
-            field = value
-            setFabParams()
-        }
+
     /**
      * If BottomAppBar is enabled, sets its fabAlignmentMode.
      * Else, sets the actual FAB's gravity.
@@ -70,6 +55,7 @@ class NavBottomBar @JvmOverloads constructor(
             field = value
             setFabParams()
         }
+
     /**
      * Whether the FAB should be extended and its text visible.
      */
@@ -81,23 +67,20 @@ class NavBottomBar @JvmOverloads constructor(
             else
                 fabExtendedView.shrink()
         }
+
     /**
      * Set the FAB's icon.
      */
     var fabIcon: IIcon? = null
         set(value) {
             field = value
-            fabView.setImageDrawable(IconicsDrawable(context).apply {
-                icon = value
-                colorAttr(context, R.attr.colorOnPrimaryContainer)
-                sizeDp = 24
-            })
             fabExtendedView.icon = IconicsDrawable(context).apply {
                 icon = value
                 colorAttr(context, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             }
         }
+
     /**
      * Set the ExtendedFAB's text.
      */
@@ -111,7 +94,6 @@ class NavBottomBar @JvmOverloads constructor(
      * Set the FAB's on click listener
      */
     fun setFabOnClickListener(onClickListener: OnClickListener?) {
-        fabView.setOnClickListener(onClickListener)
         fabExtendedView.setOnClickListener(onClickListener)
     }
 
@@ -119,51 +101,32 @@ class NavBottomBar @JvmOverloads constructor(
     override var menuClickListener: (() -> Unit)? = null
 
     init {
-        setOnTouchListener { _, event ->
-            if (bottomSheet?.enable != true || bottomSheet?.enableDragToOpen != true)
-                return@setOnTouchListener false
-            bottomSheet?.dispatchBottomBarEvent(event)
-            true
-        }
-
         elevation = 0f
     }
 
     private fun setFabParams() {
-        val layoutParams =
-            ((if (fabExtendable) fabExtendedView.layoutParams else fabView.layoutParams) ?: return) as CoordinatorLayout.LayoutParams
-
-        if (enable) {
-            layoutParams.anchorId = this.id
-            if (fabExtendable)
-                layoutParams.anchorGravity = if (fabExtendable) fabGravity or Gravity.TOP else Gravity.NO_GRAVITY
-            layoutParams.gravity = Gravity.NO_GRAVITY
+        fabExtendedView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            if (enable) {
+                anchorId = this@NavBottomBar.id
+                anchorGravity = fabGravity or Gravity.TOP
+                gravity = Gravity.NO_GRAVITY
+            } else {
+                anchorId = View.NO_ID
+                anchorGravity = Gravity.NO_GRAVITY
+                gravity = fabGravity or Gravity.BOTTOM
+            }
+            fabAlignmentMode =
+                if (fabGravity == Gravity.END)
+                    FAB_ALIGNMENT_MODE_END
+                else
+                    FAB_ALIGNMENT_MODE_CENTER
         }
-        else {
-            layoutParams.anchorId = View.NO_ID
-            if (fabExtendable)
-                layoutParams.anchorGravity = Gravity.NO_GRAVITY
-            layoutParams.gravity = fabGravity or Gravity.BOTTOM
-        }
-        fabAlignmentMode = if (fabGravity == Gravity.END) FAB_ALIGNMENT_MODE_END else FAB_ALIGNMENT_MODE_CENTER
-        if (fabExtendable)
-            fabExtendedView.layoutParams = layoutParams
-        else
-            fabView.layoutParams = layoutParams
         setFabVisibility()
     }
-    private fun setFabVisibility() {
-        if (fabEnable && fabExtendable) {
-            fabView.hide()
+
+    private fun setFabVisibility() =
+        if (fabEnable)
             fabExtendedView.show()
-        }
-        else if (fabEnable) {
-            fabView.show()
+        else
             fabExtendedView.hide()
-        }
-        else {
-            fabView.hide()
-            fabExtendedView.hide()
-        }
-    }
 }

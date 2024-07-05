@@ -2,70 +2,155 @@
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-24.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:layout_margin="8dp">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/noTimetableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
+            android:id="@+id/noTimetableSync"
+            style="?materialIconButtonContainerStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="false"
+            app:iiv_color="?colorOnPrimaryContainer"
+            app:iiv_icon="szf-sync"
+            app:iiv_size="24dp"
+            tools:icon="@sample/settings"
+            tools:iconTint="?colorOnPrimaryContainer" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_timetable_no_timetable"
+                android:textAppearance="?textAppearanceTitleMedium" />
+
+            <TextView
+                android:id="@+id/noTimetableText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_timetable_no_timetable_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noLessonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:visibility="gone"
+        tools:layout_marginTop="100dp"
+        tools:visibility="visible">
+
+        <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
+            style="?materialIconButtonContainerStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="false"
+            app:iiv_color="?colorOnPrimaryContainer"
+            app:iiv_icon="cmd-calendar-month-outline"
+            app:iiv_size="24dp"
+            tools:icon="@sample/settings"
+            tools:iconTint="?colorOnPrimaryContainer" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_timetable_no_lessons"
+                android:textAppearance="?textAppearanceTitleMedium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="@string/home_timetable_no_lessons_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notPublicLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone"
+        tools:layout_marginTop="185dp"
+        tools:visibility="visible">
+
+        <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
+            style="?materialIconButtonContainerStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="false"
+            app:iiv_color="?colorOnPrimaryContainer"
+            app:iiv_icon="szf-sync-error"
+            app:iiv_size="24dp"
+            tools:icon="@sample/settings"
+            tools:iconTint="?colorOnPrimaryContainer" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_timetable_not_public"
+                android:textAppearance="?textAppearanceTitleMedium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_timetable_not_public_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/timetableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_margin="8dp">
+        android:padding="8dp"
+        tools:layout_marginTop="290dp">
 
         <LinearLayout
-            android:id="@+id/noTimetableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
-                android:id="@+id/noTimetableSync"
-                style="?materialIconButtonContainerStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:clickable="false"
-                app:iiv_color="?colorOnPrimaryContainer"
-                app:iiv_icon="szf-sync"
-                app:iiv_size="24dp"
-                tools:icon="@sample/settings"
-                tools:iconTint="?colorOnPrimaryContainer" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_no_timetable"
-                    android:textAppearance="?textAppearanceTitleMedium" />
-
-                <TextView
-                    android:id="@+id/noTimetableText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_no_timetable_text" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/noLessonsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:visibility="gone"
-            tools:layout_marginTop="100dp"
-            tools:visibility="visible">
+            android:orientation="horizontal">
 
             <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
                 style="?materialIconButtonContainerStyle"
@@ -82,90 +167,53 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/dayInfo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_no_lessons"
-                    android:textAppearance="?textAppearanceTitleMedium" />
+                    android:textAppearance="?textAppearanceTitleMedium"
+                    tools:text="Jutro" />
 
                 <TextView
+                    android:id="@+id/lessonInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="left"
-                    android:text="@string/home_timetable_no_lessons_text" />
+                    android:textAppearance="?textAppearanceBodySmall"
+                    tools:text="7 lekcji - 8:10 do 14:45" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/notPublicLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:visibility="gone"
-            tools:layout_marginTop="185dp"
-            tools:visibility="visible">
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
-            <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
-                style="?materialIconButtonContainerStyle"
-                android:layout_width="wrap_content"
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:clickable="false"
-                app:iiv_color="?colorOnPrimaryContainer"
-                app:iiv_icon="szf-sync-error"
-                app:iiv_size="24dp"
-                tools:icon="@sample/settings"
-                tools:iconTint="?colorOnPrimaryContainer" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_not_public"
-                    android:textAppearance="?textAppearanceTitleMedium" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_timetable_not_public_text" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/timetableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            tools:layout_marginTop="290dp">
+                app:trackCornerRadius="10dp"
+                tools:max="2700"
+                tools:progress="2000"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
-
-                <pl.szczodrzynski.edziennik.ui.base.views.IconicsMaterialButton
-                    style="?materialIconButtonContainerStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:clickable="false"
-                    app:iiv_color="?colorOnPrimaryContainer"
-                    app:iiv_icon="cmd-calendar-month-outline"
-                    app:iiv_size="24dp"
-                    tools:icon="@sample/settings"
-                    tools:iconTint="?colorOnPrimaryContainer" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -174,121 +222,69 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/dayInfo"
-                        android:layout_width="match_parent"
+                        android:id="@+id/lessonBig"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceTitleMedium"
-                        tools:text="Jutro" />
+                        tools:text="Pierwsza: informatyka" />
 
                     <TextView
-                        android:id="@+id/lessonInfo"
+                        android:id="@+id/counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        tools:text="7 lekcji - 8:10 do 14:45" />
+                        android:textAppearance="?textAppearanceBodyMedium"
+                        tools:text="zostały 2 minuty 35 sekund" />
                 </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/settings"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:trackCornerRadius="10dp"
-                    tools:max="2700"
-                    tools:progress="2000"
-                    tools:visibility="visible" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/classroomHeading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:text="Sala"
+                        android:textAppearance="?textAppearanceTitleMedium"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-                        <TextView
-                            android:id="@+id/lessonBig"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?textAppearanceTitleMedium"
-                            tools:text="Pierwsza: informatyka" />
-
-                        <TextView
-                            android:id="@+id/counter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?textAppearanceBodyMedium"
-                            tools:text="zostały 2 minuty 35 sekund" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/classroom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/classroomHeading"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sala"
-                            android:textAppearance="?textAppearanceTitleMedium"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/classroom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="09a komputerowa" />
-                    </LinearLayout>
+                        tools:text="09a komputerowa" />
                 </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/nextLessonsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?textAppearanceLabelLarge"
-                tools:text="Później:"/>
-
-            <TextView
-                android:id="@+id/nextLessons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bellSync"
-                android:layout_marginTop="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bell_sync_title"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/showCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/counter_activity"/>
         </LinearLayout>
-    </FrameLayout>
-</layout>
+
+        <TextView
+            android:id="@+id/nextLessonsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?textAppearanceLabelLarge"
+            tools:text="Później:" />
+
+        <TextView
+            android:id="@+id/nextLessons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bellSync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/bell_sync_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/counter_activity" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,24 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-12.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/mainLayout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         android:padding="24dp">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -26,12 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/dialog_event_manual_date">
+
             <pl.szczodrzynski.edziennik.ui.base.views.DateDropdown
                 android:id="@+id/dateDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="13 listopada"/>
+                tools:text="13 listopada" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -41,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_time">
+
             <pl.szczodrzynski.edziennik.ui.base.views.TimeDropdown
                 android:id="@+id/timeDropdown"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:enabled="false"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                tools:text="8:10 - język polski"/>
+                tools:text="8:10 - język polski" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -111,12 +111,11 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="2dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/bg_circle"
                 android:foreground="?selectableItemBackgroundBorderless" />
-
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -133,10 +132,10 @@
                 android:id="@+id/topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textLongMessage|textMultiLine|textImeMultiLine"
-                android:minLines="2"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:inputType="textLongMessage|textMultiLine|textImeMultiLine"
+                android:minLines="2"
                 tools:text="2b3T" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,17 +143,15 @@
             android:id="@+id/showMore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
             android:paddingVertical="16dp"
             android:text="@string/dialog_event_manual_more_options"
-            android:background="?selectableItemBackground"
-
-            app:iiv_end_icon="cmd-chevron-down"
-            app:iiv_end_color="?android:textColorSecondary"
-            app:iiv_end_size="24dp"
-
-            app:iiv_end_checked_icon="cmd-chevron-up"
             app:iiv_end_checked_color="?android:textColorSecondary"
-            app:iiv_end_checked_size="24dp"/>
+            app:iiv_end_checked_icon="cmd-chevron-up"
+            app:iiv_end_checked_size="24dp"
+            app:iiv_end_color="?android:textColorSecondary"
+            app:iiv_end_icon="cmd-chevron-down"
+            app:iiv_end_size="24dp" />
 
         <LinearLayout
             android:id="@+id/moreLayout"
@@ -165,8 +162,8 @@
             tools:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="?textInputOutlinedDenseStyle"
                 android:id="@+id/subjectDropdownLayout"
+                style="?textInputOutlinedDenseStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -194,10 +191,6 @@
                     android:enabled="false"
                     tools:text="2b3T" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
-
     </LinearLayout>
-
-    </ScrollView>
-</layout>
+</ScrollView>
