@@ -20,18 +20,20 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputLayout
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.COMPATIBLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.MARKDOWN
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.ORIGINAL
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
 import pl.szczodrzynski.edziennik.ext.attachToastHint
 import pl.szczodrzynski.edziennik.ext.hasSet
 import pl.szczodrzynski.edziennik.ext.replaceSpan
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.*
 import pl.szczodrzynski.edziennik.utils.span.BoldSpan
 import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
 
@@ -288,10 +290,7 @@ class TextStylingManager(private val app: App) {
         onShowListener: ((tag: String) -> Unit)? = null,
         onDismissListener: ((tag: String) -> Unit)? = null,
     ) {
-        textLayout.endIconDrawable = IconicsDrawable(
-            activity,
-            CommunityMaterial.Icon3.cmd_open_in_new
-        ).apply { sizeDp = 24 }
+        textLayout.endIconDrawable = CommunityMaterial.Icon3.cmd_open_in_new.toDrawable(activity)
         textLayout.setEndIconOnClickListener {
             StyledTextDialog(
                 activity,

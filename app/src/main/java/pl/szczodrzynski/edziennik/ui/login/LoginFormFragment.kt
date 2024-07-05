@@ -14,13 +14,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputLayout
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,12 +28,29 @@ import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.getEnum
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.toBundle
+import pl.szczodrzynski.edziennik.ext.toDrawable
+import pl.szczodrzynski.edziennik.ext.toJsonObject
 import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.BaseCredential
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormCheckbox
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormField
-import pl.szczodrzynski.navlib.colorAttr
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.iterator
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 import kotlin.coroutines.CoroutineContext
 
 class LoginFormFragment : Fragment(), CoroutineScope {
@@ -168,11 +181,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
 
         if (credential.qrDecoderClass != null) {
             b.textLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
-            b.textLayout.endIconDrawable = IconicsDrawable(activity).apply {
-                icon = CommunityMaterial.Icon3.cmd_qrcode
-                sizeDp = 24
-                colorAttr(activity, R.attr.colorOnBackground)
-            }
+            b.textLayout.endIconDrawable = CommunityMaterial.Icon3.cmd_qrcode.toDrawable()
             b.textLayout.setEndIconOnClickListener {
                 scanQrCode(credential)
             }
@@ -194,11 +203,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         b.textLayout.suffixText = credential.suffix?.resolveString(app)
         b.textLayout.tag = credential
 
-        b.textLayout.startIconDrawable = IconicsDrawable(activity).apply {
-            icon = credential.icon
-            sizeDp = 24
-            colorAttr(activity, R.attr.colorOnBackground)
-        }
+        b.textLayout.startIconDrawable = credential.icon.toDrawable()
 
         return b
     }

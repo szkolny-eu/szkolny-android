@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.ext.setMessage
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseDialog<I : Any>(
-    protected val activity: AppCompatActivity,
+    internal val activity: AppCompatActivity,
     protected val onShowListener: ((tag: String) -> Unit)? = null,
     protected val onDismissListener: ((tag: String) -> Unit)? = null,
 ) : CoroutineScope {

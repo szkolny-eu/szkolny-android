@@ -8,12 +8,14 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jetradarmobile.snowfall.SnowfallView
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding
@@ -21,6 +23,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ext.timeLeft
 import pl.szczodrzynski.edziennik.ext.timeTill
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.utils.BigNightUtil
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -68,10 +71,8 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
         }
 
         b.bellSync.setImageDrawable(
-            IconicsDrawable(this@CounterActivity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
-                colorInt = 0xff404040.toInt()
-                sizeDp = 36
-            }
+            SzkolnyFont.Icon.szf_alarm_bell_outline
+                .toDrawable(0xff404040.toInt(), sizeDp = 36)
         )
         b.bellSync.onClick {
             BellSyncTimeChooseDialog(activity = this@CounterActivity).show()

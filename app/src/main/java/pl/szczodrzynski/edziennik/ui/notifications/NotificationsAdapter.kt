@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.colorInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,7 +11,12 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.databinding.NotificationsListItemBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -47,9 +50,8 @@ class NotificationsAdapter(
         val date = Date.fromMillis(item.addedDate).formattedString
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
-        b.notificationIcon.background = IconicsDrawable(app, item.type.icon).apply {
-            colorInt = R.attr.colorPrimary.resolveAttr(b.root.context)
-        }
+        b.notificationIcon.background =
+            item.type.icon.toDrawable(app, colorAttr = R.attr.colorPrimary)
 
         b.title.text = item.text
         b.profileDate.text = listOf(

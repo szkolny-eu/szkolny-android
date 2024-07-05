@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.home.cards
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,25 +12,43 @@ import android.widget.FrameLayout
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
-import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.MINUTE
+import pl.szczodrzynski.edziennik.ext.asItalicSpannable
+import pl.szczodrzynski.edziennik.ext.asStrikethroughSpannable
+import pl.szczodrzynski.edziennik.ext.compareTo
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.getStudentData
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.timeLeft
+import pl.szczodrzynski.edziennik.ext.timeTill
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.ui.home.CounterActivity
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
@@ -40,7 +57,6 @@ import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
-import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class HomeTimetableCard(
@@ -91,20 +107,9 @@ class HomeTimetableCard(
         }
         holder.root += b.root
 
-        b.settings.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_cog_outline).apply {
-                colorAttr(activity, R.attr.colorOnPrimaryContainer)
-                sizeDp = 24
-            }
-        )
-
-        b.bellSync.icon = IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
-            sizeDp = 24
-        }
-
-        b.showCounter.icon = IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
-            sizeDp = 24
-        }
+        b.settings.setImageDrawable(CommunityMaterial.Icon.cmd_cog_outline.toDrawable(activity, R.attr.colorOnPrimaryContainer))
+        b.bellSync.icon = SzkolnyFont.Icon.szf_alarm_bell_outline.toDrawable(activity)
+        b.showCounter.icon = CommunityMaterial.Icon2.cmd_fullscreen.toDrawable(activity)
 
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(

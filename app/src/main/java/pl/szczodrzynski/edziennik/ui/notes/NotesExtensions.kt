@@ -11,12 +11,12 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.google.android.material.button.MaterialButton
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.toDrawable
 
 fun MaterialButton.setupNotesButton(
     activity: AppCompatActivity,
@@ -27,7 +27,7 @@ fun MaterialButton.setupNotesButton(
     if (!isVisible)
         return
     // TODO replace with modern notes icon
-    icon = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_playlist_edit)
+    icon = CommunityMaterial.Icon3.cmd_playlist_edit.toDrawable(activity)
     setText(R.string.notes_button)
     iconPadding = 8.dp
     iconSize = 24.dp

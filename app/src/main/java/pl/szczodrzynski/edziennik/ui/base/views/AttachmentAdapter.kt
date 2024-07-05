@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +22,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.AttachmentListItemBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.onLongClick
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class AttachmentAdapter(
@@ -80,16 +78,8 @@ class AttachmentAdapter(
             } ?: fileName
         }
 
-        b.chip.chipIcon = IconicsDrawable(context).apply {
-            icon = attachmentIcon
-            colorAttr(context, R.attr.colorOnSurface)
-            sizeDp = 24
-        }
-        b.chip.closeIcon = IconicsDrawable(context).apply {
-            icon = CommunityMaterial.Icon.cmd_check
-            colorAttr(context, R.attr.colorOnSurface)
-            sizeDp = 24
-        }
+        b.chip.chipIcon = attachmentIcon.toDrawable(context)
+        b.chip.closeIcon = CommunityMaterial.Icon.cmd_check.toDrawable(context)
 
         b.chip.isCloseIconVisible = item.isDownloaded && !item.isDownloading
         // prevent progress bar flickering

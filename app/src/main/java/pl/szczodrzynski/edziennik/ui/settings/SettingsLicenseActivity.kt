@@ -10,24 +10,18 @@ import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList
 import com.danielstone.materialaboutlibrary.util.OpenSourceLicense
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.toDrawable
 
 class SettingsLicenseActivity : MaterialAboutActivity() {
 
     var foregroundColor: Int = 0
 
     private val icon
-        get() = IconicsDrawable(this).apply {
-            icon = CommunityMaterial.Icon.cmd_book_outline
-            colorInt = foregroundColor
-            sizeDp = 24
-        }
+        get() = CommunityMaterial.Icon.cmd_book_outline.toDrawable(foregroundColor)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         app.uiManager.applyTheme(this)

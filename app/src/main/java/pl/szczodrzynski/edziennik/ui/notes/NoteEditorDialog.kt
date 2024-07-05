@@ -8,24 +8,22 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.NoteEditorDialogBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
 import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
-import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode
-import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfigBase
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -146,11 +144,8 @@ class NoteEditorDialog(
                 text = color.stringRes.resolveString(activity),
                 tag = color,
                 icon = if (color.value != null)
-                    IconicsDrawable(activity).apply {
-                        icon = CommunityMaterial.Icon.cmd_circle
-                        sizeDp = 24
-                        colorInt = color.value.toInt()
-                    } else null,
+                    CommunityMaterial.Icon.cmd_circle.toDrawable(color.value.toInt())
+                else null,
             )
         })
         b.color.select(id = editingNote?.color ?: 0L)

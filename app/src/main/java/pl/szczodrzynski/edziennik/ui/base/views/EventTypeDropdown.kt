@@ -6,14 +6,12 @@ package pl.szczodrzynski.edziennik.ui.base.views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
 class EventTypeDropdown : TextInputDropDown {
@@ -37,11 +35,12 @@ class EventTypeDropdown : TextInputDropDown {
                 .sortedBy { it.order }
 
             list += types.map {
-                Item(it.id, it.name, tag = it, icon = IconicsDrawable(context).apply {
-                    icon = CommunityMaterial.Icon.cmd_circle
-                    sizeDp = 24
-                    colorInt = it.color
-                })
+                Item(
+                    id = it.id,
+                    text = it.name,
+                    tag = it,
+                    icon = CommunityMaterial.Icon.cmd_circle.toDrawable(it.color),
+                )
             }
 
             list

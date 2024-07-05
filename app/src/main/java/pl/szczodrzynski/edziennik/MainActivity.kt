@@ -24,53 +24,85 @@ import com.danimahardhika.cafebar.CafeBar
 import com.danimahardhika.cafebar.CafeBarTheme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jetradarmobile.snowfall.SnowfallView
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
-import com.mikepenz.materialdrawer.model.*
-import com.mikepenz.materialdrawer.model.interfaces.*
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.descriptionRes
+import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
+import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.core.work.SyncWorker
+import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
+import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.api.events.*
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
+import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
-import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
-import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
-import pl.szczodrzynski.edziennik.core.work.SyncWorker
-import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
-import pl.szczodrzynski.edziennik.core.work.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.main.MainSnackbar
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
+import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getAppData
+import pl.szczodrzynski.edziennik.ext.getEnum
+import pl.szczodrzynski.edziennik.ext.getIntOrNull
+import pl.szczodrzynski.edziennik.ext.hasUIFeature
+import pl.szczodrzynski.edziennik.ext.isBeforeYear
+import pl.szczodrzynski.edziennik.ext.keys
+import pl.szczodrzynski.edziennik.ext.putExtras
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ext.setMessage
+import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ext.shouldArchive
+import pl.szczodrzynski.edziennik.ext.takePositive
+import pl.szczodrzynski.edziennik.ext.toDrawable
+import pl.szczodrzynski.edziennik.ext.toImageHolder
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateProgressDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.main.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
-import pl.szczodrzynski.edziennik.utils.*
-import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
-import pl.szczodrzynski.edziennik.core.manager.UserActionManager
+import pl.szczodrzynski.edziennik.utils.BigNightUtil
+import pl.szczodrzynski.edziennik.utils.PausedNavigationData
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.appManagerIntentList
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.*
+import pl.szczodrzynski.navlib.NavView
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
@@ -331,11 +363,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 CafeBar.builder(this)
                     .theme(CafeBarTheme.Custom(R.attr.colorSurfaceInverse.resolveAttr(this)))
                     .content(R.string.rate_snackbar_text)
-                    .icon(IconicsDrawable(this).apply {
-                        icon = CommunityMaterial.Icon3.cmd_star_outline
-                        sizeDp = 24
-                        colorInt = android.R.attr.textColorPrimary.resolveAttr(this@MainActivity)
-                    })
+                    .icon(CommunityMaterial.Icon3.cmd_star_outline.toDrawable())
                     .positiveText(R.string.rate_snackbar_positive)
                     .positiveColor(-0xb350b0)
                     .negativeText(R.string.rate_snackbar_negative)

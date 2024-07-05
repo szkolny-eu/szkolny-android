@@ -11,10 +11,8 @@ import android.widget.FrameLayout
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,12 +25,12 @@ import pl.szczodrzynski.edziennik.databinding.CardHomeLuckyNumberBinding
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class HomeLuckyNumberCard(
@@ -99,10 +97,7 @@ class HomeLuckyNumberCard(
                 !isYours -> CommunityMaterial.Icon.cmd_emoticon_happy_outline
                 else -> CommunityMaterial.Icon.cmd_emoticon_confused_outline
             }
-            b.image.icon = IconicsDrawable(activity, icon).apply {
-                sizeDp = 24
-                colorAttr(activity, R.attr.colorOnPrimaryContainer)
-            }
+            b.image.icon = icon.toDrawable(activity, colorAttr = R.attr.colorOnPrimaryContainer)
         })
 
         holder.root.onClick {

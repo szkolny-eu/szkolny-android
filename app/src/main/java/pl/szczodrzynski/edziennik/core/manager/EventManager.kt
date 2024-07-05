@@ -6,10 +6,7 @@ package pl.szczodrzynski.edziennik.core.manager
 
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.iconics.view.IconicsTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +18,7 @@ import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.join
 import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import kotlin.coroutines.CoroutineContext
 
 class EventManager(val app: App) : CoroutineScope {
@@ -68,11 +66,12 @@ class EventManager(val app: App) : CoroutineScope {
         title.setCompoundDrawables(
             null,
             null,
-            if (event.isDone) IconicsDrawable(title.context).apply {
-                icon = CommunityMaterial.Icon.cmd_check
-                colorInt = doneIconColor ?: R.color.md_green_500.resolveColor(title.context)
-                sizeDp = 24
-            } else null,
+            if (event.isDone)
+                CommunityMaterial.Icon.cmd_check.toDrawable(
+                    title.context,
+                    doneIconColor ?: R.color.md_green_500.resolveColor(title.context)
+                )
+            else null,
             null
         )
     }

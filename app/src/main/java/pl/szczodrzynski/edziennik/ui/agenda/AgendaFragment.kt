@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.applandeo.materialcalendarview.EventDay
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AgendaConfigDialog
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
@@ -135,11 +133,8 @@ class AgendaFragment : BaseFragment<ViewBinding, MainActivity>(
         val unreadEventDates = mutableSetOf<Int>()
 
         events.forEach { event ->
-            val eventIcon = IconicsDrawable(activity).apply {
-                icon = CommunityMaterial.Icon.cmd_checkbox_blank_circle
-                sizeDp = 10
-                colorInt = event.eventColor
-            }
+            val eventIcon = CommunityMaterial.Icon.cmd_checkbox_blank_circle
+                .toDrawable(event.eventColor, sizeDp = 10)
 
             dayList.add(EventDay(event.startTimeCalendar, eventIcon))
 

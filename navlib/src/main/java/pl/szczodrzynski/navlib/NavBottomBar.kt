@@ -1,20 +1,22 @@
 package pl.szczodrzynski.navlib
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 
+@SuppressLint("ClickableViewAccessibility")
 class NavBottomBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -101,7 +103,9 @@ class NavBottomBar @JvmOverloads constructor(
     override var menuClickListener: (() -> Unit)? = null
 
     init {
-        setOnTouchListener(bottomSheet::dispatchBottomBarEvent)
+        setOnTouchListener { view, event ->
+            bottomSheet.dispatchBottomBarEvent(view, event)
+        }
         elevation = 0f
     }
 

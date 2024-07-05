@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.sizePx
 import pl.szczodrzynski.edziennik.R
 
 class IconicsMaterialButton @JvmOverloads constructor(

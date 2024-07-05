@@ -12,17 +12,14 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.colorRes
-import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -53,24 +50,39 @@ class NoticesAdapter//getting the context and product list with constructor
 
         if (notice.type == Notice.TYPE_POSITIVE) {
             holder.noticesItemType.setImageDrawable(
-                IconicsDrawable(context, CommunityMaterial.Icon3.cmd_plus_circle_outline).apply {
-                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_green_600.resolveColor(context))
-                    sizeDp = 36
-                }
+                CommunityMaterial.Icon3.cmd_plus_circle_outline
+                    .toDrawable(
+                        context = context,
+                        colorInt = MaterialColors.harmonizeWithPrimary(
+                            context,
+                            R.color.md_green_600.resolveColor(context)
+                        ),
+                        sizeDp = 36
+                    )
             )
         } else if (notice.type == Notice.TYPE_NEGATIVE) {
             holder.noticesItemType.setImageDrawable(
-                IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram_outline).apply {
-                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_red_600.resolveColor(context))
-                    sizeDp = 36
-                }
+                CommunityMaterial.Icon.cmd_alert_decagram_outline
+                    .toDrawable(
+                        context = context,
+                        colorInt = MaterialColors.harmonizeWithPrimary(
+                            context,
+                            R.color.md_red_600.resolveColor(context)
+                        ),
+                        sizeDp = 36,
+                    )
             )
         } else {
             holder.noticesItemType.setImageDrawable(
-                IconicsDrawable(context, SzkolnyFont.Icon.szf_message_processing_outline).apply {
-                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_blue_500.resolveColor(context))
-                    sizeDp = 36
-                }
+                SzkolnyFont.Icon.szf_message_processing_outline
+                    .toDrawable(
+                        context = context,
+                        colorInt = MaterialColors.harmonizeWithPrimary(
+                            context,
+                            R.color.md_blue_500.resolveColor(context)
+                        ),
+                        sizeDp = 36,
+                    )
             )
         }
 
