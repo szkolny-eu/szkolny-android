@@ -2,106 +2,103 @@
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-19.
   -->
 
-<layout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Przekazywanie powiadomień pozwala na połączenie komputera, na którym będą pokazywane powiadomienia otrzymane w aplikacji Szkolny.eu na telefonie.\n\nDzięki temu będziesz zawsze wiedział wszystko na bieżąco, nie patrząc nawet na swój telefon." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Jak połączyć komputer z aplikacją?"
+            android:textAppearance="?textAppearanceTitleMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Na komputerze otwórz stronę http://szkolny.eu/wp\n2. Zezwól stronie na wyświetlanie powiadomień dot. danych z dziennika.\n3. Kliknij przycisk &quot;Skanuj&quot; poniżej lub przepisz token ze strony." />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Sparuj przeglądarkę"
+            android:textAppearance="?textAppearanceTitleMedium" />
+
+        <Button
+            android:id="@+id/scanQrCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skanuj kod QR" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:orientation="horizontal">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tokenLayout"
+                style="?textInputOutlinedDenseStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Przekazywanie powiadomień pozwala na połączenie komputera, na którym będą pokazywane powiadomienia otrzymane w aplikacji Szkolny.eu na telefonie.\n\nDzięki temu będziesz zawsze wiedział wszystko na bieżąco, nie patrząc nawet na swój telefon." />
+                android:layout_weight="1"
+                android:hint="Token">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Jak połączyć komputer z aplikacją?"
-                android:textAppearance="?textAppearanceTitleMedium" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1. Na komputerze otwórz stronę http://szkolny.eu/wp\n2. Zezwól stronie na wyświetlanie powiadomień dot. danych z dziennika.\n3. Kliknij przycisk &quot;Skanuj&quot; poniżej lub przepisz token ze strony." />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Sparuj przeglądarkę"
-                android:textAppearance="?textAppearanceTitleMedium" />
-
-            <Button
-                android:id="@+id/scanQrCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Skanuj kod QR" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tokenLayout"
-                    style="?textInputOutlinedDenseStyle"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tokenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Token">
+                    tools:text="1A22IT" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tokenEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="1A22IT" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/tokenAccept"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:text="OK" />
-            </LinearLayout>
-
-            <TextView
+            <Button
+                android:id="@+id/tokenAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Połączone przeglądarki"
-                android:textAppearance="?textAppearanceTitleMedium" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/browsersNoData"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="16dp"
-                android:text="Brak połączonych przeglądarek"
-                android:textAppearance="?textAppearanceTitleMedium"
-                app:drawableTopCompat="@drawable/ic_web_push_no_browsers" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/browsersView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/web_push_browser_item"
-                tools:visibility="visible" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="OK" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</layout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Połączone przeglądarki"
+            android:textAppearance="?textAppearanceTitleMedium" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/browsersNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="16dp"
+            android:text="Brak połączonych przeglądarek"
+            android:textAppearance="?textAppearanceTitleMedium"
+            app:drawableTopCompat="@drawable/ic_web_push_no_browsers" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/browsersView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/web_push_browser_item"
+            tools:visibility="visible" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

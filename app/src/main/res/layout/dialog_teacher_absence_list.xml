@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<androidx.recyclerview.widget.RecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/teacherAbsenceView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="8dp"
-        tools:listitem="@layout/row_dialog_teacher_absence_item" />
-</layout>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teacherAbsenceView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="8dp"
+    tools:listitem="@layout/row_dialog_teacher_absence_item" />

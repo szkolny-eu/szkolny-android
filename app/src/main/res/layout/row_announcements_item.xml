@@ -1,95 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/announcementsItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/announcementsItem"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/announcementsItemImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
-            <ImageView
-                android:id="@+id/announcementsItemImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/announcementsItemSender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?textAppearanceBodyLarge"
+            app:layout_constraintEnd_toStartOf="@+id/announcementsItemDate"
+            app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Janusz Kowalski" />
 
-            <TextView
-                android:id="@+id/announcementsItemSender"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="?textAppearanceBodyLarge"
-                app:layout_constraintEnd_toStartOf="@+id/announcementsItemDate"
-                app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Janusz Kowalski" />
+        <TextView
+            android:id="@+id/announcementsItemTitle"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
+            app:layout_constraintTop_toBottomOf="@+id/announcementsItemSender"
+            tools:text="kocham moją konsolkę gmailową" />
 
-            <TextView
-                android:id="@+id/announcementsItemTitle"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
-                app:layout_constraintTop_toBottomOf="@+id/announcementsItemSender"
-                tools:text="kocham moją konsolkę gmailową" />
+        <TextView
+            android:id="@+id/announcementsItemText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:autoLink="all"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?textAppearanceBodySmall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
+            app:layout_constraintTop_toBottomOf="@+id/announcementsItemTitle"
+            tools:text="mam sposób na czytanie wiadomości tak żebyście tego nie widzieli i potem myślicie że mam 263 nieprzeczytane wiadomości" />
 
-            <TextView
-                android:id="@+id/announcementsItemText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:autoLink="all"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textAppearance="?textAppearanceBodySmall"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/announcementsItemImage"
-                app:layout_constraintTop_toBottomOf="@+id/announcementsItemTitle"
-                tools:text="mam sposób na czytanie wiadomości tak żebyście tego nie widzieli i potem myślicie że mam 263 nieprzeczytane wiadomości" />
-
-            <TextView
-                android:id="@+id/announcementsItemDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:textAppearance="?textAppearanceLabelMedium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="18 lut 2018" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-</layout>
+        <TextView
+            android:id="@+id/announcementsItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textAppearance="?textAppearanceLabelMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="18 lut 2018" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

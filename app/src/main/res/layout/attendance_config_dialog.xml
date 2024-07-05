@@ -2,55 +2,52 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
   -->
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/attendance_config_title"
+            android:textAppearance="?textAppearanceTitleMedium" />
+
+        <CheckBox
+            android:id="@+id/useSymbols"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:minHeight="32dp"
+            android:text="@string/attendance_config_use_symbols" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/attendance_config_title"
-                android:textAppearance="?textAppearanceTitleMedium" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:text="@string/attendance_config_use_symbols_hint"
+            android:textAppearance="?textAppearanceBodySmall" />
 
-            <CheckBox
-                android:id="@+id/useSymbols"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_use_symbols" />
+        <CheckBox
+            android:id="@+id/groupConsecutiveDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="32dp"
+            android:text="@string/attendance_config_group_consecutive_days" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:text="@string/attendance_config_use_symbols_hint"
-                android:textAppearance="?textAppearanceBodySmall" />
-
-            <CheckBox
-                android:id="@+id/groupConsecutiveDays"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_group_consecutive_days" />
-
-            <CheckBox
-                android:id="@+id/showPresenceInMonth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:minHeight="32dp"
-                android:text="@string/attendance_config_show_presence_in_month" />
-        </LinearLayout>
-    </ScrollView>
-</layout>
+        <CheckBox
+            android:id="@+id/showPresenceInMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="32dp"
+            android:text="@string/attendance_config_show_presence_in_month" />
+    </LinearLayout>
+</ScrollView>

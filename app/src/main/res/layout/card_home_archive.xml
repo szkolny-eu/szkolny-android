@@ -2,50 +2,47 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-8-25.
   -->
 
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingTop="8dp">
 
-    <LinearLayout
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        app:iiv_color="?colorOnSecondaryContainer"
+        app:iiv_icon="szf-archive"
+        app:iiv_size="24dp"
+        tools:background="@sample/settings"
+        tools:backgroundTint="?colorOnSecondaryContainer" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp">
+        android:text="@string/home_archive_title"
+        android:textAppearance="?textAppearanceTitleMedium" />
 
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginBottom="8dp"
-            app:iiv_color="?colorOnSecondaryContainer"
-            app:iiv_icon="szf-archive"
-            app:iiv_size="24dp"
-            tools:background="@sample/settings"
-            tools:backgroundTint="?colorOnSecondaryContainer" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/homeArchiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:text="@string/home_archive_text"
+        tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/home_archive_title"
-            android:textAppearance="?textAppearanceTitleMedium" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/homeArchiveText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:gravity="left"
-            android:text="@string/home_archive_text"
-            tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/homeArchiveClose"
-            style="?materialButtonSecondaryStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/home_archive_close" />
-    </LinearLayout>
-</layout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/homeArchiveClose"
+        style="?materialButtonSecondaryStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/home_archive_close" />
+</LinearLayout>

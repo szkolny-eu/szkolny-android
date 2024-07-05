@@ -2,47 +2,44 @@
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-15.
   -->
 
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noTimetableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/noTimetableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:text="@string/timetable_no_timetable_title"
+        android:textAppearance="?textAppearanceHeadlineSmall"
+        app:drawableTopCompat="@drawable/ic_sync" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:text="@string/timetable_no_timetable_text"
+        android:textAppearance="?textAppearanceBodyLarge" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:text="@string/timetable_no_timetable_title"
-            android:textAppearance="?textAppearanceHeadlineSmall"
-            app:drawableTopCompat="@drawable/ic_sync" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/noTimetableSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/timetable_no_timetable_sync" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/timetable_no_timetable_text"
-            android:textAppearance="?textAppearanceBodyLarge" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/noTimetableSync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/timetable_no_timetable_sync" />
-
-        <TextView
-            android:id="@+id/noTimetableWeek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceBodySmall"
-            tools:text="@string/timetable_no_timetable_week" />
-    </LinearLayout>
-</layout>
+    <TextView
+        android:id="@+id/noTimetableWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceBodySmall"
+        tools:text="@string/timetable_no_timetable_week" />
+</LinearLayout>

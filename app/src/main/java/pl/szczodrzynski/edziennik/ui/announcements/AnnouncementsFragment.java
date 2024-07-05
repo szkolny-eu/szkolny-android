@@ -1,7 +1,5 @@
 package pl.szczodrzynski.edziennik.ui.announcements;
 
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +46,7 @@ public class AnnouncementsFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
+        b = FragmentAnnouncementsBinding.inflate(inflater, container, false);
         return b.getRoot();
     }
 
