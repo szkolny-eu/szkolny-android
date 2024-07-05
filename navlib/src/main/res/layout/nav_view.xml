@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:parentTag="FrameLayout">
+    tools:parentTag="FrameLayout"
+    tools:background="#202020">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/nv_drawerLayout"
@@ -50,15 +51,10 @@
 
                     <pl.szczodrzynski.navlib.NavToolbar
                         android:id="@+id/nv_toolbar"
-                        style="?toolbarSurfaceStyle"
+                        style="?toolbarStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?nvActionBarBackground"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        app:title="@string/app_name"
-                        app:titleMargin="0dp"
-                        tools:targetApi="lollipop">
+                        android:clipToPadding="false">
 
                         <TextView
                             android:id="@+id/nv_nightlyText"
@@ -126,9 +122,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:background="?nvBottomBarBackground"
-                        android:gravity="start"
-                        android:visibility="visible"
                         app:fabAlignmentMode="center"
                         app:fabAnimationMode="scale" />
 

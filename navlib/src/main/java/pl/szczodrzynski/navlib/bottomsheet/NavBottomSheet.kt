@@ -297,9 +297,6 @@ class NavBottomSheet : CoordinatorLayout {
         }
     }
 
-    fun toggleGroupAddItem(id: Int, text: String, @DrawableRes icon: Int, defaultSortOrder: Int = SORT_MODE_ASCENDING) {
-        toggleGroupAddItem(id, text, context.getDrawableFromRes(icon), defaultSortOrder)
-    }
     fun toggleGroupAddItem(id: Int, text: String, icon: IIcon, defaultSortOrder: Int = SORT_MODE_ASCENDING) {
         toggleGroupAddItem(id, text, toggleGroupGetIconicsDrawable(context, icon), defaultSortOrder)
     }
@@ -405,7 +402,6 @@ class NavBottomSheet : CoordinatorLayout {
                     sizeDp = 24
                     // colorInt = Color.BLACK
                 }
-                is Int -> context.getDrawableFromRes(value)
                 else -> null
             }
         }

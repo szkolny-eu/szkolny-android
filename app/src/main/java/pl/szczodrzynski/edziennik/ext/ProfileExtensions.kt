@@ -20,7 +20,6 @@ import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
-import pl.szczodrzynski.navlib.getDrawableFromRes
 import timber.log.Timber
 
 // TODO refactor Data* fields and make the receiver non-nullable
@@ -89,7 +88,7 @@ fun Profile.shouldArchive(): Boolean {
 
 fun Profile.getDrawable(context: Context): Drawable {
     if (archived) {
-        return context.getDrawableFromRes(R.drawable.profile_archived).also {
+        return R.drawable.profile_archived.resolveDrawable(context).also {
             it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
         }
     }
@@ -106,7 +105,7 @@ fun Profile.getDrawable(context: Context): Drawable {
         }
     }
 
-    return context.getDrawableFromRes(R.drawable.profile).also {
+    return R.drawable.profile.resolveDrawable(context).also {
         it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
     }
 }
