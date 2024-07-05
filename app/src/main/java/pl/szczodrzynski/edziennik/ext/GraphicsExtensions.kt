@@ -157,7 +157,7 @@ fun IIcon.toDrawable(
     colorRes: Int? = null,
     colorAttr: Int = R.attr.colorOnBackground,
     sizeDp: Int = 24,
-) = toDrawable(activity, colorInt, colorRes, colorAttr, sizeDp)
+) = toDrawable(app, colorInt, colorRes, colorAttr, sizeDp)
 
 context(View)
 fun IIcon.toDrawable(

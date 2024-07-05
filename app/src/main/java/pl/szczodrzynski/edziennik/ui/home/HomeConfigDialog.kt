@@ -57,7 +57,7 @@ class HomeConfigDialog(
         return DISMISS
     }
 
-    override suspend fun onMultiSelectionChanged(items: Set<Any>) {
+    override suspend fun onMultiSelectionChanged(item: Any, isChecked: Boolean) {
         configChanged = true
     }
 
