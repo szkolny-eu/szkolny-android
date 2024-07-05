@@ -19,7 +19,6 @@ class ServerMessageDialog(
     override val TAG = "ServerMessageDialog"
 
     override fun getTitle() = titleText
-    override fun getTitleRes(): Int? = null
     override fun getMessage() = messageText
     override fun getPositiveButtonText() = R.string.close
 }

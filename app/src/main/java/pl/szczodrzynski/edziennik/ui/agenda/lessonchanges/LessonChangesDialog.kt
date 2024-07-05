@@ -22,7 +22,6 @@ class LessonChangesDialog(
     override val TAG = "LessonChangesDialog"
 
     override fun getTitle(): String = defaultDate.formattedString
-    override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogLessonChangeListBinding.inflate(layoutInflater)
 

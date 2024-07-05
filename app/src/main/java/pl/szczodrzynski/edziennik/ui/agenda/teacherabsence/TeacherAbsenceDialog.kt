@@ -21,7 +21,6 @@ class TeacherAbsenceDialog(
     override val TAG = "TeacherAbsenceDialog"
 
     override fun getTitle(): String = date.formattedString
-    override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogTeacherAbsenceListBinding.inflate(layoutInflater)
 

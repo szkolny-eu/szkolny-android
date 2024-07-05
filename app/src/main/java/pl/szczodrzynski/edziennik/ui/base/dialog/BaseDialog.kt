@@ -6,20 +6,25 @@ package pl.szczodrzynski.edziennik.ui.base.dialog
 
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AlertDialog.*
+import androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE
+import androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL
+import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.registerSafe
 import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.ext.unregisterSafe
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
 
 abstract class BaseDialog<I : Any>(
     internal val activity: AppCompatActivity,
@@ -40,13 +45,14 @@ abstract class BaseDialog<I : Any>(
     private var job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+    private var continuation: Continuation<BaseDialog<I>>? = null
 
     private var items = emptyList<I>()
     private var itemSelected: I? = null
     private var itemStates = BooleanArray(0)
 
     protected open fun getTitle(): CharSequence? = null
-    protected abstract fun getTitleRes(): Int?
+    protected open fun getTitleRes(): Int? = null
     protected open fun getMessage(): CharSequence? = null
     protected open fun getMessageRes(): Int? = null
     protected open fun getMessageFormat(): Pair<Int, List<CharSequence>>? = null
@@ -103,6 +109,14 @@ abstract class BaseDialog<I : Any>(
         }
     }
 
+    suspend fun showModal() = suspendCancellableCoroutine {
+        it.invokeOnCancellation {
+            dismiss()
+        }
+        continuation = it
+        show()
+    }
+
     private suspend fun dispatchOnShow() {
         if (activity.isFinishing)
             return
@@ -117,6 +131,8 @@ abstract class BaseDialog<I : Any>(
         onDismiss()
         EventBus.getDefault().unregisterSafe(this)
         onDismissListener?.invoke(TAG)
+        continuation?.resume(this)
+        continuation = null
     }
 
     private fun configure(md: MaterialAlertDialogBuilder) {
@@ -152,7 +168,10 @@ abstract class BaseDialog<I : Any>(
         getSingleChoiceItems()?.let { map ->
             val default = getDefaultSelectedItem()
             val defaultIndex = map.values.indexOf(default)
-            md.setSingleChoiceItems(map.keys.toTypedArray(), defaultIndex) { _, which ->
+            md.setSingleChoiceItems(
+                map.keys.toTypedArray(),
+                defaultIndex
+            ) { _, which ->
                 launch {
                     itemSelected = items[which]
                     onSingleSelectionChanged(getSingleSelection())
@@ -167,8 +186,10 @@ abstract class BaseDialog<I : Any>(
             val defaultStates = map.values.map {
                 it in default
             }.toBooleanArray()
-            md.setMultiChoiceItems(map.keys.toTypedArray(),
-                defaultStates) { _, position, isChecked ->
+            md.setMultiChoiceItems(
+                map.keys.toTypedArray(),
+                defaultStates
+            ) { _, position, isChecked ->
                 launch {
                     itemStates[position] = isChecked
                     onMultiSelectionChanged(getMultiSelection())

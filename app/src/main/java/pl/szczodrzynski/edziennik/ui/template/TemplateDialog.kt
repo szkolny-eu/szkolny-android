@@ -35,7 +35,6 @@ class TemplateDialog(
 
     override val TAG = "TemplateDialog"
 
-    override fun getTitle(): CharSequence = "Template"
     override fun getTitleRes() = R.string.menu_template
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogTemplateBinding.inflate(layoutInflater)
