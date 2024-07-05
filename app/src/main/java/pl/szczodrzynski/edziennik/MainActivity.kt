@@ -176,15 +176,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 enable = false
                 enableMenuControls = false
                 fabEnable = false
-                fabExtendable = true
                 fabExtended = false
                 fabGravity = Gravity.END
             }
 
             bottomSheet.apply {
                 removeAllItems()
-                toggleGroupEnabled = false
-                textInputEnabled = false
                 onCloseListener = {
                     if (!app.config.ui.bottomSheetOpened)
                         app.config.ui.bottomSheetOpened = true
@@ -941,7 +938,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         swipeRefreshLayout.isEnabled = false
         bottomSheet.close()
         bottomSheet.removeAllContextual()
-        bottomSheet.toggleGroupEnabled = false
         drawer.close()
         if (drawer.getSelection() != navTarget.id)
             drawer.setSelection(navTarget.id, fireOnClick = false)

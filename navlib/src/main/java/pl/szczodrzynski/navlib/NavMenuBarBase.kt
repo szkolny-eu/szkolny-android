@@ -54,7 +54,7 @@ interface NavMenuBarBase {
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 
         setOnMenuItemClickListener {
-            if (it.itemId == -1 && bottomSheet.enable) {
+            if (it.itemId == -1) {
                 bottomSheet.toggle()
             } else {
                 menuClickListener?.invoke()

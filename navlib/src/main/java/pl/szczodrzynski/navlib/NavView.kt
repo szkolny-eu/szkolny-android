@@ -33,11 +33,11 @@ class NavView @JvmOverloads constructor(
         get() = b.nvCoordinator
     val toolbar
         get() = b.nvToolbar
-    val bottomBar: NavBottomBar
+    val bottomBar
         get() = b.nvBottomBar
-    val nightlyText: TextView
+    val nightlyText
         get() = b.nvNightlyText
-    val bottomSheet: NavBottomSheet
+    val bottomSheet
         get() = b.nvBottomSheet
 
     init {
@@ -60,7 +60,6 @@ class NavView @JvmOverloads constructor(
 
         b.nvBottomBar.navView = this
         b.nvBottomBar.bottomSheet = b.nvBottomSheet
-        b.nvBottomBar.fabView = b.nvFloatingActionButton
         b.nvBottomBar.fabExtendedView = b.nvExtendedFloatingActionButton
     }
 

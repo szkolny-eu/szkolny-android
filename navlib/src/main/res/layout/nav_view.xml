@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:parentTag="FrameLayout"
-    tools:background="#202020">
+    tools:background="#202020"
+    tools:parentTag="FrameLayout">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/nv_drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <FrameLayout
             android:layout_width="0dp"
@@ -34,8 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                tools:paddingTop="24dp"
-                tools:paddingBottom="48dp">
+                tools:paddingBottom="48dp"
+                tools:paddingTop="24dp">
 
                 <FrameLayout
                     android:id="@+id/nv_drawerContainerLandscape"
@@ -60,8 +61,8 @@
                             android:id="@+id/nv_nightlyText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
                             android:layout_gravity="center_vertical|end"
+                            android:layout_margin="8dp"
                             android:background="@drawable/nightly_text_rounded"
                             android:fontFamily="sans-serif-light"
                             android:padding="4dp"
@@ -81,7 +82,6 @@
                             android:scaleType="centerCrop"
                             app:materialDrawerSelectorOnPress="#80ffffff"
                             tools:src="@tools:sample/backgrounds/scenic" />
-
                     </pl.szczodrzynski.navlib.NavToolbar>
 
                     <View
@@ -99,7 +99,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="?actionBarSize"
                         android:layout_marginBottom="?actionBarSize"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <FrameLayout
                             android:id="@+id/nv_miniDrawerContainerPortrait"
@@ -107,13 +107,11 @@
                             android:layout_height="match_parent"
                             android:background="@color/colorSurface_4dp"
                             tools:layout_width="72dp" /><!--tools:layout_width="72dp"-->
-
                         <View
                             android:id="@+id/nv_miniDrawerElevation"
                             android:layout_width="4dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/shadow_right" />
-
                     </LinearLayout>
 
                     <pl.szczodrzynski.navlib.NavBottomBar
@@ -136,19 +134,7 @@
                         app:layout_anchor="@id/nv_bottomBar"
                         app:layout_anchorGravity="center|top"
                         tools:icon="@android:drawable/ic_menu_edit" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/nv_floatingActionButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:visibility="gone"
-                        app:layout_anchor="@id/nv_bottomBar"
-                        tools:srcCompat="@android:drawable/ic_menu_edit" />
-
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
             </LinearLayout>
 
             <View
@@ -158,9 +144,7 @@
                 android:layout_gravity="bottom"
                 android:background="?nvNavigationBarBackground"
                 tools:layout_height="48dp" />
-
         </FrameLayout>
-
     </androidx.drawerlayout.widget.DrawerLayout>
 
     <View
@@ -187,6 +171,4 @@
         android:id="@+id/nv_bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 </merge>
