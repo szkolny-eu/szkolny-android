@@ -43,8 +43,6 @@ class ErrorDetailsDialog(
     override fun getPositiveButtonText() = R.string.close
     override fun getNeutralButtonText() = R.string.report
 
-    override suspend fun onShow() = Unit
-
     private val api by lazy { SzkolnyApi(activity.applicationContext as App) }
 
     override suspend fun onBeforeShow(): Boolean {

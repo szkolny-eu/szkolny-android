@@ -62,8 +62,6 @@ class TemplateDialog(
     // to convert a map of StringIDs to CharSequences
     // .mapKeys { (resId, _) -> activity.getString(resId) }
 
-    override suspend fun onShow() = Unit
-
     // local variables go here
 
     // onPositiveClick

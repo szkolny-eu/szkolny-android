@@ -39,8 +39,6 @@ class MiniMenuConfigDialog(
 
     override fun getDefaultSelectedItems() = app.config.ui.miniMenuButtons
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         app.config.ui.miniMenuButtons = getMultiSelection()
         if (activity is MainActivity) {

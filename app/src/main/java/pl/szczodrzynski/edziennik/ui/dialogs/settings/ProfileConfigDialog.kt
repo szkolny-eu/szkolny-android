@@ -79,12 +79,12 @@ class ProfileConfigDialog(
         b.logoutButton.onClick {
             ProfileRemoveDialog(activity, profile.id, profile.name) {
                 profileRemoved = true
-                dialog.dismiss()
+                dismiss()
             }.show()
         }
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!profileRemoved && profileChanged) {
             app.profileSave(profile)
             onProfileSaved?.invoke(profile)

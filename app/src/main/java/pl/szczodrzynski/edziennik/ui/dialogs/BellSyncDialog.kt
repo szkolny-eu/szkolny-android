@@ -31,8 +31,6 @@ class BellSyncDialog(
 
     override fun getNeutralButtonText() = R.string.cancel
 
-    private var counterJob: Job? = null
-
     private val actualBellDiff: Pair<Time, Int>
         get() {
             val now = Time.getNow()
@@ -53,7 +51,7 @@ class BellSyncDialog(
                 .setMessage(app.getString(R.string.bell_sync_results, bellDiffText))
                 .setPositiveButton(R.string.ok) { resultsDialog, _ ->
                     resultsDialog.dismiss()
-                    dialog.dismiss()
+                    dismiss()
                     if (activity is MainActivity) activity.reloadTarget()
                 }
                 .show()
@@ -63,15 +61,11 @@ class BellSyncDialog(
             b.bellSyncButton.setImageDrawable(R.drawable.ic_bell_wtf.resolveDrawable(app)) // wtf
         }
 
-        counterJob = startCoroutineTimer(repeatMillis = 500) {
+        startCoroutineTimer(repeatMillis = 500) {
             val (bellDiff, multiplier) = actualBellDiff
             val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
             b.bellSyncHowto.text =
                 app.getString(R.string.bell_sync_howto, bellTime.stringHM, bellDiffText)
         }
-    }
-
-    override fun onDismiss() {
-        counterJob?.cancel()
     }
 }

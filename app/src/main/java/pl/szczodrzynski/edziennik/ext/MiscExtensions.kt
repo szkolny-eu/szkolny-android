@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -88,3 +89,13 @@ fun Long?.takePositive() = if (this == -1L || this == 0L) null else this
 fun String?.takeValue() = if (this.isNullOrBlank()) null else this
 
 fun Any?.ignore() = Unit
+
+fun EventBus.registerSafe(subscriber: Any) = try {
+    EventBus.getDefault().register(subscriber)
+} catch (_: Exception) {
+}
+
+fun EventBus.unregisterSafe(subscriber: Any) = try {
+    EventBus.getDefault().unregister(subscriber)
+} catch (_: Exception) {
+}

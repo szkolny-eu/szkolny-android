@@ -34,7 +34,7 @@ class AttendanceDetailsDialog(
 
     override fun getPositiveButtonText() = R.string.close
 
-    override suspend fun onShow() {
+    override suspend fun onBeforeShow(): Boolean {
         val manager = app.attendanceManager
 
         val attendanceColor = manager.getAttendanceColor(attendance)
@@ -49,7 +49,7 @@ class AttendanceDetailsDialog(
             BetterLink.attach(
                 b.teacherName,
                 teachers = mapOf(attendance.teacherId to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
@@ -63,5 +63,6 @@ class AttendanceDetailsDialog(
         b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(attendance, b.legend)
+        return true
     }
 }

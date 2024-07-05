@@ -67,7 +67,7 @@ class GradeDetailsDialog(
             BetterLink.attach(
                 b.teacherName,
                 teachers = mapOf(grade.teacherId to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 

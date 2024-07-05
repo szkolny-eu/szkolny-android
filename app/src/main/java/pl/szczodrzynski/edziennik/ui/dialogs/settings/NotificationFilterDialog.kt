@@ -33,8 +33,6 @@ class NotificationFilterDialog(
         .filter { it.enabledByDefault != null && it !in app.profile.config.sync.notificationFilter }
         .toSet()
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         val enabledTypes = getMultiSelection()
         val disabledTypes = NotificationType.values()

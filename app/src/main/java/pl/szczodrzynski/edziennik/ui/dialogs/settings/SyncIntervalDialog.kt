@@ -39,8 +39,6 @@ class SyncIntervalDialog(
 
     override fun getDefaultSelectedItem() = app.config.sync.interval.toLong()
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         val interval = getSingleSelection() as? Long ?: return DISMISS
         app.config.sync.interval = interval.toInt()

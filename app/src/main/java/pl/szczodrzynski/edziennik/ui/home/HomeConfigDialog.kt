@@ -42,8 +42,6 @@ class HomeConfigDialog(
             .map { it.cardId }
             .toSet()
 
-    override suspend fun onShow() = Unit
-
     private var configChanged = false
 
     override suspend fun onPositiveClick(): Boolean {
@@ -63,7 +61,7 @@ class HomeConfigDialog(
         configChanged = true
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (configChanged && reloadOnDismiss && activity is MainActivity)
             activity.reloadTarget()
     }

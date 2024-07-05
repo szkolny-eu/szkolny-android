@@ -39,7 +39,6 @@ class UpdateProgressDialog(
     override fun isCancelable() = false
     override fun getNegativeButtonText() = R.string.cancel
 
-    private var timerJob: Job? = null
 
     override suspend fun onShow() {
         EventBus.getDefault().register(this)
@@ -49,8 +48,7 @@ class UpdateProgressDialog(
         val downloadManager = app.getSystemService<DownloadManager>() ?: return
         val query = DownloadManager.Query().setFilterById(downloadId)
 
-        timerJob?.cancel()
-        timerJob = startCoroutineTimer(repeatMillis = 100L) {
+        startCoroutineTimer(repeatMillis = 100L) {
             try {
                 val cursor = downloadManager.query(query)
                 cursor.moveToFirst()
@@ -63,11 +61,6 @@ class UpdateProgressDialog(
                 b.progress.progress = (progress / total * 100.0f).toInt()
             } catch (_: CursorIndexOutOfBoundsException) {}
         }
-    }
-
-    override fun onDismiss() {
-        EventBus.getDefault().unregister(this)
-        timerJob?.cancel()
     }
 
     override suspend fun onNegativeClick(): Boolean {

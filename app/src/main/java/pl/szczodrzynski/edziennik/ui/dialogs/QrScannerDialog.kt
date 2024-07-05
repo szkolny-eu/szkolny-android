@@ -31,13 +31,13 @@ class QrScannerDialog(
     override suspend fun onShow() {
         root.setResultHandler {
             root.stopCamera()
-            dialog.dismiss()
+            dismiss()
             onCodeScanned(it.text)
         }
         root.startCamera()
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         root.stopCamera()
     }
 }

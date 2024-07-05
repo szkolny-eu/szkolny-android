@@ -35,8 +35,6 @@ class ProfileRemoveDialog(
     override fun getPositiveButtonText() = R.string.remove
     override fun getNeutralButtonText() = R.string.cancel
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         withContext(Dispatchers.Default) {
             val profileObject = app.db.profileDao().getByIdNow(profileId) ?: return@withContext

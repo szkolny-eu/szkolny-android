@@ -16,18 +16,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
-import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.attachToastHint
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.putExtras
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
@@ -70,11 +84,6 @@ class EventDetailsDialog(
         return NO_DISMISS
     }
 
-    override suspend fun onBeforeShow(): Boolean {
-        EventBus.getDefault().register(this)
-        return true
-    }
-
     override suspend fun onShow() {
         // watch the event for changes
         app.db.eventDao().getById(event.profileId, event.id).observe(activity) {
@@ -83,8 +92,7 @@ class EventDetailsDialog(
         }
     }
 
-    override fun onDismiss() {
-        EventBus.getDefault().unregister(this@EventDetailsDialog)
+    override suspend fun onDismiss() {
         progressDialog?.dismiss()
     }
 
@@ -183,7 +191,7 @@ class EventDetailsDialog(
                     editingEvent = event,
                     onSaveListener = {
                         if (it == null) {
-                            dialog.dismiss()
+                            dismiss()
                             return@EventManualDialog
                         }
                         // this should not be needed as the event is observed by the ID
@@ -204,7 +212,7 @@ class EventDetailsDialog(
 
         // GO TO TIMETABLE
         b.goToTimetableButton.onClick {
-            dialog.dismiss()
+            dismiss()
             val dateStr = event.date.stringY_m_d
 
             val intent =
@@ -235,13 +243,13 @@ class EventDetailsDialog(
         }
         b.downloadButton.attachToastHint(R.string.hint_download_again)
 
-        BetterLink.attach(b.topic, onActionSelected = dialog::dismiss)
+        BetterLink.attach(b.topic, onActionSelected = ::dismiss)
 
         event.teacherName?.let { name ->
             BetterLink.attach(
                 b.teacherName,
                 teachers = mapOf(event.teacherId to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
@@ -260,7 +268,7 @@ class EventDetailsDialog(
             b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = false
             b.body.isVisible = true
-            BetterLink.attach(b.body, onActionSelected = dialog::dismiss)
+            BetterLink.attach(b.body, onActionSelected = ::dismiss)
         }
 
         if (event.attachmentIds.isNullOrEmpty() || event.attachmentNames.isNullOrEmpty()) {
@@ -365,7 +373,7 @@ class EventDetailsDialog(
         }
 
         removeEventDialog?.dismiss()
-        dialog.dismiss()
+        dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
     }
 

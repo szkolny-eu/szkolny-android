@@ -29,8 +29,6 @@ class AppLanguageDialog(
 
     override fun getDefaultSelectedItem() = app.config.ui.language
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         val language = getSingleSelection() as? String ?: return DISMISS
         if (language.isEmpty())

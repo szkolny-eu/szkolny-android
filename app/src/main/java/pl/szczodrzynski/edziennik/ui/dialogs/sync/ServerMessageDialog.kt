@@ -22,6 +22,4 @@ class ServerMessageDialog(
     override fun getTitleRes(): Int? = null
     override fun getMessage() = messageText
     override fun getPositiveButtonText() = R.string.close
-
-    override suspend fun onShow() = Unit
 }

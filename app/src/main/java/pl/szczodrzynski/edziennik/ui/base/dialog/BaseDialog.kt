@@ -13,9 +13,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.registerSafe
 import pl.szczodrzynski.edziennik.ext.setMessage
+import pl.szczodrzynski.edziennik.ext.unregisterSafe
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseDialog<I : Any>(
@@ -31,10 +34,10 @@ abstract class BaseDialog<I : Any>(
     @Suppress("PropertyName")
     abstract val TAG: String
 
-    protected lateinit var app: App
+    protected val app = activity.applicationContext as App
     protected lateinit var dialog: AlertDialog
 
-    private val job = Job()
+    private var job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -58,34 +61,33 @@ abstract class BaseDialog<I : Any>(
     protected open fun getDefaultSelectedItem(): I? = null
     protected open fun getDefaultSelectedItems(): Set<I> = emptySet()
 
-    open suspend fun onPositiveClick() = true
-    open suspend fun onNeutralClick() = true
-    open suspend fun onNegativeClick() = true
+    open suspend fun onPositiveClick() = DISMISS
+    open suspend fun onNeutralClick() = DISMISS
+    open suspend fun onNegativeClick() = DISMISS
     open suspend fun onSingleSelectionChanged(item: I?) = Unit
     open suspend fun onMultiSelectionChanged(items: Set<I>) = Unit
 
     protected open suspend fun onBeforeShow() = true
-    protected abstract suspend fun onShow()
-    protected open fun onDismiss() = Unit
+    protected open suspend fun onShow() = Unit
+    protected open suspend fun onDismiss() = Unit
 
     fun show() {
         if (activity.isFinishing)
             return
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
+        job.cancel()
+        job = Job()
+
         dialog = MaterialAlertDialogBuilder(activity)
             .also(this::configure)
             .setCancelable(isCancelable())
             .setOnDismissListener {
-                onDismiss()
-                onDismissListener?.invoke(TAG)
+                launch {
+                    dispatchOnDismiss()
+                    job.cancel()
+                }
             }
             .create()
 
-        reload()
-    }
-
-    protected fun reload() {
         launch {
             if (activity.isFinishing)
                 return@launch
@@ -93,10 +95,28 @@ abstract class BaseDialog<I : Any>(
                 dialog.dismiss()
                 return@launch
             }
+            if (activity.isFinishing)
+                return@launch
             dialog.show()
             setButtons()
-            onShow()
+            dispatchOnShow()
         }
+    }
+
+    private suspend fun dispatchOnShow() {
+        if (activity.isFinishing)
+            return
+        onShowListener?.invoke(TAG)
+        EventBus.getDefault().registerSafe(this)
+        onShow()
+    }
+
+    private suspend fun dispatchOnDismiss() {
+        if (activity.isFinishing)
+            return
+        onDismiss()
+        EventBus.getDefault().unregisterSafe(this)
+        onDismissListener?.invoke(TAG)
     }
 
     private fun configure(md: MaterialAlertDialogBuilder) {
@@ -164,21 +184,21 @@ abstract class BaseDialog<I : Any>(
         dialog.getButton(BUTTON_POSITIVE)?.onClick {
             launch {
                 if (onPositiveClick())
-                    dialog.dismiss()
+                    dismiss()
             }
         }
 
         dialog.getButton(BUTTON_NEUTRAL)?.onClick {
             launch {
                 if (onNeutralClick())
-                    dialog.dismiss()
+                    dismiss()
             }
         }
 
         dialog.getButton(BUTTON_NEGATIVE)?.onClick {
             launch {
                 if (onNegativeClick())
-                    dialog.dismiss()
+                    dismiss()
             }
         }
     }
@@ -193,7 +213,7 @@ abstract class BaseDialog<I : Any>(
         }.filterNotNull().toSet()
     }
 
-    protected fun dismiss() {
+    fun dismiss() {
         dialog.dismiss()
     }
 }

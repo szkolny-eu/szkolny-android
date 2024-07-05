@@ -32,10 +32,8 @@ abstract class ConfigDialog<B : ViewBinding>(
         return true
     }
 
-    final override fun onDismiss() {
-        launch {
-            saveConfig()
-        }
+    final override suspend fun onDismiss() {
+        saveConfig()
         if (reloadOnDismiss && activity is MainActivity)
             activity.reloadTarget()
     }

@@ -72,7 +72,7 @@ class RecaptchaDialog(
         b.image8.isChecked = false
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!success)
             onFailure?.invoke()
     }

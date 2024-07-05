@@ -114,7 +114,7 @@ class LessonDetailsDialog(
                 }
             }
             b.shiftedGoTo.setOnClickListener {
-                dialog.dismiss()
+                dismiss()
                 val dateStr = otherLessonDate?.stringY_m_d ?: return@setOnClickListener
                 val intent = Intent(TimetableFragment.ACTION_SCROLL_TO_DATE).apply {
                     putExtra("timetableDate", dateStr)
@@ -236,12 +236,12 @@ class LessonDetailsDialog(
             BetterLink.attach(
                 b.teacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
             BetterLink.attach(
                 b.oldTeacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 

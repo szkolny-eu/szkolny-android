@@ -44,8 +44,6 @@ class SyncViewListDialog(
         else -> currentNavTarget.featureType?.let { setOf(it) } ?: getMultiChoiceItems().values.toSet()
     }
 
-    override suspend fun onShow() = Unit
-
     @Suppress("UNCHECKED_CAST")
     override suspend fun onPositiveClick(): Boolean {
         val selected = getMultiSelection()

@@ -40,8 +40,6 @@ class UpdateAvailableDialog(
     override fun getPositiveButtonText() = R.string.update_available_button
     override fun getNeutralButtonText() = if (mandatory) null else R.string.update_available_later
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         if (update == null || update.isOnGooglePlay)
             Utils.openGooglePlay(activity)

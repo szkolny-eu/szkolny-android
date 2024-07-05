@@ -26,8 +26,6 @@ class ThemeChooserDialog(
 
     override fun getDefaultSelectedItem() = app.uiManager.themeColor
 
-    override suspend fun onShow() = Unit
-
     override suspend fun onPositiveClick(): Boolean {
         val themeColor = getSingleSelection() ?: return DISMISS
         if (app.uiManager.themeColor != themeColor) {

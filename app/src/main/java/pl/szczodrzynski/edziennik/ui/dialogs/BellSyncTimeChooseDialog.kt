@@ -37,8 +37,6 @@ class BellSyncTimeChooseDialog(
     override fun getNeutralButtonText() = R.string.reset
     override fun getNegativeButtonText() = R.string.cancel
 
-    override suspend fun onShow() = Unit
-
     private val today = Date.getToday()
     private val selectedTime: Time?
         get() = b.timeDropdown.selected?.tag as Time?
@@ -59,7 +57,8 @@ class BellSyncTimeChooseDialog(
                 app.config.timetable.bellSyncMultiplier = 0
 
                 dialog.dismiss()
-                reload()
+                dismiss()
+                show()
                 if (activity is MainActivity)
                     activity.reloadTarget()
             }

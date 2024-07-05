@@ -57,7 +57,7 @@ class RecaptchaPromptDialog(
                     b.progress.visibility = View.GONE
                     success = true
                     onSuccess(recaptchaCode)
-                    dialog.dismiss()
+                    dismiss()
                 },
                 onFailure = {
                     b.checkbox.background = checkboxBackground
@@ -69,7 +69,7 @@ class RecaptchaPromptDialog(
         }
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!success)
             onCancel?.invoke()
     }

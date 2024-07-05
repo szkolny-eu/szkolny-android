@@ -24,8 +24,6 @@ class ChangelogDialog(
     override fun getTitleRes() = R.string.whats_new
     override fun getPositiveButtonText() = R.string.close
 
-    override suspend fun onShow() = Unit
-
     override fun getRootView(): ScrollView {
         val textView = TextView(activity)
         textView.setPadding(24.dp, 24.dp, 24.dp, 0)
