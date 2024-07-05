@@ -15,7 +15,6 @@ import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 
 interface NavMenuBarBase {
 
-    var bottomSheet: NavBottomSheet
     var drawerClickListener: (() -> Unit)?
     var menuClickListener: (() -> Unit)?
 
@@ -54,11 +53,7 @@ interface NavMenuBarBase {
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 
         setOnMenuItemClickListener {
-            if (it.itemId == -1) {
-                bottomSheet.toggle()
-            } else {
-                menuClickListener?.invoke()
-            }
+            menuClickListener?.invoke()
             true
         }
     }

@@ -27,7 +27,7 @@ class NavBottomSheet @JvmOverloads constructor(
 
     private val b = NavBottomSheetBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private val scrimView
+    val scrimView
         get() = b.bsScrim
     private val bottomSheet
         get() = b.bsView
@@ -186,12 +186,12 @@ class NavBottomSheet @JvmOverloads constructor(
         }
     }
 
-    fun dispatchBottomBarEvent(view: View, event: MotionEvent): Boolean {
+    fun dispatchBottomSheetEvent(view: View, event: MotionEvent): Boolean {
         val location = IntArray(2)
         bottomSheet.getLocationOnScreen(location)
         event.setLocation(event.rawX - location[0], event.rawY - location[1])
         bottomSheet.dispatchTouchEvent(event)
-        return true
+        return false
     }
 
     var isOpen

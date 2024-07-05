@@ -15,7 +15,6 @@ class NavToolbar @JvmOverloads constructor(
 ) : MaterialToolbar(context, attrs, defStyle), NavMenuBarBase {
 
     internal lateinit var navView: NavView
-    override lateinit var bottomSheet: NavBottomSheet
 
     /**
      * Shows the toolbar and sets the contentView's margin to be

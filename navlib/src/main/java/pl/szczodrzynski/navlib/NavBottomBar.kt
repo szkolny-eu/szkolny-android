@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
@@ -24,7 +23,6 @@ class NavBottomBar @JvmOverloads constructor(
 ) : BottomAppBar(context, attrs, defStyle), NavMenuBarBase {
 
     internal lateinit var navView: NavView
-    override lateinit var bottomSheet: NavBottomSheet
     internal lateinit var fabExtendedView: ExtendedFloatingActionButton
 
     /**
@@ -103,9 +101,6 @@ class NavBottomBar @JvmOverloads constructor(
     override var menuClickListener: (() -> Unit)? = null
 
     init {
-        setOnTouchListener { view, event ->
-            bottomSheet.dispatchBottomBarEvent(view, event)
-        }
         elevation = 0f
     }
 

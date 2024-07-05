@@ -212,12 +212,6 @@ class NavDrawer(
             profileSelectionOpen()
             open()
         }
-        toolbar.drawerClickListener = {
-            open()
-        }
-        bottomBar.drawerClickListener = {
-            open()
-        }
 
         val configuration = context.resources.configuration
         decideDrawerMode(
