@@ -43,7 +43,7 @@ class AttendanceSummaryFragment : BaseFragment<AttendanceSummaryFragmentBinding,
         private var periodSelection = 0
     }
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getRefreshScrollingView() = b.scrollView
 
     private val manager
         get() = app.attendanceManager
@@ -149,7 +149,6 @@ class AttendanceSummaryFragment : BaseFragment<AttendanceSummaryFragmentBinding,
         }
     }
 
-    @Suppress("SuspendFunctionOnCoroutineScope")
     private fun processAttendance(): MutableList<Any> {
         val attendance = when (periodSelection) {
             0 -> attendance
