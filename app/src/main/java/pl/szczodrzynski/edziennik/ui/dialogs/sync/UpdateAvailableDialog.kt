@@ -18,11 +18,7 @@ class UpdateAvailableDialog(
     activity: AppCompatActivity,
     private val update: Update?,
     private val mandatory: Boolean = update?.updateMandatory ?: false,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "UpdateAvailableDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.update_available_title
     override fun getMessageFormat(): Pair<Int, List<CharSequence>> {

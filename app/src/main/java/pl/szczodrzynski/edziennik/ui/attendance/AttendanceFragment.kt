@@ -38,7 +38,7 @@ class AttendanceFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                AttendanceConfigDialog(activity, true, null, null).show()
+                AttendanceConfigDialog(activity, true).show()
             },
     )
 

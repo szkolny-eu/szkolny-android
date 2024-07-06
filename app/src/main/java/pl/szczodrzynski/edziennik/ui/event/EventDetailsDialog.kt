@@ -54,11 +54,7 @@ class EventDetailsDialog(
     // this event is observed for changes
     private var event: EventFull,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogEventDetailsBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "EventDetailsDialog"
+) : BindingDialog<DialogEventDetailsBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -197,8 +193,6 @@ class EventDetailsDialog(
                         // event = it
                         // update()
                     },
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
             ).show()
         }
         b.editButton.attachToastHint(R.string.hint_edit_event)
@@ -288,8 +282,6 @@ class EventDetailsDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = event,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
     }
 

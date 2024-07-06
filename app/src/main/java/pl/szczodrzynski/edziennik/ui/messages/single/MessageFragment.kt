@@ -51,7 +51,7 @@ class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                MessagesConfigDialog(activity, false, null, null).show()
+                MessagesConfigDialog(activity, false).show()
             }
     )
 
@@ -211,8 +211,6 @@ class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = message,
-            onShowListener = null,
-            onDismissListener = null,
         )
     }
 

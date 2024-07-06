@@ -9,40 +9,37 @@ import android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ui.timetable.LessonDetailsDialog
 import kotlin.coroutines.CoroutineContext
 
 class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
-    companion object {
-        private const val TAG = "LessonDialogActivity"
-    }
 
-    private lateinit var job: Job
+    private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
-    private val shownDialogs = hashSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawable(ColorDrawable(0))
 
-        job = Job()
-
         app.uiManager.applyTheme(this, noDisplay = true)
 
         val app = application as App
         launch {
-            val deferred = async(Dispatchers.Default) {
+            val lesson = withContext(Dispatchers.IO) {
                 val extras = intent?.extras
 
-                val profileId = extras?.getInt("profileId") ?: return@async null
+                val profileId = extras?.getInt("profileId") ?: return@withContext null
 
                 if (extras.getBoolean("separatorItem", false)) {
                     val i = Intent(
@@ -53,28 +50,16 @@ class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
                     ).addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT or FLAG_ACTIVITY_NEW_TASK)
                     app.startActivity(i)
                     finish()
-                    return@async null
+                    return@withContext null
                 }
 
                 val lessonId = extras.getLong("lessonId")
 
                 app.db.timetableDao().getByIdNow(profileId, lessonId)
-            }
-            val lesson = deferred.await()
-            lesson?.let {
-                LessonDetailsDialog(
-                        this@LessonDialogActivity,
-                        lesson,
-                        onShowListener = { tag ->
-                            shownDialogs.add(tag)
-                        },
-                        onDismissListener = { tag ->
-                            shownDialogs.remove(tag)
-                            if (shownDialogs.isEmpty())
-                                finish()
-                        }
-                ).show()
-            }
+            } ?: return@launch
+
+            LessonDetailsDialog(this@LessonDialogActivity, lesson).showModal()
+            finish()
         }
     }
 }

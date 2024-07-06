@@ -12,11 +12,7 @@ import kotlin.system.exitProcess
 
 class RestartDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Unit>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "RestartDialog"
+) : BaseDialog<Unit>(activity) {
 
     override fun getTitle() = "Restart"
     override fun getMessage() = "Wymagany restart aplikacji"

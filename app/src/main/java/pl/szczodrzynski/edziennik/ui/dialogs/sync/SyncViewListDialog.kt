@@ -19,11 +19,7 @@ import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 class SyncViewListDialog(
     activity: MainActivity,
     private val currentNavTarget: NavTarget,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<FeatureType>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "SyncViewListDialog"
+) : BaseDialog<FeatureType>(activity) {
 
     override fun getTitleRes() = R.string.dialog_sync_view_list_title
     override fun getPositiveButtonText() = R.string.ok

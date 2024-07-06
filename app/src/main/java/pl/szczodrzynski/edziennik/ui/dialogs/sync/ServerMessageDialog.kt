@@ -12,11 +12,7 @@ class ServerMessageDialog(
     activity: AppCompatActivity,
     private val titleText: String,
     private val messageText: CharSequence,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ServerMessageDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitle() = titleText
     override fun getMessage() = messageText

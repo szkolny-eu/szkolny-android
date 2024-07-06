@@ -21,14 +21,10 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 
 class BellSyncTimeChooseDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogBellSyncTimeChooseBinding>(activity, onShowListener, onDismissListener) {
+) : BindingDialog<DialogBellSyncTimeChooseBinding>(activity) {
     companion object {
         private const val MAX_DIFF_MINUTES = 10
     }
-
-    override val TAG = "BellSyncTimeChooseDialog"
 
     override fun getTitleRes() = R.string.bell_sync_title
     override fun inflate(layoutInflater: LayoutInflater) =

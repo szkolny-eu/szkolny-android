@@ -60,10 +60,9 @@ import kotlin.math.roundToInt
 
 class GenerateBlockTimetableDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null
-) : BindingDialog<DialogGenerateBlockTimetableBinding>(activity, onShowListener, onDismissListener) {
+) : BindingDialog<DialogGenerateBlockTimetableBinding>(activity) {
     companion object {
+        private const val TAG = "GenerateBlockTimetableDialog"
         private const val WIDTH_CONSTANT = 70
         private const val WIDTH_WEEKDAY = 285
         private const val WIDTH_SPACING = 15
@@ -71,8 +70,6 @@ class GenerateBlockTimetableDialog(
         private const val HEIGHT_MINUTE = 3
         private const val HEIGHT_FOOTER = 40
     }
-
-    override val TAG = "GenerateBlockTimetableDialog"
 
     override fun getTitleRes() = R.string.timetable_generate_range
     override fun inflate(layoutInflater: LayoutInflater) =

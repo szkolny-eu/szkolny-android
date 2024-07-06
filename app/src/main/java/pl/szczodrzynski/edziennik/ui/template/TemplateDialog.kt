@@ -29,11 +29,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 class TemplateDialog(
     activity: AppCompatActivity,
     private val onActionPerformed: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogTemplateBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "TemplateDialog"
+) : BindingDialog<DialogTemplateBinding>(activity) {
 
     override fun getTitleRes() = R.string.menu_template
     override fun inflate(layoutInflater: LayoutInflater) =

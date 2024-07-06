@@ -15,11 +15,10 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 class QuietHoursConfigDialog(
     activity: AppCompatActivity,
     val onChangeListener: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Int>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "QuietHoursConfigDialog"
+) : BaseDialog<Int>(activity) {
+    companion object {
+        private const val TAG = "QuietHoursConfigDialog"
+    }
 
     override fun getTitleRes() = R.string.settings_sync_quiet_hours_dialog_title
     override fun getNegativeButtonText() = R.string.cancel
@@ -38,8 +37,6 @@ class QuietHoursConfigDialog(
     }
 
     private fun configStartTime() {
-        onShowListener?.invoke(TAG + "Start")
-
         val time = app.config.sync.quietHoursStart ?: return
         val picker = MaterialTimePicker.Builder()
             .setTitleText(R.string.settings_sync_quiet_hours_set_beginning)
@@ -54,14 +51,9 @@ class QuietHoursConfigDialog(
             app.config.sync.quietHoursStart = Time(picker.hour, picker.minute, 0)
             onChangeListener?.invoke()
         }
-        picker.addOnDismissListener {
-            onDismissListener?.invoke(TAG + "Start")
-        }
     }
 
     private fun configEndTime() {
-        onShowListener?.invoke(TAG + "End")
-
         val time = app.config.sync.quietHoursEnd ?: return
         val picker = MaterialTimePicker.Builder()
             .setTitleText(R.string.settings_sync_quiet_hours_set_end)
@@ -75,9 +67,6 @@ class QuietHoursConfigDialog(
             app.config.sync.quietHoursEnabled = true
             app.config.sync.quietHoursEnd = Time(picker.hour, picker.minute, 0)
             onChangeListener?.invoke()
-        }
-        picker.addOnDismissListener {
-            onDismissListener?.invoke(TAG + "End")
         }
     }
 }

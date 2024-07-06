@@ -30,16 +30,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 class GradesConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<DialogConfigGradesBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "GradesConfigDialog"
+) : ConfigDialog<DialogConfigGradesBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_grades_config
     override fun inflate(layoutInflater: LayoutInflater) =

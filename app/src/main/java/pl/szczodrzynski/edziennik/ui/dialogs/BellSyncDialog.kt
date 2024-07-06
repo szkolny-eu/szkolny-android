@@ -18,11 +18,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 class BellSyncDialog(
     activity: AppCompatActivity,
     private val bellTime: Time,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogBellSyncBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "BellSyncDialog"
+) : BindingDialog<DialogBellSyncBinding>(activity) {
 
     override fun getTitleRes() = R.string.bell_sync_title
     override fun inflate(layoutInflater: LayoutInflater) =

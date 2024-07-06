@@ -20,10 +20,7 @@ class RecaptchaPromptDialog(
     private val onSuccess: (recaptchaCode: String) -> Unit,
     private val onCancel: (() -> Unit)?,
     private val onServerError: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<RecaptchaViewBinding>(activity, onShowListener, onDismissListener) {
-    override val TAG = "RecaptchaPromptDialog"
+) : BindingDialog<RecaptchaViewBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =

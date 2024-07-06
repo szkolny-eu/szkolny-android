@@ -34,11 +34,7 @@ class NoteEditorDialog(
         owner?.getNoteOwnerProfileId()
             ?: editingNote?.profileId
             ?: 0,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<NoteEditorDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "NoteEditorDialog"
+) : BindingDialog<NoteEditorDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -151,15 +147,11 @@ class NoteEditorDialog(
             activity = activity,
             textLayout = b.topicLayout,
             textEdit = b.topic,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         textStylingManager.attachToField(
             activity = activity,
             textLayout = b.bodyLayout,
             textEdit = b.body,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
     }
 

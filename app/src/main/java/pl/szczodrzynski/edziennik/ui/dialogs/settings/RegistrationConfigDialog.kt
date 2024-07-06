@@ -24,8 +24,6 @@ class RegistrationConfigDialog(
     val activity: AppCompatActivity,
     val profile: Profile,
     val onChangeListener: (suspend (enabled: Boolean) -> Unit)? = null,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
 
     private lateinit var app: App
@@ -44,7 +42,7 @@ class RegistrationConfigDialog(
     }}
 
     fun showEventShareDialog() {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.registration_config_event_sharing_title)
             message(R.string.registration_config_event_sharing_text)
             positive(R.string.i_agree) {
@@ -55,7 +53,7 @@ class RegistrationConfigDialog(
     }
 
     fun showNoteShareDialog() {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.registration_config_note_sharing_title)
             message(R.string.registration_config_note_sharing_text)
             positive(R.string.i_agree) {
@@ -66,7 +64,7 @@ class RegistrationConfigDialog(
     }
 
     fun showEnableDialog() {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.registration_config_title)
             message(BetterHtml.fromHtml(activity, R.string.registration_config_enable_text))
             positive(R.string.i_agree) {
@@ -77,7 +75,7 @@ class RegistrationConfigDialog(
     }
 
     fun showDisableDialog() {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.registration_config_title)
             message(R.string.registration_config_disable_text)
             positive(R.string.ok) {
@@ -88,7 +86,7 @@ class RegistrationConfigDialog(
     }
 
     private fun enableRegistration() = launch {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.please_wait)
             message(R.string.registration_config_enable_progress_text)
             cancelable(false)
@@ -117,7 +115,7 @@ class RegistrationConfigDialog(
     }
 
     private fun disableRegistration() = launch {
-        dialog = SimpleDialog<Unit>(activity, onShowListener, onDismissListener) {
+        dialog = SimpleDialog<Unit>(activity) {
             title(R.string.please_wait)
             message(R.string.registration_config_disable_progress_text)
             cancelable(false)

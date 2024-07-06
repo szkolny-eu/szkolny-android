@@ -21,8 +21,6 @@ import pl.szczodrzynski.edziennik.ext.toDrawable
 fun MaterialButton.setupNotesButton(
     activity: AppCompatActivity,
     owner: Noteable,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
 ) {
     if (!isVisible)
         return
@@ -41,8 +39,6 @@ fun MaterialButton.setupNotesButton(
         NoteListDialog(
             activity = activity,
             owner = owner,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         ).show()
     }
 }

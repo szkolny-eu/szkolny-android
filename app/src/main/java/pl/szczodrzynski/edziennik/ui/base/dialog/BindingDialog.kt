@@ -11,9 +11,7 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BindingDialog<B : ViewBinding>(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ViewDialog<View>(activity, onShowListener, onDismissListener) {
+) : ViewDialog<View>(activity) {
 
     protected lateinit var b: B
     protected abstract fun inflate(layoutInflater: LayoutInflater): B

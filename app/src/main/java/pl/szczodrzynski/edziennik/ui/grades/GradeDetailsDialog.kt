@@ -24,11 +24,7 @@ class GradeDetailsDialog(
     activity: AppCompatActivity,
     private val grade: GradeFull,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogGradeDetailsBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "GradeDetailsDialog"
+) : BindingDialog<DialogGradeDetailsBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -98,8 +94,6 @@ class GradeDetailsDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = grade,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)

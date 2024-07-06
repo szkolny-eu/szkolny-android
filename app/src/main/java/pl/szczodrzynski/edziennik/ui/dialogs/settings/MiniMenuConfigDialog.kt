@@ -15,11 +15,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class MiniMenuConfigDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<NavTarget>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "BellSyncTimeChooseDialog"
+) : BaseDialog<NavTarget>(activity) {
 
     override fun getTitleRes() = R.string.settings_theme_mini_drawer_buttons_dialog_title
     override fun getMessageRes() = R.string.settings_theme_mini_drawer_buttons_dialog_text

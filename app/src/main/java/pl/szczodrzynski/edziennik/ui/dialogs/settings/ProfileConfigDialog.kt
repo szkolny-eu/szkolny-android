@@ -22,11 +22,7 @@ class ProfileConfigDialog(
     activity: MainActivity,
     private val profile: Profile,
     private val onProfileSaved: ((profile: Profile) -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogProfileConfigBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ProfileConfigDialog"
+) : BindingDialog<DialogProfileConfigBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -48,7 +44,7 @@ class ProfileConfigDialog(
             R.attr.alertDialogStyle,
             R.style.MaterialAlertDialog_Material3
         )
-        val surface = MaterialColors.getColor(activity, R.attr.colorSurface, TAG)
+        val surface = MaterialColors.getColor(activity, R.attr.colorSurface, 0)
         shape.setCornerSize(18.dp.toFloat())
         shape.initializeElevationOverlay(activity)
         shape.fillColor = ColorStateList.valueOf(surface)

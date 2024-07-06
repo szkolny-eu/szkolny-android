@@ -9,7 +9,6 @@ import android.database.CursorIndexOutOfBoundsException
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -26,11 +25,7 @@ class UpdateProgressDialog(
     activity: AppCompatActivity,
     private val update: Update,
     private val downloadId: Long,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<UpdateProgressDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "UpdateProgressDialog"
+) : BindingDialog<UpdateProgressDialogBinding>(activity) {
 
     override fun getTitleRes() = R.string.notification_downloading_update
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -38,7 +33,6 @@ class UpdateProgressDialog(
 
     override fun isCancelable() = false
     override fun getNegativeButtonText() = R.string.cancel
-
 
     override suspend fun onShow() {
         EventBus.getDefault().register(this)

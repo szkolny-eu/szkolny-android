@@ -35,16 +35,11 @@ import kotlin.coroutines.resume
 
 abstract class BaseDialog<I : Any>(
     protected val activity: AppCompatActivity,
-    protected val onShowListener: ((tag: String) -> Unit)? = null,
-    protected val onDismissListener: ((tag: String) -> Unit)? = null,
 ) : CoroutineScope {
     companion object {
         const val DISMISS = true
         const val NO_DISMISS = false
     }
-
-    @Suppress("PropertyName")
-    abstract val TAG: String
 
     internal val app = activity.applicationContext as App
     protected lateinit var dialog: AlertDialog
@@ -138,7 +133,6 @@ abstract class BaseDialog<I : Any>(
     private suspend fun dispatchOnShow() {
         if (activity.isFinishing)
             return
-        onShowListener?.invoke(TAG)
         EventBus.getDefault().registerSafe(this)
         onShow()
     }
@@ -148,7 +142,6 @@ abstract class BaseDialog<I : Any>(
             return
         onDismiss()
         EventBus.getDefault().unregisterSafe(this)
-        onDismissListener?.invoke(TAG)
         continuation?.resume(this)
         continuation = null
     }

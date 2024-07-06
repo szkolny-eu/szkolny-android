@@ -10,10 +10,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class AppLanguageDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-    override val TAG = "AppLanguageDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.app_language_dialog_title
     override fun getMessage() = activity.getString(R.string.app_language_dialog_text)

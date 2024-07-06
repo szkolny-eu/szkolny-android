@@ -63,11 +63,7 @@ class EventManualDialog(
     private val defaultType: Long? = null,
     private val editingEvent: EventFull? = null,
     private val onSaveListener: ((event: EventFull?) -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogEventManualV2Binding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "EventManualDialog"
+) : BindingDialog<DialogEventManualV2Binding>(activity) {
 
     override fun getTitleRes() = R.string.dialog_event_manual_title
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -138,8 +134,6 @@ class EventManualDialog(
             activity = activity,
             textLayout = b.topicLayout,
             textEdit = b.topic,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
 
         stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)

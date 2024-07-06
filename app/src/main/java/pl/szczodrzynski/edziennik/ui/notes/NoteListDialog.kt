@@ -17,11 +17,7 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 class NoteListDialog(
     activity: AppCompatActivity,
     private val owner: Noteable,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<NoteListDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "NoteListDialog"
+) : BindingDialog<NoteListDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -40,8 +36,6 @@ class NoteListDialog(
             activity = activity,
             owner = owner,
             editingNote = null,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         ).show()
         return NO_DISMISS
     }
@@ -56,8 +50,6 @@ class NoteListDialog(
                     activity = activity,
                     owner = owner,
                     note = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             },
             onNoteEditClick = {
@@ -65,8 +57,6 @@ class NoteListDialog(
                     activity = activity,
                     owner = owner,
                     editingNote = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             },
         )

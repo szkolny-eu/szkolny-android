@@ -16,11 +16,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 class BellSyncConfigDialog(
     activity: AppCompatActivity,
     private val onChangeListener: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Unit>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "BellSyncConfigDialog"
+) : BaseDialog<Unit>(activity) {
 
     override fun getTitleRes() = R.string.bell_sync_title
     override fun getMessageRes() = R.string.bell_sync_adjust_content

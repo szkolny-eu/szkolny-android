@@ -19,11 +19,7 @@ class ErrorDetailsDialog(
     activity: AppCompatActivity,
     private val errors: List<ApiError>,
     private val titleRes: Int = R.string.dialog_error_details_title,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ErrorDetailsDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = titleRes
     override fun getMessage() = errors.map {

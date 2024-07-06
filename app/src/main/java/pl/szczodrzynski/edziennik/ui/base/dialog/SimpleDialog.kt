@@ -12,12 +12,8 @@ import pl.szczodrzynski.edziennik.ext.resolveString
 
 class SimpleDialog<I : Any>(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
     config: SimpleDialog<I>.() -> Unit,
-) : BaseDialog<I>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = System.currentTimeMillis().toString()
+) : BaseDialog<I>(activity) {
 
     init {
         config()

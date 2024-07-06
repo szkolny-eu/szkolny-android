@@ -14,11 +14,7 @@ class TeacherAbsenceDialog(
     activity: AppCompatActivity,
     private val profileId: Int,
     private val date: Date,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogTeacherAbsenceListBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "TeacherAbsenceDialog"
+) : BindingDialog<DialogTeacherAbsenceListBinding>(activity) {
 
     override fun getTitle(): String = date.formattedString
     override fun inflate(layoutInflater: LayoutInflater) =

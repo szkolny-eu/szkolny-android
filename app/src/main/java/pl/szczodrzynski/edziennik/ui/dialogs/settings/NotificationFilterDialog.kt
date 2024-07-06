@@ -13,11 +13,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 
 class NotificationFilterDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<NotificationType>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "NotificationFilterDialog"
+) : BaseDialog<NotificationType>(activity) {
 
     override fun getTitleRes() = R.string.dialog_notification_filter_title
     override fun getMessageRes() = R.string.dialog_notification_filter_text

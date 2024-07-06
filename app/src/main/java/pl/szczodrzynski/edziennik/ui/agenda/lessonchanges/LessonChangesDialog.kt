@@ -15,11 +15,7 @@ class LessonChangesDialog(
     activity: AppCompatActivity,
     private val profileId: Int,
     private val defaultDate: Date,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogLessonChangeListBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "LessonChangesDialog"
+) : BindingDialog<DialogLessonChangeListBinding>(activity) {
 
     override fun getTitle(): String = defaultDate.formattedString
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -38,8 +34,6 @@ class LessonChangesDialog(
                 LessonDetailsDialog(
                     activity,
                     it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         ).apply {

@@ -218,8 +218,6 @@ class NoteManager(private val app: App) {
                 activity = activity,
                 attendance = item,
                 showNotes = false,
-                onShowListener = onShowListener,
-                onDismissListener = onDismissListener,
             ).show()
             is NoticeFull -> return
             is Date -> DayDialog(
@@ -227,29 +225,21 @@ class NoteManager(private val app: App) {
                 profileId = App.profileId,
                 date = item,
                 showNotes = false,
-                onShowListener = onShowListener,
-                onDismissListener = onDismissListener,
             ).show()
             is EventFull -> EventDetailsDialog(
                 activity = activity,
                 event = item,
                 showNotes = false,
-                onShowListener = onShowListener,
-                onDismissListener = onDismissListener,
             ).show()
             is GradeFull -> GradeDetailsDialog(
                 activity = activity,
                 grade = item,
                 showNotes = false,
-                onShowListener = onShowListener,
-                onDismissListener = onDismissListener,
             ).show()
             is LessonFull -> LessonDetailsDialog(
                 activity = activity,
                 lesson = item,
                 showNotes = false,
-                onShowListener = onShowListener,
-                onDismissListener = onDismissListener,
             ).show()
             is MessageFull -> return
         }

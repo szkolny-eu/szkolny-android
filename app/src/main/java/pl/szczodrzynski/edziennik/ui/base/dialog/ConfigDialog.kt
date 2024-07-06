@@ -13,9 +13,7 @@ import pl.szczodrzynski.edziennik.R
 abstract class ConfigDialog<B : ViewBinding>(
     activity: AppCompatActivity,
     private val reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<B>(activity, onShowListener, onDismissListener) {
+) : BindingDialog<B>(activity) {
 
     final override fun getPositiveButtonText() = R.string.ok
     final override suspend fun onShow() = Unit

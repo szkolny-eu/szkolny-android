@@ -14,11 +14,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 class StudentNumberDialog(
     activity: AppCompatActivity,
     val profile: Profile,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Unit>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "StudentNumberDialog"
+) : BaseDialog<Unit>(activity) {
 
     override fun getTitleRes() = R.string.card_lucky_number_set_title
     override fun getMessageRes() = R.string.card_lucky_number_set_text
