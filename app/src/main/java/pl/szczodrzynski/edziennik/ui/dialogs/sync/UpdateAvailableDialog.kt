@@ -18,11 +18,7 @@ class UpdateAvailableDialog(
     activity: AppCompatActivity,
     private val update: Update?,
     private val mandatory: Boolean = update?.updateMandatory ?: false,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "UpdateAvailableDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.update_available_title
     override fun getMessageFormat(): Pair<Int, List<CharSequence>> {
@@ -39,8 +35,6 @@ class UpdateAvailableDialog(
     override fun isCancelable() = !mandatory
     override fun getPositiveButtonText() = R.string.update_available_button
     override fun getNeutralButtonText() = if (mandatory) null else R.string.update_available_later
-
-    override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         if (update == null || update.isOnGooglePlay)

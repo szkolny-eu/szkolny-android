@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -21,7 +20,7 @@ import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.ext.getFloat
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
-import pl.szczodrzynski.edziennik.ext.input
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.Colors
 import timber.log.Timber
@@ -59,11 +58,13 @@ class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActiv
         semester = arguments.getInt("semester", 1)
 
         if (subjectId == -1L) {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.error_occured)
-                .setMessage(R.string.error_no_subject_id)
-                .setPositiveButton(R.string.ok) { _, _ -> activity.navigateUp() }
-                .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.error_occured)
+                message(R.string.error_no_subject_id)
+                positive(R.string.ok) {
+                    activity.navigateUp()
+                }
+            }.show()
             return
         }
 
@@ -78,7 +79,7 @@ class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActiv
         b.listView.setHasFixedSize(false)
         b.listView.isNestedScrollingEnabled = false
         b.listView.layoutManager = LinearLayoutManager(context)
-        b.listView.adapter = GradesEditorAdapter(context!!, editorGrades, object : GradesEditorAdapter.OnGradeActionListener {
+        b.listView.adapter = GradesEditorAdapter(requireContext(), editorGrades, this, object : GradesEditorAdapter.OnGradeActionListener {
             override fun onClickRemove(gradeId: Long) {
                 gradeSumSemester = 0f
                 gradeCountSemester = 0f
@@ -179,11 +180,13 @@ class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActiv
 
         app.db.subjectDao().getById(App.profileId, subjectId).observe(this, Observer { subject ->
             if (subject == null || subject.id == -1L) {
-                MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.error_occured)
-                    .setMessage(R.string.error_no_subject_id)
-                    .setPositiveButton(R.string.ok) { _, _ -> activity.navigateUp() }
-                    .show()
+                SimpleDialog<Unit>(activity) {
+                    title(R.string.error_occured)
+                    message(R.string.error_no_subject_id)
+                    positive(R.string.ok) {
+                        activity.navigateUp()
+                    }
+                }.show()
                 return@Observer
             }
 
@@ -248,98 +251,92 @@ class GradesEditorFragment : BaseFragment<FragmentGradesEditorBinding, MainActiv
             var weight: Float
     )
 
-    companion object {
-        fun modifyGradeChooser(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
-            val popup = PopupMenu(v.context, v)
-            popup.menu.add(0, 0, 0, R.string.grades_editor_change_grade)
-            popup.menu.add(0, 1, 1, R.string.grades_editor_change_weight)
+    fun modifyGradeChooser(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
+        val popup = PopupMenu(v.context, v)
+        popup.menu.add(0, 0, 0, R.string.grades_editor_change_grade)
+        popup.menu.add(0, 1, 1, R.string.grades_editor_change_weight)
 
-            popup.setOnMenuItemClickListener { item ->
-                if (item.itemId == 0) {
-                    modifyGradeName(v, editorGrade, callback)
-                }
-                if (item.itemId == 1) {
-                    modifyGradeWeight(v, editorGrade, callback)
-                }
-                true
+        popup.setOnMenuItemClickListener { item ->
+            if (item.itemId == 0) {
+                modifyGradeName(v, editorGrade, callback)
             }
-
-            popup.show()
-        }
-
-        fun addGradeHandler(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
-            modifyGradeName(v, editorGrade) {
+            if (item.itemId == 1) {
                 modifyGradeWeight(v, editorGrade, callback)
             }
+            true
         }
 
-        fun modifyGradeName(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
-            val popup = PopupMenu(v.context, v)
-            popup.menu.add(0, 75, 0, "1-")
-            popup.menu.add(0, 100, 1, "1")
-            popup.menu.add(0, 150, 2, "1+")
-            popup.menu.add(0, 175, 3, "2-")
-            popup.menu.add(0, 200, 4, "2")
-            popup.menu.add(0, 250, 5, "2+")
-            popup.menu.add(0, 275, 6, "3-")
-            popup.menu.add(0, 300, 7, "3")
-            popup.menu.add(0, 350, 8, "3+")
-            popup.menu.add(0, 375, 9, "4-")
-            popup.menu.add(0, 400, 10, "4")
-            popup.menu.add(0, 450, 11, "4+")
-            popup.menu.add(0, 475, 12, "5-")
-            popup.menu.add(0, 500, 13, "5")
-            popup.menu.add(0, 550, 14, "5+")
-            popup.menu.add(0, 575, 15, "6-")
-            popup.menu.add(0, 600, 16, "6")
-            popup.menu.add(0, 650, 17, "6+")
-            popup.menu.add(0, 0, 18, "0")
+        popup.show()
+    }
 
-            popup.setOnMenuItemClickListener { item ->
-                editorGrade.name = item.title.toString()
-                editorGrade.value = item.itemId.toFloat() / 100
+    fun addGradeHandler(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
+        modifyGradeName(v, editorGrade) {
+            modifyGradeWeight(v, editorGrade, callback)
+        }
+    }
+
+    fun modifyGradeName(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
+        val popup = PopupMenu(v.context, v)
+        popup.menu.add(0, 75, 0, "1-")
+        popup.menu.add(0, 100, 1, "1")
+        popup.menu.add(0, 150, 2, "1+")
+        popup.menu.add(0, 175, 3, "2-")
+        popup.menu.add(0, 200, 4, "2")
+        popup.menu.add(0, 250, 5, "2+")
+        popup.menu.add(0, 275, 6, "3-")
+        popup.menu.add(0, 300, 7, "3")
+        popup.menu.add(0, 350, 8, "3+")
+        popup.menu.add(0, 375, 9, "4-")
+        popup.menu.add(0, 400, 10, "4")
+        popup.menu.add(0, 450, 11, "4+")
+        popup.menu.add(0, 475, 12, "5-")
+        popup.menu.add(0, 500, 13, "5")
+        popup.menu.add(0, 550, 14, "5+")
+        popup.menu.add(0, 575, 15, "6-")
+        popup.menu.add(0, 600, 16, "6")
+        popup.menu.add(0, 650, 17, "6+")
+        popup.menu.add(0, 0, 18, "0")
+
+        popup.setOnMenuItemClickListener { item ->
+            editorGrade.name = item.title.toString()
+            editorGrade.value = item.itemId.toFloat() / 100
+            callback()
+            true
+        }
+
+        popup.show()
+    }
+
+    fun modifyGradeWeight(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
+        val popup = PopupMenu(v.context, v)
+        for (i in 0..6) {
+            popup.menu.add(0, i, i, v.context.getString(R.string.grades_editor_weight_format, DecimalFormat("#.##").format(i.toLong())))
+        }
+        popup.menu.add(1, 100, 100, v.context.getString(R.string.grades_editor_weight_other))
+
+        popup.setOnMenuItemClickListener { item ->
+            if (item.itemId == 100) {
+                SimpleDialog<Unit>(activity) {
+                    title(R.string.grades_editor_add_grade_title)
+                    message(R.string.grades_editor_add_grade_weight)
+                    input(InputType.TYPE_NUMBER_FLAG_SIGNED)
+                    positive(R.string.ok) {
+                        try {
+                            editorGrade.weight = getInput()?.text?.toString()?.toFloat() ?: 0.0f
+                            callback()
+                        } catch (e: Exception) {
+                            Timber.e(e)
+                        }
+                    }
+                    negative(R.string.cancel)
+                }.show()
+            } else {
+                editorGrade.weight = item.itemId.toFloat()
                 callback()
-                true
             }
-
-            popup.show()
+            true
         }
 
-        fun modifyGradeWeight(v: View, editorGrade: EditorGrade, callback: () -> Unit) {
-            val popup = PopupMenu(v.context, v)
-            for (i in 0..6) {
-                popup.menu.add(0, i, i, v.context.getString(R.string.grades_editor_weight_format, DecimalFormat("#.##").format(i.toLong())))
-            }
-            popup.menu.add(1, 100, 100, v.context.getString(R.string.grades_editor_weight_other))
-
-            popup.setOnMenuItemClickListener { item ->
-                if (item.itemId == 100) {
-                    MaterialAlertDialogBuilder(v.context)
-                        .setTitle(R.string.grades_editor_add_grade_title)
-                        .input(
-                            message = v.context.getString(R.string.grades_editor_add_grade_weight),
-                            type = InputType.TYPE_NUMBER_FLAG_SIGNED,
-                            positiveButton = R.string.ok,
-                            positiveListener = { _, input ->
-                                try {
-                                    editorGrade.weight = input.toFloat()
-                                    callback()
-                                } catch (e: Exception) {
-                                    Timber.e(e)
-                                }
-                                true
-                            }
-                        )
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
-                } else {
-                    editorGrade.weight = item.itemId.toFloat()
-                    callback()
-                }
-                true
-            }
-
-            popup.show()
-        }
+        popup.show()
     }
 }

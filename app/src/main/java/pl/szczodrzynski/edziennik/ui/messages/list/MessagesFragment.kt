@@ -33,7 +33,7 @@ class MessagesFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>(
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                MessagesConfigDialog(activity, false, null, null).show()
+                MessagesConfigDialog(activity, false).show()
             }
     )
 

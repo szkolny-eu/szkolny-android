@@ -9,7 +9,6 @@ import android.database.CursorIndexOutOfBoundsException
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -26,11 +25,7 @@ class UpdateProgressDialog(
     activity: AppCompatActivity,
     private val update: Update,
     private val downloadId: Long,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<UpdateProgressDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "UpdateProgressDialog"
+) : BindingDialog<UpdateProgressDialogBinding>(activity) {
 
     override fun getTitleRes() = R.string.notification_downloading_update
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -38,8 +33,6 @@ class UpdateProgressDialog(
 
     override fun isCancelable() = false
     override fun getNegativeButtonText() = R.string.cancel
-
-    private var timerJob: Job? = null
 
     override suspend fun onShow() {
         EventBus.getDefault().register(this)
@@ -49,8 +42,7 @@ class UpdateProgressDialog(
         val downloadManager = app.getSystemService<DownloadManager>() ?: return
         val query = DownloadManager.Query().setFilterById(downloadId)
 
-        timerJob?.cancel()
-        timerJob = startCoroutineTimer(repeatMillis = 100L) {
+        startCoroutineTimer(repeatMillis = 100L) {
             try {
                 val cursor = downloadManager.query(query)
                 cursor.moveToFirst()
@@ -63,11 +55,6 @@ class UpdateProgressDialog(
                 b.progress.progress = (progress / total * 100.0f).toInt()
             } catch (_: CursorIndexOutOfBoundsException) {}
         }
-    }
-
-    override fun onDismiss() {
-        EventBus.getDefault().unregister(this)
-        timerJob?.cancel()
     }
 
     override suspend fun onNegativeClick(): Boolean {

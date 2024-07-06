@@ -10,15 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginSummaryFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -64,12 +65,14 @@ class LoginSummaryFragment : Fragment(), CoroutineScope {
         b.registerMeSwitch.onChange { _, isChecked ->
             if (isChecked)
                 return@onChange
-            MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.login_summary_unregister_title)
-                    .setMessage(R.string.login_summary_unregister_text)
-                    .setPositiveButton(R.string.ok, null)
-                    .setNegativeButton(R.string.cancel) { _, _ -> b.registerMeSwitch.isChecked = true }
-                    .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.login_summary_unregister_title)
+                message(R.string.login_summary_unregister_text)
+                positive(R.string.ok)
+                negative(R.string.cancel) {
+                    b.registerMeSwitch.isChecked = true
+                }
+            }.show()
         }
 
         b.anotherButton.onClick {

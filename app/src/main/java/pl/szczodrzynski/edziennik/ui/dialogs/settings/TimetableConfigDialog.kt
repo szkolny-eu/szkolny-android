@@ -15,16 +15,7 @@ import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 class TimetableConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<TimetableConfigDialogBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "TimetableConfigDialog"
+) : ConfigDialog<TimetableConfigDialogBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_timetable_config
     override fun inflate(layoutInflater: LayoutInflater) =

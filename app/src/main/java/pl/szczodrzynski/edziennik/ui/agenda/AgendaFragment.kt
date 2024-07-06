@@ -63,7 +63,7 @@ class AgendaFragment : BaseFragment<ViewBinding, MainActivity>(
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                AgendaConfigDialog(activity, true, null, null).show()
+                AgendaConfigDialog(activity, true).show()
             },
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_agenda_change_view)

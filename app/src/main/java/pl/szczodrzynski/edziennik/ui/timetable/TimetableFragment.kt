@@ -109,7 +109,7 @@ class TimetableFragment : PagerFragment<FragmentTimetableV2Binding, MainActivity
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                TimetableConfigDialog(activity, false, null, null).show()
+                TimetableConfigDialog(activity, false).show()
             }
     )
 

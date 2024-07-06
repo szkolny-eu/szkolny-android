@@ -5,19 +5,16 @@
 package pl.szczodrzynski.edziennik.ui.debug
 
 import android.os.Bundle
-import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.chuckerteam.chucker.api.Chucker
 import com.chuckerteam.chucker.api.Chucker.SCREEN_HTTP
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.data.config.Config
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
@@ -34,9 +31,9 @@ import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ext.takeValue
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.RestartDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
-import kotlin.system.exitProcess
 
 class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
     inflater = LabFragmentBinding::inflate,
@@ -100,16 +97,7 @@ class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
         b.chucker.onChange { _, isChecked ->
             app.config.enableChucker = isChecked
             App.enableChucker = isChecked
-            MaterialAlertDialogBuilder(activity)
-                .setTitle("Restart")
-                .setMessage("Wymagany restart aplikacji")
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    Process.killProcess(Process.myPid())
-                    Runtime.getRuntime().exit(0)
-                    exitProcess(0)
-                }
-                .setCancelable(false)
-                .show()
+            RestartDialog(activity).show()
         }
 
         if (App.enableChucker) {
@@ -122,16 +110,7 @@ class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
         b.disableDebug.onClick {
             app.config.devMode = false
             App.devMode = false
-            MaterialAlertDialogBuilder(activity)
-                .setTitle("Restart")
-                .setMessage("Wymagany restart aplikacji")
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    Process.killProcess(Process.myPid())
-                    Runtime.getRuntime().exit(0)
-                    exitProcess(0)
-                }
-                .setCancelable(false)
-                .show()
+            RestartDialog(activity).show()
         }
 
         b.unarchive.onClick {

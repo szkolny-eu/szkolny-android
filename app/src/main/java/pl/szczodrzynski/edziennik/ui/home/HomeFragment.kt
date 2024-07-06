@@ -91,9 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
             .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                StudentNumberDialog(activity, app.profile) {
-                    app.profileSave()
-                }
+                StudentNumberDialog(activity, app.profile).show()
             },
         BottomSheetSeparatorItem(true),
         BottomSheetPrimaryItem(true)

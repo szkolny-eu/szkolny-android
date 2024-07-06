@@ -31,6 +31,7 @@ import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class HomeLuckyNumberCard(
@@ -101,14 +102,14 @@ class HomeLuckyNumberCard(
         })
 
         holder.root.onClick {
-            StudentNumberDialog(activity, profile, onDismissListener = {
-                app.profileSave(profile)
+            this@HomeLuckyNumberCard.launch {
+                StudentNumberDialog(activity, profile).showModal()
                 val newSubTextRes = if (profile.studentNumber == -1)
                     R.string.home_lucky_number_details_click_to_set
                 else
                     R.string.home_lucky_number_details
                 b.subText.setText(newSubTextRes, profile.studentNumber)
-            })
+            }
         }
     }}
 

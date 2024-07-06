@@ -29,13 +29,8 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 class TemplateDialog(
     activity: AppCompatActivity,
     private val onActionPerformed: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogTemplateBinding>(activity, onShowListener, onDismissListener) {
+) : BindingDialog<DialogTemplateBinding>(activity) {
 
-    override val TAG = "TemplateDialog"
-
-    override fun getTitle(): CharSequence = "Template"
     override fun getTitleRes() = R.string.menu_template
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogTemplateBinding.inflate(layoutInflater)
@@ -61,8 +56,6 @@ class TemplateDialog(
 
     // to convert a map of StringIDs to CharSequences
     // .mapKeys { (resId, _) -> activity.getString(resId) }
-
-    override suspend fun onShow() = Unit
 
     // local variables go here
 

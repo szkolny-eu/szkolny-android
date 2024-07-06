@@ -12,7 +12,6 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +38,7 @@ import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -75,7 +75,7 @@ class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, Mai
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                MessagesConfigDialog(activity, false, null, null).show()
+                MessagesConfigDialog(activity, false).show()
             }
     )
 
@@ -251,18 +251,18 @@ class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, Mai
     }
 
     private fun saveDraftDialog() {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.messages_compose_save_draft_title)
-            .setMessage(R.string.messages_compose_save_draft_text)
-            .setPositiveButton(R.string.save) { _, _ ->
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_save_draft_title)
+            message(R.string.messages_compose_save_draft_text)
+            positive(R.string.save) {
                 saveDraft()
                 MessagesFragment.pageSelection = Message.TYPE_DRAFT
                 activity.navigate(navTarget = NavTarget.MESSAGES, skipBeforeNavigate = true)
             }
-            .setNegativeButton(R.string.discard) { _, _ ->
+            negative(R.string.discard) {
                 activity.resumePausedNavigation()
             }
-            .show()
+        }.show()
     }
 
     private fun saveDraft() {
@@ -279,19 +279,21 @@ class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, Mai
     }
 
     private fun discardDraftDialog() {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.messages_compose_discard_draft_title)
-            .setMessage(R.string.messages_compose_discard_draft_text)
-            .setPositiveButton(R.string.remove) { _, _ ->
-                launch {
-                    if (draftMessageId != null)
-                        manager.deleteDraft(App.profileId, draftMessageId!!)
-                    Toast.makeText(activity, R.string.messages_compose_draft_discarded, Toast.LENGTH_SHORT).show()
-                    activity.navigateUp(skipBeforeNavigate = true)
-                }
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_discard_draft_title)
+            message(R.string.messages_compose_discard_draft_text)
+            positive(R.string.remove) {
+                if (draftMessageId != null)
+                    manager.deleteDraft(App.profileId, draftMessageId!!)
+                Toast.makeText(
+                    activity,
+                    R.string.messages_compose_draft_discarded,
+                    Toast.LENGTH_SHORT
+                ).show()
+                activity.navigateUp(skipBeforeNavigate = true)
             }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
+            negative(R.string.cancel)
+        }.show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -389,14 +391,15 @@ class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, Mai
 
         activity.bottomSheet.hideKeyboard()
 
-        MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.messages_compose_confirm_title)
-                .setMessage(R.string.messages_compose_confirm_text)
-                .setPositiveButton(R.string.send) { _, _ ->
-                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), body).enqueue(activity)
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_confirm_title)
+            message(R.string.messages_compose_confirm_text)
+            positive(R.string.send) {
+                EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), body)
+                    .enqueue(activity)
+            }
+            negative(R.string.cancel)
+        }
     }
 
     override fun onResume() {

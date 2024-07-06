@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -18,6 +17,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
@@ -73,17 +73,16 @@ class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppComp
                         objVal.isBoolean -> objVal.asBoolean.toString()
                         else -> objVal.asString
                     }
+
                     is Enum<*> -> objVal.toString()
                     else -> objVal.toString()
                 }
 
-                MaterialAlertDialogBuilder(activity)
-                    .setTitle(item.key)
-                    .input(
-                        hint = "value",
-                        value = value,
-                        positiveButton = R.string.ok,
-                        positiveListener = { _, input ->
+                SimpleDialog<Unit>(activity) {
+                    title(item.key)
+                    input(hint = "value", value = value)
+                    positive(R.string.ok) {
+                            val input = getInput()?.text?.toString() ?: return@positive
                             when (parent) {
                                 is JsonObject -> {
                                     val v = objVal as JsonPrimitive
@@ -102,6 +101,7 @@ class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppComp
                                     else
                                         app.config[objName] = input
                                 }
+
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true
@@ -127,12 +127,9 @@ class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppComp
                             }
 
                             showJson()
-
-                            return@input true
-                        }
-                    )
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                    }
+                    negative(R.string.cancel)
+                }.show()
             }
             catch (e: Exception) {
                 if (activity is MainActivity)

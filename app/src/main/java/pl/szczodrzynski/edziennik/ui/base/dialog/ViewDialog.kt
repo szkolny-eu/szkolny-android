@@ -9,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 abstract class ViewDialog<V : View>(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity) {
 
     protected lateinit var root: V
     protected abstract fun getRootView(): V

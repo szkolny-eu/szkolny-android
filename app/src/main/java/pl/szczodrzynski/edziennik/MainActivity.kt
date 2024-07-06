@@ -22,7 +22,6 @@ import androidx.navigation.NavOptions
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danimahardhika.cafebar.CafeBar
 import com.danimahardhika.cafebar.CafeBarTheme
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jetradarmobile.snowfall.SnowfallView
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
@@ -77,12 +76,12 @@ import pl.szczodrzynski.edziennik.ext.keys
 import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveString
-import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ext.shouldArchive
 import pl.szczodrzynski.edziennik.ext.takePositive
 import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ext.toImageHolder
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
@@ -457,37 +456,37 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                  |__*/
     private suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_archived_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_archived_title)
+                message(
                     R.string.profile_archived_text,
                     app.profile.studentSchoolYearStart,
                     app.profile.studentSchoolYearStart + 1
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
         if (app.profile.shouldArchive()) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_archiving_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_archiving_title)
+                message(
                     R.string.profile_archiving_format,
                     app.profile.dateYearEnd.formattedString
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
         }
         if (app.profile.isBeforeYear()) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_year_not_started_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_year_not_started_title)
+                message(
                     R.string.profile_year_not_started_format,
                     app.profile.dateSemester1Start.formattedString
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
@@ -625,10 +624,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
         if (app.config.sync.dontShowAppManagerDialog)
             return
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.app_manager_dialog_title)
-            .setMessage(R.string.app_manager_dialog_text)
-            .setPositiveButton(R.string.ok) { _, _ ->
+        SimpleDialog<Unit>(this) {
+            title(R.string.app_manager_dialog_title)
+            message(R.string.app_manager_dialog_text)
+            positive(R.string.ok) {
                 try {
                     for (intent in appManagerIntentList) {
                         if (packageManager.resolveActivity(intent,
@@ -642,16 +641,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         startActivity(Intent(Settings.ACTION_SETTINGS))
                     } catch (e: Exception) {
                         Timber.e(e)
-                        Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
+                        Toast.makeText(this@MainActivity, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
-            .setNeutralButton(R.string.dont_ask_again) { _, _ ->
+            neutral(R.string.dont_ask_again) {
                 app.config.sync.dontShowAppManagerDialog = true
             }
-            .setCancelable(false)
-            .show()
+            cancelable(false)
+        }.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

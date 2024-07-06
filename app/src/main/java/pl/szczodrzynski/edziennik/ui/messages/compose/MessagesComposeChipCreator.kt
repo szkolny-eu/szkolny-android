@@ -9,21 +9,37 @@ import android.graphics.drawable.BitmapDrawable
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.widget.Toast
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AppCompatActivity
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.chip.ChipInfo
 import com.hootsuite.nachos.chip.ChipSpan
 import com.hootsuite.nachos.chip.ChipSpanChipCreator
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.asSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.toColorStateList
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.navlib.elevateSurface
+import kotlin.collections.List
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.listOf
+import kotlin.collections.listOfNotNull
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.mutableSetOf
+import kotlin.collections.plusAssign
+import kotlin.collections.set
+import kotlin.collections.sortedBy
 
 class MessagesComposeChipCreator(
-    private val context: Context,
+    private val activity: AppCompatActivity,
     private val nacho: NachoTextView,
     private val teacherList: List<Teacher>,
 ) : ChipSpanChipCreator() {
@@ -69,14 +85,12 @@ class MessagesComposeChipCreator(
         else
             adapter.originalList
 
-        val category = mutableListOf<Teacher>()
-        val categoryNames = mutableListOf<CharSequence>()
-        val categoryCheckedItems = mutableListOf<Boolean>()
+        val multiChoiceItems = mutableMapOf<CharSequence, Teacher>()
+        val defaultSelectedItems = mutableSetOf<Teacher>()
         teachers.forEach { teacher ->
             if (!teacher.isType(type))
                 return@forEach
 
-            category += teacher
             val name = teacher.fullName
             val description = when (type) {
                 Teacher.TYPE_TEACHER -> null
@@ -94,7 +108,7 @@ class MessagesComposeChipCreator(
                 Teacher.TYPE_SPECIALIST -> null
                 else -> teacher.typeDescription
             }
-            categoryNames += listOfNotNull(
+            val displayName = listOfNotNull(
                 name.asSpannable(
                     ForegroundColorSpan(textColorPrimary)
                 ),
@@ -103,21 +117,19 @@ class MessagesComposeChipCreator(
                     AbsoluteSizeSpan(14.dp)
                 )
             ).concat("\n")
+            multiChoiceItems[displayName] = teacher
 
             // check the teacher if already added as a recipient
-            categoryCheckedItems += nacho.allChips.firstOrNull { it.data == teacher } != null
+            if (nacho.allChips.firstOrNull { it.data == teacher } != null)
+                defaultSelectedItems += teacher
         }
 
-        MaterialAlertDialogBuilder(context)
-            .setTitle("Dodaj odbiorców - " + Teacher.typeName(context, type))
-            //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
-            .setPositiveButton("OK", null)
-            .setNeutralButton("Anuluj", null)
-            .setMultiChoiceItems(
-                categoryNames.toTypedArray(),
-                categoryCheckedItems.toBooleanArray()
-            ) { _, which, isChecked ->
-                val teacher = category[which]
+        SimpleDialog<Teacher>(activity) {
+            title("Dodaj odbiorców - " + Teacher.typeName(context, type))
+            message(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type))
+            positive(R.string.ok)
+            negative(R.string.cancel)
+            multi(multiChoiceItems, defaultSelectedItems) { teacher, isChecked ->
                 if (isChecked) {
                     val chipInfoList = mutableListOf<ChipInfo>()
                     teacher.image =
@@ -131,13 +143,13 @@ class MessagesComposeChipCreator(
                     }
                 }
             }
-            .show()
+        }.show()
         return null
     }
 
     override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
         super.configureChip(chip, chipConfiguration)
-        chip.setBackgroundColor(elevateSurface(context, 8).toColorStateList())
-        chip.setTextColor(android.R.attr.textColorPrimary.resolveAttr(context))
+        chip.setBackgroundColor(elevateSurface(activity, 8).toColorStateList())
+        chip.setTextColor(android.R.attr.textColorPrimary.resolveAttr(activity))
     }
 }

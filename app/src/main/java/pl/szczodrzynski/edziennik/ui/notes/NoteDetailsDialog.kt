@@ -20,11 +20,7 @@ class NoteDetailsDialog(
     activity: AppCompatActivity,
     private val owner: Noteable?,
     private var note: Note,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<NoteDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "NoteDetailsDialog"
+) : BindingDialog<NoteDetailsDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -41,8 +37,6 @@ class NoteDetailsDialog(
             activity = activity,
             owner = owner,
             editingNote = note,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         ).show()
         return NO_DISMISS
     }

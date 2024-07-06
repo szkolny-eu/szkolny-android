@@ -22,11 +22,7 @@ class StyledTextDialog(
     activity: AppCompatActivity,
     val initialText: Editable?,
     val onSuccess: (text: Editable) -> Unit,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<StyledTextDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "StyledTextDialog"
+) : BindingDialog<StyledTextDialogBinding>(activity) {
 
     private lateinit var config: StylingConfig
 

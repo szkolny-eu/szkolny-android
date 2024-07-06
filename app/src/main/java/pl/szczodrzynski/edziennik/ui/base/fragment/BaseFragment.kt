@@ -20,7 +20,9 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
+import pl.szczodrzynski.edziennik.ext.registerSafe
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.unregisterSafe
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.navlib.bottomsheet.items.IBottomSheetItem
 import kotlin.coroutines.CoroutineContext
@@ -86,11 +88,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     override fun onResume() {
         super.onResume()
-        try {
-            EventBus.getDefault().register(this)
-        } catch (_: Exception) {
-        }
-
+        EventBus.getDefault().registerSafe(this)
         if (!isAdded || isViewReady)
             return
         isViewReady = true
@@ -109,10 +107,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     override fun onPause() {
         super.onPause()
-        try {
-            EventBus.getDefault().unregister(this)
-        } catch (_: Exception) {
-        }
+        EventBus.getDefault().unregisterSafe(this)
     }
 
     final override fun onDestroyView() {

@@ -8,15 +8,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.sephiroth.android.library.numberpicker.doOnStopTrackingTouch
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.DialogConfigGradesBinding
-import pl.szczodrzynski.edziennik.ext.join
-import pl.szczodrzynski.edziennik.ext.onChange
-import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ext.setOnSelectedListener
-import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.COLOR_MODE_DEFAULT
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.ORDER_BY_DATE_DESC
@@ -26,20 +19,18 @@ import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_AV
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_SEM_2_AVG
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_1_SEM_2_SEM
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.databinding.DialogConfigGradesBinding
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setOnSelectedListener
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 
 class GradesConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<DialogConfigGradesBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "GradesConfigDialog"
+) : ConfigDialog<DialogConfigGradesBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_grades_config
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -155,11 +146,11 @@ class GradesConfigDialog(
         }
 
         b.averageWithoutWeightHelp.onClick {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.grades_config_average_without_weight)
-                .setMessage(R.string.grades_config_average_without_weight_message)
-                .setPositiveButton(R.string.ok, null)
-                .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.grades_config_average_without_weight)
+                message(R.string.grades_config_average_without_weight_message)
+                positive(R.string.ok)
+            }.show()
         }
     }
 }

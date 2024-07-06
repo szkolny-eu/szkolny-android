@@ -22,11 +22,7 @@ class AttendanceDetailsDialog(
     activity: AppCompatActivity,
     private val attendance: AttendanceFull,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<AttendanceDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "AttendanceDetailsDialog"
+) : BindingDialog<AttendanceDetailsDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -34,7 +30,7 @@ class AttendanceDetailsDialog(
 
     override fun getPositiveButtonText() = R.string.close
 
-    override suspend fun onShow() {
+    override suspend fun onBeforeShow(): Boolean {
         val manager = app.attendanceManager
 
         val attendanceColor = manager.getAttendanceColor(attendance)
@@ -49,7 +45,7 @@ class AttendanceDetailsDialog(
             BetterLink.attach(
                 b.teacherName,
                 teachers = mapOf(attendance.teacherId to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
@@ -57,11 +53,10 @@ class AttendanceDetailsDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = attendance,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(attendance, b.legend)
+        return true
     }
 }

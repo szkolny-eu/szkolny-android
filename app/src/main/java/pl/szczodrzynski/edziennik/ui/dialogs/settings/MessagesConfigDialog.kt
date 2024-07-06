@@ -13,16 +13,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 class MessagesConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<MessagesConfigDialogBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "MessagesConfigDialog"
+) : ConfigDialog<MessagesConfigDialogBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_messages_config
     override fun inflate(layoutInflater: LayoutInflater) =

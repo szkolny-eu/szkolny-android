@@ -7,50 +7,62 @@ package pl.szczodrzynski.edziennik.ui.timetable
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.DashPathEffect
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
-import org.greenrobot.eventbus.EventBus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
-import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.DialogGenerateBlockTimetableBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.asStrikethroughSpannable
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 import timber.log.Timber
 import java.io.File
-import kotlin.coroutines.CoroutineContext
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 import kotlin.math.roundToInt
 
 class GenerateBlockTimetableDialog(
-        val activity: AppCompatActivity,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
+    activity: AppCompatActivity,
+) : BindingDialog<DialogGenerateBlockTimetableBinding>(activity) {
     companion object {
-        const val TAG = "GenerateBlockTimetableDialog"
-
+        private const val TAG = "GenerateBlockTimetableDialog"
         private const val WIDTH_CONSTANT = 70
         private const val WIDTH_WEEKDAY = 285
         private const val WIDTH_SPACING = 15
@@ -59,64 +71,45 @@ class GenerateBlockTimetableDialog(
         private const val HEIGHT_FOOTER = 40
     }
 
+    override fun getTitleRes() = R.string.timetable_generate_range
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogGenerateBlockTimetableBinding.inflate(layoutInflater)
+
+    override fun getPositiveButtonText() = R.string.save
+    override fun getNegativeButtonText() = R.string.cancel
+
     private val heightProfileName by lazy { if (showProfileName) 100 else 0 }
-
-    private val app by lazy { activity.application as App }
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    private lateinit var dialog: AlertDialog
-    private lateinit var b: DialogGenerateBlockTimetableBinding
 
     private var showProfileName: Boolean = false
     private var showTeachersNames: Boolean = true
     private var noColors: Boolean = false
 
-    private var enqueuedWeekDialog: AlertDialog? = null
+    private var enqueuedWeekDialog: BaseDialog<*>? = null
     private var enqueuedWeekStart = Date.getToday()
     private var enqueuedWeekEnd = Date.getToday()
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        EventBus.getDefault().register(this)
+    private val weekCurrentStart = Week.getWeekStart()
+    private val weekCurrentEnd = Week.getWeekEnd()
+    private val weekNextStart = weekCurrentEnd.clone().stepForward(0, 0, 1)
+    private val weekNextEnd = weekNextStart.clone().stepForward(0, 0, 6)
 
-        val weekCurrentStart = Week.getWeekStart()
-        val weekCurrentEnd = Week.getWeekEnd()
-        val weekNextStart = weekCurrentEnd.clone().stepForward(0, 0, 1)
-        val weekNextEnd = weekNextStart.clone().stepForward(0, 0, 6)
-
-        b = DialogGenerateBlockTimetableBinding.inflate(activity.layoutInflater)
-
+    override suspend fun onShow() {
         b.withChangesCurrentWeekRadio.setText(R.string.timetable_generate_current_week_format, weekCurrentStart.formattedStringShort, weekCurrentEnd.formattedStringShort)
         b.withChangesNextWeekRadio.setText(R.string.timetable_generate_next_week_format, weekNextStart.formattedStringShort, weekCurrentEnd.formattedStringShort)
 
         b.showProfileNameCheckbox.setOnCheckedChangeListener { _, isChecked -> showProfileName = isChecked }
         b.showTeachersNamesCheckbox.setOnCheckedChangeListener { _, isChecked -> showTeachersNames = isChecked }
         b.noColorsCheckbox.setOnCheckedChangeListener { _, isChecked -> noColors = isChecked }
+    }
 
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.timetable_generate_range)
-                .setView(b.root)
-                .setNeutralButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton(R.string.save, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                    EventBus.getDefault().unregister(this@GenerateBlockTimetableDialog)
-                }
-                .show()
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.onClick {
-            when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
-                R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
-                R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
-                R.id.forSelectedWeekRadio -> selectDate()
-            }
+    override suspend fun onPositiveClick(): Boolean {
+        when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
+            R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
+            R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
+            R.id.forSelectedWeekRadio -> selectDate()
         }
-    }}
+        return NO_DISMISS
+    }
 
     private fun selectDate() {
         MaterialDatePicker.Builder.datePicker()
@@ -146,7 +139,7 @@ class GenerateBlockTimetableDialog(
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
-        dialog.dismiss()
+        dismiss()
         enqueuedWeekDialog?.dismiss()
     }
 
@@ -191,11 +184,11 @@ class GenerateBlockTimetableDialog(
             if (enqueuedWeekDialog != null) {
                 return@launch
             }
-            enqueuedWeekDialog = MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.please_wait)
-                    .setMessage(R.string.timetable_syncing_text)
-                    .setCancelable(false)
-                    .show()
+            enqueuedWeekDialog = SimpleDialog<Unit>(activity) {
+                title(R.string.please_wait)
+                message(R.string.timetable_syncing_text)
+                cancelable(false)
+            }.show()
 
             enqueuedWeekStart = weekStart
             enqueuedWeekEnd = weekEnd
@@ -210,18 +203,17 @@ class GenerateBlockTimetableDialog(
             return@launch
         }
 
-        val progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.timetable_generate_progress_title)
-                .setMessage(R.string.timetable_generate_progress_text)
-                .show()
+        val progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.timetable_generate_progress_title)
+            message(R.string.timetable_generate_progress_text)
+            cancelable(false)
+        }.show()
 
         if (minTime == null) {
             progressDialog.dismiss()
             // TODO: Toast
             return@launch
         }
-
-        dialog.dismiss()
 
         val uri = withContext(Dispatchers.Default) {
 
@@ -402,26 +394,28 @@ class GenerateBlockTimetableDialog(
         }
 
         progressDialog.dismiss()
-        MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.timetable_generate_success_title)
-                .setMessage(R.string.timetable_generate_success_text)
-                .setPositiveButton(R.string.share) { dialog, _ ->
-                    dialog.dismiss()
-
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.setDataAndType(null, "image/*")
-                    intent.putExtra(Intent.EXTRA_STREAM, uri)
-                    activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.share_intent)))
-                }
-                .setNegativeButton(R.string.open) { dialog, _ ->
-                    dialog.dismiss()
-
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(uri, "image/*")
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    activity.startActivity(intent)
-                }
-                .setNeutralButton(R.string.do_nothing) { dialog, _ -> dialog.dismiss() }
-                .show()
+        SimpleDialog<Unit>(activity) {
+            title(R.string.timetable_generate_success_title)
+            message(R.string.timetable_generate_success_text)
+            positive(R.string.share) {
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.setDataAndType(null, "image/*")
+                intent.putExtra(Intent.EXTRA_STREAM, uri)
+                activity.startActivity(
+                    Intent.createChooser(
+                        intent,
+                        activity.getString(R.string.share_intent)
+                    )
+                )
+            }
+            negative(R.string.open) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(uri, "image/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                activity.startActivity(intent)
+            }
+            neutral(R.string.do_nothing)
+        }.showModal()
+        dismiss()
     }}
 }

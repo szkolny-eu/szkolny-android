@@ -20,10 +20,7 @@ class RecaptchaPromptDialog(
     private val onSuccess: (recaptchaCode: String) -> Unit,
     private val onCancel: (() -> Unit)?,
     private val onServerError: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<RecaptchaViewBinding>(activity, onShowListener, onDismissListener) {
-    override val TAG = "RecaptchaPromptDialog"
+) : BindingDialog<RecaptchaViewBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -57,7 +54,7 @@ class RecaptchaPromptDialog(
                     b.progress.visibility = View.GONE
                     success = true
                     onSuccess(recaptchaCode)
-                    dialog.dismiss()
+                    dismiss()
                 },
                 onFailure = {
                     b.checkbox.background = checkboxBackground
@@ -69,7 +66,7 @@ class RecaptchaPromptDialog(
         }
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!success)
             onCancel?.invoke()
     }

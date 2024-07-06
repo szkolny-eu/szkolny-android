@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,6 +19,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext
 
@@ -72,15 +72,15 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             return
         }
         if (destination.id == R.id.loginSummaryFragment) {
-            MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.are_you_sure)
-                    .setMessage(R.string.login_cancel_confirmation)
-                    .setPositiveButton(R.string.yes) { _, _ ->
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    }
-                    .setNegativeButton(R.string.no, null)
-                    .show()
+            SimpleDialog<Unit>(this) {
+                title(R.string.are_you_sure)
+                message(R.string.login_cancel_confirmation)
+                positive(R.string.yes) {
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                }
+                negative(R.string.no)
+            }.show()
             return
         }
         nav.navigateUp()

@@ -18,11 +18,7 @@ class ProfileRemoveDialog(
     val profileName: String,
     val noProfileRemoval: Boolean = false,
     val onRemove: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ProfileRemoveDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.profile_menu_remove_confirm
     override fun getMessageFormat() =
@@ -34,8 +30,6 @@ class ProfileRemoveDialog(
     override fun isCancelable() = false
     override fun getPositiveButtonText() = R.string.remove
     override fun getNeutralButtonText() = R.string.cancel
-
-    override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         withContext(Dispatchers.Default) {

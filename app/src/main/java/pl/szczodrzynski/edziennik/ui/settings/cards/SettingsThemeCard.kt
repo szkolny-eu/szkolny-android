@@ -5,9 +5,9 @@
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AppLanguageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MiniMenuConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
@@ -92,14 +92,12 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 setHeaderBackground()
                 return@createActionItem
             }
-            MaterialAlertDialogBuilder(activity)
-                .setItems(
-                    arrayOf(
-                        activity.getString(R.string.settings_theme_drawer_header_dialog_set),
-                        activity.getString(R.string.settings_theme_drawer_header_dialog_restore)
-                    )
-                ) { _, which ->
-                    when (which) {
+            SimpleDialog<Int>(activity) {
+                itemsRes(
+                    R.string.settings_theme_drawer_header_dialog_set to 0,
+                    R.string.settings_theme_drawer_header_dialog_restore to 1,
+                ) {
+                    when (it) {
                         0 -> setHeaderBackground()
                         1 -> {
                             app.config.ui.headerBackground = null
@@ -108,8 +106,8 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                         }
                     }
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                negative(R.string.cancel)
+            }.show()
         },
 
         util.createActionItem(
@@ -121,14 +119,12 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 setAppBackground()
                 return@createActionItem
             }
-            MaterialAlertDialogBuilder(activity)
-                .setItems(
-                    arrayOf(
-                        activity.getString(R.string.settings_theme_app_background_dialog_set),
-                        activity.getString(R.string.settings_theme_app_background_dialog_restore)
-                    )
-                ) { _, which ->
-                    when (which) {
+            SimpleDialog<Int>(activity) {
+                itemsRes(
+                    R.string.settings_theme_app_background_dialog_set to 0,
+                    R.string.settings_theme_app_background_dialog_restore to 1,
+                ) {
+                    when (it) {
                         0 -> setAppBackground()
                         1 -> {
                             app.config.ui.appBackground = null
@@ -136,8 +132,8 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                         }
                     }
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                negative(R.string.cancel)
+            }.show()
         },
 
         util.createPropertyItem(

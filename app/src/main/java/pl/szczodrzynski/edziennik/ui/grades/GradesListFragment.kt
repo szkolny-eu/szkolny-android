@@ -45,7 +45,7 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
             .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
             .withOnClickListener {
                 activity.bottomSheet.close()
-                GradesConfigDialog(activity, true, null, null).show()
+                GradesConfigDialog(activity, true).show()
             },
     )
 

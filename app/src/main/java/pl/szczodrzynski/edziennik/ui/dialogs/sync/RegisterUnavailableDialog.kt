@@ -19,11 +19,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 class RegisterUnavailableDialog(
     activity: AppCompatActivity,
     private val status: RegisterAvailabilityStatus,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogRegisterUnavailableBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "RegisterUnavailableDialog"
+) : BindingDialog<DialogRegisterUnavailableBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -43,8 +39,6 @@ class RegisterUnavailableDialog(
             activity = activity,
             update = update,
             mandatory = update != null && update.versionCode >= status.minVersionCode,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener
         ).show()
         return false
     }

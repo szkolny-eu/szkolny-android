@@ -39,11 +39,7 @@ class DayDialog(
     private val date: Date,
     private val eventTypeId: Long? = null,
     private val showNotes: Boolean = false,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "DayDialog"
+) : BindingDialog<DialogDayBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -59,8 +55,6 @@ class DayDialog(
             activity,
             profileId,
             defaultDate = date,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener
         ).show()
         return NO_DISMISS
     }
@@ -114,8 +108,6 @@ class DayDialog(
                     activity,
                     profileId,
                     date,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         }
@@ -139,8 +131,6 @@ class DayDialog(
                     activity,
                     profileId,
                     date,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         }
@@ -158,8 +148,6 @@ class DayDialog(
                 EventDetailsDialog(
                     activity,
                     it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             },
             onEventEditClick = {
@@ -167,8 +155,6 @@ class DayDialog(
                     activity,
                     it.profileId,
                     editingEvent = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         )
@@ -209,8 +195,6 @@ class DayDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = date,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)

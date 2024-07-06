@@ -36,11 +36,7 @@ class LessonDetailsDialog(
     private val lesson: LessonFull,
     private val attendance: AttendanceFull? = null,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogLessonDetailsBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "LessonDetailsDialog"
+) : BindingDialog<DialogLessonDetailsBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -60,8 +56,6 @@ class LessonDetailsDialog(
             activity,
             lesson.profileId,
             defaultLesson = lesson,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener
         ).show()
         return NO_DISMISS
     }
@@ -114,7 +108,7 @@ class LessonDetailsDialog(
                 }
             }
             b.shiftedGoTo.setOnClickListener {
-                dialog.dismiss()
+                dismiss()
                 val dateStr = otherLessonDate?.stringY_m_d ?: return@setOnClickListener
                 val intent = Intent(TimetableFragment.ACTION_SCROLL_TO_DATE).apply {
                     putExtra("timetableDate", dateStr)
@@ -168,8 +162,6 @@ class LessonDetailsDialog(
                 AttendanceDetailsDialog(
                     activity = activity,
                     attendance = attendance,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             }
         }
@@ -186,8 +178,6 @@ class LessonDetailsDialog(
                 EventDetailsDialog(
                     activity,
                     it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             },
             onEventEditClick = {
@@ -195,8 +185,6 @@ class LessonDetailsDialog(
                     activity,
                     it.profileId,
                     editingEvent = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         )
@@ -236,12 +224,12 @@ class LessonDetailsDialog(
             BetterLink.attach(
                 b.teacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
             BetterLink.attach(
                 b.oldTeacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
@@ -250,8 +238,6 @@ class LessonDetailsDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = lesson,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)

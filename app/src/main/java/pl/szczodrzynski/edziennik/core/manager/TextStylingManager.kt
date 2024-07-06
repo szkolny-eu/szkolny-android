@@ -287,8 +287,6 @@ class TextStylingManager(private val app: App) {
         activity: AppCompatActivity,
         textLayout: TextInputLayout,
         textEdit: TextInputKeyboardEdit,
-        onShowListener: ((tag: String) -> Unit)? = null,
-        onDismissListener: ((tag: String) -> Unit)? = null,
     ) {
         textLayout.endIconDrawable = CommunityMaterial.Icon3.cmd_open_in_new.toDrawable(activity)
         textLayout.setEndIconOnClickListener {
@@ -298,8 +296,6 @@ class TextStylingManager(private val app: App) {
                 onSuccess = {
                     textEdit.text = it
                 },
-                onShowListener,
-                onDismissListener
             ).show()
         }
     }

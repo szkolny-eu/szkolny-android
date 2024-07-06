@@ -13,11 +13,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 class QrScannerDialog(
     activity: AppCompatActivity,
     val onCodeScanned: (text: String) -> Unit,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ViewDialog<ZXingScannerView>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "QrScannerDialog"
+) : ViewDialog<ZXingScannerView>(activity) {
 
     override fun getTitleRes() = R.string.qr_scanner_dialog_title
     override fun getPositiveButtonText() = R.string.close
@@ -31,13 +27,13 @@ class QrScannerDialog(
     override suspend fun onShow() {
         root.setResultHandler {
             root.stopCamera()
-            dialog.dismiss()
+            dismiss()
             onCodeScanned(it.text)
         }
         root.startCamera()
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         root.stopCamera()
     }
 }

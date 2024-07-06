@@ -11,11 +11,7 @@ import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class ThemeChooserDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Theme>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ThemeChooserDialog"
+) : BaseDialog<Theme>(activity) {
 
     override fun getTitleRes() = R.string.settings_theme_theme_text
     override fun getPositiveButtonText() = R.string.ok
@@ -25,8 +21,6 @@ class ThemeChooserDialog(
         Theme.entries.associateBy { activity.getString(it.nameRes) }
 
     override fun getDefaultSelectedItem() = app.uiManager.themeColor
-
-    override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         val themeColor = getSingleSelection() ?: return DISMISS
