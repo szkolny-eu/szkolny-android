@@ -12,7 +12,6 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.qifan.powerpermission.coroutines.awaitAskPermissions
 import com.qifan.powerpermission.data.hasAllGranted
 import com.qifan.powerpermission.data.hasPermanentDenied
@@ -23,6 +22,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import kotlin.coroutines.CoroutineContext
 
 class PermissionManager(val app: App) : CoroutineScope {
@@ -70,10 +70,10 @@ class PermissionManager(val app: App) : CoroutineScope {
                         onSuccess()
                         return@launch
                     }
-                    MaterialAlertDialogBuilder(activity)
-                        .setTitle(R.string.permissions_required)
-                        .setMessage(permissionMessage)
-                        .setPositiveButton(R.string.ok) { _, _ ->
+                    SimpleDialog<Unit>(activity) {
+                        title(R.string.permissions_required)
+                        message(permissionMessage)
+                        positive(R.string.ok) {
                             requestPermission(
                                 activity,
                                 permissionMessage,
@@ -82,22 +82,22 @@ class PermissionManager(val app: App) : CoroutineScope {
                                 onSuccess
                             )
                         }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+                        negative(R.string.cancel)
+                    }.show()
                 }
                 result.hasPermanentDenied() -> {
                     if (!isRequired) {
                         onSuccess()
                         return@launch
                     }
-                    MaterialAlertDialogBuilder(activity)
-                        .setTitle(R.string.permissions_required)
-                        .setMessage(R.string.permissions_denied)
-                        .setPositiveButton(R.string.ok) { _, _ ->
+                    SimpleDialog<Unit>(activity) {
+                        title(R.string.permissions_required)
+                        message(R.string.permissions_denied)
+                        positive(R.string.ok) {
                             openPermissionSettings(activity)
                         }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+                        negative(R.string.cancel)
+                    }.show()
                 }
             }
         }

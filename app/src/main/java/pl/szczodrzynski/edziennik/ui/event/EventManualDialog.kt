@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +43,9 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.removeFromParent
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.utils.Anim
@@ -93,10 +93,10 @@ class EventManualDialog(
         SzkolnyApi(app)
     }
 
-    private var enqueuedWeekDialog: AlertDialog? = null
+    private var enqueuedWeekDialog: BaseDialog<*>? = null
     private var enqueuedWeekStart = Date.getToday()
 
-    private var progressDialog: AlertDialog? = null
+    private var progressDialog: BaseDialog<*>? = null
 
     override suspend fun onPositiveClick(): Boolean {
         saveEvent()
@@ -180,11 +180,11 @@ class EventManualDialog(
             return
         }
         val weekStart = date.weekStart
-        enqueuedWeekDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.timetable_syncing_text)
-                .setCancelable(false)
-                .show()
+        enqueuedWeekDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.timetable_syncing_text)
+            cancelable(false)
+        }.show()
 
         enqueuedWeekStart = weekStart
 
@@ -202,11 +202,11 @@ class EventManualDialog(
             return
         }
 
-        progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.event_sharing_text)
-                .setCancelable(false)
-                .show()
+        progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.event_sharing_text)
+            cancelable(false)
+        }.show()
     }
 
     private fun showRemovingProgressDialog() {
@@ -214,11 +214,11 @@ class EventManualDialog(
             return
         }
 
-        progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.event_removing_text)
-                .setCancelable(false)
-                .show()
+        progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.event_removing_text)
+            cancelable(false)
+        }.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -392,22 +392,14 @@ class EventManualDialog(
             editingShared && !editingOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared)
             else -> ""
         }
-        removeEventDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation)+shareNotice)
-                .setPositiveButton(R.string.yes, null)
-                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-                .create()
-                .apply {
-                    setOnShowListener { dialog ->
-                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
-                        positiveButton?.setOnClickListener {
-                            removeEvent()
-                        }
-                    }
-
-                    show()
-                }
+        SimpleDialog<Unit>(activity) {
+            title(R.string.are_you_sure)
+            message(activity.getString(R.string.dialog_register_event_manual_remove_confirmation) + shareNotice)
+            positive(R.string.yes) {
+                removeEvent()
+            }
+            negative(R.string.no)
+        }.show()
     }
 
     private fun saveEvent() {

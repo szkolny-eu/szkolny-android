@@ -11,11 +11,9 @@ import android.provider.CalendarContract.Events
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,7 +40,9 @@ import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
@@ -67,7 +67,6 @@ class EventDetailsDialog(
     override fun getPositiveButtonText() = R.string.close
     override fun getNeutralButtonText() = if (event.addedManually) R.string.remove else null
 
-    private var removeEventDialog: AlertDialog? = null
     private val eventShared = event.sharedBy != null
     private val eventOwn = event.sharedBy == "self"
     private val manager
@@ -77,7 +76,7 @@ class EventDetailsDialog(
         SzkolnyApi(app)
     }
 
-    private var progressDialog: AlertDialog? = null
+    private var progressDialog: BaseDialog<*>? = null
 
     override suspend fun onNeutralClick(): Boolean {
         showRemoveEventDialog()
@@ -158,22 +157,22 @@ class EventDetailsDialog(
         b.checkDoneButton.onChange { _, isChecked ->
             if (isChecked && !event.isDone) {
                 b.checkDoneButton.isChecked = false
-                MaterialAlertDialogBuilder(activity)
-                        .setTitle(R.string.event_mark_as_done_title)
-                        .setMessage(R.string.event_mark_as_done_text)
-                        .setPositiveButton(R.string.ok) { _, _ ->
-                            event.isDone = isChecked
-                            launch(Dispatchers.Default) {
-                                app.db.eventDao().replace(event)
-                            }
-                            update()
-                            b.checkDoneButton.isChecked = true
+                SimpleDialog<Unit>(activity) {
+                    title(R.string.event_mark_as_done_title)
+                    message(R.string.event_mark_as_done_text)
+                    positive(R.string.ok) {
+                        event.isDone = true
+                        withContext(Dispatchers.IO) {
+                            app.db.eventDao().replace(event)
                         }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+                        update()
+                        b.checkDoneButton.isChecked = true
+                    }
+                    negative(R.string.cancel)
+                }.show()
             }
             else if (!isChecked && event.isDone) {
-                event.isDone = isChecked
+                event.isDone = false
                 launch(Dispatchers.Default) {
                     app.db.eventDao().replace(event)
                 }
@@ -307,11 +306,11 @@ class EventDetailsDialog(
             return
         }
 
-        progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.event_removing_text)
-                .setCancelable(false)
-                .show()
+        progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.event_removing_text)
+            cancelable(false)
+        }.show()
     }
 
     private fun showRemoveEventDialog() {
@@ -320,22 +319,14 @@ class EventDetailsDialog(
             eventShared && !eventOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared)
             else -> ""
         }
-        removeEventDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation)+shareNotice)
-                .setPositiveButton(R.string.yes, null)
-                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-                .create()
-                .apply {
-                    setOnShowListener { dialog ->
-                        val positiveButton = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
-                        positiveButton?.setOnClickListener {
-                            removeEvent()
-                        }
-                    }
-
-                    show()
-                }
+        SimpleDialog<Unit>(activity) {
+            title(R.string.are_you_sure)
+            message(activity.getString(R.string.dialog_register_event_manual_remove_confirmation) + shareNotice)
+            positive(R.string.yes) {
+                removeEvent()
+            }
+            negative(R.string.no)
+        }.show()
     }
 
     private fun removeEvent() {
@@ -372,7 +363,6 @@ class EventDetailsDialog(
             }
         }
 
-        removeEventDialog?.dismiss()
         dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
     }

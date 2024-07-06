@@ -1,10 +1,8 @@
 package pl.szczodrzynski.edziennik.ui.settings.contributors
 
 import android.os.Bundle
-import android.os.Process
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -14,8 +12,9 @@ import pl.szczodrzynski.edziennik.databinding.ContributorsFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.onLongClick
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.PagerFragment
-import kotlin.system.exitProcess
+import pl.szczodrzynski.edziennik.ui.dialogs.RestartDialog
 
 class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActivity>(
     inflater = ContributorsFragmentBinding::inflate,
@@ -77,28 +76,19 @@ class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActi
         }
 
         b.glove.onClick {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.dev_mode_enable_warning)
-                .setPositiveButton(R.string.yes) { _, _ ->
+            SimpleDialog<Unit>(activity) {
+                title(R.string.are_you_sure)
+                message(R.string.dev_mode_enable_warning)
+                positive(R.string.yes) {
                     app.config.devMode = true
                     App.devMode = true
-                    MaterialAlertDialogBuilder(activity)
-                        .setTitle("Restart")
-                        .setMessage("Wymagany restart aplikacji")
-                        .setPositiveButton(R.string.ok) { _, _ ->
-                            Process.killProcess(Process.myPid())
-                            Runtime.getRuntime().exit(0)
-                            exitProcess(0)
-                        }
-                        .setCancelable(false)
-                        .show()
+                    RestartDialog(activity).show()
                 }
-                .setNegativeButton(R.string.no) { _, _ ->
+                negative(R.string.no) {
                     app.config.devMode = false
                     App.devMode = false
                 }
-                .show()
+            }.show()
         }
 
         contributors = contributors ?: SzkolnyApi(app).runCatching(activity.errorSnackbar) {

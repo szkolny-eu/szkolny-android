@@ -4,62 +4,38 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.utils.models.Time
-import kotlin.coroutines.CoroutineContext
 
 class QuietHoursConfigDialog(
-    val activity: AppCompatActivity,
+    activity: AppCompatActivity,
     val onChangeListener: (() -> Unit)? = null,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "QuietHoursConfigDialog"
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog<Int>(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "QuietHoursConfigDialog"
+
+    override fun getTitleRes() = R.string.settings_sync_quiet_hours_dialog_title
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getItems(): Map<CharSequence, Int> = mapOf(
+        R.string.settings_sync_quiet_hours_set_beginning.resolveString(activity) to 0,
+        R.string.settings_sync_quiet_hours_set_end.resolveString(activity) to 1,
+    )
+
+    override suspend fun onItemClick(item: Int): Boolean {
+        when (item) {
+            0 -> configStartTime()
+            1 -> configEndTime()
+        }
+        return NO_DISMISS
     }
-
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
-
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local variables go here
-
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.settings_sync_quiet_hours_dialog_title)
-            .setItems(arrayOf(
-                activity.getString(R.string.settings_sync_quiet_hours_set_beginning),
-                activity.getString(R.string.settings_sync_quiet_hours_set_end)
-            )) { dialog, which ->
-                when (which) {
-                    0 -> configStartTime()
-                    1 -> configEndTime()
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-    }}
 
     private fun configStartTime() {
         onShowListener?.invoke(TAG + "Start")

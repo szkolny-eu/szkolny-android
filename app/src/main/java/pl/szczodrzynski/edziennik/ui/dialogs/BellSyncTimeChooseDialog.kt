@@ -6,14 +6,15 @@ package pl.szczodrzynski.edziennik.ui.dialogs
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncTimeChooseBinding
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -49,21 +50,19 @@ class BellSyncTimeChooseDialog(
     }
 
     override suspend fun onNeutralClick(): Boolean {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.bell_sync_title)
-            .setMessage(R.string.bell_sync_reset_confirm)
-            .setPositiveButton(R.string.yes) { dialog, _ ->
+        SimpleDialog<Unit>(activity) {
+            title(R.string.bell_sync_title)
+            message(R.string.bell_sync_reset_confirm)
+            positive(R.string.yes) {
                 app.config.timetable.bellSyncDiff = null
                 app.config.timetable.bellSyncMultiplier = 0
-
-                dialog.dismiss()
-                dismiss()
-                show()
+                this@BellSyncTimeChooseDialog.dismiss()
+                this@BellSyncTimeChooseDialog.show()
                 if (activity is MainActivity)
                     activity.reloadTarget()
             }
-            .setNegativeButton(R.string.no, null)
-            .show()
+            negative(R.string.no)
+        }.show()
         return NO_DISMISS
     }
 
@@ -126,11 +125,11 @@ class BellSyncTimeChooseDialog(
 
         if (!checkForLessons(timeItems.map { it.tag as Time })) {
             /* Synchronization not possible */
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.bell_sync_title)
-                .setMessage(R.string.bell_sync_cannot_now)
-                .setPositiveButton(R.string.ok, null)
-                .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.bell_sync_title)
+                message(R.string.bell_sync_cannot_now)
+                positive(R.string.ok)
+            }.show()
             return false
         } else {
             b.timeDropdown.clear()

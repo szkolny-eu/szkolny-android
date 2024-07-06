@@ -4,13 +4,13 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import android.view.LayoutInflater
+import android.text.Editable
+import android.text.InputType
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
+import com.google.android.material.textfield.TextInputEditText
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.DialogEditTextBinding
-import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class BellSyncConfigDialog(
@@ -18,17 +18,22 @@ class BellSyncConfigDialog(
     private val onChangeListener: (() -> Unit)? = null,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogEditTextBinding>(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Unit>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "BellSyncConfigDialog"
 
     override fun getTitleRes() = R.string.bell_sync_title
-    override fun inflate(layoutInflater: LayoutInflater) =
-        DialogEditTextBinding.inflate(layoutInflater)
+    override fun getMessageRes() = R.string.bell_sync_adjust_content
 
     override fun getPositiveButtonText() = R.string.ok
     override fun getNeutralButtonText() = R.string.reset
     override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getInputType() = InputType.TYPE_CLASS_TEXT
+    override fun getInputHint() = "±H:MM:SS"
+    override fun getInputValue() = app.config.timetable.bellSyncDiff?.let {
+        (if (app.config.timetable.bellSyncMultiplier == -1) "-" else "+") + it.stringHMS
+    } ?: "+0:00:00"
 
     private fun parse(input: String): Pair<Time, Int>? {
         if (input.length < 8) {
@@ -47,24 +52,17 @@ class BellSyncConfigDialog(
         return time to multiplier
     }
 
-    override suspend fun onShow() {
-        b.title.setText(R.string.bell_sync_adjust_content)
-        b.text1.hint = "±H:MM:SS"
-        b.text1.setText(app.config.timetable.bellSyncDiff?.let {
-            (if (app.config.timetable.bellSyncMultiplier == -1) "-" else "+") + it.stringHMS
-        } ?: "+0:00:00")
-        b.text1.addTextChangedListener { text ->
-            val input = text?.toString()
-            b.textInputLayout.error =
-                if (input != null && parse(input) == null)
-                    activity.getString(R.string.bell_sync_adjust_error)
-                else
-                    null
-        }
+    override suspend fun onInputTextChanged(input: TextInputEditText, text: Editable?) {
+        val value = text?.toString()
+        input.error =
+            if (value != null && parse(value) == null)
+                activity.getString(R.string.bell_sync_adjust_error)
+            else
+                null
     }
 
     override suspend fun onPositiveClick(): Boolean {
-        val input = b.text1.text?.toString() ?: return NO_DISMISS
+        val input = getInput()?.text?.toString() ?: return NO_DISMISS
         val parsed = parse(input)
         if (parsed == null) {
             Toast.makeText(activity, R.string.bell_sync_adjust_error, Toast.LENGTH_SHORT).show()

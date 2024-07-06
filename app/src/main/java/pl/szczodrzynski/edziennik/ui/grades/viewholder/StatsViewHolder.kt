@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.GradesItemStatsBinding
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
@@ -95,11 +95,11 @@ class StatsViewHolder(
         b.disclaimer.isVisible = !b.noData.isVisible
 
         b.helpButton.onClick {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.grades_stats_help_title)
-                .setMessage(R.string.grades_stats_help_text)
-                .setPositiveButton(R.string.ok, null)
-                .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.grades_stats_help_title)
+                message(R.string.grades_stats_help_text)
+                positive(R.string.ok)
+            }.show()
         }
 
         b.customValueDivider.isVisible = manager.dontCountEnabled || manager.plusValue != null || manager.minusValue != null

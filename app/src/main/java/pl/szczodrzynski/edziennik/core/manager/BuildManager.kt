@@ -6,9 +6,7 @@ package pl.szczodrzynski.edziennik.core.manager
 
 import android.content.pm.PackageManager
 import android.text.TextUtils
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,6 +32,8 @@ import pl.szczodrzynski.edziennik.ext.md5
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.ext.toJsonObject
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.main.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import timber.log.Timber
@@ -174,18 +174,19 @@ class BuildManager(val app: App) : CoroutineScope {
             )
         }.concat("\n\n")
 
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.build_details)
-            .setMessage(message)
-            .setPositiveButton(R.string.ok, null)
-            .setNeutralButton(R.string.build_dialog_open_repo) { _, _ ->
+        SimpleDialog<Unit>(activity) {
+            title(R.string.build_details)
+            message(message)
+            positive(R.string.ok, null)
+            neutral(R.string.build_dialog_open_repo) {
                 val url = if (gitRemote == null)
                     "https://szkolny.eu/github/android"
                 else
                     "https://github.com/$gitRemote/tree/$gitHash"
                 Utils.openUrl(activity, url)
             }
-            .show()
+            show()
+        }
     }
 
     enum class InvalidBuildReason(
@@ -294,11 +295,11 @@ class BuildManager(val app: App) : CoroutineScope {
                 return@launch
             }
 
-            val dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.build_validate_progress)
-                .setCancelable(false)
-                .show()
+            val dialog = SimpleDialog<Unit>(activity) {
+                title(R.string.please_wait)
+                message(R.string.build_validate_progress)
+                cancelable(false)
+            }.show()
 
             val isRepoValid = if (app.config.validation == "invalid$gitRemote$gitHash".md5())
                 false
@@ -320,7 +321,7 @@ class BuildManager(val app: App) : CoroutineScope {
 
     private fun invalidateBuild(
         activity: AppCompatActivity,
-        progressDialog: AlertDialog?,
+        progressDialog: BaseDialog<*>?,
         reason: InvalidBuildReason
     ) {
         progressDialog?.dismiss()

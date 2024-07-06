@@ -9,14 +9,13 @@ import android.content.ContextWrapper
 import android.text.InputType
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.ext.crc16
-import pl.szczodrzynski.edziennik.ext.input
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
 class SubjectDropdown : TextInputDropDown {
@@ -108,25 +107,25 @@ class SubjectDropdown : TextInputDropDown {
 
     private fun customNameDialog() {
         activity ?: return
-        MaterialAlertDialogBuilder(activity!!)
-            .setTitle("Własny przedmiot")
-            .input(
-                hint = "Nazwa",
+        SimpleDialog<Unit>(activity!!) {
+            title("Własny przedmiot")
+            input(
                 type = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE,
-                positiveButton = R.string.ok,
-                positiveListener = { _, input ->
-                    customSubjectName = input
-                    select(Item(
+                hint = "Nazwa",
+            )
+            positive(R.string.ok) {
+                customSubjectName = getInput()?.text?.toString() ?: ""
+                select(
+                    Item(
                         -1L * customSubjectName.crc16(),
                         customSubjectName,
                         tag = customSubjectName
-                    ))
-                    onCustomSubjectSelected?.invoke(customSubjectName)
-                    true
-                }
-            )
-            .setNegativeButton(R.string.cancel, null)
-            .show()
+                    )
+                )
+                onCustomSubjectSelected?.invoke(customSubjectName)
+            }
+            negative(R.string.cancel)
+        }.show()
     }
 
     /**

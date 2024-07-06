@@ -5,11 +5,11 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 
 class NotificationFilterDialog(
     activity: AppCompatActivity,
@@ -41,15 +41,15 @@ class NotificationFilterDialog(
 
         if (disabledTypes.any { it.enabledByDefault == true }) {
             // warn user when he tries to disable some notifications
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.notification_filter_warning)
-                .setPositiveButton(R.string.ok) { _, _ ->
+            SimpleDialog<Unit>(activity) {
+                title(R.string.are_you_sure)
+                message(R.string.notification_filter_warning)
+                positive(R.string.ok) {
                     app.profile.config.sync.notificationFilter = disabledTypes
-                    dismiss()
+                    this@NotificationFilterDialog.dismiss()
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                negative(R.string.cancel)
+            }.show()
             return NO_DISMISS
         }
 

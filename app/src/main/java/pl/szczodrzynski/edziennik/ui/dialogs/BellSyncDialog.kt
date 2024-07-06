@@ -6,14 +6,13 @@ package pl.szczodrzynski.edziennik.ui.dialogs
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncBinding
 import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class BellSyncDialog(
@@ -46,15 +45,14 @@ class BellSyncDialog(
             app.config.timetable.bellSyncDiff = bellDiff
             app.config.timetable.bellSyncMultiplier = multiplier
 
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.bell_sync_title)
-                .setMessage(app.getString(R.string.bell_sync_results, bellDiffText))
-                .setPositiveButton(R.string.ok) { resultsDialog, _ ->
-                    resultsDialog.dismiss()
-                    dismiss()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.bell_sync_title)
+                message(app.getString(R.string.bell_sync_results, bellDiffText))
+                positive(R.string.ok) {
+                    this@BellSyncDialog.dismiss()
                     if (activity is MainActivity) activity.reloadTarget()
                 }
-                .show()
+            }.show()
         }
 
         if (Time.diff(Time.getNow(), bellTime) > Time(2, 0, 0)) { // Easter egg ^^

@@ -14,14 +14,14 @@ import com.daimajia.swipe.SwipeLayout
 import com.mikepenz.iconics.view.IconicsImageView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.grades.editor.GradesEditorFragment.Companion.modifyGradeChooser
 import pl.szczodrzynski.edziennik.utils.Colors.gradeNameToColor
 import java.text.DecimalFormat
 
 class GradesEditorAdapter(
         private val mContext: Context,
         private val gradeList: List<GradesEditorFragment.EditorGrade>,
-        private val listener: OnGradeActionListener
+        private val fragment: GradesEditorFragment,
+        private val listener: OnGradeActionListener,
 ) : RecyclerView.Adapter<GradesEditorAdapter.ViewHolder>() {
 
     interface OnGradeActionListener {
@@ -94,7 +94,7 @@ class GradesEditorAdapter(
 
         holder.buttonRemove.setOnClickListener { listener.onClickRemove(editorGrade.id) }
 
-        holder.buttonEdit.setOnClickListener { v -> modifyGradeChooser(v, editorGrade) { listener.onClickEdit(editorGrade.id) } }
+        holder.buttonEdit.setOnClickListener { v -> fragment.modifyGradeChooser(v, editorGrade) { listener.onClickEdit(editorGrade.id) } }
     }
 
     override fun getItemCount(): Int {

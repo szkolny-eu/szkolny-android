@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -28,6 +27,7 @@ import pl.szczodrzynski.edziennik.ext.attachToastHint
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
@@ -91,18 +91,20 @@ class MessageFragment : BaseFragment<MessageFragmentBinding, MainActivity>(
             ))
         }
         b.deleteButton.onClick {
-            MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.messages_delete_confirmation)
-                    .setMessage(R.string.messages_delete_confirmation_text)
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        launch {
-                            manager.markAsDeleted(message)
-                            Toast.makeText(activity, "Wiadomość przeniesiona do usuniętych", Toast.LENGTH_SHORT).show()
-                            activity.navigateUp()
-                        }
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.messages_delete_confirmation)
+                message(R.string.messages_delete_confirmation_text)
+                positive(R.string.ok) {
+                    manager.markAsDeleted(message)
+                    Toast.makeText(
+                        activity,
+                        "Wiadomość przeniesiona do usuniętych",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    activity.navigateUp()
+                }
+                negative(R.string.cancel)
+            }.show()
         }
         b.downloadButton.isVisible = App.devMode
         b.downloadButton.onClick {

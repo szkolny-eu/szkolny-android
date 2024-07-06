@@ -141,7 +141,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
                     item.subTextChecked = getQuietHours()
                     item.isChecked = configGlobal.sync.quietHoursEnabled
                     util.refresh()
-                })
+                }).show()
             }
         ).also {
             it.subTextChecked = getQuietHours()

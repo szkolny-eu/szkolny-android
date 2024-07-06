@@ -6,42 +6,31 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.ext.input
+import pl.szczodrzynski.edziennik.ext.takeValue
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class StudentNumberDialog(
-        val activity: AppCompatActivity,
-        val profile: Profile,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) {
-    companion object {
-        private const val TAG = "StudentNumberDialog"
-    }
+    activity: AppCompatActivity,
+    val profile: Profile,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog<Unit>(activity, onShowListener, onDismissListener) {
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.card_lucky_number_set_title)
-            .input(
-                message = activity.getString(R.string.card_lucky_number_set_text),
-                type = InputType.TYPE_CLASS_NUMBER,
-                hint = null,
-                value = if (profile.studentNumber == -1) null else profile.studentNumber.toString(),
-                positiveButton = R.string.ok,
-                positiveListener = { _, input ->
-                    profile.studentNumber = input.toIntOrNull() ?: -1
-                    true
-                }
-            )
-            .setNegativeButton(R.string.cancel, null)
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-    }}
+    override val TAG = "StudentNumberDialog"
+
+    override fun getTitleRes() = R.string.card_lucky_number_set_title
+    override fun getMessageRes() = R.string.card_lucky_number_set_text
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getInputType() = InputType.TYPE_CLASS_NUMBER
+    override fun getInputValue() = profile.studentNumber.takeValue()?.toString()
+
+    override suspend fun onPositiveClick(): Boolean {
+        profile.studentNumber = getInput()?.text?.toString()?.toIntOrNull() ?: -1
+        app.profileSave(profile)
+        return DISMISS
+    }
 }
