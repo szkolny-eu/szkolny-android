@@ -21,16 +21,11 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabIndicatorColor="?colorPrimary"
-                app:tabMaxWidth="300dp"
-                app:tabMinWidth="90dp"
                 app:tabMode="auto"
-                app:tabPaddingBottom="12dp"
+                app:tabPaddingBottom="16dp"
                 app:tabPaddingEnd="16dp"
                 app:tabPaddingStart="16dp"
-                app:tabPaddingTop="12dp"
-                app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextColor="?colorOnBackground" />
+                app:tabPaddingTop="16dp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2

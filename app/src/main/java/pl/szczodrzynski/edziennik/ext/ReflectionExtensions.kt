@@ -16,7 +16,7 @@ fun Any.setDeclaredField(name: String, value: Any?) = this::class.java.getDeclar
     set(this@setDeclaredField, value)
 }
 
-fun Any.invokeDeclaredMethod(name: String, vararg args: Pair<Class<*>, Any>): Any? =
+fun Any.invokeDeclaredMethod(name: String, vararg args: Pair<Class<*>, Any?>): Any? =
     this::class.java.getDeclaredMethod(name, *args.map { (k, _) -> k }.toTypedArray()).run {
         isAccessible = true
         invoke(this@invokeDeclaredMethod, *args.map { (_, v) -> v }.toTypedArray())
