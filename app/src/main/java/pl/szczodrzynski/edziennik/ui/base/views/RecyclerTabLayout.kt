@@ -64,6 +64,7 @@ class RecyclerTabLayout @JvmOverloads constructor(
         setHasFixedSize(true)
         layoutManager = linearLayoutManager
         itemAnimator = null
+        background = tabLayout.background
     }
 
     override fun onDraw(canvas: Canvas) {

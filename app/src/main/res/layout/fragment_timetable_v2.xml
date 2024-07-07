@@ -10,12 +10,12 @@
         android:id="@+id/timetableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:visibility="gone">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorSurface">
+            android:layout_height="wrap_content">
 
             <pl.szczodrzynski.edziennik.ui.base.views.RecyclerTabLayout
                 android:id="@+id/tabLayout"

@@ -113,7 +113,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     /**
      * Called to retrieve the [TabLayout] or [RecyclerTabLayout] view of the pager fragment.
      */
-    abstract fun getTabLayout(): Any
+    abstract fun getTabLayout(): ViewGroup
 
     /**
      * Called to retrieve the [ViewPager2] view of the pager fragment.
