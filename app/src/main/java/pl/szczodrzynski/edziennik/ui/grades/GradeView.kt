@@ -26,7 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPO
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ext.setTintColor
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.core.manager.GradesManager
 
 class GradeView : AppCompatTextView {
 
@@ -47,7 +47,7 @@ class GradeView : AppCompatTextView {
 
         val gradeName = grade.name
 
-        val gradeColor = manager.getGradeColor(grade)
+        val gradeColor = manager.getGradeColor(context, grade)
 
         text = when {
             periodGradesTextual -> when (grade.type) {

@@ -1,43 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kacper Ziubryniewicz 2019-12-20
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/bellSyncHowto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:padding="24dp">
+            android:layout_marginBottom="24dp"
+            tools:text="@string/bell_sync_choose_howto" />
 
-            <TextView
-                android:id="@+id/bellSyncHowto"
+        <com.google.android.material.textfield.TextInputLayout
+            style="?textInputFilledDenseStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bell_sync_time_title">
+
+            <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                android:id="@+id/timeDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                tools:text="@string/bell_sync_choose_howto" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/bell_sync_time_title">
-
-                <pl.szczodrzynski.edziennik.utils.TextInputDropDown
-                    android:id="@+id/timeDropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    tools:text="lekcja matematyka (8:00)"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-    </ScrollView>
-</layout>
+                android:enabled="false"
+                tools:text="lekcja matematyka (8:00)" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</ScrollView>

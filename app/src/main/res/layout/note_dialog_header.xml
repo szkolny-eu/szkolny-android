@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-24.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <merge
@@ -20,7 +20,7 @@
             android:layout_marginTop="16dp"
             android:drawableLeftAutoSize="@{true}"
             android:drawablePadding="8dp"
-            android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+            android:textAppearance="?textAppearanceTitleLarge"
             tools:drawableStartCompat="@drawable/ic_grade"
             tools:layout_height="28sp"
             tools:text="Ocena" />

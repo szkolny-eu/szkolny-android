@@ -1,82 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-22.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText"
+    tools:layout_margin="8dp">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warning! Do not move this debug card, or you will probably confuse the internal card ID list, thus resulting in a weird and (maybe)non-undoable card order." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/librusCaptchaButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_margin="8dp"
-        tools:ignore="HardcodedText">
+        android:text="LIBRUS® Captcha" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Warning! Do not move this debug card, or you will probably confuse the internal card ID list, thus resulting in a weird and (maybe)non-undoable card order."/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/refreshWidget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refresh all widgets" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/getLogs"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Debug Logs" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Network"
+        android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/refreshWidget"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Refresh all widgets" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/runChucker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch Chucker" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Network"
-            android:textSize="16sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Messages"
+        android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/runChucker"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Launch Chucker" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/migrate71"
+        style="?materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Migration 71" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Messages"
-            android:textSize="16sp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/syncReceivers"
+        style="?materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sync receivers" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/migrate71"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Migration 71" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sync"
+        android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/syncReceivers"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sync receivers" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sync"
-            android:textSize="16sp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pruneWorkButton"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Prune finished work" />
-
-    </LinearLayout>
-</layout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pruneWorkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prune finished work" />
+</LinearLayout>

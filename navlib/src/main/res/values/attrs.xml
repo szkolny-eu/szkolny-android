@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="nvStatusBarBackground" format="color" />
+    <attr name="nvActionBarBackground" format="color" />
+    <attr name="nvBottomBarBackground" format="color" />
+    <attr name="nvNavigationBarBackground" format="color" />
+</resources>

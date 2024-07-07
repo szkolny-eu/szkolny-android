@@ -31,8 +31,6 @@ def sign(
     SIGNING_FORMAT = "$param1.{}.$param2"
     CPP_FORMAT = "/*{}*/\nstatic toys AES_IV[16] = {{\n\t{} }};"
 
-    print(f"Writing passwords for version {version_name} ({version_code})")
-
     iv_hex = " ".join(["{:02x}".format(x) for x in iv])
     iv_cpp = ", ".join(["0x{:02x}".format(x) for x in iv])
 
@@ -71,8 +69,8 @@ if __name__ == "__main__":
         version_name, version_code, DB_HOST, DB_USER, DB_PASS, DB_NAME
     )
 
-    print("::set-output name=appVersionName::" + version_name)
-    print("::set-output name=appVersionCode::" + str(version_code))
+    print("appVersionName=" + version_name)
+    print("appVersionCode=" + str(version_code))
 
     sign(
         project_dir,

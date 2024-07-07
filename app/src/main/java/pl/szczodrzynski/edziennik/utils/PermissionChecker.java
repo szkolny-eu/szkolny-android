@@ -16,6 +16,8 @@ import android.view.accessibility.AccessibilityManager;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class PermissionChecker {
 
     private Context mContext;
@@ -53,8 +55,8 @@ public class PermissionChecker {
             try {
                 mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                         android.os.Process.myUid(), mContext.getPackageName());
-            } catch (java.lang.IllegalArgumentException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Timber.e(e);
             }
             boolean granted = false;
             if (mode == AppOpsManager.MODE_DEFAULT) {

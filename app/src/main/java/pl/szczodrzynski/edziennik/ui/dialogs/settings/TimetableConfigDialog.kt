@@ -9,22 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.TimetableConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 
 class TimetableConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<TimetableConfigDialogBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "TimetableConfigDialog"
+) : ConfigDialog<TimetableConfigDialogBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_timetable_config
     override fun inflate(layoutInflater: LayoutInflater) =

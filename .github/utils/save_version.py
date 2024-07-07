@@ -3,6 +3,7 @@ import os
 import sys
 from datetime import datetime
 from time import time
+from zoneinfo import ZoneInfo
 
 import mysql.connector as mysql
 from dotenv import load_dotenv
@@ -59,12 +60,22 @@ def save_version(
             build_date = int(os.stat(file).st_mtime)
             bundle_name_play = output_aab_play
 
-    build_date = datetime.fromtimestamp(build_date).strftime("%Y-%m-%d %H:%M:%S")
+    build_date = datetime.fromtimestamp(
+        build_date,
+        tz=ZoneInfo("Europe/Warsaw"),
+    ).strftime("%Y-%m-%d %H:%M:%S")
 
     if build_type in ["nightly", "daily"]:
         download_url = apk_server_nightly + apk_name if apk_name else None
     else:
-        download_url = apk_server_release + apk_name if apk_name else None
+        # download_url = apk_server_release + apk_name if apk_name else None
+        download_url = (
+            f"https://github.com/szkolny-eu/szkolny-android/releases/download/v{version_name}/{apk_name}"
+            if apk_name
+            else None
+        )
+    if download_url:
+        print("downloadUrl=" + download_url)
 
     cols = [
         "versionCode",
@@ -119,4 +130,12 @@ if __name__ == "__main__":
     APK_SERVER_RELEASE = os.getenv("APK_SERVER_RELEASE")
     APK_SERVER_NIGHTLY = os.getenv("APK_SERVER_NIGHTLY")
 
-    save_version(project_dir, DB_HOST, DB_USER, DB_PASS, DB_NAME, APK_SERVER_RELEASE, APK_SERVER_NIGHTLY)
+    save_version(
+        project_dir,
+        DB_HOST,
+        DB_USER,
+        DB_PASS,
+        DB_NAME,
+        APK_SERVER_RELEASE,
+        APK_SERVER_NIGHTLY,
+    )

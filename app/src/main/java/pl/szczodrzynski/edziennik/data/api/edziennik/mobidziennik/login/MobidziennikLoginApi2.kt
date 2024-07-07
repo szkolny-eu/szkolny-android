@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class MobidziennikLoginApi2(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -54,7 +55,7 @@ class MobidziennikLoginApi2(val data: DataMobidziennik, val onSuccess: () -> Uni
     }}
 
     private fun loginWithCredentials() {
-        Utils.d(TAG, "Request: Mobidziennik/Login/Api2 - https://mobidziennik.pl/logowanie")
+        Timber.d("Request: Mobidziennik/Login/Api2 - https://mobidziennik.pl/logowanie")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {

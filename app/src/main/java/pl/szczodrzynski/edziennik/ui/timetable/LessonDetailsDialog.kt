@@ -10,26 +10,24 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
@@ -38,18 +36,14 @@ class LessonDetailsDialog(
     private val lesson: LessonFull,
     private val attendance: AttendanceFull? = null,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogLessonDetailsBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "LessonDetailsDialog"
+) : BindingDialog<DialogLessonDetailsBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogLessonDetailsBinding.inflate(layoutInflater)
 
+    // TODO put the "add" button in layout for other dialogs as well
     override fun getPositiveButtonText() = R.string.close
-    override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
     private val manager
@@ -57,13 +51,11 @@ class LessonDetailsDialog(
     private val attendanceManager
         get() = app.attendanceManager
 
-    override suspend fun onNeutralClick(): Boolean {
+    fun openAddEventDialog(): Boolean {
         EventManualDialog(
             activity,
             lesson.profileId,
             defaultLesson = lesson,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener
         ).show()
         return NO_DISMISS
     }
@@ -116,7 +108,7 @@ class LessonDetailsDialog(
                 }
             }
             b.shiftedGoTo.setOnClickListener {
-                dialog.dismiss()
+                dismiss()
                 val dateStr = otherLessonDate?.stringY_m_d ?: return@setOnClickListener
                 val intent = Intent(TimetableFragment.ACTION_SCROLL_TO_DATE).apply {
                     putExtra("timetableDate", dateStr)
@@ -163,20 +155,13 @@ class LessonDetailsDialog(
             b.attendanceIcon.isVisible = attendance.let {
                 val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false
                 val color = attendanceManager.getAttendanceColor(it)
-                b.attendanceIcon.setImageDrawable(
-                    IconicsDrawable(activity, icon).apply {
-                        colorInt = color
-                        sizeDp = 24
-                    }
-                )
+                b.attendanceIcon.setImageDrawable(icon.toDrawable(color))
                 true
             }
             b.attendanceDetails.onClick {
                 AttendanceDetailsDialog(
                     activity = activity,
                     attendance = attendance,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             }
         }
@@ -193,8 +178,6 @@ class LessonDetailsDialog(
                 EventDetailsDialog(
                     activity,
                     it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             },
             onEventEditClick = {
@@ -202,8 +185,6 @@ class LessonDetailsDialog(
                     activity,
                     it.profileId,
                     editingEvent = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
                 ).show()
             }
         )
@@ -243,21 +224,20 @@ class LessonDetailsDialog(
             BetterLink.attach(
                 b.teacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
             BetterLink.attach(
                 b.oldTeacherNameView,
                 teachers = mapOf(lesson.displayTeacherId!! to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
+        b.addEventButton.onClick { openAddEventDialog() }
         b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = lesson,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)

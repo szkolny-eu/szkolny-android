@@ -20,7 +20,7 @@ import org.jsoup.parser.Parser
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.io.File
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
@@ -43,7 +43,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
     fun messagesGet(tag: String, module: String, method: Int = POST,
                     parameters: Map<String, Any>? = null, onSuccess: (doc: Document) -> Unit) {
 
-        d(tag, "Request: Librus/Messages - $LIBRUS_MESSAGES_URL/$module")
+        Timber.tag(tag).d("Request: Librus/Messages - $LIBRUS_MESSAGES_URL/$module")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
@@ -127,7 +127,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
     fun messagesGetJson(tag: String, module: String, method: Int = POST,
                         parameters: Map<String, Any>? = null, onSuccess: (json: JsonObject?) -> Unit) {
 
-        d(tag, "Request: Librus/Messages - $LIBRUS_MESSAGES_URL/$module")
+        Timber.tag(tag).d("Request: Librus/Messages - $LIBRUS_MESSAGES_URL/$module")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
@@ -211,7 +211,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
     fun sandboxGet(tag: String, action: String, parameters: Map<String, Any>? = null,
                    onSuccess: (json: JsonObject) -> Unit) {
 
-        d(tag, "Request: Librus/Messages - $LIBRUS_SANDBOX_URL$action")
+        Timber.tag(tag).d("Request: Librus/Messages - $LIBRUS_SANDBOX_URL$action")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
@@ -256,7 +256,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
                        method: Int = GET,
                        onProgress: (written: Long, total: Long) -> Unit) {
 
-        d(tag, "Request: Librus/Messages - $url")
+        Timber.tag(tag).d("Request: Librus/Messages - $url")
 
         val callback = object : FileCallbackHandler(targetFile) {
             override fun onSuccess(file: File?, response: Response?) {

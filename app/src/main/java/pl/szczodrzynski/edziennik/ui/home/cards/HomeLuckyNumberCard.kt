@@ -11,6 +11,8 @@ import android.widget.FrameLayout
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
+import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,11 +25,13 @@ import pl.szczodrzynski.edziennik.databinding.CardHomeLuckyNumberBinding
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class HomeLuckyNumberCard(
@@ -63,7 +67,7 @@ class HomeLuckyNumberCard(
             R.string.home_lucky_number_details_click_to_set
         else
             R.string.home_lucky_number_details
-        b.subText.setText(subTextRes, profile.name, profile.studentNumber)
+        b.subText.setText(subTextRes, profile.studentNumber)
 
         app.db.luckyNumberDao().getNearestFuture(profile.id, today).observe(fragment, Observer { luckyNumber ->
             val isYours = luckyNumber?.number == profile.studentNumber
@@ -88,24 +92,24 @@ class HomeLuckyNumberCard(
 
             b.title.setText(titleRes, *resArguments)
 
-            val drawableRes = when {
-                luckyNumber == null || luckyNumber.number == -1 -> R.drawable.emoji_sad
-                isYours -> R.drawable.emoji_glasses
-                !isYours -> R.drawable.emoji_smiling
-                else -> R.drawable.emoji_no_face
+            val icon: IIcon = when {
+                luckyNumber == null || luckyNumber.number == -1 -> CommunityMaterial.Icon.cmd_emoticon_sad_outline
+                isYours -> CommunityMaterial.Icon.cmd_emoticon_cool_outline
+                !isYours -> CommunityMaterial.Icon.cmd_emoticon_happy_outline
+                else -> CommunityMaterial.Icon.cmd_emoticon_confused_outline
             }
-            b.image.setImageResource(drawableRes)
+            b.image.icon = icon.toDrawable(activity, colorAttr = R.attr.colorOnPrimaryContainer)
         })
 
         holder.root.onClick {
-            StudentNumberDialog(activity, profile, onDismissListener = {
-                app.profileSave(profile)
+            this@HomeLuckyNumberCard.launch {
+                StudentNumberDialog(activity, profile).showModal()
                 val newSubTextRes = if (profile.studentNumber == -1)
                     R.string.home_lucky_number_details_click_to_set
                 else
                     R.string.home_lucky_number_details
-                b.subText.setText(newSubTextRes, profile.name, profile.studentNumber)
-            })
+                b.subText.setText(newSubTextRes, profile.studentNumber)
+            }
         }
     }}
 

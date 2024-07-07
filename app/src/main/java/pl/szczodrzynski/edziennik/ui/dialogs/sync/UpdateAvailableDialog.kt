@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.sync.UpdateDownloaderService
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
@@ -18,11 +18,7 @@ class UpdateAvailableDialog(
     activity: AppCompatActivity,
     private val update: Update?,
     private val mandatory: Boolean = update?.updateMandatory ?: false,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "UpdateAvailableDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.update_available_title
     override fun getMessageFormat(): Pair<Int, List<CharSequence>> {
@@ -39,8 +35,6 @@ class UpdateAvailableDialog(
     override fun isCancelable() = !mandatory
     override fun getPositiveButtonText() = R.string.update_available_button
     override fun getNeutralButtonText() = if (mandatory) null else R.string.update_available_later
-
-    override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         if (update == null || update.isOnGooglePlay)

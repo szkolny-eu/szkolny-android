@@ -9,7 +9,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,8 +19,8 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
-import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     lateinit var navOptionsBuilder: NavOptions.Builder
     val nav by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
-    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    val swipeRefreshLayout: SwipeRefreshLayout by lazy { b.swipeRefreshLayout }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -46,7 +46,9 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     fun getRootView() = b.root
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        // TODO fix deprecation
         val destination = nav.currentDestination ?: run {
             nav.navigateUp()
             return
@@ -70,15 +72,15 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             return
         }
         if (destination.id == R.id.loginSummaryFragment) {
-            MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.are_you_sure)
-                    .setMessage(R.string.login_cancel_confirmation)
-                    .setPositiveButton(R.string.yes) { _, _ ->
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    }
-                    .setNegativeButton(R.string.no, null)
-                    .show()
+            SimpleDialog<Unit>(this) {
+                title(R.string.are_you_sure)
+                message(R.string.login_cancel_confirmation)
+                positive(R.string.yes) {
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                }
+                negative(R.string.no)
+            }.show()
             return
         }
         nav.navigateUp()
@@ -86,7 +88,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme_Light)
+        setTheme(R.style.AppTheme_M3)
 
         navOptionsBuilder = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)

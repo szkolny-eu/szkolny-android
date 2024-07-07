@@ -6,17 +6,14 @@ package pl.szczodrzynski.edziennik.ui.settings
 
 import com.danielstone.materialaboutlibrary.items.*
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class SettingsUtil(
     val activity: MainActivity,
@@ -24,13 +21,6 @@ class SettingsUtil(
 ) {
 
     fun refresh() = onRefresh()
-
-    private fun IIcon.asDrawable(color: Int? = null, size: Int = 24) =
-        IconicsDrawable(activity).apply {
-            icon = this@asDrawable
-            sizeDp = size
-            colorInt = color ?: Themes.getPrimaryTextColor(activity)
-        }
 
     fun createCard(
         titleRes: Int?,
@@ -67,7 +57,7 @@ class SettingsUtil(
 
         val moreItem = MaterialAboutActionItem.Builder()
             .text(R.string.settings_more_text)
-            .icon(CommunityMaterial.Icon.cmd_chevron_down.asDrawable(iconColor, size = 24))
+            .icon(CommunityMaterial.Icon.cmd_chevron_down.toDrawable(activity, iconColor))
             .build()
 
         moreItem.setOnClickAction {
@@ -93,7 +83,7 @@ class SettingsUtil(
         val item = MaterialAboutActionItem.Builder()
             .text(text)
             .subText(subText ?: 0)
-            .icon(icon.asDrawable(iconColor))
+            .icon(icon.toDrawable(activity, iconColor))
             .build()
 
         item.setOnClickAction {
@@ -119,7 +109,7 @@ class SettingsUtil(
             .text(text)
             .subText(subText ?: 0)
             .subTextChecked(subTextChecked ?: 0)
-            .icon(icon.asDrawable(iconColor))
+            .icon(icon.toDrawable(activity, iconColor))
             .setChecked(value)
             .build()
 
@@ -149,7 +139,7 @@ class SettingsUtil(
             .text(text)
             .subText(subText ?: 0)
             .subTextChecked(subTextChecked ?: 0)
-            .icon(icon.asDrawable(iconColor))
+            .icon(icon.toDrawable(activity, iconColor))
             .setChecked(value)
             .build()
 
@@ -168,7 +158,7 @@ class SettingsUtil(
         MaterialAboutTitleItem.Builder()
             .text(R.string.app_name)
             .desc(R.string.settings_about_title_subtext)
-            .icon(R.mipmap.ic_splash)
+            .icon(R.mipmap.ic_splash_v5)
             .build()
 
     fun createProfileItem(

@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 public class Week {
     public static int MONDAY = 0;
     public static int TUESDAY = 1;
@@ -54,7 +56,7 @@ public class Week {
         try {
             date = simpleDateFormat.parse(dateStr);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         c.setTime(date);
         int weekDay = c.get(Calendar.DAY_OF_WEEK);

@@ -26,8 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
-import com.hypertrack.hyperlog.HyperLog;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -70,6 +68,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import pl.szczodrzynski.edziennik.App;
+import timber.log.Timber;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -103,21 +102,6 @@ public class Utils {
                 return true;
         }
         return false;*/
-    }
-
-    public static List<String> debugLog = new ArrayList<>();
-
-    public static void d(String TAG, String message) {
-        if (App.Companion.getDevMode()) {
-            HyperLog.d("Szkolny/"+TAG, message);
-            //debugLog.add(TAG+": "+message);
-        }
-    }
-    public static void c(String TAG, String message) {
-        /*if (App.devMode) {
-            Log.d(TAG, "// " + message);
-            ///debugLog.add(TAG+": // "+message);
-        }*/
     }
 
     /**
@@ -247,7 +231,7 @@ public class Utils {
             cursor.close();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return result;
     }
@@ -258,7 +242,7 @@ public class Utils {
             return Integer.parseInt(s);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return defaultValue;
         }
     }
@@ -336,8 +320,8 @@ public class Utils {
             PackageInfo packageInfo;
             packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
             if (packageInfo != null) {
-                Log.d(TAG, packageInfo.toString());
-                Log.d(TAG, packageInfo.packageName+" "+packageInfo.versionName+" "+packageInfo.versionCode);
+                Timber.d(packageInfo.toString());
+                Timber.d("%s %s %d", packageInfo.packageName, packageInfo.versionName, packageInfo.versionCode);
                 return packageInfo.versionName;
             }
             else {
@@ -345,7 +329,7 @@ public class Utils {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return null;
         }
     }
@@ -471,10 +455,8 @@ public class Utils {
             sha_HMAC.init(secret_key);
 
             return Base64UrlSafe(sha_HMAC.doFinal(message.getBytes()));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            Timber.e(e);
         }
         return null;
     }
@@ -487,10 +469,8 @@ public class Utils {
             sha_HMAC.init(secret_key);
 
             return bytesToHex(sha_HMAC.doFinal(message.getBytes()));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            Timber.e(e);
         }
         return null;
     }
@@ -504,7 +484,7 @@ public class Utils {
             MessageDigest md = java.security.MessageDigest.getInstance("MD5");
             return Base64UrlSafe(md.digest(message.getBytes()));
         }catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return null;
     }
@@ -626,7 +606,7 @@ public class Utils {
             }
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
             return false;
         }
         return true;

@@ -4,20 +4,20 @@
 
 package pl.szczodrzynski.edziennik.ui.messages.compose
 
-import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.chip.ChipSpan
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 class MessagesComposeChipTokenizer(
-    context: Context,
+    activity: AppCompatActivity,
     nacho: NachoTextView,
     teacherList: List<Teacher>,
 ) : SpanChipTokenizer<ChipSpan>(
-    context,
+    activity,
     MessagesComposeChipCreator(
-        context = context,
+        activity = activity,
         nacho = nacho,
         teacherList = teacherList
     ),

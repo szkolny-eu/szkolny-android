@@ -1,7 +1,23 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <AndroidXmlCodeStyleSettings>
+      <option name="LAYOUT_SETTINGS">
+        <value>
+          <option name="INSERT_LINE_BREAK_BEFORE_NAMESPACE_DECLARATION" value="true" />
+        </value>
+      </option>
+      <option name="MANIFEST_SETTINGS">
+        <value>
+          <option name="INSERT_LINE_BREAK_BEFORE_NAMESPACE_DECLARATION" value="true" />
+        </value>
+      </option>
+      <option name="OTHER_SETTINGS">
+        <value>
+          <option name="INSERT_LINE_BREAK_BEFORE_NAMESPACE_DECLARATION" value="true" />
+        </value>
+      </option>
+    </AndroidXmlCodeStyleSettings>
     <JetCodeStyleSettings>
-      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />
       <option name="ALLOW_TRAILING_COMMA" value="true" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
@@ -127,6 +143,9 @@
     </codeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
+      <option name="PARAMETER_ANNOTATION_WRAP" value="2" />
+      <option name="ENUM_CONSTANTS_WRAP" value="2" />
     </codeStyleSettings>
   </code_scheme>
 </component>

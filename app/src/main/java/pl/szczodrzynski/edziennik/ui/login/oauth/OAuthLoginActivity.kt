@@ -14,7 +14,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class OAuthLoginActivity : AppCompatActivity() {
     companion object {
@@ -35,7 +35,7 @@ class OAuthLoginActivity : AppCompatActivity() {
         val webView = WebView(this)
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-                d(TAG, "Navigating to $url")
+                Timber.d("Navigating to $url")
                 if (url.startsWith(redirectUrl)) {
                     isSuccessful = true
                     EventBus.getDefault().post(OAuthLoginResult(

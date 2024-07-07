@@ -9,7 +9,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import pl.szczodrzynski.edziennik.config.AppData
+import pl.szczodrzynski.edziennik.data.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
 import pl.szczodrzynski.edziennik.data.db.entity.Profile

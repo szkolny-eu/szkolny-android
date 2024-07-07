@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.utils
 
 import android.os.Bundle
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 
 data class PausedNavigationData(
     val profileId: Int?,

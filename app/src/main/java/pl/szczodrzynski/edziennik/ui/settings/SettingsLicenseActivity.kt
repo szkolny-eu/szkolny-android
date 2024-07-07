@@ -10,36 +10,22 @@ import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList
 import com.danielstone.materialaboutlibrary.util.OpenSourceLicense
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ext.app
 import pl.szczodrzynski.edziennik.ext.resolveColor
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.ext.toDrawable
 
 class SettingsLicenseActivity : MaterialAboutActivity() {
 
     var foregroundColor: Int = 0
 
     private val icon
-        get() = IconicsDrawable(this).apply {
-            icon = CommunityMaterial.Icon.cmd_book_outline
-            colorInt = foregroundColor
-            sizeDp = 24
-        }
+        get() = CommunityMaterial.Icon.cmd_book_outline.toDrawable(foregroundColor)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(
-            if (Themes.isDark)
-                R.style.Theme_MaterialComponents
-            else
-                R.style.Theme_MaterialComponents_Light
-        )
-        foregroundColor = if (Themes.isDark)
-            R.color.primaryTextDark.resolveColor(this)
-        else
-            R.color.primaryTextLight.resolveColor(this)
+        app.uiManager.applyTheme(this)
+        foregroundColor = R.color.primaryText.resolveColor(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -282,14 +268,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
             "Jan Heinrich Reimer",
             OpenSourceLicense.MIT,
             "https://github.com/heinrichreimer/material-intro"
-        ),
-
-        license(
-            "HyperLog Android",
-            "2018",
-            "HyperTrack",
-            OpenSourceLicense.MIT,
-            "https://github.com/hypertrack/hyperlog-android"
         ),
 
         license(

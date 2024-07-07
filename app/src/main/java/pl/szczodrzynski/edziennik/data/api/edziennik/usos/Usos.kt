@@ -17,11 +17,11 @@ import pl.szczodrzynski.edziennik.data.api.prepare
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class Usos(
     val app: App,
@@ -55,8 +55,8 @@ class Usos(
     ) {
         data.arguments = arguments
         data.prepare(UsosFeatures, featureTypes, onlyEndpoints)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
+        Timber.d("LoginMethod IDs: ${data.targetLoginMethods}")
+        Timber.d("Endpoint IDs: ${data.targetEndpoints}")
         UsosLogin(data) {
             UsosData(data) {
                 completed()
@@ -79,7 +79,7 @@ class Usos(
     }
 
     override fun cancel() {
-        d(TAG, "Cancelled")
+        Timber.d("Cancelled")
         data.cancel()
     }
 

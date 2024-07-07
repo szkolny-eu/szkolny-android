@@ -2,25 +2,17 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-3-19.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingStart="?attr/dialogPreferredPadding"
-    android:paddingTop="8dp"
     android:paddingEnd="?attr/dialogPreferredPadding">
-
-    <TextView
-        android:id="@android:id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        tools:text="This is a custom message of the dialog." />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="?textInputOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel.Timetable.Comp
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.get

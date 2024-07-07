@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -11,38 +12,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/widget_background_top"
-        android:orientation="horizontal"><!--#b52196F3-->
+        android:orientation="horizontal"><!--#b52196F3-->        <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/widgetTimetableTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingHorizontal="15dp"
+            android:text="@string/widget_timetable_title"
+            android:textColor="@color/primaryTextDark"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/widgetTimetableTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:paddingHorizontal="15dp"
-                android:text="@string/widget_timetable_title"
-                android:textColor="@color/primaryTextDark"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/widgetTimetableSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:paddingHorizontal="15dp"
-                android:textColor="@color/primaryTextDark"
-                android:textSize="16sp"
-                tools:text="Test test etst tetete" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/widgetTimetableSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingHorizontal="15dp"
+            android:textColor="@color/primaryTextDark"
+            android:textSize="16sp"
+            tools:text="Test test etst tetete" />
+    </LinearLayout>
 
         <ImageButton
             android:id="@+id/widgetTimetableRefresh"
@@ -73,8 +72,7 @@
             android:layout_height="match_parent"
             android:divider="@color/secondaryTextLight"
             android:dividerHeight="1.0dip"
-            tools:listitem="@layout/row_widget_timetable_big_item"/><!--#b5ffffff-->
-
+            tools:listitem="@layout/row_widget_timetable_big_item" /><!--#b5ffffff-->
         <TextView
             android:id="@+id/widgetTimetableLoading"
             android:layout_width="wrap_content"
@@ -84,7 +82,7 @@
             android:textColor="@color/primaryTextLight"
             android:textSize="22sp"
             android:textStyle="italic"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/widgetTimetableNoTimetable"
@@ -92,12 +90,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:textColor="@color/primaryTextLight"
             android:gravity="center"
-            android:textSize="24sp"
             android:text="@string/widget_timetable_no_timetable"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="24sp"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/widgetTimetableNoLessons"
@@ -105,13 +103,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:textColor="@color/primaryTextLight"
             android:gravity="center"
-            android:textSize="24sp"
             android:text="@string/widget_timetable_no_lessons_found"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="24sp"
             android:visibility="gone"
-            tools:visibility="visible"/>
-
+            tools:visibility="visible" />
     </FrameLayout>
-
 </LinearLayout>

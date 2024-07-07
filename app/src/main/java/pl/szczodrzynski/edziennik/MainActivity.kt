@@ -15,70 +15,99 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.danimahardhika.cafebar.CafeBar
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.danimahardhika.cafebar.CafeBarTheme
 import com.jetradarmobile.snowfall.SnowfallView
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
-import com.mikepenz.materialdrawer.model.*
-import com.mikepenz.materialdrawer.model.interfaces.*
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.descriptionRes
+import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
+import pl.szczodrzynski.edziennik.core.work.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.core.work.SyncWorker
+import pl.szczodrzynski.edziennik.core.work.UpdateStateEvent
+import pl.szczodrzynski.edziennik.core.work.UpdateWorker
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.api.events.*
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
+import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTargetLocation
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
-import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
-import pl.szczodrzynski.edziennik.sync.SyncWorker
-import pl.szczodrzynski.edziennik.sync.UpdateStateEvent
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTargetLocation
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getAppData
+import pl.szczodrzynski.edziennik.ext.getEnum
+import pl.szczodrzynski.edziennik.ext.getIntOrNull
+import pl.szczodrzynski.edziennik.ext.hasUIFeature
+import pl.szczodrzynski.edziennik.ext.isBeforeYear
+import pl.szczodrzynski.edziennik.ext.keys
+import pl.szczodrzynski.edziennik.ext.putExtras
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ext.shouldArchive
+import pl.szczodrzynski.edziennik.ext.takePositive
+import pl.szczodrzynski.edziennik.ext.toDrawable
+import pl.szczodrzynski.edziennik.ext.toImageHolder
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateProgressDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.main.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
-import pl.szczodrzynski.edziennik.utils.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
-import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
+import pl.szczodrzynski.edziennik.utils.BigNightUtil
+import pl.szczodrzynski.edziennik.utils.PausedNavigationData
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.appManagerIntentList
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.*
-import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
+import pl.szczodrzynski.navlib.NavView
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import java.io.IOException
-import java.util.*
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -99,7 +128,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
     val requestHandler by lazy { MainActivityRequestHandler(this) }
 
-    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    val swipeRefreshLayout: SwipeRefreshLayout by lazy { b.swipeRefreshLayout }
 
     var onBeforeNavigate: (() -> Boolean)? = null
     private var pausedNavigationData: PausedNavigationData? = null
@@ -125,22 +154,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        d(TAG, "Activity created")
+        Timber.i("Activity created")
 
-        setTheme(Themes.appTheme)
-
-        app.config.ui.language?.let {
-            setLanguage(it)
-        }
-
+        app.uiManager.applyTheme(this)
+        app.uiManager.applyLanguage(this)
         app.buildManager.validateBuild(this)
 
         if (App.profileId == 0) {
+            Timber.i("Profile is not loaded")
             onProfileListEmptyEvent(ProfileListEmptyEvent())
             return
         }
 
-        d(TAG, "Profile is valid, inflating views")
+        Timber.i("Profile is valid, inflating views")
 
         setContentView(b.root)
 
@@ -148,10 +174,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
         val versionBadge = app.buildManager.versionBadge
-        b.nightlyText.isVisible = versionBadge != null
-        b.nightlyText.text = versionBadge
+        navView.nightlyText.isVisible = versionBadge != null
+        navView.nightlyText.text = versionBadge
         if (versionBadge != null) {
-            b.nightlyText.background.setTintColor(0xa0ff0000.toInt())
+            navView.nightlyText.background.setTintColor(0xa0ff0000.toInt())
         }
 
         navLoading = true
@@ -159,57 +185,34 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.navView.apply {
             drawer.init(this@MainActivity)
 
-            SystemBarsUtil(this@MainActivity).run {
-                //paddingByKeyboard = b.navView
-                appFullscreen = false
-                statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
-                statusBarDarker = false
-                statusBarFallbackLight = COLOR_HALF_TRANSPARENT
-                statusBarFallbackGradient = COLOR_HALF_TRANSPARENT
-                navigationBarTransparent = false
-
-                b.navView.configSystemBarsUtil(this)
-
-                // fix for setting status bar color to window color, outside of navlib
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    window.statusBarColor = statusBarColor
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && ColorUtils.calculateLuminance(statusBarColor) > 0.6
-                ) {
-                    @Suppress("deprecation")
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
-
-                // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
-
-                commit()
+            val statusBarColor = android.R.attr.colorBackground.resolveAttr(context)
+            // fix for setting status bar color to window color, outside of navlib
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor = statusBarColor
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ColorUtils.calculateLuminance(statusBarColor) > 0.6
+            ) {
+                @Suppress("deprecation")
+                window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             }
 
             toolbar.apply {
-                subtitleFormat = R.string.toolbar_subtitle
-                subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
+                enable = true
+                enableMenuControls = true
             }
 
             bottomBar.apply {
+                enable = false
+                enableMenuControls = false
                 fabEnable = false
-                fabExtendable = true
                 fabExtended = false
-                fabGravity = Gravity.CENTER
-                if (Themes.isDark) {
-                    setBackgroundColor(blendColors(
-                        getColorFromAttr(context, R.attr.colorSurface),
-                        getColorFromRes(R.color.colorSurface_4dp)
-                    ))
-                    elevation = dpToPx(4).toFloat()
-                }
+                fabGravity = Gravity.END
             }
 
             bottomSheet.apply {
                 removeAllItems()
-                toggleGroupEnabled = false
-                textInputEnabled = false
                 onCloseListener = {
                     if (!app.config.ui.bottomSheetOpened)
                         app.config.ui.bottomSheetOpened = true
@@ -226,7 +229,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     if (item is ExpandableDrawerItem)
                         false
                     else
-                        navigate(navTarget = id.asNavTargetOrNull())
+                        navigate(navTarget = NavTarget.getById(id))
                 }
                 drawerProfileSelectedListener = { id, _, _, _ ->
                     // why is this negated -_-
@@ -289,9 +292,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             drawer.setUnreadCounterList(unreadCounters)
         }
 
-        b.swipeRefreshLayout.isEnabled = true
-        b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
-        b.swipeRefreshLayout.setColorSchemeResources(
+        swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
+        swipeRefreshLayout.setColorSchemeResources(
             R.color.md_blue_500,
             R.color.md_amber_500,
             R.color.md_green_500
@@ -358,12 +360,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
+                    .theme(CafeBarTheme.Custom(R.attr.colorSurfaceInverse.resolveAttr(this)))
                     .content(R.string.rate_snackbar_text)
-                    .icon(IconicsDrawable(this).apply {
-                        icon = CommunityMaterial.Icon3.cmd_star_outline
-                        sizeDp = 24
-                        colorInt = Themes.getPrimaryTextColor(this@MainActivity)
-                    })
+                    .icon(CommunityMaterial.Icon3.cmd_star_outline.toDrawable())
                     .positiveText(R.string.rate_snackbar_positive)
                     .positiveColor(-0xb350b0)
                     .negativeText(R.string.rate_snackbar_negative)
@@ -417,7 +416,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private var profileSettingClickListener = { itemId: Int, _: View? ->
-        when (val item = itemId.asNavTarget()) {
+        when (val item = NavTarget.getById(itemId)) {
             NavTarget.PROFILE_ADD -> {
                 requestHandler.requestLogin()
             }
@@ -457,37 +456,37 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                  |__*/
     private suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_archived_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_archived_title)
+                message(
                     R.string.profile_archived_text,
                     app.profile.studentSchoolYearStart,
                     app.profile.studentSchoolYearStart + 1
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
         if (app.profile.shouldArchive()) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_archiving_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_archiving_title)
+                message(
                     R.string.profile_archiving_format,
                     app.profile.dateYearEnd.formattedString
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
         }
         if (app.profile.isBeforeYear()) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.profile_year_not_started_title)
-                .setMessage(
+            SimpleDialog<Unit>(this) {
+                title(R.string.profile_year_not_started_title)
+                message(
                     R.string.profile_year_not_started_format,
                     app.profile.dateSemester1Start.formattedString
                 )
-                .setPositiveButton(R.string.ok, null)
-                .show()
+                positive(R.string.ok)
+            }.show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
@@ -560,8 +559,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         swipeRefreshLayout.isRefreshing = true
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
-                subtitleFormat = null
-                subtitleFormatWithUnread = null
                 subtitle = getString(R.string.toolbar_subtitle_syncing)
             }
         }
@@ -569,7 +566,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onProfileListEmptyEvent(event: ProfileListEmptyEvent) {
-        d(TAG, "Profile list is empty. Launch LoginActivity.")
         app.config.loginFinished = false
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
@@ -579,8 +575,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
-                subtitleFormat = null
-                subtitleFormatWithUnread = null
                 subtitle = if (event.progress < 0f)
                     event.progressText ?: ""
                 else
@@ -599,8 +593,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
-                subtitleFormat = R.string.toolbar_subtitle
-                subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
                 subtitle = "Gotowe"
             }
         }
@@ -621,8 +613,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             ErrorDetailsDialog(this, listOf(event.error)).show()
         }
         navView.toolbar.apply {
-            subtitleFormat = R.string.toolbar_subtitle
-            subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
             subtitle = "Gotowe"
         }
         mainSnackbar.dismiss()
@@ -634,10 +624,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
         if (app.config.sync.dontShowAppManagerDialog)
             return
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.app_manager_dialog_title)
-            .setMessage(R.string.app_manager_dialog_text)
-            .setPositiveButton(R.string.ok) { _, _ ->
+        SimpleDialog<Unit>(this) {
+            title(R.string.app_manager_dialog_title)
+            message(R.string.app_manager_dialog_text)
+            positive(R.string.ok) {
                 try {
                     for (intent in appManagerIntentList) {
                         if (packageManager.resolveActivity(intent,
@@ -650,17 +640,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     try {
                         startActivity(Intent(Settings.ACTION_SETTINGS))
                     } catch (e: Exception) {
-                        e.printStackTrace()
-                        Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
+                        Timber.e(e)
+                        Toast.makeText(this@MainActivity, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
-            .setNeutralButton(R.string.dont_ask_again) { _, _ ->
+            neutral(R.string.dont_ask_again) {
                 app.config.sync.dontShowAppManagerDialog = true
             }
-            .setCancelable(false)
-            .show()
+            cancelable(false)
+        }.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -698,14 +688,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun handleIntent(extras: Bundle?) {
-        d(TAG, "handleIntent() {")
-        extras?.keySet()?.forEach { key ->
-            d(TAG, "    \"$key\": " + extras.get(key))
-        }
-        d(TAG, "}")
+        Timber.d("handleIntent() ${extras?.keySet()}")
 
         val intentProfileId = extras.getIntOrNull("profileId").takePositive()
-        var intentNavTarget = extras.getIntOrNull("fragmentId").asNavTargetOrNull()
+        var intentNavTarget = extras.getEnum<NavTarget>("fragmentId")
 
         if (extras?.containsKey("action") == true) {
             val handled = when (extras.getString("action")) {
@@ -808,7 +794,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (arguments != null)
             intent.putExtras(arguments)
         if (navTarget != null) {
-            intent.putExtra("fragmentId", navTarget.id)
+            intent.putExtras("fragmentId" to navTarget)
         }
         finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
@@ -816,33 +802,38 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onStart() {
-        d(TAG, "Activity started")
+        Timber.i("Activity started")
         super.onStart()
     }
 
     override fun onStop() {
-        d(TAG, "Activity stopped")
+        Timber.i("Activity stopped")
         super.onStop()
     }
 
     override fun onResume() {
-        d(TAG, "Activity resumed")
+        Timber.i("Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
-        registerReceiver(intentReceiver, filter)
+        ContextCompat.registerReceiver(
+            this,
+            intentReceiver,
+            filter,
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
         EventBus.getDefault().register(this)
         super.onResume()
     }
 
     override fun onPause() {
-        d(TAG, "Activity paused")
+        Timber.i("Activity paused")
         unregisterReceiver(intentReceiver)
         EventBus.getDefault().unregister(this)
         super.onPause()
     }
 
     override fun onDestroy() {
-        d(TAG, "Activity destroyed")
+        Timber.i("Activity destroyed")
         super.onDestroy()
     }
 
@@ -896,7 +887,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         args: Bundle? = null,
         skipBeforeNavigate: Boolean = false,
     ): Boolean {
-        d(TAG, "navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
+        Timber.d("navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
         if (!(skipBeforeNavigate || navTarget == this.navTarget) && !canNavigate()) {
             bottomSheet.close()
             drawer.close()
@@ -929,7 +920,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         args: Bundle?,
         profileChanged: Boolean,
     ) {
-        d(TAG, "navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
+        Timber.d("navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
 
         if (navTarget.featureType != null && !profile.hasUIFeature(navTarget.featureType)) {
             navigateImpl(profile, NavTarget.HOME, args, profileChanged)
@@ -971,9 +962,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val arguments = args
             ?: navBackStack.firstOrNull { it.first == navTarget }?.second
             ?: Bundle()
+        swipeRefreshLayout.isEnabled = false
         bottomSheet.close()
         bottomSheet.removeAllContextual()
-        bottomSheet.toggleGroupEnabled = false
         drawer.close()
         if (drawer.getSelection() != navTarget.id)
             drawer.setSelection(navTarget.id, fireOnClick = false)
@@ -982,9 +973,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
+        Timber.d("Navigating from ${this.navTarget.name} to ${navTarget.name}")
 
-        val fragment = navTarget.fragmentClass?.newInstance() ?: return
+        val fragment = navTarget.fragmentClass?.getDeclaredConstructor()?.newInstance() ?: return
         fragment.arguments = arguments
         val transaction = fragmentManager.beginTransaction()
 
@@ -1042,9 +1033,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        d("NavDebug", "Current fragment ${navTarget.name}, back stack:")
+        Timber.d("Current fragment ${navTarget.name}, back stack:")
         navBackStack.forEachIndexed { index, item ->
-            d("NavDebug", " - $index: ${item.first.name}")
+            Timber.d(" - $index: ${item.first.name}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -1052,7 +1043,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         // TASK DESCRIPTION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_v5)
 
             @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
@@ -1061,7 +1052,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     getString(R.string.app_task_format, getString(navTarget.nameRes)),
                 bm,
-                getColorFromAttr(this, R.attr.colorSurface)
+                R.attr.colorPrimary.resolveAttr(this)
             )
             setTaskDescription(taskDesc)
         }
@@ -1105,9 +1096,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun gainAttention() {
         if (app.config.ui.bottomSheetOpened)
             return
-        b.navView.postDelayed({
-            navView.gainAttentionOnBottomBar()
-        }, 2000)
     }
 
     fun gainAttentionFAB() {
@@ -1130,8 +1118,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     BitmapDrawable.createFromPath(it)
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 
@@ -1172,7 +1160,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun setDrawerItems() {
-        d("NavDebug", "setDrawerItems() app.profile = ${app.profile}")
+        Timber.d("setDrawerItems() app.profile = ${app.profile}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
         val drawerItemsMore = arrayListOf<IDrawerItem<*>>()
         val drawerItemsBottom = arrayListOf<IDrawerItem<*>>()

@@ -5,16 +5,15 @@
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AppLanguageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MiniMenuConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
 import pl.szczodrzynski.edziennik.utils.BigNightUtil
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
@@ -26,7 +25,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
     )
 
     override fun getItems(card: MaterialAboutCard) = listOfNotNull(
-        if (Date.getToday().month % 11 == 1) // cool math games
+        if (Date.getToday().month / 3 % 4 == 0) // cool math games
             util.createPropertyItem(
                 text = R.string.settings_theme_snowfall_text,
                 subText = R.string.settings_theme_snowfall_subtext,
@@ -52,7 +51,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
 
         util.createActionItem(
             text = R.string.settings_theme_theme_text,
-            subText = Themes.getThemeNameRes(),
+            subText = app.uiManager.themeColor.nameRes,
             icon = CommunityMaterial.Icon3.cmd_palette_outline
         ) {
             ThemeChooserDialog(activity).show()
@@ -93,14 +92,12 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 setHeaderBackground()
                 return@createActionItem
             }
-            MaterialAlertDialogBuilder(activity)
-                .setItems(
-                    arrayOf(
-                        activity.getString(R.string.settings_theme_drawer_header_dialog_set),
-                        activity.getString(R.string.settings_theme_drawer_header_dialog_restore)
-                    )
-                ) { _, which ->
-                    when (which) {
+            SimpleDialog<Int>(activity) {
+                itemsRes(
+                    R.string.settings_theme_drawer_header_dialog_set to 0,
+                    R.string.settings_theme_drawer_header_dialog_restore to 1,
+                ) {
+                    when (it) {
                         0 -> setHeaderBackground()
                         1 -> {
                             app.config.ui.headerBackground = null
@@ -109,8 +106,8 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                         }
                     }
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                negative(R.string.cancel)
+            }.show()
         },
 
         util.createActionItem(
@@ -122,14 +119,12 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 setAppBackground()
                 return@createActionItem
             }
-            MaterialAlertDialogBuilder(activity)
-                .setItems(
-                    arrayOf(
-                        activity.getString(R.string.settings_theme_app_background_dialog_set),
-                        activity.getString(R.string.settings_theme_app_background_dialog_restore)
-                    )
-                ) { _, which ->
-                    when (which) {
+            SimpleDialog<Int>(activity) {
+                itemsRes(
+                    R.string.settings_theme_app_background_dialog_set to 0,
+                    R.string.settings_theme_app_background_dialog_restore to 1,
+                ) {
+                    when (it) {
                         0 -> setAppBackground()
                         1 -> {
                             app.config.ui.appBackground = null
@@ -137,8 +132,8 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                         }
                     }
                 }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                negative(R.string.cancel)
+            }.show()
         },
 
         util.createPropertyItem(

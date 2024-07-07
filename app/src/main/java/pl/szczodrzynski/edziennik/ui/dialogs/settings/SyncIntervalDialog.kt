@@ -9,16 +9,12 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ext.MINUTE
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class SyncIntervalDialog(
     activity: AppCompatActivity,
     private val onChangeListener: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "SyncIntervalDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.settings_sync_sync_interval_dialog_title
     override fun getMessageRes() = R.string.settings_sync_sync_interval_dialog_text
@@ -38,8 +34,6 @@ class SyncIntervalDialog(
     ).associateBy { activity.getSyncInterval(it.toInt()) }
 
     override fun getDefaultSelectedItem() = app.config.sync.interval.toLong()
-
-    override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
         val interval = getSingleSelection() as? Long ?: return DISMISS

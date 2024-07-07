@@ -6,8 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
@@ -43,7 +44,7 @@ class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethod")
+        Timber.d("Using login method $loginMethod")
         when (loginMethod) {
             LoginMethod.LIBRUS_PORTAL -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_portal)

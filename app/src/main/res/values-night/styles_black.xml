@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
+
+<resources>
+
+    <style name="AppTheme.M2.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M2.Red.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M2.Green.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M2.Blue.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M2.Purple.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M2.Teal.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Red.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Green.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Blue.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Purple.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+    <style name="AppTheme.M3.Teal.Black">
+        <item name="android:colorBackground">#FF000000</item>
+    </style>
+
+</resources>

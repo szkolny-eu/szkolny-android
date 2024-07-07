@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
+import timber.log.Timber
 import java.io.File
 import java.net.HttpURLConnection
 
@@ -269,7 +270,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
             else -> "uonetplus"
         } + ".${data.webHost}/${data.symbol}/$endpoint"
 
-        Utils.d(tag, "Request: Vulcan/WebMain - $url")
+        Timber.tag(tag).d("Request: Vulcan/WebMain - $url")
 
         val payload = JsonObject()
         parameters.map { (name, value) ->

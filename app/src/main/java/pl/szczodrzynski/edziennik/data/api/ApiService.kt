@@ -23,7 +23,7 @@ import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.toApiError
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -76,7 +76,7 @@ class ApiService : Service() {
     private val taskCallback = object : EdziennikCallback {
         override fun onCompleted() {
             lastEventTime = System.currentTimeMillis()
-            d(TAG, "Task $taskRunningId (profile $taskProfileId) finished in ${System.currentTimeMillis()-taskStartTime}")
+            Timber.d("Task $taskRunningId (profile $taskProfileId) finished in ${System.currentTimeMillis()-taskStartTime}")
             EventBus.getDefault().postSticky(ApiTaskFinishedEvent(taskProfileId))
             clearTask()
 
@@ -93,12 +93,12 @@ class ApiService : Service() {
 
         override fun onError(apiError: ApiError) {
             lastEventTime = System.currentTimeMillis()
-            d(TAG, "Task $taskRunningId threw an error - $apiError")
+            Timber.d("Task $taskRunningId threw an error - $apiError")
             apiError.profileId = taskProfileId
 
             EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
             errorList.add(apiError)
-            apiError.throwable?.printStackTrace()
+            Timber.e(apiError.throwable)
 
             if (apiError.isCritical) {
                 taskRunning?.cancel()
@@ -119,7 +119,7 @@ class ApiService : Service() {
                 taskProgress = 0f
             taskProgress += step
             taskProgress = min(100f, taskProgress)
-            d(TAG, "Task $taskRunningId progress: ${taskProgress.roundToInt()}%")
+            Timber.d("Task $taskRunningId progress: ${taskProgress.roundToInt()}%")
             EventBus.getDefault().post(ApiTaskProgressEvent(taskProfileId, taskProgress, taskProgressText))
             notification.setProgress(taskProgress).post()
         }
@@ -127,7 +127,7 @@ class ApiService : Service() {
         override fun onStartProgress(stringRes: Int) {
             lastEventTime = System.currentTimeMillis()
             taskProgressText = getString(stringRes)
-            d(TAG, "Task $taskRunningId progress: $taskProgressText")
+            Timber.d("Task $taskRunningId progress: $taskProgressText")
             EventBus.getDefault().post(ApiTaskProgressEvent(taskProfileId, taskProgress, taskProgressText))
             notification.setProgressText(taskProgressText).post()
         }
@@ -166,7 +166,7 @@ class ApiService : Service() {
         taskProgress = -1f
         taskProgressText = task.taskName
 
-        d(TAG, "Executing task $taskRunningId - ${task::class.java.name}")
+        Timber.d("Executing task $taskRunningId - ${task::class.java.name}")
 
         // update the notification
         notification.setCurrentTask(taskRunningId, taskProgressText).post()
@@ -200,7 +200,7 @@ class ApiService : Service() {
         if (System.currentTimeMillis() - lastEventTime > 30*1000
                 || taskCancelTries >= 3) {
             val time = System.currentTimeMillis() - lastEventTime
-            d(TAG, "!!! Task $taskRunningId froze for $time ms. $taskRunning")
+            Timber.d("!!! Task $taskRunningId froze for $time ms. $taskRunning")
             clearTask()
             return true
         }
@@ -245,7 +245,7 @@ class ApiService : Service() {
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     fun onApiTask(task: IApiTask) {
         EventBus.getDefault().removeStickyEvent(task)
-        d(TAG, task.toString())
+        Timber.d(task.toString())
 
         if (task is EdziennikTask) {
             // fix for duplicated tasks, thank you EventBus
@@ -270,10 +270,10 @@ class ApiService : Service() {
         else {
             taskQueue += task
         }
-        d(TAG, "EventBus received an IApiTask: $task")
-        d(TAG, "Current queue:")
+        Timber.d("EventBus received an IApiTask: $task")
+        Timber.d("Current queue:")
         taskQueue.forEach {
-            d(TAG, "  - $it")
+            Timber.d("  - $it")
         }
         runTask()
     }
@@ -281,7 +281,7 @@ class ApiService : Service() {
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     fun onTaskCancelRequest(request: TaskCancelRequest) {
         EventBus.getDefault().removeStickyEvent(request)
-        d(TAG, request.toString())
+        Timber.d(request.toString())
 
         taskCancelTries++
         taskCancelled = true
@@ -291,7 +291,7 @@ class ApiService : Service() {
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     fun onServiceCloseRequest(request: ServiceCloseRequest) {
         EventBus.getDefault().removeStickyEvent(request)
-        d(TAG, request.toString())
+        Timber.d(request.toString())
 
         serviceClosed = true
         taskCancelled = true
@@ -306,19 +306,19 @@ class ApiService : Service() {
           ____) |  __/ |   \ V /| | (_|  __/ | (_) \ V /  __/ |  | |  | | (_| |  __/\__ \
          |_____/ \___|_|    \_/ |_|\___\___|  \___/ \_/ \___|_|  |_|  |_|\__,_|\___||__*/
     override fun onCreate() {
-        d(TAG, "Service created")
+        Timber.d("Service created")
         EventBus.getDefault().register(this)
         notification.setIdle().setCloseAction()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        d(TAG, "Foreground service onStartCommand")
-        startForeground(app.notificationChannelsManager.sync.id, notification.notification)
+        Timber.d("Foreground service onStartCommand")
+        startForeground(app.notificationManager.sync.id, notification.notification)
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
-        d(TAG, "Service destroyed")
+        Timber.d("Service destroyed")
         serviceClosed = true
         EventBus.getDefault().unregister(this)
     }

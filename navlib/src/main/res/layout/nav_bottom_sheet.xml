@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:translationZ="10dp"
+    tools:targetApi="lollipop">
+
+    <View
+        android:id="@+id/bs_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="invisible"
+        tools:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bs_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:maxWidth="600dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="auto"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/bs_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_sheet_background"
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp"
+            tools:paddingBottom="48dp">
+
+            <ImageView
+                android:id="@+id/bs_dragBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:srcCompat="@drawable/bottom_sheet_control_bar"
+                tools:ignore="ContentDescription" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bs_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:listitem="@layout/nav_bs_item_primary"
+                tools:minHeight="50dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

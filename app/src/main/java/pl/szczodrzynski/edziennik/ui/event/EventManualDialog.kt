@@ -8,33 +8,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.color.MaterialColors
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.config.AppData
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.appendView
@@ -44,13 +43,13 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.removeFromParent
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.base.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
-import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -64,11 +63,7 @@ class EventManualDialog(
     private val defaultType: Long? = null,
     private val editingEvent: EventFull? = null,
     private val onSaveListener: ((event: EventFull?) -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogEventManualV2Binding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "EventManualDialog"
+) : BindingDialog<DialogEventManualV2Binding>(activity) {
 
     override fun getTitleRes() = R.string.dialog_event_manual_title
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -94,10 +89,10 @@ class EventManualDialog(
         SzkolnyApi(app)
     }
 
-    private var enqueuedWeekDialog: AlertDialog? = null
+    private var enqueuedWeekDialog: BaseDialog<*>? = null
     private var enqueuedWeekStart = Date.getToday()
 
-    private var progressDialog: AlertDialog? = null
+    private var progressDialog: BaseDialog<*>? = null
 
     override suspend fun onPositiveClick(): Boolean {
         saveEvent()
@@ -109,13 +104,7 @@ class EventManualDialog(
         return NO_DISMISS
     }
 
-    override suspend fun onBeforeShow(): Boolean {
-        EventBus.getDefault().register(this@EventManualDialog)
-        return true
-    }
-
-    override fun onDismiss() {
-        EventBus.getDefault().unregister(this@EventManualDialog)
+    override suspend fun onDismiss() {
         enqueuedWeekDialog?.dismiss()
         progressDialog?.dismiss()
     }
@@ -145,8 +134,6 @@ class EventManualDialog(
             activity = activity,
             textLayout = b.topicLayout,
             textEdit = b.topic,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
 
         stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)
@@ -187,11 +174,11 @@ class EventManualDialog(
             return
         }
         val weekStart = date.weekStart
-        enqueuedWeekDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.timetable_syncing_text)
-                .setCancelable(false)
-                .show()
+        enqueuedWeekDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.timetable_syncing_text)
+            cancelable(false)
+        }.show()
 
         enqueuedWeekStart = weekStart
 
@@ -209,11 +196,11 @@ class EventManualDialog(
             return
         }
 
-        progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.event_sharing_text)
-                .setCancelable(false)
-                .show()
+        progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.event_sharing_text)
+            cancelable(false)
+        }.show()
     }
 
     private fun showRemovingProgressDialog() {
@@ -221,11 +208,11 @@ class EventManualDialog(
             return
         }
 
-        progressDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.please_wait)
-                .setMessage(R.string.event_removing_text)
-                .setCancelable(false)
-                .show()
+        progressDialog = SimpleDialog<Unit>(activity) {
+            title(R.string.please_wait)
+            message(R.string.event_removing_text)
+            cancelable(false)
+        }.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -351,7 +338,7 @@ class EventManualDialog(
             selectDefault(defaultType)
 
             onTypeSelected = {
-                b.typeColor.background.setTintColor(it.color)
+                b.typeColor.background.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, it.color))
                 customColor = null
             }
         }
@@ -399,22 +386,14 @@ class EventManualDialog(
             editingShared && !editingOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared)
             else -> ""
         }
-        removeEventDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation)+shareNotice)
-                .setPositiveButton(R.string.yes, null)
-                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-                .create()
-                .apply {
-                    setOnShowListener { dialog ->
-                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
-                        positiveButton?.setOnClickListener {
-                            removeEvent()
-                        }
-                    }
-
-                    show()
-                }
+        SimpleDialog<Unit>(activity) {
+            title(R.string.are_you_sure)
+            message(activity.getString(R.string.dialog_register_event_manual_remove_confirmation) + shareNotice)
+            positive(R.string.yes) {
+                removeEvent()
+            }
+            negative(R.string.no)
+        }.show()
     }
 
     private fun saveEvent() {

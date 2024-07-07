@@ -20,15 +20,15 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEA
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.dateToSemester
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.singleOrNull
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
+import timber.log.Timber
 
 class MobidziennikWebAttendance(override val data: DataMobidziennik,
                                 override val lastSync: Long?,
@@ -156,7 +156,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                 }
             }
 
-            d(TAG, "Done in ${System.currentTimeMillis()-start} ms (request ${start-requestTime} ms)")
+            Timber.d("Done in ${System.currentTimeMillis()-start} ms (request ${start-requestTime} ms)")
 
             onSuccess()
         }

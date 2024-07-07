@@ -6,8 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -43,7 +44,7 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethod")
+        Timber.d("Using login method $loginMethod")
         when (loginMethod) {
             LoginMethod.MOBIDZIENNIK_WEB -> {
                 data.startProgress(R.string.edziennik_progress_login_mobidziennik_web)

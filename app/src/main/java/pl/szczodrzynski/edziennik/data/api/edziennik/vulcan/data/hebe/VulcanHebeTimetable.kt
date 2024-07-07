@@ -20,14 +20,14 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_S
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_TARGET
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getBoolean
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.getString
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
+import timber.log.Timber
 
 class VulcanHebeTimetable(
     override val data: DataVulcan,
@@ -107,8 +107,7 @@ class VulcanHebeTimetable(
                     date.stepForward(0, 0, 1)
                 }
 
-                d(
-                    TAG,
+                Timber.d(
                     "Clearing lessons between ${dateFrom.stringY_m_d} and ${dateTo.stringY_m_d}"
                 )
 

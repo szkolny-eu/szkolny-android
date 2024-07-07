@@ -5,99 +5,32 @@
 package pl.szczodrzynski.edziennik.ui.notes
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NotesFragmentBinding
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class NotesFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "NotesFragment"
-    }
+class NotesFragment : BaseFragment<NotesFragmentBinding, MainActivity>(
+    inflater = NotesFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: NotesFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getFab() =
+        R.string.notes_action_add to CommunityMaterial.Icon3.cmd_text_box_plus_outline
 
     private val manager
         get() = app.noteManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        activity = getActivity() as? MainActivity ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = NotesFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    private fun onNoteClick(note: Note) = launch {
-        val owner = withContext(Dispatchers.IO) {
-            manager.getOwner(note)
-        } as? Noteable
-
-        NoteDetailsDialog(
-            activity = activity,
-            owner = owner,
-            note = note,
-        ).show()
-    }
-
-    private fun onNoteEditClick(note: Note) = launch {
-        val owner = withContext(Dispatchers.IO) {
-            manager.getOwner(note)
-        } as? Noteable
-
-        NoteEditorDialog(
-            activity = activity,
-            owner = owner,
-            editingNote = note,
-            profileId = App.profileId,
-        ).show()
-    }
-
-    private fun onNoteAddClick(view: View?) {
-        NoteEditorDialog(
-            activity = activity,
-            owner = null,
-            editingNote = null,
-            profileId = App.profileId,
-        ).show()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded) return
-
-        activity.navView.apply {
-            bottomBar.apply {
-                fabEnable = true
-                fabExtendedText = getString(R.string.notes_action_add)
-                fabIcon = CommunityMaterial.Icon3.cmd_text_box_plus_outline
-            }
-
-            setFabOnClickListener(this@NotesFragment::onNoteAddClick)
-        }
-        activity.gainAttentionFAB()
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = NoteListAdapter(
             activity = activity,
             onNoteClick = this::onNoteClick,
@@ -152,5 +85,39 @@ class NotesFragment : Fragment(), CoroutineScope {
             // reapply the filter
             adapter.getSearchField()?.applyTo(adapter)
         }
+    }
+
+    private fun onNoteClick(note: Note) = launch {
+        val owner = withContext(Dispatchers.IO) {
+            manager.getOwner(note)
+        } as? Noteable
+
+        NoteDetailsDialog(
+            activity = activity,
+            owner = owner,
+            note = note,
+        ).show()
+    }
+
+    private fun onNoteEditClick(note: Note) = launch {
+        val owner = withContext(Dispatchers.IO) {
+            manager.getOwner(note)
+        } as? Noteable
+
+        NoteEditorDialog(
+            activity = activity,
+            owner = owner,
+            editingNote = note,
+            profileId = App.profileId,
+        ).show()
+    }
+
+    override suspend fun onFabClick() {
+        NoteEditorDialog(
+            activity = activity,
+            owner = null,
+            editingNote = null,
+            profileId = App.profileId,
+        ).show()
     }
 }

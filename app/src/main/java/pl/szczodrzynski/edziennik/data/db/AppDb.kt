@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import pl.szczodrzynski.edziennik.config.db.ConfigDao
-import pl.szczodrzynski.edziennik.config.db.ConfigEntry
 import pl.szczodrzynski.edziennik.data.db.converter.*
 import pl.szczodrzynski.edziennik.data.db.dao.*
 import pl.szczodrzynski.edziennik.data.db.entity.*
@@ -31,7 +29,7 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
     FeedbackMessage::class,
     Message::class,
     MessageRecipient::class,
-    DebugLog::class,
+    LogEntry::class,
     EndpointTimer::class,
     LessonRange::class,
     Notification::class,
@@ -44,7 +42,7 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
     TimetableManual::class,
     Note::class,
     Metadata::class
-], version = 100)
+], version = 101)
 @TypeConverters(
         ConverterTime::class,
         ConverterDate::class,
@@ -73,7 +71,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun feedbackMessageDao(): FeedbackMessageDao
     abstract fun messageDao(): MessageDao
     abstract fun messageRecipientDao(): MessageRecipientDao
-    abstract fun debugLogDao(): DebugLogDao
+    abstract fun logDao(): LogDao
     abstract fun endpointTimerDao(): EndpointTimerDao
     abstract fun lessonRangeDao(): LessonRangeDao
     abstract fun notificationDao(): NotificationDao
@@ -189,6 +187,7 @@ abstract class AppDb : RoomDatabase() {
                 Migration98(),
                 Migration99(),
                 Migration100(),
+                Migration101(),
         ).allowMainThreadQueries().build()
     }
 }

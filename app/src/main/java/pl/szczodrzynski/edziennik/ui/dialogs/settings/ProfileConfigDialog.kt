@@ -16,17 +16,13 @@ import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.ProfileRemoveDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 
 class ProfileConfigDialog(
     activity: MainActivity,
     private val profile: Profile,
     private val onProfileSaved: ((profile: Profile) -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogProfileConfigBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ProfileConfigDialog"
+) : BindingDialog<DialogProfileConfigBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -46,9 +42,9 @@ class ProfileConfigDialog(
             activity,
             null,
             R.attr.alertDialogStyle,
-            R.style.MaterialAlertDialog_MaterialComponents
+            R.style.MaterialAlertDialog_Material3
         )
-        val surface = MaterialColors.getColor(activity, R.attr.colorSurface, TAG)
+        val surface = MaterialColors.getColor(activity, R.attr.colorSurface, 0)
         shape.setCornerSize(18.dp.toFloat())
         shape.initializeElevationOverlay(activity)
         shape.fillColor = ColorStateList.valueOf(surface)
@@ -79,12 +75,12 @@ class ProfileConfigDialog(
         b.logoutButton.onClick {
             ProfileRemoveDialog(activity, profile.id, profile.name) {
                 profileRemoved = true
-                dialog.dismiss()
+                dismiss()
             }.show()
         }
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!profileRemoved && profileChanged) {
             app.profileSave(profile)
             onProfileSaved?.invoke(profile)

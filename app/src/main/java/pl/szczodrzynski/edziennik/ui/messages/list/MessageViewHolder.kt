@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MessageViewHolder(
@@ -45,13 +45,16 @@ class MessageViewHolder(
 
         val isRead = item.isSent || item.isDraft || item.seen
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
-        val style = if (isRead) R.style.NavView_TextView_Small else R.style.NavView_TextView_Normal
+        val textColor = if (isRead)
+            R.attr.colorOnSurfaceVariant.resolveAttr(b.root.context)
+        else
+            R.attr.colorOnSurface.resolveAttr(b.root.context)
         // set text styles
-        b.messageSender.setTextAppearance(activity, style)
+        b.messageSender.setTextColor(textColor)
         b.messageSender.typeface = typeface
-        b.messageSubject.setTextAppearance(activity, style)
+        b.messageSubject.setTextColor(textColor)
         b.messageSubject.typeface = typeface
-        b.messageDate.setTextAppearance(activity, style)
+        b.messageDate.setTextColor(textColor)
         b.messageDate.typeface = typeface
 
         if (adapter.onStarClick == null) {

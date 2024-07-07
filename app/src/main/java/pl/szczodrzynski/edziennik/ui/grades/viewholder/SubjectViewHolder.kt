@@ -24,7 +24,6 @@ import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class SubjectViewHolder(
     inflater: LayoutInflater,
@@ -37,7 +36,6 @@ class SubjectViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: GradesSubject, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
         if (!item.isUnknown) {
             b.subjectName.text = item.subjectName
@@ -65,7 +63,7 @@ class SubjectViewHolder(
         b.yearSummary.text = manager.getYearSummaryString(app, item.semesters.map { it.grades.size }.sum(), item.averages)
 
         if (firstSemester.number != item.semester) {
-            b.gradesContainer.addView(TextView(contextWrapper).apply {
+            b.gradesContainer.addView(TextView(activity).apply {
                 setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
                 setText(R.string.grades_preview_other_semester, firstSemester.number)
                 setPadding(0, 0, 5.dp, 0)
@@ -85,14 +83,14 @@ class SubjectViewHolder(
             if (hideImproved && grade.isImproved)
                 continue
             b.gradesContainer.addView(GradeView(
-                contextWrapper,
+                activity,
                 grade,
                 manager,
                 periodGradesTextual = false
             ))
         }
 
-        b.previewContainer.addView(TextView(contextWrapper).apply {
+        b.previewContainer.addView(TextView(activity).apply {
             setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
             text = manager.getAverageString(app, firstSemester.averages, nameSemester = true, showSemester = firstSemester.number)
             //gravity = Gravity.END
@@ -106,14 +104,14 @@ class SubjectViewHolder(
         // add the topmost semester's grades to preview container (collapsed)
         firstSemester.proposedGrade?.let {
             b.previewContainer.addView(GradeView(
-                contextWrapper,
+                activity,
                 it,
                 manager
             ))
         }
         firstSemester.finalGrade?.let {
             b.previewContainer.addView(GradeView(
-                contextWrapper,
+                activity,
                 it,
                 manager
             ))
@@ -125,14 +123,14 @@ class SubjectViewHolder(
         // add the yearly grades to summary container (expanded)
         item.proposedGrade?.let {
             b.yearContainer.addView(GradeView(
-                    contextWrapper,
+                activity,
                     it,
                     manager
             ))
         }
         item.finalGrade?.let {
             b.yearContainer.addView(GradeView(
-                    contextWrapper,
+                activity,
                     it,
                     manager
             ))
@@ -140,7 +138,7 @@ class SubjectViewHolder(
 
         // if showing semester 2, add yearly grades to preview container (collapsed)
         if (firstSemester.number == item.semester) {
-            b.previewContainer.addView(TextView(contextWrapper).apply {
+            b.previewContainer.addView(TextView(activity).apply {
                 text = manager.getAverageString(app, item.averages, nameSemester = true)
                 layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                     setMargins(0, 0, 8.dp, 0)
@@ -151,14 +149,14 @@ class SubjectViewHolder(
 
             item.proposedGrade?.let {
                 b.previewContainer.addView(GradeView(
-                    contextWrapper,
+                    activity,
                     it,
                     manager
                 ))
             }
             item.finalGrade?.let {
                 b.previewContainer.addView(GradeView(
-                    contextWrapper,
+                    activity,
                     it,
                     manager
                 ))

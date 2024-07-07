@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeNotesBinding
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widgetTimetableRoot"
     android:layout_width="match_parent"
@@ -93,35 +94,32 @@
 
                     <ImageView
                         android:id="@+id/widgetTimetableEvent3"
-                        android:padding="2dp"
                         android:layout_width="20sp"
                         android:layout_height="20sp"
                         android:layout_gravity="center|end"
                         android:layout_marginStart="3dp"
-                        android:layout_marginLeft="3dp" />
+                        android:layout_marginLeft="3dp"
+                        android:padding="2dp" />
 
                     <ImageView
                         android:id="@+id/widgetTimetableEvent2"
-                        android:padding="2dp"
                         android:layout_width="20sp"
                         android:layout_height="20sp"
                         android:layout_gravity="center|end"
                         android:layout_marginStart="3dp"
-                        android:layout_marginLeft="3dp" />
+                        android:layout_marginLeft="3dp"
+                        android:padding="2dp" />
 
                     <ImageView
                         android:id="@+id/widgetTimetableEvent1"
-                        android:padding="2dp"
                         android:layout_width="20sp"
                         android:layout_height="20sp"
                         android:layout_gravity="center|end"
                         android:layout_marginStart="3dp"
-                        android:layout_marginLeft="3dp" />
+                        android:layout_marginLeft="3dp"
+                        android:padding="2dp" />
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>

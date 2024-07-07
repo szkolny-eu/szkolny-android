@@ -11,7 +11,7 @@ import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.io.File
 
 open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: Long?) {
@@ -52,7 +52,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
     ) {
         val url = fullUrl ?: "https://${data.loginServerName}.mobidziennik.pl$endpoint"
 
-        d(tag, "Request: Mobidziennik/Web - $url")
+        Timber.tag(tag).d("Request: Mobidziennik/Web - $url")
 
         if (data.webSessionKey == null) {
             data.error(TAG, ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY)
@@ -128,7 +128,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
                    onProgress: (written: Long, total: Long) -> Unit) {
         val url = "https://${data.loginServerName}.mobidziennik.pl$action"
 
-        d(tag, "Request: Mobidziennik/Web - $url")
+        Timber.tag(tag).d("Request: Mobidziennik/Web - $url")
 
         if (data.webSessionKey == null) {
             data.error(TAG, ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY)

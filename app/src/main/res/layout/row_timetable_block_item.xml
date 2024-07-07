@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="380dp"
     android:layout_height="180dp"
-    android:theme="@style/AppTheme.Dark"
-    xmlns:autofit="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/AppTheme.M2">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/timetableItemCard"
@@ -66,9 +67,6 @@
                 android:text="09a techniczna"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textSize="24sp" />
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>

@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.getString
 

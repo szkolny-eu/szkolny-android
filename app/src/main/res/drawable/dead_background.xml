@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/windowBackgroundDark"/>
+        android:drawable="@color/windowBackgroundDefault"/>
 
     <item
         android:drawable="@drawable/ic_rip"

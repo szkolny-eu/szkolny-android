@@ -6,25 +6,26 @@ package pl.szczodrzynski.edziennik.ui.messages.compose
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.*
-import android.text.Spanned.*
-import android.text.style.*
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.MessageManager.UIConfig
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.COMPATIBLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.ORIGINAL
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
@@ -32,36 +33,51 @@ import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.DAY
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.COMPATIBLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
-import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import kotlin.coroutines.CoroutineContext
 
-class MessagesComposeFragment : Fragment(), CoroutineScope {
+class MessagesComposeFragment : BaseFragment<MessagesComposeFragmentBinding, MainActivity>(
+    inflater = MessagesComposeFragmentBinding::inflate,
+) {
     companion object {
         private const val TAG = "MessagesComposeFragment"
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: MessagesComposeFragmentBinding
-
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getFab() = R.string.messages_compose_send to CommunityMaterial.Icon3.cmd_send_outline
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.messages_compose_send_long)
+            .withIcon(CommunityMaterial.Icon3.cmd_send_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                sendMessage()
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.messages_compose_save_draft)
+            .withIcon(CommunityMaterial.Icon.cmd_content_save_edit_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                saveDraft()
+            },
+        BottomSheetSeparatorItem(true),
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_messages_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                MessagesConfigDialog(activity, false).show()
+            }
+    )
 
     private val manager
         get() = app.messageManager
@@ -80,26 +96,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     private var discardDraftItem: BottomSheetPrimaryItem? = null
     private var draftMessageId: Long? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        requireContext().theme.applyStyle(Themes.appTheme, true)
-        // activity, context and profile is valid
-        b = MessagesComposeFragmentBinding.inflate(inflater)
-        return b.root
-    }
-    override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
-        super.onDestroy()
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (!isAdded)
-            return
-
-        EventBus.getDefault().register(this)
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.breakpoints.visibility = if (App.devMode) View.VISIBLE else View.GONE
         b.breakpoints.setOnClickListener {
             b.breakpoints.isEnabled = true
@@ -116,37 +113,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 discardDraftDialog()
             }
 
-        activity.bottomSheet.prependItems(
-            BottomSheetPrimaryItem(true)
-                .withTitle(R.string.messages_compose_send_long)
-                .withIcon(CommunityMaterial.Icon3.cmd_send_outline)
-                .withOnClickListener {
-                    activity.bottomSheet.close()
-                    sendMessage()
-                },
-            BottomSheetPrimaryItem(true)
-                .withTitle(R.string.messages_compose_save_draft)
-                .withIcon(CommunityMaterial.Icon.cmd_content_save_edit_outline)
-                .withOnClickListener {
-                    activity.bottomSheet.close()
-                    saveDraft()
-                },
-            BottomSheetSeparatorItem(true),
-            BottomSheetPrimaryItem(true)
-                .withTitle(R.string.menu_messages_config)
-                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                .withOnClickListener {
-                    activity.bottomSheet.close()
-                    MessagesConfigDialog(activity, false, null, null).show()
-                }
-        )
-
-        launch {
-            delay(100)
-            getRecipientList()
-
-            createView()
-        }
+        getRecipientList()
+        createView()
     }
 
     private fun getMessageBody(): String {
@@ -156,18 +124,16 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.text.text?.toString() ?: ""
     }
 
-    private fun getRecipientList() {
+    private suspend fun getRecipientList() {
         if (app.data.messagesConfig.syncRecipientList && System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000) {
             activity.snackbar("Pobieranie listy odbiorców...")
             EdziennikTask.recipientListGet(App.profileId).enqueue(activity)
         }
         else {
-            launch {
-                val list = withContext(Dispatchers.Default) {
-                    app.db.teacherDao().getAllNow(App.profileId).filter { it.loginId != null }
-                }
-                updateRecipientList(list)
+            val list = withContext(Dispatchers.IO) {
+                app.db.teacherDao().getAllNow(App.profileId).filter { it.loginId != null }
             }
+            updateRecipientList(list)
         }
     }
 
@@ -265,18 +231,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 changedBody = true
             }
         }
+    }
 
-        activity.navView.bottomBar.apply {
-            fabEnable = true
-            fabExtendedText = getString(R.string.messages_compose_send)
-            fabIcon = CommunityMaterial.Icon3.cmd_send_outline
-
-            setFabOnClickListener {
-                sendMessage()
-            }
-        }
-
-        activity.gainAttentionFAB()
+    override suspend fun onFabClick() {
+        sendMessage()
     }
 
     private fun onBeforeNavigate(): Boolean {
@@ -293,18 +251,18 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     }
 
     private fun saveDraftDialog() {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.messages_compose_save_draft_title)
-            .setMessage(R.string.messages_compose_save_draft_text)
-            .setPositiveButton(R.string.save) { _, _ ->
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_save_draft_title)
+            message(R.string.messages_compose_save_draft_text)
+            positive(R.string.save) {
                 saveDraft()
                 MessagesFragment.pageSelection = Message.TYPE_DRAFT
                 activity.navigate(navTarget = NavTarget.MESSAGES, skipBeforeNavigate = true)
             }
-            .setNegativeButton(R.string.discard) { _, _ ->
+            negative(R.string.discard) {
                 activity.resumePausedNavigation()
             }
-            .show()
+        }.show()
     }
 
     private fun saveDraft() {
@@ -321,19 +279,21 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     }
 
     private fun discardDraftDialog() {
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.messages_compose_discard_draft_title)
-            .setMessage(R.string.messages_compose_discard_draft_text)
-            .setPositiveButton(R.string.remove) { _, _ ->
-                launch {
-                    if (draftMessageId != null)
-                        manager.deleteDraft(App.profileId, draftMessageId!!)
-                    Toast.makeText(activity, R.string.messages_compose_draft_discarded, Toast.LENGTH_SHORT).show()
-                    activity.navigateUp(skipBeforeNavigate = true)
-                }
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_discard_draft_title)
+            message(R.string.messages_compose_discard_draft_text)
+            positive(R.string.remove) {
+                if (draftMessageId != null)
+                    manager.deleteDraft(App.profileId, draftMessageId!!)
+                Toast.makeText(
+                    activity,
+                    R.string.messages_compose_draft_discarded,
+                    Toast.LENGTH_SHORT
+                ).show()
+                activity.navigateUp(skipBeforeNavigate = true)
             }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
+            negative(R.string.cancel)
+        }.show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -431,27 +391,26 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
         activity.bottomSheet.hideKeyboard()
 
-        MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.messages_compose_confirm_title)
-                .setMessage(R.string.messages_compose_confirm_text)
-                .setPositiveButton(R.string.send) { _, _ ->
-                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), body).enqueue(activity)
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+        SimpleDialog<Unit>(activity) {
+            title(R.string.messages_compose_confirm_title)
+            message(R.string.messages_compose_confirm_text)
+            positive(R.string.send) {
+                EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), body)
+                    .enqueue(activity)
+            }
+            negative(R.string.cancel)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isAdded || !this::activity.isInitialized)
+        if (!isAdded)
             return
         activity.onBeforeNavigate = this::onBeforeNavigate
     }
 
     override fun onPause() {
         super.onPause()
-        if (!this::activity.isInitialized)
-            return
         activity.onBeforeNavigate = null
     }
 

@@ -6,9 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos
 
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 
 const val ENDPOINT_USOS_API_USER        = 7000
 const val ENDPOINT_USOS_API_TERMS       = 7010

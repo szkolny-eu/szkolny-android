@@ -14,12 +14,12 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
+import timber.log.Timber
 
 class LibrusApiTimetables(override val data: DataLibrus,
                           override val lastSync: Long?,
@@ -71,7 +71,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
                 }
             }
 
-            d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
+            Timber.d("Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
             if (data.timetableNotPublic) data.timetableNotPublic = false
 

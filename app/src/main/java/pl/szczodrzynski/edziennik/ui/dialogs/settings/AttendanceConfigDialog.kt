@@ -9,21 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AttendanceConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.onChange
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 
 class AttendanceConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<AttendanceConfigDialogBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "AttendanceConfigDialog"
+) : ConfigDialog<AttendanceConfigDialogBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_attendance_config
     override fun inflate(layoutInflater: LayoutInflater) =

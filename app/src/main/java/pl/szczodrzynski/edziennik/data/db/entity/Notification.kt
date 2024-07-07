@@ -14,32 +14,33 @@ import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
+import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.ext.putExtras
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
+import timber.log.Timber
 
 @Entity(tableName = "notifications")
 data class Notification(
-        @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
         val id: Long = 0,
 
-        val title: String,
-        val text: String,
-        val textLong: String? = null,
+    val title: String,
+    val text: String,
+    val textLong: String? = null,
 
-        val type: NotificationType,
+    val type: NotificationType,
 
-        val profileId: Int?,
-        val profileName: String?,
+    val profileId: Int?,
+    val profileName: String?,
 
-        var posted: Boolean = true,
+    var posted: Boolean = true,
 
-        @ColumnInfo(name = "viewId")
+    @ColumnInfo(name = "viewId")
         var navTarget: NavTarget? = null,
-        var extras: JsonObject? = null,
+    var extras: JsonObject? = null,
 
-        val addedDate: Long = System.currentTimeMillis()
+    val addedDate: Long = System.currentTimeMillis()
 ) {
     companion object {
         fun buildId(profileId: Int, type: NotificationType, itemId: Long): Long {
@@ -74,8 +75,8 @@ data class Notification(
                     intent.putExtra(key, primitive.asString)
                 }
             }
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Timber.e(e)
         }
     }
 

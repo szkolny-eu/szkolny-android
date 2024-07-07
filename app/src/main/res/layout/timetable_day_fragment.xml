@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-14.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="8dp"
-                android:background="@color/md_red_500"
+                android:background="?colorTertiary"
                 tools:layout_marginTop="100dp" />
         </FrameLayout>
     </pl.szczodrzynski.edziennik.utils.ListenerScrollView>

@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.utils.Themes;
+import timber.log.Timber;
 
 public class DebugFragment extends Fragment {
     App app;
@@ -37,7 +37,6 @@ public class DebugFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         app = (App)getActivity().getApplication();
-        getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_debug, container, false);
@@ -194,7 +193,7 @@ public class DebugFragment extends Fragment {
                     temp = target;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Timber.e(e);
                 return Log.getStackTraceString(e);
             }
         }
@@ -211,7 +210,7 @@ public class DebugFragment extends Fragment {
                 mRecyclerView.bindJson(result);
             }
             catch (Exception e) {
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AppTheme_MaterialAlertDialogMonospace)
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AppStyle_M3_MaterialAlertDialog_Monospace)
                         .setTitle("Result")
                         .setMessage(result)
                         .setPositiveButton(R.string.ok, null)

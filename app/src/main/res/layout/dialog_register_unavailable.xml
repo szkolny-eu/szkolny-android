@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-9-3.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="pl.szczodrzynski.edziennik.utils.html.BetterHtml" />
+
         <variable
             name="message"
             type="pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus.Message" />
@@ -28,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:isVisible="@{message.image != null}"
                 android:scaleType="fitXY"
-                android:visibility="@{message.image != null ? View.VISIBLE : View.GONE}"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
@@ -44,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{BetterHtml.fromHtml(context, message.title, false)}"
-                    android:textAppearance="@style/NavView.TextView.Title"
+                    android:textAppearance="?textAppearanceHeadlineSmall"
                     tools:text="Dziennik nie działa" />
 
                 <TextView
@@ -53,17 +56,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@{BetterHtml.fromHtml(context, message.contentLong, false)}"
+                    android:textAppearance="?textAppearanceBodyLarge"
                     tools:text="Dziennik się zepsuł i nie działa, szkoda\n\n\nwiele linijek ma ten tekst" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/readMore"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="?materialButtonSecondaryStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
-                    android:text="@string/register_unavailable_read_more"
-                    android:visibility="@{message.url != null ? View.VISIBLE : View.GONE}" />
+                    android:isVisible="@{message.url != null}"
+                    android:text="@string/register_unavailable_read_more" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

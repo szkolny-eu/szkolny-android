@@ -1,2 +1,2 @@
 rootProject.name='Szkolny.eu'
-include ':app'
+include ':app', ':navlib', ':navlib-font'

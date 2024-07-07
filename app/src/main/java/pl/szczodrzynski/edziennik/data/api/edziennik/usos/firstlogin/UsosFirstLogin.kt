@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLoginApi
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 
 class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {

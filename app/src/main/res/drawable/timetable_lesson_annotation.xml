@@ -7,5 +7,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:shape="rectangle">
     <corners android:topLeftRadius="4dp" android:topRightRadius="4dp" />
-    <solid android:color="#2196f3" tools:color="?timetable_lesson_change_color" />
+    <solid android:color="?colorTertiary" tools:color="?colorTertiary" />
 </shape>

@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Announcement
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 
 @Dao

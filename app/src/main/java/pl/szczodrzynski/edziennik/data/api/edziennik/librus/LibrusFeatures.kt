@@ -5,9 +5,9 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus
 
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 
 const val ENDPOINT_LIBRUS_API_ME                                       = 1001
 const val ENDPOINT_LIBRUS_API_SCHOOLS                                  = 1002

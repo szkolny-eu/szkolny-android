@@ -19,10 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
 -keep class android.support.v7.widget.** { *; }
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
 
 -keep class pl.szczodrzynski.edziennik.utils.models.** { *; }
--keep class pl.szczodrzynski.edziennik.data.db.enums.* { *; }
+-keep class pl.szczodrzynski.edziennik.data.enums.* { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage { *; }
@@ -32,9 +35,9 @@
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
--keep class pl.szczodrzynski.edziennik.config.AppData { *; }
--keep class pl.szczodrzynski.edziennik.config.AppData$** { *; }
--keep class pl.szczodrzynski.edziennik.utils.managers.TextStylingManager$HtmlMode { *; }
+-keep class pl.szczodrzynski.edziennik.data.config.AppData { *; }
+-keep class pl.szczodrzynski.edziennik.data.config.AppData$** { *; }
+-keep class pl.szczodrzynski.edziennik.core.manager.TextStylingManager$HtmlMode { *; }
 
 -keepnames class androidx.appcompat.view.menu.MenuBuilder { setHeaderTitleInt(java.lang.CharSequence); }
 -keepnames class androidx.appcompat.view.menu.MenuPopupHelper { showPopup(int, int, boolean, boolean); }
@@ -42,6 +45,15 @@
 -keepclassmembernames class androidx.appcompat.view.menu.MenuItemImpl { private *; }
 
 -keepclassmembernames class com.mikepenz.materialdrawer.widget.MiniDrawerSliderView { private *; }
+-keepclassmembernames class com.mikepenz.iconics.internal.IconicsViewsAttrsApplier {
+    <fields>;
+    readIconicsTextView(android.content.Context, android.util.AttributeSet, com.mikepenz.iconics.internal.CompoundIconsBundle);
+    getIconicsImageViewDrawable(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclassmembernames class com.mikepenz.iconics.internal.CompoundIconsBundle {
+    setIcons(android.widget.TextView);
+}
 
 -keep class .R
 -keep class **.R$* {
@@ -55,8 +67,19 @@
 
 -keep class com.google.android.material.tabs.** {*;}
 
+# Exclude AgendaCalendarView
+# Preserve generic type information for EventRenderer and its subclasses
+-keepclassmembers class * extends com.github.tibolte.agendacalendarview.render.EventRenderer {
+    <fields>;
+    <methods>;
+}
+
+# Keep the EventRenderer class itself and all its subclasses
+-keep class com.github.tibolte.agendacalendarview.render.EventRenderer
+-keep class * extends com.github.tibolte.agendacalendarview.render.EventRenderer
+
 # ServiceLoader support
-        -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
 
 # Most of volatile fields are updated with AFU and should not be mangled
@@ -70,6 +93,7 @@
 
 -keep class pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing { public final byte[] pleaseStopRightNow(java.lang.String, long); }
 
+-keepclassmembers class pl.szczodrzynski.edziennik.ui.login.qr.* { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
 -keepclassmembernames class pl.szczodrzynski.edziennik.ui.login.LoginInfo$Platform { *; }

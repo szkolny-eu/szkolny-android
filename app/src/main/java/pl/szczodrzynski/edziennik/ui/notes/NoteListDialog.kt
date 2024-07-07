@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteListDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
 class NoteListDialog(
     activity: AppCompatActivity,
     private val owner: Noteable,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<NoteListDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "NoteListDialog"
+) : BindingDialog<NoteListDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -40,8 +36,6 @@ class NoteListDialog(
             activity = activity,
             owner = owner,
             editingNote = null,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         ).show()
         return NO_DISMISS
     }
@@ -56,8 +50,6 @@ class NoteListDialog(
                     activity = activity,
                     owner = owner,
                     note = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             },
             onNoteEditClick = {
@@ -65,8 +57,6 @@ class NoteListDialog(
                     activity = activity,
                     owner = owner,
                     editingNote = it,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener,
                 ).show()
             },
         )

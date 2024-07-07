@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-3.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
@@ -14,7 +15,8 @@
             type="pl.szczodrzynski.edziennik.App" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,9 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
-            android:orientation="vertical">
-
-            <!--<com.google.android.material.tabs.TabLayout
+            android:orientation="vertical">            <!--<com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,14 +33,11 @@
                 app:tabIndicatorColor="?colorPrimary"
                 app:tabMode="auto"
                 app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextColor="?android:textColorPrimary" />-->
-
-            <!--<pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
+                app:tabTextColor="?android:textColorPrimary" />-->            <!--<pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/chucker"
                 android:layout_width="match_parent"
@@ -132,7 +129,7 @@
 
             <pl.szczodrzynski.edziennik.utils.TextInputDropDown
                 android:id="@+id/profile"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="?textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -177,13 +174,29 @@
                 app:backgroundTint="@color/windowBackgroundRed" />
 
             <Button
+                android:id="@+id/clearConfigProfile"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear profile config"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/clearConfigGlobal"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear global config"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/rebuildConfig"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="Rebuild App.config"
                 android:textAllCaps="false" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

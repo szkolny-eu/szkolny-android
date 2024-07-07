@@ -2,14 +2,15 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="config"
-            type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+            type="pl.szczodrzynski.edziennik.data.config.ProfileConfig.UI" />
     </data>
 
     <ScrollView
@@ -26,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/messages_config_compose"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"
@@ -53,7 +54,7 @@
                 android:text="@string/messages_config_greeting_on_forward" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="?textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -64,8 +65,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine|textShortMessage|textAutoCorrect|textAutoComplete"
-                    android:minLines="3"
                     android:maxLines="10"
+                    android:minLines="3"
                     tools:text="\n\nZ poważaniem\nJan Kowalski" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

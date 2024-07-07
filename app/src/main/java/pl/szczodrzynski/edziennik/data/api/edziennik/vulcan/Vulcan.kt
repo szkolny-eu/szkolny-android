@@ -27,14 +27,14 @@ import pl.szczodrzynski.edziennik.data.api.prepareFor
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.io.File
 
 class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -78,10 +78,10 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             return
         }
 
-        d(TAG, "Trying to login with ${data.targetLoginMethods}")
+        Timber.d("Trying to login with ${data.targetLoginMethods}")
         if (internalErrorList.isNotEmpty()) {
-            d(TAG, "  - Internal errors:")
-            internalErrorList.forEach { d(TAG, "      - code $it") }
+            Timber.d("  - Internal errors:")
+            internalErrorList.forEach { Timber.d("      - code $it") }
         }
         loginMethod?.let { data.prepareFor(it) }
         afterLogin?.let { this.afterLogin = it }
@@ -91,10 +91,10 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     private fun data() {
-        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
+        Timber.d("Endpoint IDs: ${data.targetEndpoints}")
         if (internalErrorList.isNotEmpty()) {
-            d(TAG, "  - Internal errors:")
-            internalErrorList.forEach { d(TAG, "      - code $it") }
+            Timber.d("  - Internal errors:")
+            internalErrorList.forEach { Timber.d("      - code $it") }
         }
         afterLogin?.invoke() ?: VulcanData(data) {
             completed()
@@ -179,7 +179,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun firstLogin() { VulcanFirstLogin(data) { completed() } }
     override fun cancel() {
-        d(TAG, "Cancelled")
+        Timber.d("Cancelled")
         data.cancel()
     }
 

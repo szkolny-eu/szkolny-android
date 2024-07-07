@@ -1,7 +1,5 @@
 package pl.szczodrzynski.edziennik.ui.announcements;
 
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +25,12 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent;
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType;
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType;
+import pl.szczodrzynski.edziennik.data.enums.LoginType;
+import pl.szczodrzynski.edziennik.data.enums.MetadataType;
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
-import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 public class AnnouncementsFragment extends Fragment {
@@ -49,10 +45,8 @@ public class AnnouncementsFragment extends Fragment {
         if (getActivity() == null || getContext() == null)
             return null;
         app = (App) activity.getApplication();
-        getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
-        b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
+        b = FragmentAnnouncementsBinding.inflate(inflater, container, false);
         return b.getRoot();
     }
 
@@ -78,10 +72,6 @@ public class AnnouncementsFragment extends Fragment {
                         })
         );
 
-        /*b.refreshLayout.setOnRefreshListener(() -> {
-            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_ANNOUNCEMENTS, b.refreshLayout);
-        });*/
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         //RecyclerViewExpandableItemManager expMgr = new RecyclerViewExpandableItemManager(null);
@@ -90,18 +80,6 @@ public class AnnouncementsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (recyclerView.canScrollVertically(-1)) {
-                    b.refreshLayout.setEnabled(false);
-                }
-                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
-                    b.refreshLayout.setEnabled(true);
-                }
-            }
-        });
 
         app.getDb().announcementDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), announcements -> {
             if (app == null || activity == null || b == null || !isAdded())

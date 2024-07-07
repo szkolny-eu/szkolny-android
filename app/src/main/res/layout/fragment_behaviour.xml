@@ -1,131 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
-        android:id="@+id/refreshLayout"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleGroup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/semester1"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Semestr 1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/semester2"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Semestr 2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allYear"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cały rok" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="8dp">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/noticesSummaryTitle"
-                style="@style/Widget.AppCompat.Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="@string/notices_summary_title_loading_format"
-                android:textSize="20sp" />
+                android:text="@string/notices_praises_title"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notices_praises_title" />
-
-                <TextView
-                    android:id="@+id/noticesPraisesCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notices_warnings_title" />
-
-                <TextView
-                    android:id="@+id/noticesWarningsCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notices_other_title" />
-
-                <TextView
-                    android:id="@+id/noticesOtherCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="5dp"
-                    android:textStyle="bold"
-                    tools:text="0" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/noticesPraisesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="342525" />
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/noticesView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/row_notices_item" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notices_warnings_title"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
-            <LinearLayout
-                android:id="@+id/noticesNoData"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible">
+            <TextView
+                android:id="@+id/noticesWarningsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="53535353" />
+        </LinearLayout>
 
-                <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="92dp"
-                    app:iiv_icon="szf-message-off"
-                    app:iiv_color="?android:textColorPrimary"
-                    app:iiv_size="92dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center"
-                    android:text="@string/notices_no_data"
-                    android:textSize="18sp"
-                    android:textStyle="italic" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notices_other_title"
+                android:textAppearance="?textAppearanceLabelMedium" />
 
-            </LinearLayout>
-        </FrameLayout>
+            <TextView
+                android:id="@+id/noticesOtherCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="3331" />
+        </LinearLayout>
     </LinearLayout>
-    </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>
-</layout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/noticesView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/row_notices_item" />
+
+        <LinearLayout
+            android:id="@+id/noticesNoData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                app:iiv_color="?android:textColorPrimary"
+                app:iiv_icon="szf-message-off"
+                app:iiv_size="92dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="@string/notices_no_data"
+                android:textAppearance="?textAppearanceBodyMedium" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

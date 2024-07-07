@@ -29,12 +29,13 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType;
+import pl.szczodrzynski.edziennik.data.enums.LoginType;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
 import pl.szczodrzynski.edziennik.databinding.WidgetProfileDialogItemBinding;
 import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
+import timber.log.Timber;
 
 public class WidgetConfigActivity extends Activity {
 
@@ -217,7 +218,7 @@ public class WidgetConfigActivity extends Activity {
             b.wallpaper.setImageDrawable(wallpaperManager.getDrawable());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
         b.theme.check(R.id.themeLight);

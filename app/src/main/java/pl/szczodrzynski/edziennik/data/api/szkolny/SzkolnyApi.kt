@@ -28,8 +28,8 @@ import pl.szczodrzynski.edziennik.ext.keys
 import pl.szczodrzynski.edziennik.ext.md5
 import pl.szczodrzynski.edziennik.ext.toApiError
 import pl.szczodrzynski.edziennik.ext.toErrorCode
-import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.dialogs.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.main.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

@@ -8,21 +8,12 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.MessagesConfigDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 
 class MessagesConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<MessagesConfigDialogBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "MessagesConfigDialog"
+) : ConfigDialog<MessagesConfigDialogBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_messages_config
     override fun inflate(layoutInflater: LayoutInflater) =

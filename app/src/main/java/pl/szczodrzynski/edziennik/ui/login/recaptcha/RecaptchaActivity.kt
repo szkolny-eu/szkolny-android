@@ -17,7 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.SYSTEM_USER_AGENT
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.ext.app
+import pl.szczodrzynski.edziennik.ext.isNightMode
 import java.nio.charset.Charset
 
 class RecaptchaActivity : AppCompatActivity() {
@@ -67,7 +68,7 @@ class RecaptchaActivity : AppCompatActivity() {
 
         val htmlContent = Base64.decode(CODE, Base64.DEFAULT)
             .toString(Charset.defaultCharset())
-            .replace("THEME", if (Themes.isDark) "dark" else "light")
+            .replace("THEME", if (this.isNightMode) "dark" else "light")
             .replace("SITEKEY", siteKey)
 
         jsInterface = object : CaptchaCallbackInterface {

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -26,23 +26,23 @@
                 android:id="@+id/teacherAbsenceTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                tools:text="2 września - 5 kwietnia"/>
+                android:textAppearance="?textAppearanceBodySmall"
+                tools:text="2 września - 5 kwietnia" />
 
             <TextView
                 android:id="@+id/teacherAbsenceTeacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Jan Kowalski"/>
+                tools:text="Jan Kowalski" />
 
             <TextView
                 android:id="@+id/teacherAbsenceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 android:visibility="gone"
                 tools:text="wycieczka"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widgetLuckyNumberRoot"
     android:layout_width="match_parent"
@@ -6,9 +7,9 @@
     android:background="@drawable/widget_background"
     android:gravity="center"
     android:orientation="vertical"
-    tools:layout_width="200dp"
+    tools:layout_gravity="center"
     tools:layout_height="100dp"
-    tools:layout_gravity="center">
+    tools:layout_width="200dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -52,9 +53,7 @@
                     android:textSize="16sp"
                     tools:text="24" />
             </FrameLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
     <TextView
@@ -80,5 +79,4 @@
             tools:text="24"
             tools:visibility="gone" />
     </FrameLayout>
-
 </LinearLayout>

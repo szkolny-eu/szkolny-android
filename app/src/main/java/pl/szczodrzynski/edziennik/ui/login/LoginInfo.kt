@@ -11,8 +11,8 @@ import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.login.qr.LoginLibrusQrDecoder
 import pl.szczodrzynski.edziennik.ui.login.qr.LoginQrDecoder

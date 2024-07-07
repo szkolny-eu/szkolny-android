@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.web.VulcanWebLuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
     companion object {
@@ -82,7 +83,7 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
+        Timber.d("Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)

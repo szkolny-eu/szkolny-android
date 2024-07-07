@@ -10,21 +10,12 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.DialogConfigAgendaBinding
 import pl.szczodrzynski.edziennik.ext.onChange
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ConfigDialog
 
 class AgendaConfigDialog(
     activity: AppCompatActivity,
     reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ConfigDialog<DialogConfigAgendaBinding>(
-    activity,
-    reloadOnDismiss,
-    onShowListener,
-    onDismissListener,
-) {
-
-    override val TAG = "AgendaConfigDialog"
+) : ConfigDialog<DialogConfigAgendaBinding>(activity, reloadOnDismiss) {
 
     override fun getTitleRes() = R.string.menu_agenda_config
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -51,8 +42,6 @@ class AgendaConfigDialog(
                     b.eventSharingEnabled.isChecked = enabled
                     b.shareByDefault.isEnabled = enabled
                 },
-                onShowListener,
-                onDismissListener,
             )
             if (isChecked)
                 dialog.showEnableDialog()

@@ -6,34 +6,26 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.data.enums.Theme
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 
 class ThemeChooserDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ThemeChooserDialog"
+) : BaseDialog<Theme>(activity) {
 
     override fun getTitleRes() = R.string.settings_theme_theme_text
     override fun getPositiveButtonText() = R.string.ok
     override fun getNegativeButtonText() = R.string.cancel
 
-    override fun getSingleChoiceItems(): Map<CharSequence, Any> = Themes.themeList.associate {
-        activity.getString(it.name) to it.id
-    }
+    override fun getSingleChoiceItems(): Map<CharSequence, Theme> =
+        Theme.entries.associateBy { activity.getString(it.nameRes) }
 
-    override fun getDefaultSelectedItem() = Themes.theme.id
-
-    override suspend fun onShow() = Unit
+    override fun getDefaultSelectedItem() = app.uiManager.themeColor
 
     override suspend fun onPositiveClick(): Boolean {
-        val themeId = getSingleSelection() as? Int ?: return DISMISS
-        if (app.config.ui.theme != themeId) {
-            app.config.ui.theme = themeId
-            Themes.themeInt = themeId
+        val themeColor = getSingleSelection() ?: return DISMISS
+        if (app.uiManager.themeColor != themeColor) {
+            app.config.ui.themeColor = themeColor
             activity.recreate()
         }
         return DISMISS

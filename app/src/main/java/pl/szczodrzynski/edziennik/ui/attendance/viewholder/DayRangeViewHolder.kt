@@ -22,7 +22,6 @@ import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter.Companion.STAT
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class DayRangeViewHolder(
         inflater: LayoutInflater,
@@ -35,7 +34,6 @@ class DayRangeViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: AttendanceDayRange, position: Int, adapter: AttendanceAdapter) {
         val manager = app.attendanceManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
         b.title.text = listOf(
                 item.rangeStart.formattedString,
@@ -58,13 +56,13 @@ class DayRangeViewHolder(
             if (attendance.baseType == Attendance.TYPE_PRESENT_CUSTOM || attendance.baseType == Attendance.TYPE_UNKNOWN)
                 continue
             b.previewContainer.addView(AttendanceView(
-                    contextWrapper,
+                    activity,
                     attendance,
                     manager
             ))
         }
         if (item.items.isEmpty() || item.items.none { it.baseType != Attendance.TYPE_PRESENT_CUSTOM && it.baseType != Attendance.TYPE_UNKNOWN }) {
-            b.previewContainer.addView(TextView(contextWrapper).also {
+            b.previewContainer.addView(TextView(activity).also {
                 it.setText(R.string.attendance_empty_text)
             })
         }

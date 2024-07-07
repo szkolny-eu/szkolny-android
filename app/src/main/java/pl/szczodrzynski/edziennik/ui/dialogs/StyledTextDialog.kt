@@ -12,21 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ext.isNightMode
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.HtmlMode.SIMPLE
+import pl.szczodrzynski.edziennik.core.manager.TextStylingManager.StylingConfig
 
 class StyledTextDialog(
     activity: AppCompatActivity,
     val initialText: Editable?,
     val onSuccess: (text: Editable) -> Unit,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<StyledTextDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "StyledTextDialog"
+) : BindingDialog<StyledTextDialogBinding>(activity) {
 
     private lateinit var config: StylingConfig
 
@@ -60,7 +56,7 @@ class StyledTextDialog(
         b.editText.text = initialText
 
         // this is awful
-        if (Themes.isDark) {
+        if (activity.isNightMode) {
             val colorStateList = ColorStateList.valueOf(0x40ffffff)
             b.fontStyle.bold.strokeColor = colorStateList
             b.fontStyle.italic.strokeColor = colorStateList

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.ENDPOINT_PODLASIE_API_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.api.PodlasieApiMain
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class PodlasieData(val data: DataPodlasie, val onSuccess: () -> Unit) {
     companion object {
@@ -37,7 +38,7 @@ class PodlasieData(val data: DataPodlasie, val onSuccess: () -> Unit) {
     }
 
     private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
+        Timber.d("Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             ENDPOINT_PODLASIE_API_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)

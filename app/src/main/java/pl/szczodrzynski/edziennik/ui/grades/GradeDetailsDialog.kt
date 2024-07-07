@@ -13,22 +13,18 @@ import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setTintColor
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.core.manager.NoteManager
 
 class GradeDetailsDialog(
     activity: AppCompatActivity,
     private val grade: GradeFull,
     private val showNotes: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogGradeDetailsBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "GradeDetailsDialog"
+) : BindingDialog<DialogGradeDetailsBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -39,7 +35,7 @@ class GradeDetailsDialog(
     override suspend fun onShow() {
         val manager = app.gradesManager
 
-        val gradeColor = manager.getGradeColor(grade)
+        val gradeColor = manager.getGradeColor(b.root.context, grade)
         b.grade = grade
         b.weightText = manager.getWeightString(app, grade)
         b.commentVisible = false
@@ -67,7 +63,7 @@ class GradeDetailsDialog(
             BetterLink.attach(
                 b.teacherName,
                 teachers = mapOf(grade.teacherId to name),
-                onActionSelected = dialog::dismiss
+                onActionSelected = ::dismiss
             )
         }
 
@@ -98,8 +94,6 @@ class GradeDetailsDialog(
         b.notesButton.setupNotesButton(
             activity = activity,
             owner = grade,
-            onShowListener = onShowListener,
-            onDismissListener = onDismissListener,
         )
         b.legend.isVisible = showNotes
         if (showNotes)

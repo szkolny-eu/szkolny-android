@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.ui.settings.cards
 import android.content.Intent
 import android.media.MediaPlayer
 import android.widget.Toast
-import com.danielstone.materialaboutlibrary.items.MaterialAboutItem
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
@@ -19,12 +18,14 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsLicenseActivity
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
-import pl.szczodrzynski.edziennik.ui.settings.contributors.ContributorsActivity
+import pl.szczodrzynski.edziennik.ui.settings.contributors.ContributorsFragment
 import pl.szczodrzynski.edziennik.utils.Utils
 import kotlin.coroutines.CoroutineContext
 
@@ -43,8 +44,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
         null,
         items = ::getItems,
         itemsMore = ::getItemsMore,
-        backgroundColor = 0xff1976d2.toInt(),
-        theme = R.style.AppTheme_Dark
+        backgroundColor = R.attr.colorPrimaryContainer.resolveAttr(activity)
     )
 
     private val versionDetailsItem by lazy {
@@ -90,7 +90,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
             subText = R.string.settings_about_contributors_subtext,
             icon = CommunityMaterial.Icon.cmd_account_group_outline
         ) {
-            activity.startActivity(Intent(activity, ContributorsActivity::class.java))
+            activity.navigate(navTarget = NavTarget.CONTRIBUTORS)
         },
 
         util.createMoreItem(card, items = listOf(

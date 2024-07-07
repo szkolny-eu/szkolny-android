@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color">#202196f3</color>
+
+    <color name="colorSurface_1dp">#0dffffff</color>
+    <color name="colorSurface_2dp">#12ffffff</color>
+    <color name="colorSurface_3dp">#14ffffff</color>
+    <color name="colorSurface_4dp">#17ffffff</color>
+    <color name="colorSurface_6dp">#1cffffff</color>
+    <color name="colorSurface_8dp">#1fffffff</color>
+    <color name="colorSurface_12dp">#24ffffff</color>
+    <color name="colorSurface_16dp">#26ffffff</color>
+    <color name="colorSurface_24dp">#29ffffff</color>
+</resources>

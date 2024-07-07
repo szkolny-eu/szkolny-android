@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.LoginFinishFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import kotlin.coroutines.CoroutineContext
 
 class LoginFinishFragment : Fragment(), CoroutineScope {

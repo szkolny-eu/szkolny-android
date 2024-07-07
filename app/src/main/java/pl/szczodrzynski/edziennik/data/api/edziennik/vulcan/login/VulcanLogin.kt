@@ -6,8 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
+import timber.log.Timber
 
 class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     companion object {
@@ -43,7 +44,7 @@ class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
             onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethod")
+        Timber.d("Using login method $loginMethod")
         when (loginMethod) {
             LoginMethod.VULCAN_WEB_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_web_main)

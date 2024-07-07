@@ -119,6 +119,7 @@
     <string name="configure">Konfigurieren</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
     <string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
+    <string name="counter_activity">Runterzählen</string>
     <string name="counter_activity_sync">Synchronisieren</string>
     <string name="crash_advice_info">Wenn sich die App überhaupt nicht öffnet, können Sie versuchen, die Daten erneut herunterzuladen. Klicken Sie auf die Schaltfläche, dann starten Sie die App neu</string>
     <string name="crash_details">Fehlerdetails</string>
@@ -467,8 +468,8 @@
     <string name="hint_save_in_calendar">Im Kalender speichern</string>
     <string name="home_configure_add_remove">Karten hinzufügen/entfernen</string>
     <string name="home_configure_notice">Wischen Sie nach links, um eine Karte zu entfernen, und halten Sie sie gedrückt, um sich zu bewegen.</string>
-    <string name="home_lucky_number_details">%s • Ihre Nummer im Klassenbuch ist %d</string>
-    <string name="home_lucky_number_details_click_to_set">%s • Klicken Sie, um Ihre Nummer Klassenbuch einzustellen,</string>
+    <string name="home_lucky_number_details">Ihre Nummer im Klassenbuch ist %s</string>
+    <string name="home_lucky_number_details_click_to_set">Klicken Sie, um Ihre Nummer Klassenbuch einzustellen,</string>
     <string name="home_lucky_number_later">Die Glücksnummer auf %s ist %d.</string>
     <string name="home_lucky_number_no_info">Keine Information über die Glücksnummer</string>
     <string name="home_lucky_number_no_number">Heute gibt es keine Glücksnummer.</string>

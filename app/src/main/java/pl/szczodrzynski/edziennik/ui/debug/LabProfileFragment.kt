@@ -5,59 +5,38 @@
 package pl.szczodrzynski.edziennik.ui.debug
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import kotlin.coroutines.CoroutineContext
 
-class LabProfileFragment : LazyFragment(), CoroutineScope {
+class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppCompatActivity>(
+    inflater = TemplateListPageFragmentBinding::inflate,
+) {
     companion object {
         private const val TAG = "LabProfileFragment"
     }
 
-    private lateinit var app: App
-    private lateinit var activity: AppCompatActivity
-    private lateinit var b: TemplateListPageFragmentBinding
+    override fun getRefreshScrollingView() = b.list
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
     private lateinit var adapter: LabJsonAdapter
     private val loginStore by lazy {
         app.db.loginStoreDao().getByIdNow(app.profile.loginStoreId)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as AppCompatActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = TemplateListPageFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         adapter = LabJsonAdapter(activity, onJsonElementClick = { item ->
             try {
                 var parent: Any = Unit
@@ -94,17 +73,16 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                         objVal.isBoolean -> objVal.asBoolean.toString()
                         else -> objVal.asString
                     }
-                    is Enum<*> -> objVal.toInt().toString()
+
+                    is Enum<*> -> objVal.toString()
                     else -> objVal.toString()
                 }
 
-                MaterialAlertDialogBuilder(activity)
-                    .setTitle(item.key)
-                    .input(
-                        hint = "value",
-                        value = value,
-                        positiveButton = R.string.ok,
-                        positiveListener = { _, input ->
+                SimpleDialog<Unit>(activity) {
+                    title(item.key)
+                    input(hint = "value", value = value)
+                    positive(R.string.ok) {
+                            val input = getInput()?.text?.toString() ?: return@positive
                             when (parent) {
                                 is JsonObject -> {
                                     val v = objVal as JsonPrimitive
@@ -117,10 +95,17 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                 is JsonArray -> {
 
                                 }
-                                is HashMap<*, *> -> app.config.set(objName, input)
+                                is HashMap<*, *> -> {
+                                    if ("(profile)" in item.key)
+                                        app.profile.config[objName] = input
+                                    else
+                                        app.config[objName] = input
+                                }
+
                                 else -> {
                                     val field = parent::class.java.getDeclaredField(objName)
                                     field.isAccessible = true
+                                    @Suppress("USELESS_CAST")
                                     val newVal = when (objVal) {
                                         is Int -> input.toInt()
                                         is Boolean -> input.toBoolean()
@@ -129,7 +114,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                                         is String -> input
                                         is Long -> input.toLong()
                                         is Double -> input.toDouble()
-                                        is Enum<*> -> input.toInt().toEnum(objVal::class.java)
+                                        is Enum<*> -> input.toEnum(objVal::class.java) as Enum
                                         else -> input
                                     }
                                     field.set(parent, newVal)
@@ -142,12 +127,9 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                             }
 
                             showJson()
-
-                            return@input true
-                        }
-                    )
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                    }
+                    negative(R.string.cancel)
+                }.show()
             }
             catch (e: Exception) {
                 if (activity is MainActivity)
@@ -164,15 +146,13 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(SimpleDividerItemDecoration(context))
-            addOnScrollListener(onScrollListener)
         }
 
         // show/hide relevant views
         b.progressBar.isVisible = false
         b.list.isVisible = true
         b.noData.isVisible = false
-
-    }; return true }
+    }
 
     private fun showJson() {
         val json = JsonObject().also { json ->

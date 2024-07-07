@@ -5,58 +5,43 @@
 package pl.szczodrzynski.edziennik.ui.debug
 
 import android.os.Bundle
-import android.os.Process
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.chuckerteam.chucker.api.Chucker
 import com.chuckerteam.chucker.api.Chucker.SCREEN_HTTP
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
+import pl.szczodrzynski.edziennik.data.config.Config
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
-import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ext.asBoldSpannable
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.asItalicSpannable
+import pl.szczodrzynski.edziennik.ext.asUnderlineSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.takeValue
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.RestartDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
-import kotlin.coroutines.CoroutineContext
-import kotlin.system.exitProcess
 
-class LabPageFragment : LazyFragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "LabPageFragment"
-    }
+class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
+    inflater = LabFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: AppCompatActivity
-    private lateinit var b: LabFragmentBinding
+    override fun getRefreshScrollingView() = b.scrollView
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as AppCompatActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = LabFragmentBinding.inflate(inflater)
-        return b.root
-    }
-
-    override fun onPageCreated(): Boolean {
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.app = app
 
         if (app.profile.id == 0) {
@@ -69,6 +54,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             b.resetEventTypes.isVisible = false
             b.unarchive.isVisible = false
             b.profile.isVisible = false
+            b.clearConfigProfile.isVisible = false
         }
 
         b.last10unseen.onClick {
@@ -111,16 +97,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         b.chucker.onChange { _, isChecked ->
             app.config.enableChucker = isChecked
             App.enableChucker = isChecked
-            MaterialAlertDialogBuilder(activity)
-                .setTitle("Restart")
-                .setMessage("Wymagany restart aplikacji")
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    Process.killProcess(Process.myPid())
-                    Runtime.getRuntime().exit(0)
-                    exitProcess(0)
-                }
-                .setCancelable(false)
-                .show()
+            RestartDialog(activity).show()
         }
 
         if (App.enableChucker) {
@@ -133,16 +110,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         b.disableDebug.onClick {
             app.config.devMode = false
             App.devMode = false
-            MaterialAlertDialogBuilder(activity)
-                .setTitle("Restart")
-                .setMessage("Wymagany restart aplikacji")
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    Process.killProcess(Process.myPid())
-                    Runtime.getRuntime().exit(0)
-                    exitProcess(0)
-                }
-                .setCancelable(false)
-                .show()
+            RestartDialog(activity).show()
         }
 
         b.unarchive.onClick {
@@ -165,8 +133,15 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             }
         }
 
+        b.clearConfigProfile.onClick {
+            app.db.configDao().clear(app.profileId)
+        }
+        b.clearConfigGlobal.onClick {
+            app.db.configDao().clear(-1)
+        }
         b.rebuildConfig.onClick {
-            App.config = Config(App.db)
+            App.config = Config(app)
+            App.config.migrate()
         }
 
         val profiles = app.db.profileDao().allNow
@@ -214,7 +189,5 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
                 }.concat("\n\n")
             b.cookies.text = text
         }
-
-        return true
     }
 }

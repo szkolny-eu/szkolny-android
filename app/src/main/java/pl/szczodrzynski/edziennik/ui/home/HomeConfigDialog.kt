@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_EVENTS
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_GRADES
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_LUCKY_NUMBER
@@ -18,11 +18,7 @@ import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_TIMETABLE
 class HomeConfigDialog(
     activity: AppCompatActivity,
     private val reloadOnDismiss: Boolean = true,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "HomeConfigDialog"
+) : BaseDialog<Any>(activity) {
 
     override fun getTitleRes() = R.string.home_configure_add_remove
     override fun getPositiveButtonText() = R.string.ok
@@ -42,8 +38,6 @@ class HomeConfigDialog(
             .map { it.cardId }
             .toSet()
 
-    override suspend fun onShow() = Unit
-
     private var configChanged = false
 
     override suspend fun onPositiveClick(): Boolean {
@@ -59,11 +53,11 @@ class HomeConfigDialog(
         return DISMISS
     }
 
-    override suspend fun onMultiSelectionChanged(items: Set<Any>) {
+    override suspend fun onMultiSelectionChanged(item: Any, isChecked: Boolean) {
         configChanged = true
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (configChanged && reloadOnDismiss && activity is MainActivity)
             activity.reloadTarget()
     }

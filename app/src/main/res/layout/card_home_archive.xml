@@ -1,56 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-8-25.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingTop="8dp">
 
-    <LinearLayout
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        app:iiv_color="?colorOnSecondaryContainer"
+        app:iiv_icon="szf-archive"
+        app:iiv_size="24dp"
+        tools:background="@sample/settings"
+        tools:backgroundTint="?colorOnSecondaryContainer" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:layout_margin="8dp">
+        android:text="@string/home_archive_title"
+        android:textAppearance="?textAppearanceTitleMedium" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/homeArchiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:text="@string/home_archive_text"
+        tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/home_archive_title"
-                android:textAppearance="@style/NavView.TextView.Title" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/homeArchiveText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center_horizontal"
-                android:text="@string/home_archive_text"
-                android:textSize="16sp"
-                tools:text="Przeglądasz dane ucznia z roku szkolnego 2019/2020." />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/homeArchiveClose"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_archive_close" />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:srcCompat="@drawable/ic_archive" />
-    </LinearLayout>
-</layout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/homeArchiveClose"
+        style="?materialButtonSecondaryStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/home_archive_close" />
+</LinearLayout>

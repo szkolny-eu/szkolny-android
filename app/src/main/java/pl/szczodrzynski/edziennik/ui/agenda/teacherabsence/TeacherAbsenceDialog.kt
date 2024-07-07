@@ -7,21 +7,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogTeacherAbsenceListBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class TeacherAbsenceDialog(
     activity: AppCompatActivity,
     private val profileId: Int,
     private val date: Date,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogTeacherAbsenceListBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "TeacherAbsenceDialog"
+) : BindingDialog<DialogTeacherAbsenceListBinding>(activity) {
 
     override fun getTitle(): String = date.formattedString
-    override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogTeacherAbsenceListBinding.inflate(layoutInflater)
 

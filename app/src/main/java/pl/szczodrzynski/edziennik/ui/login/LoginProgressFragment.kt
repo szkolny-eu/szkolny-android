@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.UserActionManager
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUIRES_USER_ACTION
 import pl.szczodrzynski.edziennik.data.api.LOGIN_NO_ARGUMENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
@@ -27,12 +27,12 @@ import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginProgressFragmentBinding
 import pl.szczodrzynski.edziennik.ext.getEnum
 import pl.szczodrzynski.edziennik.ext.joinNotNullStrings
-import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
@@ -101,12 +101,14 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
     fun onFirstLoginFinishedEvent(event: FirstLoginFinishedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         if (event.profileList.isEmpty()) {
-            MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.login_account_no_students)
-                    .setMessage(R.string.login_account_no_students_text)
-                    .setPositiveButton(R.string.ok, null)
-                    .setOnDismissListener { nav.navigateUp() }
-                    .show()
+            SimpleDialog<Unit>(activity) {
+                title(R.string.login_account_no_students)
+                message(R.string.login_account_no_students_text)
+                positive(R.string.ok) {
+                    nav.navigateUp()
+                }
+                cancelable(false)
+            }.show()
             return
         }
 

@@ -9,16 +9,21 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.CardHomeArchiveBinding
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.ext.setText
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
@@ -61,14 +66,17 @@ class HomeArchiveCard(
                     }
                 }
                 if (profile == null) {
-                    MaterialAlertDialogBuilder(activity)
-                            .setTitle(R.string.home_archive_close_no_target_title)
-                            .setMessage(R.string.home_archive_close_no_target_text, this@HomeArchiveCard.profile.name)
-                            .setPositiveButton(R.string.ok) { _, _ ->
-                                activity.drawer.profileSelectionOpen()
-                                activity.drawer.open()
-                            }
-                            .show()
+                    SimpleDialog<Unit>(activity) {
+                        title(R.string.home_archive_close_no_target_title)
+                        message(
+                            R.string.home_archive_close_no_target_text,
+                            this@HomeArchiveCard.profile.name
+                        )
+                        positive(R.string.ok) {
+                            activity.drawer.profileSelectionOpen()
+                            activity.drawer.open()
+                        }
+                    }.show()
                     return@launch
                 }
                 activity.navigate(profile = profile)

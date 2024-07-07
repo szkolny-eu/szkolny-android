@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogTemplateBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BaseDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 
 /**
  * This class represents a sample dialog using the new style.
@@ -29,13 +29,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
 class TemplateDialog(
     activity: AppCompatActivity,
     private val onActionPerformed: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<DialogTemplateBinding>(activity, onShowListener, onDismissListener) {
+) : BindingDialog<DialogTemplateBinding>(activity) {
 
-    override val TAG = "TemplateDialog"
-
-    override fun getTitle(): CharSequence = "Template"
     override fun getTitleRes() = R.string.menu_template
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogTemplateBinding.inflate(layoutInflater)
@@ -61,8 +56,6 @@ class TemplateDialog(
 
     // to convert a map of StringIDs to CharSequences
     // .mapKeys { (resId, _) -> activity.getString(resId) }
-
-    override suspend fun onShow() = Unit
 
     // local variables go here
 

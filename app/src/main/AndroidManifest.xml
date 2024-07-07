@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="pl.szczodrzynski.edziennik">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,19 +11,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
-    <uses-sdk tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core" />
+    <uses-sdk
+        tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core, com.mikepenz:materialdrawer, com.mikepenz.iconics.typeface.library.navlibfont, androidx.appcompat.resources, androidx.appcompat, com.google.android.gms.wearable, com.google.android.gms.base, com.google.firebase.crashlytics, com.google.firebase.sessions, com.google.firebase.ktx, com.google.firebase, com.google.android.gms.tasks, com.google.android.gms.common, com.google.firebase.components" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_v5"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Dark"
+        android:theme="@style/AppTheme.M3.Blue"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
 
@@ -40,7 +41,6 @@
                                                                     |___/ -->
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -67,7 +67,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay">
+            android:theme="@style/AppTheme.M3.NoDisplay">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -84,14 +84,14 @@
                 android:resource="@xml/widget_timetable_info" />
         </receiver>
         <service android:name=".ui.widgets.timetable.WidgetTimetableService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" android:foregroundServiceType="dataSync"/>
         <activity android:name=".ui.widgets.LessonDialogActivity"
             android:label=""
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay" />
+            android:theme="@style/AppTheme.M3.NoDisplay" />
         <!-- NOTIFICATIONS -->
         <receiver android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
             android:label="@string/widget_notifications_title"
@@ -105,7 +105,7 @@
                 android:resource="@xml/widget_notifications_info" />
         </receiver>
         <service android:name=".ui.widgets.notifications.WidgetNotificationsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" android:foregroundServiceType="dataSync"/>
         <!-- LUCKY NUMBER -->
         <receiver android:name=".ui.widgets.luckynumber.WidgetLuckyNumberProvider"
             android:label="@string/widget_lucky_number_title"
@@ -126,33 +126,31 @@
               / ____ \ (__| |_| |\ V /| | |_| |  __/\__ \
              /_/    \_\___|\__|_| \_/ |_|\__|_|\___||___/
         -->
-        <activity android:name=".ui.base.CrashActivity"
+        <activity android:name=".ui.main.CrashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:exported="false"
             android:theme="@style/DeadTheme" />
         <activity android:name=".ui.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
             android:exported="false"
             android:theme="@style/Theme.Intro" />
         <activity android:name=".ui.login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:exported="false"
-            android:theme="@style/AppTheme.Light" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.home.CounterActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.Black" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name"
             android:exported="false"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name=".ui.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.M3" />
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
@@ -165,8 +163,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
-        <activity android:name=".ui.base.BuildInvalidActivity" android:exported="false" />
-        <activity android:name=".ui.settings.contributors.ContributorsActivity" android:exported="false" />
+        <activity android:name=".ui.main.BuildInvalidActivity" android:exported="false" />
 
         <!--  _____               _
              |  __ \             (_)
@@ -175,7 +172,7 @@
              | | \ \  __/ (_|  __/ |\ V /  __/ |  \__ \
              |_|  \_\___|\___\___|_| \_/ \___|_|  |___/
         -->
-        <receiver android:name=".receivers.UserPresentReceiver"
+        <receiver android:name=".core.receiver.UserPresentReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -188,7 +185,7 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receivers.SzkolnyReceiver"
+        <receiver android:name=".core.receiver.SzkolnyReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="pl.szczodrzynski.edziennik.SZKOLNY_MAIN" />
@@ -202,15 +199,15 @@
               ____) |  __/ |   \ V /| | (_|  __/\__ \
              |_____/ \___|_|    \_/ |_|\___\___||___/
         -->
-        <service android:name=".data.api.ApiService" />
-        <service android:name=".data.firebase.MyFirebaseService"
-            android:exported="false">
+        <service android:name=".data.api.ApiService" android:foregroundServiceType="dataSync"/>
+        <service android:name=".core.firebase.MyFirebaseService"
+            android:exported="false" android:foregroundServiceType="dataSync">
             <intent-filter android:priority="10000000">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".sync.UpdateDownloaderService" />
+        <service android:name=".sync.UpdateDownloaderService" android:foregroundServiceType="dataSync"/>
 
         <!--
               _____                _     _

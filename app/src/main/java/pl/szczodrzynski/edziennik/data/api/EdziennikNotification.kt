@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
-import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
+import pl.szczodrzynski.edziennik.core.receiver.SzkolnyReceiver
 import kotlin.math.roundToInt
 
 
@@ -138,7 +138,7 @@ class EdziennikNotification(val app: App) {
     fun post() {
         if (serviceClosed)
             return
-        notificationManager.notify(app.notificationChannelsManager.sync.id, notification)
+        notificationManager.notify(app.notificationManager.sync.id, notification)
     }
 
 }

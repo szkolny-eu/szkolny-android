@@ -7,10 +7,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik
 import android.content.Intent
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
+import timber.log.Timber
 
 class ProfileArchiver(val app: App, val profile: Profile) {
     companion object {
@@ -20,14 +20,14 @@ class ProfileArchiver(val app: App, val profile: Profile) {
     init {
         if (profile.archiveId == null)
             profile.archiveId = profile.id
-        d(TAG, "Processing ${profile.name}#${profile.id}, archiveId = ${profile.archiveId}")
+        Timber.d("Processing ${profile.name}#${profile.id}, archiveId = ${profile.archiveId}")
 
         profile.archived = true
         app.db.profileDao().add(profile)
         //app.db.metadataDao().setAllSeen(profile.id, true)
         app.db.notificationDao().clear(profile.id)
         app.db.endpointTimerDao().clear(profile.id)
-        d(TAG, "Archived profile ${profile.id} saved")
+        Timber.d("Archived profile ${profile.id} saved")
         profile.archived = false
 
         // guess the nearest school year
@@ -48,7 +48,7 @@ class ProfileArchiver(val app: App, val profile: Profile) {
         profile.subname = "Nowy rok szkolny - ${profile.studentSchoolYearStart}"
         profile.studentClassName = null
 
-        d(TAG, "New profile ID for ${profile.name}: ${profile.id}")
+        Timber.d("New profile ID for ${profile.name}: ${profile.id}")
 
         when (profile.loginStoreType) {
             LoginType.LIBRUS -> {
@@ -79,7 +79,7 @@ class ProfileArchiver(val app: App, val profile: Profile) {
             LoginType.TEMPLATE -> {}
         }
 
-        d(TAG, "Processed student data: ${profile.studentData}")
+        Timber.d("Processed student data: ${profile.studentData}")
 
         app.db.profileDao().add(profile)
 

@@ -5,9 +5,9 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 
 const val ENDPOINT_TEMPLATE_WEB_SAMPLE                  = 9991
 const val ENDPOINT_TEMPLATE_WEB_SAMPLE_2                = 9992

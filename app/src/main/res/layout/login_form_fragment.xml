@@ -1,154 +1,150 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-11.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/formContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:orientation="vertical">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="32dp"
+                app:iiv_color="?colorPrimary"
+                app:iiv_icon="cmd-account-circle-outline"
+                app:iiv_size="32dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="?textAppearanceHeadlineSmall"
+                tools:text="Zaloguj się - VULCAN® UONET+" />
+
+            <TextView
+                android:id="@+id/subTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBodyLarge"
+                tools:text="Opolska eSzkoła" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@drawable/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="Podaj dane logowania, jakich używasz podczas logowania na stronie internetowej swojego e-dziennika." />
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:visibility="gone"
+                    app:iiv_color="?colorOnBackground"
+                    app:iiv_icon="cmd-help-circle-outline"
+                    app:iiv_size="24dp"
+                    tools:src="@android:drawable/ic_menu_help" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/fakeLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fake login"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/errorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_rounded_8dp"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:visibility="gone"
+                tools:backgroundTint="?colorError"
+                tools:visibility="visible">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:iiv_color="?colorOnError"
+                    app:iiv_icon="cmd-alert-circle-outline"
+                    app:iiv_size="24dp" />
+
+                <TextView
+                    android:id="@+id/errorText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_weight="1"
+                    android:textColor="?colorOnError"
+                    tools:text="Nieprawidłowy login lub hasło, konto nie zostało aktywowane, lub dziennik ma problemy egzystencjalne" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/formContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:orientation="vertical">
-
-                <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="32dp"
-                    app:iiv_color="@color/colorPrimary"
-                    app:iiv_icon="cmd-account-circle-outline"
-                    app:iiv_size="32dp"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textSize="24sp"
-                    tools:text="Zaloguj się - VULCAN® UONET+" />
-
-                <TextView
-                    android:id="@+id/subTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Medium"
-                    tools:text="Opolska eSzkoła" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="4dp"
-                    android:background="@drawable/divider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        tools:text="Podaj dane logowania, jakich używasz podczas logowania na stronie internetowej swojego e-dziennika." />
-
-                    <com.mikepenz.iconics.view.IconicsImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:visibility="gone"
-                        app:iiv_color="?colorOnBackground"
-                        app:iiv_icon="cmd-help-circle-outline"
-                        app:iiv_size="24dp"
-                        tools:src="@android:drawable/ic_menu_help" />
-                </LinearLayout>
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/fakeLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Fake login"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:id="@+id/errorLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_rounded_8dp"
-                    android:gravity="center_vertical"
-                    android:minHeight="40dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="8dp"
-                    android:visibility="gone"
-                    tools:backgroundTint="?colorError"
-                    tools:visibility="visible">
-
-                    <com.mikepenz.iconics.view.IconicsImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:iiv_color="?colorOnError"
-                        app:iiv_icon="cmd-alert-circle-outline"
-                        app:iiv_size="24dp" />
-
-                    <TextView
-                        android:id="@+id/errorText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginVertical="4dp"
-                        android:layout_weight="1"
-                        android:textColor="?colorOnError"
-                        android:textStyle="bold"
-                        tools:text="Nieprawidłowy login lub hasło, konto nie zostało aktywowane, lub dziennik ma problemy egzystencjalne" />
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            style="?materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/back"
+            android:textAllCaps="false" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/backButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="@string/back"
-                android:textAllCaps="false" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="@string/login_button"
-                android:textAllCaps="false" />
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/login_button"
+            android:textAllCaps="false" />
     </LinearLayout>
-</layout>
+</LinearLayout>

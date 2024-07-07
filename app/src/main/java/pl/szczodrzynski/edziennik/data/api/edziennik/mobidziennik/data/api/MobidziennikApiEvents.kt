@@ -10,9 +10,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,8 +46,8 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                 val format = SimpleDateFormat("yyyyMMddHHmmss", Locale.US)
                 val addedDate = try {
                     format.parse(cols[7]).time
-                } catch (e: ParseException) {
-                    e.printStackTrace()
+                } catch (e: Exception) {
+                    Timber.e(e)
                     System.currentTimeMillis()
                 }
 

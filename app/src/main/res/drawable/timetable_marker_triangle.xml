@@ -9,7 +9,7 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="@color/md_red_500"
+        android:fillColor="?colorTertiary"
         android:pathData="M0,4V20L12,12.25" />
 </vector>
 

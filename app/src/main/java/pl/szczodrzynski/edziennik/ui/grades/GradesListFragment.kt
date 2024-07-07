@@ -4,50 +4,51 @@
 
 package pl.szczodrzynski.edziennik.ui.grades
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.manager.GradesManager
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
-import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.averageOrNull
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
-class GradesListFragment : Fragment(), CoroutineScope {
-    companion object {
-        private const val TAG = "GradesFragment"
-    }
+class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>(
+    inflater = GradesListFragmentBinding::inflate,
+) {
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: GradesListFragmentBinding
+    override fun getMarkAsReadType() = MetadataType.GRADE
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_grades_config)
+            .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                GradesConfigDialog(activity, true).show()
+            },
+    )
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local/private variables go here
     private val manager
         get() = app.gradesManager
     private val dontCountEnabled
@@ -56,18 +57,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
         get() = manager.dontCountGrades
     private var expandSubjectId = 0L
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = GradesListFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
         val adapter = GradesAdapter(activity)
@@ -92,7 +82,6 @@ class GradesListFragment : Fragment(), CoroutineScope {
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
-                    addOnScrollListener(b.refreshLayout.onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
@@ -121,7 +110,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
             val otherSemester = subject.semesters.firstOrNull { it != semester }
             var gradeSumOtherSemester = otherSemester?.averages?.normalWeightedSum
             var gradeCountOtherSemester = otherSemester?.averages?.normalWeightedCount
-            if (gradeSumOtherSemester ?: 0f == 0f || gradeCountOtherSemester ?: 0f == 0f) {
+            if ((gradeSumOtherSemester ?: 0f) == 0f || (gradeCountOtherSemester ?: 0f) == 0f) {
                 gradeSumOtherSemester = otherSemester?.averages?.normalSum
                 gradeCountOtherSemester = otherSemester?.averages?.normalCount?.toFloat()
             }
@@ -137,27 +126,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
                     "finalOtherSemester" to otherSemester?.finalGrade?.value
             ))
         }
-
-        activity.bottomSheet.prependItems(
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_grades_config)
-                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            GradesConfigDialog(activity, true, null, null).show()
-                        }),
-                BottomSheetSeparatorItem(true),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                        .withOnClickListener(View.OnClickListener {
-                            activity.bottomSheet.close()
-                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, MetadataType.GRADE, true) }
-                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
-                        })
-        )
-        activity.gainAttention()
-    }}
+    }
 
     private fun expandSubject(adapter: GradesAdapter) {
         var expandSubjectModel: GradesSubject? = null

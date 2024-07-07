@@ -1,5 +1,32 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) Kuba Szczodrzyński 2024-6-25.
+  -->
 
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+    *** No Display themes ***
+    AppTheme.<M2/M3>.NoDisplay
+
+    *** Material 2 themes ***
+    AppTheme.M2 - light/dark theme
+    AppTheme.M2.<Color> - colored light/dark theme
+    AppTheme.M2.<Color>.Full - full color theme (dark-ish)
+
+    *** Material 3 themes (with Monet) ***
+    AppTheme.M3 - dynamic seed color
+    AppTheme.M3.<Color> - static seed color
+    AppTheme.M3.<Color>.Classic - static seed + classic (M2) background
+    AppTheme.M3.<Color>.Full - static seed + classic (M2 full) background & surface
+
+    *** Black background themes (OLED) ***
+    AppTheme.M2.Black
+    AppTheme.M2.<Color>.Black
+    AppTheme.M3.Black
+    AppTheme.M3.<Color>.Black
+    -->
+
+    <!-- SPLASH THEMES -->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
@@ -10,13 +37,16 @@
         <item name="android:windowBackground">@drawable/dead_background</item>
     </style>
 
-    <style name="AppTheme.Light.NoDisplay" parent="AppTheme.Light">
+    <!-- NO DISPLAY THEMES -->
+    <style name="AppTheme.M2.NoDisplay">
         <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
 
         <item name="android:windowFrame">@null</item>
         <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/Base.DialogWindowTitleBackground.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">
+            @style/Base.DialogWindowTitleBackground.AppCompat
+        </item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
@@ -38,15 +68,18 @@
         <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
-        <item name="android:popupBackground">@color/windowBackgroundLight</item>
+        <item name="android:popupBackground">@color/windowBackgroundDefault</item>
     </style>
-    <style name="AppTheme.Dark.NoDisplay" parent="AppTheme.Dark">
+
+    <style name="AppTheme.M3.NoDisplay">
         <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
 
         <item name="android:windowFrame">@null</item>
         <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/Base.DialogWindowTitleBackground.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">
+            @style/Base.DialogWindowTitleBackground.AppCompat
+        </item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
@@ -68,167 +101,122 @@
         <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
-        <item name="android:popupBackground">@color/windowBackgroundDark</item>
+        <item name="android:popupBackground">@color/windowBackgroundDefault</item>
     </style>
 
-    <style name="AppTheme.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="materialAlertDialogTitleTextStyle">@style/AppTheme.MaterialAlertDialog.TitleText</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialog.BodyText</item>
+    <style name="ThemeOverlay.AppTheme.Black" parent="">
+        <item name="android:colorBackground">#FF000000</item>
     </style>
-    <style name="AppTheme.MaterialAlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="textSize">20sp</item>
-        <item name="android:textSize">20sp</item>
-        <item name="textColor">?android:textColorPrimary</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
+
+    <!-- TEXT VIEW STYLES -->
+    <style name="AppStyle.TextView" parent="">
+        <item name="android:textAppearance">?textAppearanceBodyMedium</item>
     </style>
-    <style name="AppTheme.MaterialAlertDialog.BodyText">
-        <item name="textSize">16sp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="textColor">?android:textColorSecondary</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
+
+    <!-- BUTTON STYLES -->
+    <style name="AppStyle.M2.Button.IconButton.Secondary" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="cornerRadius">4dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
     </style>
-    <style name="AppTheme.MaterialAlertDialogMonospace" parent="AppTheme.MaterialAlertDialog">
-        <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialogMonospace.BodyText</item>
+
+    <style name="AppStyle.M3.Button.IconButton.Filled.Container" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?colorPrimaryContainer</item>
+        <item name="iconTint">?colorOnPrimaryContainer</item>
     </style>
-    <style name="AppTheme.MaterialAlertDialogMonospace.BodyText" parent="AppTheme.MaterialAlertDialog.BodyText">
+
+    <!-- DIALOG STYLES -->
+    <style name="AppStyle.M2.MaterialAlertDialog.Monospace" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/AppStyle.M2.MaterialAlertDialog.Monospace.BodyText
+        </item>
+    </style>
+
+    <style name="AppStyle.M2.MaterialAlertDialog.Monospace.BodyText">
         <item name="android:typeface">monospace</item>
     </style>
 
-    <style name="AppTheme" parent="NavView" />
-
-    <!-- Base application theme. -->
-    <style name="AppTheme.Light" parent="NavView.Light">
-        <item name="colorPrimary">#2196f3</item>
-        <item name="colorPrimaryDark">#1976d2</item>
-        <item name="colorPrimaryVariant">#2196f3</item>
-        <item name="colorAccent">#ff3d00</item>
-
-        <item name="colorFab">#4CAF50</item>
-        <item name="colorFabIcon">#c8e6c9</item>
-        <item name="colorOnFab">#ffffff</item>
-        <item name="colorIcon">#8a000000</item>
-
-        <item name="mal_color_primary">?android:textColorPrimary</item>
-        <item name="mal_color_secondary">?android:textColorSecondary</item>
-        <item name="mal_card_background">?colorSurface</item>
-
-        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_light</item>
-        <item name="timetable_lesson_cancelled_color">#9f9f9f</item>
-        <item name="timetable_lesson_change_color">#ffb300</item>
-        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
-        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
-        <item name="hourDividerColor">#b0b0b0</item>
-        <item name="halfHourDividerColor">#e0e0e0</item>
-
-        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
-    </style>
-    <style name="AppTheme.Dark" parent="NavView.Dark">
-        <item name="colorPrimary">#64b5f6</item>
-        <item name="colorPrimaryDark">#1976d2</item>
-        <item name="colorPrimaryVariant">#2196f3</item>
-        <item name="colorAccent">#ffb300</item>
-
-        <item name="colorFab">#4CAF50</item>
-        <item name="colorFabIcon">#c8e6c9</item>
-        <item name="colorOnFab">#ffffff</item>
-        <item name="colorIcon">#b4ffffff</item>
-
-        <item name="mal_color_primary">@color/primaryTextDark</item>
-        <item name="mal_color_secondary">@color/secondaryTextDark</item>
-        <item name="mal_card_background">?colorSurface</item>
-
-        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_dark</item>
-        <item name="timetable_lesson_cancelled_color">#838383</item>
-        <item name="timetable_lesson_change_color">#ffb300</item>
-        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
-        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
-        <item name="hourDividerColor">#7fffffff</item>
-        <item name="halfHourDividerColor">#40ffffff</item>
-
-        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+    <style name="AppStyle.M3.MaterialAlertDialog.Monospace" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/AppStyle.M3.MaterialAlertDialog.Monospace.BodyText
+        </item>
     </style>
 
+    <style name="AppStyle.M3.MaterialAlertDialog.Monospace.BodyText" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:typeface">monospace</item>
+    </style>
 
-    <!-- DESCENDANT THEMES -->
-    <!-- BLACK THEME -->
-    <style name="AppTheme.Black" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundBlack</item>
-        <item name="colorSurface">@color/colorSurfaceBlack</item>
+    <!-- TEXT APPEARANCE VARIANTS -->
+    <!-- title text                 20sp, primary, medium -->
+    <!-- subtitle text              16sp, primary, medium -->
+    <!-- large body text            22sp, primary, regular -->
+    <!-- medium body text           18sp, primary, regular -->
+    <!-- normal(default) body text  14sp, primary, regular -->
+    <!-- small body text            14sp, secondary, medium -->
+    <!-- helper body text           14sp, secondary, regular -->
+    <style name="AppStyle.M2.Normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
-    <!-- CHOCOLATE THEME -->
-    <style name="AppTheme.Chocolate" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundChocolate</item>
-        <item name="colorSurface">@color/colorSurfaceChocolate</item>
+
+    <style name="AppStyle.M2.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
-    <!-- INDIGO THEME -->
-    <style name="AppTheme.Indigo" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundIndigo</item>
-        <item name="colorSurface">@color/colorSurfaceIndigo</item>
+
+    <style name="AppStyle.M2.Subtitle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
-    <!-- LIGHT YELLOW THEME -->
-    <style name="AppTheme.LightYellow" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundLightYellow</item>
-        <item name="colorSurface">@color/colorSurfaceLightYellow</item>
+
+    <style name="AppStyle.M2.Large" parent="TextAppearance.AppCompat.Large" />
+
+    <style name="AppStyle.M2.Medium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
-    <!-- DARK BLUE THEME -->
-    <style name="AppTheme.DarkBlue" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundDarkBlue</item>
-        <item name="colorSurface">@color/colorSurfaceDarkBlue</item>
+
+    <style name="AppStyle.M2.Small" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
-    <!-- BLUE THEME -->
-    <style name="AppTheme.Blue" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundBlue</item>
-        <item name="colorSurface">@color/colorSurfaceBlue</item>
+
+    <style name="AppStyle.M2.Helper" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
     </style>
-    <!-- LIGHT BLUE THEME -->
-    <style name="AppTheme.LightBlue" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundLightBlue</item>
-        <item name="colorSurface">@color/colorSurfaceLightBlue</item>
+
+    <style name="AppStyle.M3.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- DARK PURPLE THEME -->
-    <style name="AppTheme.DarkPurple" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundDarkPurple</item>
-        <item name="colorSurface">@color/colorSurfaceDarkPurple</item>
+
+    <style name="AppStyle.M3.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- PURPLE THEME -->
-    <style name="AppTheme.Purple" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundPurple</item>
-        <item name="colorSurface">@color/colorSurfacePurple</item>
+
+    <style name="AppStyle.M3.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- LIGHT PURPLE THEME -->
-    <style name="AppTheme.LightPurple" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundLightPurple</item>
-        <item name="colorSurface">@color/colorSurfaceLightPurple</item>
+
+    <style name="AppStyle.M3.TitleLarge" parent="TextAppearance.Material3.TitleLarge" />
+
+    <style name="AppStyle.M3.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- DARK RED THEME -->
-    <style name="AppTheme.DarkRed" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundDarkRed</item>
-        <item name="colorSurface">@color/colorSurfaceDarkRed</item>
+
+    <style name="AppStyle.M3.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- RED THEME -->
-    <style name="AppTheme.Red" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundRed</item>
-        <item name="colorSurface">@color/colorSurfaceRed</item>
+
+    <style name="AppStyle.M3.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- LIGHT RED THEME -->
-    <style name="AppTheme.LightRed" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundLightRed</item>
-        <item name="colorSurface">@color/colorSurfaceLightRed</item>
+
+    <style name="AppStyle.M3.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
-    <!-- DARK GREEN THEME -->
-    <style name="AppTheme.DarkGreen" parent="AppTheme.Dark">
-        <item name="android:colorBackground">@color/windowBackgroundDarkGreen</item>
-        <item name="colorSurface">@color/colorSurfaceDarkGreen</item>
-    </style>
-    <!-- AMBER THEME -->
-    <style name="AppTheme.Amber" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundAmber</item>
-        <item name="colorSurface">@color/colorSurfaceAmber</item>
-    </style>
-    <!-- LIGHT GREEN THEME -->
-    <style name="AppTheme.LightGreen" parent="AppTheme.Light">
-        <item name="android:colorBackground">@color/windowBackgroundLightGreen</item>
-        <item name="colorSurface">@color/colorSurfaceLightGreen</item>
+
+    <style name="AppStyle.M3.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
 
 </resources>

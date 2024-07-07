@@ -5,40 +5,43 @@
 package pl.szczodrzynski.edziennik.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ext.hasUIFeature
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
-import pl.szczodrzynski.edziennik.ui.home.cards.*
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeArchiveCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeAvailabilityCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeEventsCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeGradesCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeLuckyNumberCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeNotesCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeTimetableCard
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import kotlin.coroutines.CoroutineContext
 
-class HomeFragment : Fragment(), CoroutineScope {
+class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
+    inflater = FragmentHomeBinding::inflate,
+) {
     companion object {
-        private const val TAG = "HomeFragment"
-
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter): Boolean {
             val fromCard = cardAdapter.items[fromPosition]
             val toCard = cardAdapter.items[toPosition]
@@ -75,82 +78,67 @@ class HomeFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private lateinit var app: App
-    private lateinit var activity: MainActivity
-    private lateinit var b: FragmentHomeBinding
+    override fun getBottomSheetItems() = listOf(
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_add_remove_cards)
+            .withIcon(Icon.cmd_card_bulleted_settings_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                HomeConfigDialog(activity, reloadOnDismiss = true).show()
+            },
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_set_student_number)
+            .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                StudentNumberDialog(activity, app.profile).show()
+            },
+        BottomSheetSeparatorItem(true),
+        BottomSheetPrimaryItem(true)
+            .withTitle(R.string.menu_mark_everything_as_read)
+            .withIcon(Icon.cmd_eye_check_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                launch(Dispatchers.IO) {
+                    if (!app.data.uiConfig.enableMarkAsReadAnnouncements) {
+                        app.db.metadataDao()
+                            .setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
+                    } else {
+                        app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)
+                    }
+                }
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+                Toast.makeText(
+                    activity,
+                    R.string.main_menu_mark_as_read_success,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    )
+
     private val manager
         get() = app.permissionManager
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
-        context ?: return null
-        app = activity.application as App
-        b = FragmentHomeBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        return b.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (!isAdded)
-            return
-
+    override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (!manager.isNotificationPermissionGranted) {
             manager.requestNotificationsPermission(activity, 0, false){}
         }
 
-        activity.bottomSheet.prependItems(
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_add_remove_cards)
-                        .withIcon(Icon.cmd_card_bulleted_settings_outline)
-                        .withOnClickListener(OnClickListener {
-                            activity.bottomSheet.close()
-                            HomeConfigDialog(activity, reloadOnDismiss = true).show()
-                        }),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_set_student_number)
-                        .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
-                        .withOnClickListener(OnClickListener {
-                            activity.bottomSheet.close()
-                            StudentNumberDialog(activity, app.profile) {
-                                app.profileSave()
-                            }
-                        }),
-                BottomSheetSeparatorItem(true),
-                BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_mark_everything_as_read)
-                        .withIcon(Icon.cmd_eye_check_outline)
-                        .withOnClickListener(OnClickListener {
-                            activity.bottomSheet.close()
-                            launch { withContext(Dispatchers.Default) {
-                                if (!app.data.uiConfig.enableMarkAsReadAnnouncements) {
-                                    app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
-                                } else {
-                                    app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)
-                                }
-                            } }
-
-                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
-                        })
-        )
         b.configureCards.onClick {
             HomeConfigDialog(activity, reloadOnDismiss = true).show()
-        }
-
-        b.scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
-            b.refreshLayout.isEnabled = scrollY == 0
         }
 
         val cards = app.profile.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
             cards += listOfNotNull(
-                    HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER).takeIf { app.profile.hasUIFeature(FeatureType.LUCKY_NUMBER) },
-                    HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE).takeIf { app.profile.hasUIFeature(FeatureType.TIMETABLE) },
-                    HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS).takeIf { app.profile.hasUIFeature(FeatureType.AGENDA) },
-                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES).takeIf { app.profile.hasUIFeature(FeatureType.GRADES) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER).takeIf { app.profile.hasUIFeature(
+                        FeatureType.LUCKY_NUMBER) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE).takeIf { app.profile.hasUIFeature(
+                        FeatureType.TIMETABLE) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS).takeIf { app.profile.hasUIFeature(
+                        FeatureType.AGENDA) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES).takeIf { app.profile.hasUIFeature(
+                        FeatureType.GRADES) },
                     HomeCardModel(app.profile.id, HomeCard.CARD_NOTES),
             )
             app.profile.config.ui.homeCards = app.profile.config.ui.homeCards.toMutableList().also { it.addAll(cards) }
@@ -180,7 +168,9 @@ class HomeFragment : Fragment(), CoroutineScope {
         }
 
         val adapter = HomeCardAdapter(items)
-        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
+        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter) {
+            canRefreshDisabled = !it
+        })
         adapter.itemTouchHelper = itemTouchHelper
         b.list.layoutManager = LinearLayoutManager(activity)
         b.list.adapter = adapter

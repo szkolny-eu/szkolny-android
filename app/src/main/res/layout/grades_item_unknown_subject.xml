@@ -1,19 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2022-3-14.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <com.mikepenz.iconics.view.IconicsTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.mikepenz.iconics.view.IconicsTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/grades_subject_unknown_help"
-            android:textColor="?android:textColorSecondary" />
-    </LinearLayout>
-</layout>
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/grades_subject_unknown_help"
+        android:textAppearance="?textAppearanceBodySmall" />
+</LinearLayout>

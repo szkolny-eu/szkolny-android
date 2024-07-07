@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kacper Ziubryniewicz 2020-1-20
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,18 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp">
+            android:padding="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/grades_config_title"/>
+                android:text="@string/grades_config_title"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -42,17 +43,16 @@
                     android:id="@+id/customPlusValue"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    app:picker_min="0.0"
-                    app:picker_max="1.0"
-                    app:picker_stepSize="0.01"
                     app:picker_disableGestures="true"
-                    app:picker_orientation="horizontal" />
+                    app:picker_max="1.0"
+                    app:picker_min="0.0"
+                    app:picker_orientation="horizontal"
+                    app:picker_stepSize="0.01" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -68,39 +68,40 @@
                     android:id="@+id/customMinusValue"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    app:picker_min="0.0"
-                    app:picker_max="1.0"
-                    app:picker_stepSize="0.01"
                     app:picker_disableGestures="true"
-                    app:picker_orientation="horizontal" />
+                    app:picker_max="1.0"
+                    app:picker_min="0.0"
+                    app:picker_orientation="horizontal"
+                    app:picker_stepSize="0.01" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/divider"/>
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/divider" />
 
             <CheckBox
                 android:id="@+id/dontCountGrades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
-                android:text="@string/grades_config_dont_count_grades"/>
+                android:text="@string/grades_config_dont_count_grades" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="?textInputOutlinedDenseStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_marginTop="8dp"
+                android:enabled="@{dontCountGrades.checked}"
                 android:hint="@string/grades_config_dont_count_hint"
-                app:placeholderText="@string/grades_config_dont_count_placeholder"
-                android:enabled="@{dontCountGrades.checked}">
+                app:placeholderText="@string/grades_config_dont_count_placeholder">
 
                 <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/dontCountGradesText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="nb, 0, +, -, bz"/>
+                    tools:text="nb, 0, +, -, bz" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
@@ -109,11 +110,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:minHeight="32dp"
-                android:text="@string/grades_config_dont_show_improved"/>
+                android:text="@string/grades_config_dont_show_improved" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -122,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:minHeight="32dp"
-                    android:text="@string/grades_config_average_without_weight"/>
+                    android:text="@string/grades_config_average_without_weight" />
 
                 <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/averageWithoutWeightHelp"
@@ -139,13 +141,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_sort_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_sort_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/sortGradesByDateRadio"
@@ -159,82 +162,82 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/dialog_grades_config_sort_by_subject"/>
+                    android:text="@string/dialog_grades_config_sort_by_subject" />
             </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_color_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_color_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/gradeColorFromERegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/dialog_grades_config_color_from_eregister"/>
+                    android:text="@string/dialog_grades_config_color_from_eregister" />
 
                 <RadioButton
                     android:id="@+id/gradeColorByValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/dialog_grades_config_color_by_value"/>
+                    android:text="@string/dialog_grades_config_color_by_value" />
             </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/menu_grades_average_mode"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/menu_grades_average_mode"
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/settings_register_avg_mode_4"/>
+                    android:text="@string/settings_register_avg_mode_4" />
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/settings_register_avg_mode_0"/>
+                    android:text="@string/settings_register_avg_mode_0" />
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/settings_register_avg_mode_1"/>
+                    android:text="@string/settings_register_avg_mode_1" />
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/settings_register_avg_mode_2"/>
+                    android:text="@string/settings_register_avg_mode_2" />
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="@string/settings_register_avg_mode_3"/>
+                    android:text="@string/settings_register_avg_mode_3" />
             </RadioGroup>
         </LinearLayout>
     </ScrollView>

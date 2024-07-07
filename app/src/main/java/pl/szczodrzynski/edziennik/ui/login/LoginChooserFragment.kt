@@ -16,25 +16,31 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.core.manager.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.data.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.feedback.FeedbackActivity
-import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -252,19 +258,15 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         }
 
         if (!app.config.privacyPolicyAccepted) {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.privacy_policy)
-                .setMessage(BetterHtml.fromHtml(activity, R.string.privacy_policy_dialog_html))
-                .setPositiveButton(R.string.i_agree) { _, _ ->
+            SimpleDialog<Unit>(activity) {
+                title(R.string.privacy_policy)
+                message(BetterHtml.fromHtml(activity, R.string.privacy_policy_dialog_html))
+                positive(R.string.i_agree) {
                     app.config.privacyPolicyAccepted = true
                     onLoginModeClicked(loginType, loginMode)
                 }
-                .setNegativeButton(R.string.i_disagree, null)
-                .show()
-                .also { dialog ->
-                    dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
-                        BetterLinkMovementMethod.getInstance()
-                }
+                negative(R.string.i_disagree)
+            }.show()
             return
         }
 
@@ -273,14 +275,14 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
                 return@launch
 
             if (loginMode.isTesting || loginMode.isDevOnly) {
-                MaterialAlertDialogBuilder(activity)
-                        .setTitle(R.string.login_chooser_testing_title)
-                        .setMessage(R.string.login_chooser_testing_text)
-                        .setPositiveButton(R.string.ok) { _, _ ->
-                            navigateToLoginMode(loginType, loginMode)
-                        }
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
+                SimpleDialog<Unit>(activity) {
+                    title(R.string.login_chooser_testing_title)
+                    message(R.string.login_chooser_testing_text)
+                    positive(R.string.ok) {
+                        navigateToLoginMode(loginType, loginMode)
+                    }
+                    negative(R.string.cancel)
+                }.show()
                 return@launch
             }
 

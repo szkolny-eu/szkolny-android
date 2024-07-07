@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 
 class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
     companion object {
@@ -71,7 +71,7 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
     }
 
     private fun login() {
-        d(TAG, "Login to ${data.schoolId} with ${data.oauthLoginResponse}")
+        Timber.d("Login to ${data.schoolId} with ${data.oauthLoginResponse}")
 
         val authorizeResponse = data.oauthLoginResponse?.fromQueryString()
             ?: return // checked in init {}

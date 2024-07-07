@@ -1,10 +1,7 @@
-import json
-import os
 import re
 import sys
 from datetime import datetime, timedelta
-
-import requests
+from zoneinfo import ZoneInfo
 
 from _utils import (
     get_commit_log,
@@ -18,38 +15,20 @@ if __name__ == "__main__":
         print("usage: bump_nightly.py <project dir>")
         exit(-1)
 
-    repo = os.getenv("GITHUB_REPOSITORY")
-    sha = os.getenv("GITHUB_SHA")
-
-    if not repo or not sha:
-        print("Missing GitHub environment variables.")
-        exit(-1)
-
-    with requests.get(
-        f"https://api.github.com/repos/{repo}/actions/runs?per_page=5&status=success"
-    ) as r:
-        data = json.loads(r.text)
-        runs = [run for run in data["workflow_runs"] if run["head_sha"] == sha]
-        if runs:
-            print("::set-output name=hasNewChanges::false")
-            exit(0)
-
-    print("::set-output name=hasNewChanges::true")
-
     project_dir = get_project_dir()
 
     (version_code, version_name) = read_gradle_version(project_dir)
     version_name = version_name.split("+")[0]
 
-    date = datetime.now()
+    date = datetime.now(tz=ZoneInfo("Europe/Warsaw"))
     if date.hour > 6:
         version_name += "+daily." + date.strftime("%Y%m%d-%H%M")
     else:
         date -= timedelta(days=1)
         version_name += "+nightly." + date.strftime("%Y%m%d")
 
-    print("::set-output name=appVersionName::" + version_name)
-    print("::set-output name=appVersionCode::" + str(version_code))
+    print("appVersionName=" + version_name)
+    print("appVersionCode=" + str(version_code))
 
     write_gradle_version(project_dir, version_code, version_name)
 

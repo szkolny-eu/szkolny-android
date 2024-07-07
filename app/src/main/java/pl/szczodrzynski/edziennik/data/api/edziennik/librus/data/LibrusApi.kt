@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.getString
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import timber.log.Timber
 import java.net.HttpURLConnection.*
 
 open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
@@ -28,7 +28,7 @@ open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
 
     fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, ignoreErrors: List<Int> = emptyList(), onSuccess: (json: JsonObject) -> Unit) {
 
-        d(tag, "Request: Librus/Api - ${if (data.fakeLogin) FAKE_LIBRUS_API else LIBRUS_API_URL}/$endpoint")
+        Timber.tag(tag).d("Request: Librus/Api - ${if (data.fakeLogin) FAKE_LIBRUS_API else LIBRUS_API_URL}/$endpoint")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {

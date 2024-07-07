@@ -1,0 +1,13 @@
+name: Push (master)
+on:
+  push:
+    branches: ["master"]
+jobs:
+  build:
+    name: Build for Google Play (AAB)
+    uses: szkolny-eu/szkolny-android/.github/workflows/_build.yml@develop
+    with:
+      build-aab: true
+      release-ssh: true
+      release-google-play: true
+    secrets: inherit

@@ -13,20 +13,17 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
-import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.core.receiver.SzkolnyReceiver
+import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getJsonObject
-import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.ext.pendingIntentMutable
 import pl.szczodrzynski.edziennik.ext.putExtras
-import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ext.toDrawable
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 
 class WidgetNotificationsProvider : AppWidgetProvider() {
@@ -56,10 +53,9 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
 
             views.setImageViewBitmap(
                     R.id.widgetNotificationsSync,
-                    IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline).apply {
-                        colorInt = Color.WHITE
-                        sizeDp = iconSize
-                    }.toBitmap()
+                    CommunityMaterial.Icon.cmd_download_outline
+                        .toDrawable(context, Color.WHITE, sizeDp = iconSize)
+                        .toBitmap()
             )
 
             views.setViewVisibility(R.id.widgetNotificationsLoading, View.GONE)

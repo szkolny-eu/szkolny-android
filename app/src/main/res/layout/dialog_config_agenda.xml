@@ -2,7 +2,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,7 +12,7 @@
 
         <variable
             name="config"
-            type="pl.szczodrzynski.edziennik.config.ProfileConfig" />
+            type="pl.szczodrzynski.edziennik.data.config.ProfileConfig" />
 
         <variable
             name="isAgendaMode"
@@ -32,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/config_appearance"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"
@@ -71,10 +72,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="32dp"
                 android:enabled="@{isAgendaMode}"
                 android:text="@string/agenda_config_compact_mode_hint"
-                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textAppearance="?textAppearanceBodySmall"
                 tools:enabled="false" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -90,16 +91,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:isVisible="@{!isAgendaMode}"
                 android:text="@string/agenda_config_mode_unavailable"
-                android:textStyle="italic"
-                android:visibility="@{isAgendaMode ? View.GONE : View.VISIBLE}" />
+                android:textAppearance="?textAppearanceBodySmall" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/agenda_config_event_sharing"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/eventSharingEnabled"
@@ -114,8 +116,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:minHeight="32dp"
                 android:checked="@={config.shareByDefault}"
+                android:minHeight="32dp"
                 android:text="@string/settings_register_share_by_default_text" />
 
             <TextView
@@ -123,14 +125,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/agenda_config_elearning"
-                android:textAppearance="@style/NavView.TextView.Subtitle" />
+                android:textAppearance="?textAppearanceTitleMedium" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/agenda_config_not_available_yet"
-                android:textAppearance="@style/NavView.TextView.Small"
-                android:textStyle="italic" />
+                android:textAppearance="?textAppearanceBodySmall" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/elearningEnabled"
@@ -144,7 +145,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/elearningType"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="?textInputOutlinedDenseStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="@{elearningEnabled.checked}"

@@ -5,7 +5,7 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath "org.eclipse.jgit:org.eclipse.jgit:5.5.+"

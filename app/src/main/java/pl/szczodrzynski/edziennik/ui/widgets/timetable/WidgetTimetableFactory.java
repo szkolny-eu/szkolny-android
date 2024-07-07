@@ -39,6 +39,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
+import timber.log.Timber;
 
 public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -53,7 +54,7 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
         this.context = context;
         this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
         // executed only ONCE
-        Log.d(TAG, "appWidgetId: "+appWidgetId);
+        Timber.d("appWidgetId: %s", appWidgetId);
         //App app = (App) context.getApplicationContext();
         //this.lessons = widgetsLessons.get(appWidgetId);
         /*this.lessons = new ArrayList<>();
@@ -69,7 +70,7 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
     @Override
     public void onDataSetChanged() {
         // executed EVERY TIME
-        Log.d(TAG, "onDataSetChanged for appWidgetId: "+appWidgetId);
+        Timber.d("onDataSetChanged for appWidgetId: %s", appWidgetId);
         lessons = WidgetTimetableProvider.Companion.getTimetables() == null ? null : WidgetTimetableProvider.Companion.getTimetables().get(appWidgetId);
     }
 

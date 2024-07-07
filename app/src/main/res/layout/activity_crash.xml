@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,18 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        tools:ignore="UselessParent"
-        android:layout_alignParentLeft="true">
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/customactivityoncrash_activity_vertical_margin"
             android:paddingHorizontal="@dimen/customactivityoncrash_activity_horizontal_margin"
-            android:paddingTop="@dimen/customactivityoncrash_activity_vertical_margin">
+            android:paddingTop="@dimen/customactivityoncrash_activity_vertical_margin"
+            android:paddingBottom="@dimen/customactivityoncrash_activity_vertical_margin">
 
             <ImageView
                 android:layout_width="96dp"
@@ -35,8 +36,7 @@
                 android:layout_marginTop="@dimen/customactivityoncrash_activity_vertical_margin"
                 android:gravity="center"
                 android:text="@string/crash_title"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textAppearance="?textAppearanceHeadlineSmall" />
 
             <TextView
                 android:id="@+id/crash_notice"
@@ -98,16 +98,13 @@
                     style="?borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/crash_details"
-                    android:textColor="@color/colorPrimary" />
-
+                    android:text="@string/crash_details" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:srcCompat="@mipmap/ic_splash" />
-
+                app:srcCompat="@mipmap/ic_splash_v5" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

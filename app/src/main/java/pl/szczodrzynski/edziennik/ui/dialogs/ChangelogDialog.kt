@@ -9,22 +9,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.dp
-import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.ViewDialog
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
 class ChangelogDialog(
     activity: AppCompatActivity,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : ViewDialog<ScrollView>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "ChangelogDialog"
+) : ViewDialog<ScrollView>(activity) {
 
     override fun getTitleRes() = R.string.whats_new
     override fun getPositiveButtonText() = R.string.close
-
-    override suspend fun onShow() = Unit
 
     override fun getRootView(): ScrollView {
         val textView = TextView(activity)

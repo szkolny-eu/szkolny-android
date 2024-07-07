@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.crc32
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.getString

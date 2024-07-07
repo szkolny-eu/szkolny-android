@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2021-3-22.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -68,7 +68,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="?textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
@@ -88,8 +88,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
                 android:text="@{profile.subname}"
-                android:textAppearance="@style/NavView.TextView.Subtitle"
-                android:textColor="?android:textColorSecondary"
+                android:textAppearance="?textAppearanceTitleMedium"
                 tools:text="3b3t - 2020/2021" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -102,7 +101,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/logoutButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="?materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

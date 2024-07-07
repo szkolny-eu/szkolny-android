@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.RecaptchaDialogBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.base.dialog.BindingDialog
 import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -26,11 +26,7 @@ class RecaptchaDialog(
     private val onSuccess: (recaptchaCode: String) -> Unit,
     private val onFailure: (() -> Unit)? = null,
     private val onServerError: (() -> Unit)? = null,
-    onShowListener: ((tag: String) -> Unit)? = null,
-    onDismissListener: ((tag: String) -> Unit)? = null,
-) : BindingDialog<RecaptchaDialogBinding>(activity, onShowListener, onDismissListener) {
-
-    override val TAG = "RecaptchaDialog"
+) : BindingDialog<RecaptchaDialogBinding>(activity) {
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -72,7 +68,7 @@ class RecaptchaDialog(
         b.image8.isChecked = false
     }
 
-    override fun onDismiss() {
+    override suspend fun onDismiss() {
         if (!success)
             onFailure?.invoke()
     }
