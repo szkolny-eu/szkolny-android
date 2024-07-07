@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.base.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator.TabConfigurationStrategy
 import pl.szczodrzynski.edziennik.ext.invokeDeclaredMethod
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setDeclaredField
 import kotlin.math.min
 
@@ -53,13 +55,15 @@ class RecyclerTabLayout @JvmOverloads constructor(
     }
 
     inner class Adapter : RecyclerView.Adapter<Adapter.TabViewHolder>() {
-        override fun getItemCount(): Int {
-            return viewPagerAdapter.itemCount
-        }
+        override fun getItemCount() =
+            viewPagerAdapter.itemCount
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabViewHolder {
-            return TabViewHolder(tabLayout.TabView(context))
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            TabViewHolder(tabLayout.TabView(context)).also { holder ->
+                holder.tabView.onClick {
+                    viewPager.setCurrentItem(holder.lastPosition, true)
+                }
+            }
 
         override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
             val tabView = holder.tabView
@@ -69,9 +73,13 @@ class RecyclerTabLayout @JvmOverloads constructor(
             tabView.setDeclaredField("tab", null)
             tabView.isSelected = position == selectedTab
             tabView.isActivated = position == selectedTab
+            holder.lastPosition = position
         }
 
-        inner class TabViewHolder(val tabView: TabLayout.TabView) : ViewHolder(tabView)
+        inner class TabViewHolder(
+            val tabView: TabLayout.TabView,
+            var lastPosition: Int = 0,
+        ) : ViewHolder(tabView)
     }
 
     inner class OnPageChangeCallback : ViewPager2.OnPageChangeCallback() {
@@ -94,7 +102,7 @@ class RecyclerTabLayout @JvmOverloads constructor(
             if (selectedTab != roundedPosition) {
                 val previousTab = selectedTab
                 selectedTab = roundedPosition
-                adapter?.notifyItemRangeChanged(min(previousTab, selectedTab), 2)
+                tabAdapter.notifyItemRangeChanged(min(previousTab, selectedTab), 2)
             }
         }
 
@@ -106,22 +114,21 @@ class RecyclerTabLayout @JvmOverloads constructor(
     }
 
     inner class AdapterDataObserver : RecyclerView.AdapterDataObserver() {
-        override fun onChanged() {
-        }
+        @SuppressLint("NotifyDataSetChanged")
+        override fun onChanged() =
+            tabAdapter.notifyDataSetChanged()
 
-        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-        }
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) =
+            tabAdapter.notifyItemRangeChanged(positionStart, itemCount)
 
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-        }
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) =
+            tabAdapter.notifyItemRangeInserted(positionStart, itemCount)
 
-        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-        }
+        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) =
+            tabAdapter.notifyItemRangeRemoved(positionStart, itemCount)
 
-        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-        }
-
-        override fun onStateRestorationPolicyChanged() {
-        }
+        @SuppressLint("NotifyDataSetChanged")
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) =
+            tabAdapter.notifyDataSetChanged()
     }
 }
