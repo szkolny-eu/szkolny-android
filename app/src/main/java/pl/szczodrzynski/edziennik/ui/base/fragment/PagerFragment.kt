@@ -16,6 +16,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.ext.set
+import pl.szczodrzynski.edziennik.ext.setDeclaredField
+import pl.szczodrzynski.edziennik.ui.base.views.RecyclerTabLayout
 
 abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     inflater: ((inflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean) -> B)?,
@@ -76,9 +78,15 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
             })
         }
 
-        TabLayoutMediator(getTabLayout(), getViewPager()) { tab, position ->
-            tab.text = getPageTitle(position)
-        }.attach()
+        when (val tabLayout = getTabLayout()) {
+            is TabLayout -> TabLayoutMediator(tabLayout, getViewPager()) { tab, position ->
+                tab.text = getPageTitle(position)
+            }.attach()
+
+            is RecyclerTabLayout -> tabLayout.setupWithViewPager(getViewPager()) { tab, position ->
+                tab.setDeclaredField("text", getPageTitle(position))
+            }
+        }
 
         onPageSelected(savedPageSelection)
     }
@@ -103,9 +111,9 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     }
 
     /**
-     * Called to retrieve the [TabLayout] view of the pager fragment.
+     * Called to retrieve the [TabLayout] or [RecyclerTabLayout] view of the pager fragment.
      */
-    abstract fun getTabLayout(): TabLayout
+    abstract fun getTabLayout(): Any
 
     /**
      * Called to retrieve the [ViewPager2] view of the pager fragment.

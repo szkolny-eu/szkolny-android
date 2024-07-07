@@ -17,11 +17,10 @@
             android:layout_height="wrap_content"
             android:background="?colorSurface">
 
-            <com.google.android.material.tabs.TabLayout
+            <pl.szczodrzynski.edziennik.ui.base.views.RecyclerTabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorSurfaceContainerLow"
                 app:tabIndicatorColor="?colorPrimary"
                 app:tabMaxWidth="300dp"
                 app:tabMinWidth="90dp"
