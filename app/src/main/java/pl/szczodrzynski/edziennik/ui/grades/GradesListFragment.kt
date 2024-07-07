@@ -38,6 +38,7 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
     inflater = GradesListFragmentBinding::inflate,
 ) {
 
+    override fun getRefreshScrollingView() = b.list
     override fun getMarkAsReadType() = MetadataType.GRADE
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)

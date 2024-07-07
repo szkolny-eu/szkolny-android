@@ -78,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
         }
     }
 
+    override fun getRefreshScrollingView() = b.scrollView
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_add_remove_cards)
@@ -174,6 +175,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
         adapter.itemTouchHelper = itemTouchHelper
         b.list.layoutManager = LinearLayoutManager(activity)
         b.list.adapter = adapter
+        b.list.isNestedScrollingEnabled = false
         b.list.setAccessibilityDelegateCompat(object : RecyclerViewAccessibilityDelegate(b.list) {
             override fun getItemDelegate(): AccessibilityDelegateCompat {
                 return object : ItemDelegate(this) {
