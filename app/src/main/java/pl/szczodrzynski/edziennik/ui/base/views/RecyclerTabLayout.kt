@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator.TabConfigurationStrategy
 import pl.szczodrzynski.edziennik.ext.invokeDeclaredMethod
 import pl.szczodrzynski.edziennik.ext.setDeclaredField
+import kotlin.math.min
 
 class RecyclerTabLayout @JvmOverloads constructor(
     context: Context,
@@ -27,6 +28,9 @@ class RecyclerTabLayout @JvmOverloads constructor(
     private lateinit var tabAdapter: Adapter
     private lateinit var tabConfigurationStrategy: TabConfigurationStrategy
     private lateinit var tab: TabLayout.Tab
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
+    private var selectedTab = 0
 
     fun setupWithViewPager(pager: ViewPager2, strategy: TabConfigurationStrategy) {
         viewPager = pager
@@ -34,6 +38,9 @@ class RecyclerTabLayout @JvmOverloads constructor(
         tabAdapter = Adapter()
         tabConfigurationStrategy = strategy
         tab = TabLayout.Tab()
+        linearLayoutManager = LinearLayoutManager(context).also {
+            it.orientation = HORIZONTAL
+        }
 
         viewPager.registerOnPageChangeCallback(OnPageChangeCallback())
         viewPagerAdapter.registerAdapterDataObserver(AdapterDataObserver())
@@ -41,9 +48,7 @@ class RecyclerTabLayout @JvmOverloads constructor(
         setWillNotDraw(false)
         setAdapter(tabAdapter)
         setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(context).also {
-            it.orientation = HORIZONTAL
-        }
+        layoutManager = linearLayoutManager
         itemAnimator = null
     }
 
@@ -62,6 +67,8 @@ class RecyclerTabLayout @JvmOverloads constructor(
             tabView.setDeclaredField("tab", tab)
             tabView.invokeDeclaredMethod("updateTab")
             tabView.setDeclaredField("tab", null)
+            tabView.isSelected = position == selectedTab
+            tabView.isActivated = position == selectedTab
         }
 
         inner class TabViewHolder(val tabView: TabLayout.TabView) : ViewHolder(tabView)
@@ -73,6 +80,22 @@ class RecyclerTabLayout @JvmOverloads constructor(
             positionOffset: Float,
             positionOffsetPixels: Int,
         ) {
+            val thisTabWidth =
+                findViewHolderForLayoutPosition(position)?.itemView?.width ?: 0
+            val nextTabWidth =
+                findViewHolderForLayoutPosition(position + 1)?.itemView?.width ?: 0
+            val tabDistance = (thisTabWidth / 2) + (nextTabWidth / 2)
+
+            val offset = (width / 2.0f) - (thisTabWidth / 2.0f) - (tabDistance * positionOffset)
+            // 'offset' is the screen position of the tab's left edge
+            linearLayoutManager.scrollToPositionWithOffset(position, offset.toInt())
+
+            val roundedPosition = Math.round(position + positionOffset)
+            if (selectedTab != roundedPosition) {
+                val previousTab = selectedTab
+                selectedTab = roundedPosition
+                adapter?.notifyItemRangeChanged(min(previousTab, selectedTab), 2)
+            }
         }
 
         override fun onPageSelected(position: Int) {
