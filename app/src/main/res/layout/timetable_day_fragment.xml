@@ -8,18 +8,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <pl.szczodrzynski.edziennik.utils.ListenerScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="visible">
 
         <FrameLayout
             android:id="@+id/dayFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <View
                 android:id="@+id/timeIndicatorMarker"
@@ -37,7 +36,7 @@
                 android:background="?colorTertiary"
                 tools:layout_marginTop="100dp" />
         </FrameLayout>
-    </pl.szczodrzynski.edziennik.utils.ListenerScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -10,28 +10,22 @@
         android:id="@+id/timetableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:visibility="gone">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorSurface">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabLayout
+            <pl.szczodrzynski.edziennik.ui.base.views.RecyclerTabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorSurfaceContainerLow"
-                app:tabIndicatorColor="?colorPrimary"
-                app:tabMaxWidth="300dp"
-                app:tabMinWidth="90dp"
                 app:tabMode="auto"
-                app:tabPaddingBottom="12dp"
+                app:tabPaddingBottom="16dp"
                 app:tabPaddingEnd="16dp"
                 app:tabPaddingStart="16dp"
-                app:tabPaddingTop="12dp"
-                app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextColor="?colorOnBackground" />
+                app:tabPaddingTop="16dp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
