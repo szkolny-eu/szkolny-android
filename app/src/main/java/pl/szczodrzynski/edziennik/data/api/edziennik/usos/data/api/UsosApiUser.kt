@@ -53,12 +53,7 @@ class UsosApiUser(
             data.studentId = json.getInt("id") ?: data.studentId
             profile?.studentNameLong = studentName
             profile?.studentNameShort = studentName.getShortName()
-            val studentNumWithoutNonDigits = json.getString("student_number")?.replace(Regex("[^0-9]"), "")
-            if (studentNumWithoutNonDigits != null && studentNumWithoutNonDigits != "") {
-                profile?.studentNumber = studentNumWithoutNonDigits.toInt()
-            }else{
-                profile?.studentNumber = -1
-            }
+            profile?.studentNumber = json.getString("student_number")?.replace(Regex("[^0-9]"), "")?.toIntOrNull() ?: -1
             profile?.studentClassName = programmes.getJsonObject(0).getJsonObject("programme").getString("id")
 
             profile?.studentClassName?.let {
