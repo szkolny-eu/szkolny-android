@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.onLongClick
 import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
 import pl.szczodrzynski.edziennik.ui.base.fragment.PagerFragment
+import pl.szczodrzynski.edziennik.ui.dialogs.DevModeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.RestartDialog
 
 class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActivity>(
@@ -40,6 +41,7 @@ class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActi
         } to getString(R.string.translators),
     )
 
+    // eggs
     /*private var konami = 0
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
@@ -67,6 +69,7 @@ class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActi
         b.tabLayout.isVisible = false
         b.viewPager.isVisible = false
 
+        // eggs
         b.szkolny.onLongClick {
             if (b.konami.isVisible) {
                 b.glove.isVisible = true
@@ -74,21 +77,8 @@ class ContributorsFragment : PagerFragment<ContributorsFragmentBinding, MainActi
             }
             true
         }
-
         b.glove.onClick {
-            SimpleDialog<Unit>(activity) {
-                title(R.string.are_you_sure)
-                message(R.string.dev_mode_enable_warning)
-                positive(R.string.yes) {
-                    app.config.devMode = true
-                    App.devMode = true
-                    RestartDialog(activity).show()
-                }
-                negative(R.string.no) {
-                    app.config.devMode = false
-                    App.devMode = false
-                }
-            }.show()
+            DevModeDialog(activity).show()
         }
 
         contributors = contributors ?: SzkolnyApi(app).runCatching(activity.errorSnackbar) {

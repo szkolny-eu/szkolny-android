@@ -13,12 +13,14 @@ import coil.load
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginPrizeFragmentBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.DevModeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.RestartDialog
 import kotlin.coroutines.CoroutineContext
 
@@ -49,20 +51,10 @@ class LoginPrizeFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         b.button.load("https://szkolny.eu/game/button.png")
         b.button.onClick {
-            SimpleDialog<Unit>(activity) {
-                title(R.string.are_you_sure)
-                message(R.string.dev_mode_enable_warning)
-                positive(R.string.yes) {
-                    app.config.devMode = true
-                    App.devMode = true
-                    RestartDialog(activity).show()
-                }
-                negative(R.string.no) {
-                    app.config.devMode = BuildConfig.DEBUG
-                    App.devMode = BuildConfig.DEBUG
-                    activity.finish()
-                }
-            }.show()
+            launch {
+                DevModeDialog(activity).showModal()
+                activity.finish()
+            }
         }
     }
 }

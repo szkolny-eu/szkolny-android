@@ -17,6 +17,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,7 @@ import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.base.dialog.SimpleDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.DevModeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
@@ -86,6 +88,10 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             Date.fromMillis(app.buildManager.buildTimestamp).stringY_m_d
         )
         b.versionText.onClick {
+            if (app.buildManager.devModeEasy) {
+                DevModeDialog(activity).show()
+                return@onClick
+            }
             app.buildManager.showVersionDialog(activity)
             if (!App.devMode)
                 return@onClick
@@ -238,7 +244,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             }
             else -> {
                 // there are no profiles
-                b.cancelButton.isVisible = false
+                b.cancelButton.isInvisible = true
             }
         }
     }

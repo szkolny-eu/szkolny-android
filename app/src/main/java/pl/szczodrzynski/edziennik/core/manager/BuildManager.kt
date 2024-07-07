@@ -78,7 +78,7 @@ class BuildManager(val app: App) : CoroutineScope {
     val isOfficial = isSigned && (isPlayRelease || isApkRelease)
 
     val versionName = when {
-        isOfficial -> BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE
+        isOfficial -> BuildConfig.VERSION_NAME
         isRelease -> "$gitVersion\n$gitBranch"
         else -> BuildConfig.VERSION_NAME
     }
@@ -102,6 +102,8 @@ class BuildManager(val app: App) : CoroutineScope {
         BuildConfig.VERSION_BASE.contains("-rc.") -> Update.Type.RC
         else -> Update.Type.RELEASE
     }
+
+    val devModeEasy = (isDaily || isNightly || isDebug) && !App.devMode
 
     fun fetchInstalledTime() {
         if (app.config.appInstalledTime != 0L)

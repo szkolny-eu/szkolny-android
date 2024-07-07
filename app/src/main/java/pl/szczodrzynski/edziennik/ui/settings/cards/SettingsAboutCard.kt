@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.DevModeDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsLicenseActivity
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
@@ -69,7 +70,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
                     card.items.after(item, versionDetailsItem)
                     util.refresh()
                 }
-
+                // eggs
                 clickCounter++
                 if (clickCounter < 7)
                     Toast.makeText(activity, "\uD83D\uDE02", Toast.LENGTH_SHORT).show()
@@ -79,10 +80,13 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
                 if (clickCounter >= 7) {
                     mediaPlayer.start()
                     clickCounter = 0
+                    if (app.buildManager.devModeEasy) {
+                        DevModeDialog(activity).show()
+                    }
                 }
             }
         ).also {
-            it.subText = BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE
+            it.subText = BuildConfig.VERSION_NAME
         },
 
         util.createActionItem(
