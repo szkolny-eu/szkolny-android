@@ -53,7 +53,7 @@ class UsosApiUser(
             data.studentId = json.getInt("id") ?: data.studentId
             profile?.studentNameLong = studentName
             profile?.studentNameShort = studentName.getShortName()
-            profile?.studentNumber = json.getInt("student_number", -1)
+            profile?.studentNumber = json.getString("student_number")?.replace(Regex("[^0-9]"), "")?.toIntOrNull() ?: -1
             profile?.studentClassName = programmes.getJsonObject(0).getJsonObject("programme").getString("id")
 
             profile?.studentClassName?.let {
