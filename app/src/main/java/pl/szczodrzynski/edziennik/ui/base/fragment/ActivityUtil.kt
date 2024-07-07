@@ -42,7 +42,7 @@ internal fun BaseFragment<*, *>.setupCanRefresh() {
                 // keep track of the touch state
                 when (event.action) {
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> isTouched = false
-                    MotionEvent.ACTION_DOWN -> isTouched = true
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> isTouched = true
                 }
                 // disable refresh when scrolled down
                 if (view.canScrollVertically(-1))

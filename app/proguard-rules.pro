@@ -55,6 +55,18 @@
     setIcons(android.widget.TextView);
 }
 
+# for RecyclerTabView
+-keepclassmembernames class com.google.android.material.tabs.TabLayout {
+    tabIndicatorInterpolator;
+}
+-keepclassmembernames class com.google.android.material.tabs.TabLayout$TabView {
+    tab;
+    updateTab();
+}
+-keepclassmembernames class com.google.android.material.tabs.TabIndicatorInterpolator {
+    updateIndicatorForOffset(com.google.android.material.tabs.TabLayout, android.view.View, android.view.View, float, android.graphics.drawable.Drawable);
+}
+
 -keep class .R
 -keep class **.R$* {
     <fields>;
