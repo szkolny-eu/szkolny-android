@@ -103,7 +103,7 @@ class BuildManager(val app: App) : CoroutineScope {
         else -> Update.Type.RELEASE
     }
 
-    val devModeEasy = (isDaily || isNightly || isDebug) && !App.devMode
+    val devModeEasy = (releaseType == Update.Type.NIGHTLY || isDebug) && !App.devMode
 
     fun fetchInstalledTime() {
         if (app.config.appInstalledTime != 0L)

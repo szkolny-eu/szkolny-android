@@ -35,7 +35,6 @@ class UpdateProgressDialog(
     override fun getNegativeButtonText() = R.string.cancel
 
     override suspend fun onShow() {
-        EventBus.getDefault().register(this)
         b.update = update
         b.progress.progress = 0
 

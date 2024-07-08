@@ -11,6 +11,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ext.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils
 import timber.log.Timber
@@ -41,7 +42,11 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             if (!app.config.sync.notifyAboutUpdates) {
                 return
             }
-            val syncInterval = 4 * DAY;
+            val syncInterval =
+                if (app.buildManager.releaseType == Update.Type.NIGHTLY)
+                    12 * HOUR
+                else
+                    4 * DAY
 
             val syncAt = System.currentTimeMillis() + syncInterval*1000
             Timber.d("Scheduling work at ${syncAt.formatDate()}")

@@ -164,7 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
 
         val status = app.availabilityManager.check(app.profile, cacheOnly = true)?.status
         val update = app.config.update
-        if (update != null && update.versionCode > BuildConfig.VERSION_CODE || status?.userMessage != null) {
+        if (update != null && app.updateManager.isApplicable(update) || status?.userMessage != null) {
             items.add(0, HomeAvailabilityCard(102, app, activity, this, app.profile))
         }
 

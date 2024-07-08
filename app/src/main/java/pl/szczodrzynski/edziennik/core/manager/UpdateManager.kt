@@ -30,6 +30,31 @@ class UpdateManager(val app: App) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 
+    fun isApplicable(update: Update): Boolean {
+        if (app.buildManager.isDebug)
+            return false // no updates on debug
+        if (update.versionCode > BuildConfig.VERSION_CODE)
+            return true
+        if (update.versionCode < BuildConfig.VERSION_CODE)
+            return false
+        if (update.versionName == BuildConfig.VERSION_NAME)
+            return false
+        if (app.buildManager.isNightly || app.buildManager.isDaily) {
+            val updateDate =
+                update.versionName
+                    .replace("""\D""".toRegex(), "")
+                    .padEnd(12, '9')
+                    .toIntOrNull() ?: return false
+            val buildDate =
+                BuildConfig.VERSION_NAME
+                    .replace("""\D""".toRegex(), "")
+                    .padEnd(12, '9')
+                    .toIntOrNull() ?: return false
+            return updateDate > buildDate
+        }
+        return false
+    }
+
     /**
      * Check for updates on the specified [maxChannel].
      * If the running build is of "more-unstable" type,
@@ -75,7 +100,7 @@ class UpdateManager(val app: App) : CoroutineScope {
      * @return [update] if it's a newer version, null otherwise
      */
     fun process(update: Update?, notify: Boolean): Update? {
-        if (update == null || update.versionCode <= BuildConfig.VERSION_CODE) {
+        if (update == null || !isApplicable(update)) {
             app.config.update = null
             return null
         }

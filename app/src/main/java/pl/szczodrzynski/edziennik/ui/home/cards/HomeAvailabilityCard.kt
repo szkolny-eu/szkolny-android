@@ -80,7 +80,7 @@ class HomeAvailabilityCard(
             }
         }
         // show "update available" when available OR version too old for the register
-        else if (update != null && update.versionCode > BuildConfig.VERSION_CODE) {
+        else if (update != null && app.updateManager.isApplicable(update)) {
             b.homeAvailabilityTitle.setText(R.string.home_availability_title)
             b.homeAvailabilityText.setText(R.string.home_availability_text, update.versionName)
             b.homeAvailabilityUpdate.isVisible = !app.buildManager.isPlayRelease
@@ -94,9 +94,7 @@ class HomeAvailabilityCard(
         }
 
         b.homeAvailabilityUpdate.onClick {
-            if (update == null)
-                return@onClick
-            if (update.isOnGooglePlay)
+            if (update == null || update.isOnGooglePlay)
                 Utils.openGooglePlay(activity)
             else
                 activity.startService(Intent(app, UpdateDownloaderService::class.java))

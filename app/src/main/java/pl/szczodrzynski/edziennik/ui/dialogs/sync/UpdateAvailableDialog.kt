@@ -46,6 +46,6 @@ class UpdateAvailableDialog(
 
     override suspend fun onBeforeShow(): Boolean {
         // show only if app is older than available
-        return update == null || update.versionCode > BuildConfig.VERSION_CODE
+        return update == null || app.updateManager.isApplicable(update)
     }
 }
