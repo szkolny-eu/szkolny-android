@@ -11,8 +11,7 @@ from _utils import get_changelog, get_commit_log, get_project_dir, read_gradle_v
 def post_webhook(
     project_dir: str,
     apk_file: str,
-    apk_server_release: str,
-    apk_server_nightly: str,
+    download_url: str,
     webhook_release: str,
     webhook_testing: str,
 ):
@@ -24,12 +23,6 @@ def post_webhook(
 
     testing = ["dev", "beta", "nightly", "daily"]
     testing = build_type in testing
-
-    apk_name = os.path.basename(apk_file)
-    if build_type in ["nightly", "daily"]:
-        download_url = apk_server_nightly + apk_name
-    else:
-        download_url = apk_server_release + apk_name
 
     if testing:
         build_date = int(os.stat(apk_file).st_mtime)
@@ -48,13 +41,17 @@ def post_webhook(
         requests.post(url=webhook_testing, json=webhook)
     else:
         changelog = get_changelog(project_dir, format="markdown")
-        webhook = get_webhook_release(changelog, download_url)
+        webhook = get_webhook_release(version_name, changelog, download_url)
         requests.post(url=webhook_release, json=webhook)
 
 
-def get_webhook_release(changelog: str, download_url: str):
+def get_webhook_release(version_name: str, changelog: str, download_url: str):
     (title, content) = changelog
-    return {"content": f"__**{title}**__\n{content}\n{download_url}"}
+    return {
+        "content": (
+            f"__**{title}**__\n{content}\n[Szkolny.eu {version_name}]({download_url})"
+        ),
+    }
 
 
 def get_webhook_testing(
@@ -73,9 +70,11 @@ def get_webhook_testing(
                 "fields": [
                     {
                         "name": f"Wersja `{version_name}`",
-                        "value": f"[Pobierz .APK]({download_url})"
-                        if download_url
-                        else "*Pobieranie niedostępne*",
+                        "value": (
+                            f"[Pobierz .APK]({download_url})"
+                            if download_url
+                            else "*Pobieranie niedostępne*"
+                        ),
                         "inline": False,
                     },
                     {
@@ -103,16 +102,14 @@ if __name__ == "__main__":
 
     load_dotenv()
     APK_FILE = os.getenv("APK_FILE")
-    APK_SERVER_RELEASE = os.getenv("APK_SERVER_RELEASE")
-    APK_SERVER_NIGHTLY = os.getenv("APK_SERVER_NIGHTLY")
+    DOWNLOAD_URL = os.getenv("DOWNLOAD_URL")
     WEBHOOK_RELEASE = os.getenv("WEBHOOK_RELEASE")
     WEBHOOK_TESTING = os.getenv("WEBHOOK_TESTING")
 
     post_webhook(
         project_dir,
         APK_FILE,
-        APK_SERVER_RELEASE,
-        APK_SERVER_NIGHTLY,
+        DOWNLOAD_URL,
         WEBHOOK_RELEASE,
         WEBHOOK_TESTING,
     )

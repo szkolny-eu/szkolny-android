@@ -197,7 +197,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             adapter.items.removeAll { it !is LoginInfo.Register }
             adapter.items.add(
                     LoginInfo.Register(
-                            loginType = LoginType.DEMO,
+                            loginType = LoginType.TEMPLATE,
                             registerName = R.string.eggs,
                             registerLogo = R.drawable.face_1,
                             loginModes = listOf(
@@ -241,13 +241,13 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             loginType: LoginInfo.Register,
             loginMode: LoginInfo.Mode
     ) {
-        if (loginType.loginType == LoginType.DEMO) {
-            nav.navigate(R.id.loginEggsFragment, null, activity.navOptions)
-            return
-        }
-
         if (loginType.loginType == LoginType.TEMPLATE) {
-            nav.navigate(R.id.labFragment, null, activity.navOptions)
+            when (loginType.registerName) {
+                R.string.eggs ->
+                    nav.navigate(R.id.loginEggsFragment, null, activity.navOptions)
+                R.string.menu_lab ->
+                    nav.navigate(R.id.labFragment, null, activity.navOptions)
+            }
             return
         }
 

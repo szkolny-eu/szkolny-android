@@ -104,7 +104,6 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.10.2"
         }
     }
     lint {
@@ -113,8 +112,9 @@ android {
 }
 
 tasks.whenTaskAdded { task ->
-    if (!task.name.endsWith("Release") && !task.name.endsWith("ReleaseWithR8"))
+    if (!(task.name == "assembleUnofficialRelease" || task.name == "assembleOfficialRelease" || task.name == "signPlayReleaseBundle"))
         return
+
     def renameTaskName = "rename${task.name.capitalize()}"
 
     def flavor = ""
@@ -124,17 +124,22 @@ tasks.whenTaskAdded { task ->
         flavor = task.name.substring("assemble".length(), task.name.indexOf("Release")).uncapitalize()
     if (task.name.startsWith("minify"))
         flavor = task.name.substring("minify".length(), task.name.indexOf("Release")).uncapitalize()
+    if (task.name.startsWith("sign"))
+        flavor = task.name.substring("sign".length(), task.name.indexOf("Release")).uncapitalize()
 
     if (flavor != "") {
-        tasks.create(renameTaskName, Copy) {
+        tasks.register(renameTaskName, Copy) {
+            dependsOn(task.name)
+            duplicatesStrategy DuplicatesStrategy.FAIL
             from file("${projectDir}/${flavor}/release/"),
-                    file("${buildDir}/outputs/mapping/${flavor}Release/"),
-                    file("${buildDir}/outputs/apk/${flavor}/release/"),
-                    file("${buildDir}/outputs/bundle/${flavor}Release/")
-            include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
+                    file("${projectDir}/build/outputs/apk/${flavor}/release/"),
+                    file("${projectDir}/build/outputs/mapping/${flavor}Release/"),
+                    file("${projectDir}/build/outputs/bundle/${flavor}Release/")
+            include "*-release.aab", "*-release.apk", "mapping.txt", "output-metadata.json"
             destinationDir file("${projectDir}/release/")
             rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'
         }
+
         task.finalizedBy(renameTaskName)
     }
 }

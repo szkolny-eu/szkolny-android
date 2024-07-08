@@ -1,10 +1,7 @@
-import json
 import os
 import re
 import sys
 from datetime import datetime, timedelta
-
-import requests
 
 from _utils import (
     get_commit_log,
@@ -25,17 +22,6 @@ if __name__ == "__main__":
         print("Missing GitHub environment variables.")
         exit(-1)
 
-    with requests.get(
-        f"https://api.github.com/repos/{repo}/actions/runs?per_page=5&status=success"
-    ) as r:
-        data = json.loads(r.text)
-        runs = [run for run in data["workflow_runs"] if run["head_sha"] == sha]
-        if runs:
-            print("::set-output name=hasNewChanges::false")
-            exit(0)
-
-    print("::set-output name=hasNewChanges::true")
-
     project_dir = get_project_dir()
 
     (version_code, version_name) = read_gradle_version(project_dir)
@@ -48,8 +34,8 @@ if __name__ == "__main__":
         date -= timedelta(days=1)
         version_name += "+nightly." + date.strftime("%Y%m%d")
 
-    print("::set-output name=appVersionName::" + version_name)
-    print("::set-output name=appVersionCode::" + str(version_code))
+    print("appVersionName=" + version_name)
+    print("appVersionCode=" + str(version_code))
 
     write_gradle_version(project_dir, version_code, version_name)
 

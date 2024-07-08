@@ -1,0 +1,15 @@
+name: Release
+on:
+  push:
+    tags: ["v*.*.*"]
+jobs:
+  build:
+    name: Build release (APK)
+    uses: szkolny-eu/szkolny-android/.github/workflows/_build.yml@develop
+    with:
+      build-apk: true
+      release-ssh: true
+      release-github: true
+      release-firebase: true
+      release-discord: true
+    secrets: inherit

@@ -1553,4 +1553,6 @@
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
     <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
     <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
+    <string name="login_type_demo">Użyj bez logowania</string>
+    <string name="login_mode_demo">Wersja demonstracyjna</string>
 </resources>
