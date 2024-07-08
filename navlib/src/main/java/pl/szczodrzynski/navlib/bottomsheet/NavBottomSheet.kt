@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -38,7 +39,8 @@ class NavBottomSheet @JvmOverloads constructor(
     private val list
         get() = b.bsList
 
-    private var bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
+    private val bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheet)
+    private val gestureDetector = GestureDetector(context, OnGestureListener())
 
     private val items = ArrayList<IBottomSheetItem<*>>()
     private val adapter = BottomSheetAdapter(items)
@@ -56,10 +58,6 @@ class NavBottomSheet @JvmOverloads constructor(
             // Return CONSUMED if you don't want want the window insets to keep being
             // passed down to descendant views.
             WindowInsetsCompat.CONSUMED
-        }
-
-        scrimView.setOnClickListener {
-            isOpen = false
         }
 
         var bottomSheetVisible = false
@@ -187,6 +185,8 @@ class NavBottomSheet @JvmOverloads constructor(
     }
 
     fun dispatchBottomSheetEvent(view: View, event: MotionEvent): Boolean {
+        if (view == scrimView)
+            gestureDetector.onTouchEvent(event)
         val location = IntArray(2)
         bottomSheet.getLocationOnScreen(location)
         event.setLocation(event.rawX - location[0], event.rawY - location[1])
@@ -214,5 +214,13 @@ class NavBottomSheet @JvmOverloads constructor(
 
     fun toggle() {
         isOpen = !isOpen
+    }
+
+
+    inner class OnGestureListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            isOpen = false
+            return super.onSingleTapUp(e)
+        }
     }
 }
