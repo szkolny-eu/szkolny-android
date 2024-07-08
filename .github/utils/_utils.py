@@ -102,7 +102,9 @@ def get_commit_log(project_dir: str, format: str, max_lines: int = None) -> str:
     )
 
     log = subprocess.run(
-        args=f"git log {last_tag}..HEAD --format=%an%x00%at%x00%h%x00%s%x00%D".split(" "),
+        args=f"git log {last_tag}..HEAD --format=%an%x00%at%x00%h%x00%s%x00%D".split(
+            " "
+        ),
         cwd=project_dir,
         stdout=subprocess.PIPE,
     )

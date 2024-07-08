@@ -23,8 +23,6 @@ def get_password(
         auth_plugin="mysql_native_password",
     )
 
-    print(f"Generating passwords for version {version_name} ({version_code})")
-
     password = base64.b64encode(secrets.token_bytes(16)).decode()
     iv = secrets.token_bytes(16)
 

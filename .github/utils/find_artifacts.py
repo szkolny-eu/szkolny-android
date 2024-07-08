@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     files = glob.glob(f"{project_dir}/app/release/*.*")
     for file in files:
-        file_relative = file.replace(os.getenv("GITHUB_WORKSPACE") + "/", "")
+        file_relative = file.replace(project_dir + "/", "")
         if "-aligned.apk" in file:
             os.unlink(file)
         elif "-signed.apk" in file:
@@ -22,5 +22,5 @@ if __name__ == "__main__":
                 os.unlink(new_file)
             os.rename(file, new_file)
         elif ".apk" in file or ".aab" in file:
-            print("::set-output name=signedReleaseFile::" + file)
-            print("::set-output name=signedReleaseFileRelative::" + file_relative)
+            print("signedReleaseFile=" + file)
+            print("signedReleaseFileRelative=" + file_relative)
