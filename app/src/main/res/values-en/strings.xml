@@ -1433,4 +1433,6 @@
     <string name="menu_agenda_config">Agenda settings</string>
     <string name="registration_config_note_sharing_title">Share notes</string>
     <string name="home_timetable_all_lessons">All lessons:</string>
+    <string name="login_type_demo">Use without login</string>
+    <string name="login_mode_demo">Demo version</string>
 </resources>

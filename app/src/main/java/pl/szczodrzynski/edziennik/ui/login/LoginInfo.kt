@@ -328,6 +328,21 @@ object LoginInfo {
                     ),
                 ),
             ),
+            Register(
+                loginType = LoginType.DEMO,
+                registerName = R.string.login_type_demo,
+                registerLogo = R.mipmap.ic_launcher,
+                loginModes = listOf(
+                    Mode(
+                        loginMode = LoginMode.DEMO,
+                        name = R.string.login_mode_demo,
+                        icon = R.mipmap.ic_launcher,
+                        guideText = R.string.login_mode_demo,
+                        credentials = listOf(),
+                        errorCodes = mapOf(),
+                    ),
+                ),
+            ),
         )
     }
 

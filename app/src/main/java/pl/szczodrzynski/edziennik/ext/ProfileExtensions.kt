@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
@@ -71,6 +72,8 @@ fun Profile.getAppData() =
     if (App.profileId == this.id) App.data else AppData.get(this.loginStoreType)
 
 fun Profile.shouldArchive(): Boolean {
+    if (loginStoreType == LoginType.DEMO)
+        return false
     // vulcan hotfix
     if (dateYearEnd.month > 6) {
         dateYearEnd.month = 6

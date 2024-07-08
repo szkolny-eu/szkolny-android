@@ -14,7 +14,7 @@ enum class LoginType(
     VULCAN(id = 4, features = FEATURES_VULCAN),
     PODLASIE(id = 6, features = FEATURES_PODLASIE),
     USOS(id = 7, features = FEATURES_USOS, schoolType = SchoolType.UNIVERSITY),
-    DEMO(id = 20, features = setOf()),
+    DEMO(id = 8, features = setOf()),
     TEMPLATE(id = 21, features = setOf()),
 
     // the graveyard
