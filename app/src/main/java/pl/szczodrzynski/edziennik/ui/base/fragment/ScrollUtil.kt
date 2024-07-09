@@ -8,6 +8,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.drawable.LayerDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
@@ -19,6 +20,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.setTintColor
 
 @SuppressLint("ClickableViewAccessibility")
 internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> Unit) {
@@ -119,8 +121,10 @@ internal class AppBarColorAnimator(
             currentValue,
         )
         for (bar in bars) {
-            (bar.background as? MaterialShapeDrawable)?.fillColor =
-                ColorStateList.valueOf(mixedColor)
+            when (val drawable = bar.background) {
+                is MaterialShapeDrawable -> drawable.fillColor = ColorStateList.valueOf(mixedColor)
+                is LayerDrawable -> drawable.getDrawable(0).setTintColor(mixedColor)
+            }
         }
     }
 }
