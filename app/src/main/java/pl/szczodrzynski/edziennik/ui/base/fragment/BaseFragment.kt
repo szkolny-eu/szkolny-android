@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.registerSafe
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
@@ -58,7 +60,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      * based on the value of the currently selected page.
      */
     internal var canRefreshDisabled = false
-        set(value) { // cannot be private - PagerFragment onPageScrollStateChanged
+        set(value) {
             field = value
             dispatchCanRefresh()
         }
@@ -174,6 +176,22 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      * If provided, a "mark as read" item is added to the bottom sheet.
      */
     open fun getMarkAsReadType(): MetadataType? = null
+
+    /**
+     * Called to retrieve the [FeatureType] this fragment is associated with.
+     * May also return arguments for the sync task.
+     *
+     * If not provided, swipe-to-refresh is disabled and the manual sync dialog
+     * selects all features by default.
+     *
+     * If [FeatureType] is null, all features are synced (and selected by the
+     * manual sync dialog).
+     *
+     * It is important to return the desired [FeatureType] from the first
+     * call of this method, which runs before [onViewReady]. Otherwise,
+     * swipe-to-refresh will not be enabled unless the view is scrolled.
+     */
+    open fun getSyncParams(): Pair<FeatureType?, JsonObject?>? = null
 
     /**
      * Called to retrieve any extra bottom sheet items that should be displayed.

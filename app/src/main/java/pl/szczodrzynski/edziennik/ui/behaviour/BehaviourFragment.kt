@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding
 import pl.szczodrzynski.edziennik.ext.resolveAttr
@@ -22,6 +23,7 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
 
     override fun getScrollingView() = b.noticesView
     override fun getMarkAsReadType() = MetadataType.NOTICE
+    override fun getSyncParams() = FeatureType.BEHAVIOUR to null
     
     private var displayMode = MODE_YEAR
     private var noticeList: List<NoticeFull>? = null

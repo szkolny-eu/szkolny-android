@@ -74,6 +74,7 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
     private var endHour = DEFAULT_END_HOUR
     private var firstEventMinute = 24 * 60
     private var paddingTop = 0
+    private var syncArgs = JsonObject()
 
     private var viewsRemoved = false
 
@@ -102,6 +103,7 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
     private val dayView by dayViewDelegate
 
     override fun getScrollingView() = b.scrollView
+    override fun getSyncParams() = FeatureType.TIMETABLE to syncArgs
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         this.inflater = AsyncLayoutInflater(requireContext())
@@ -109,6 +111,10 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
         startHour = arguments?.getInt("startHour") ?: DEFAULT_START_HOUR
         endHour = arguments?.getInt("endHour") ?: DEFAULT_END_HOUR
+
+        syncArgs = JsonObject(
+            "weekStart" to date.weekStart.stringY_m_d
+        )
 
         // observe lesson database
         app.db.timetableDao().getAllForDate(App.profileId, date).observe(this) { lessons ->

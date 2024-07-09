@@ -22,6 +22,8 @@ class TeachersListFragment : BaseFragment<TeachersListFragmentBinding, MainActiv
     inflater = TeachersListFragmentBinding::inflate,
 ) {
 
+    override fun getScrollingView() = b.list
+
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = TeachersAdapter(activity)
 

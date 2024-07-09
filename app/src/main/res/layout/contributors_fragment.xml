@@ -92,16 +92,10 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:background="?colorSurfaceContainerLow"
-                    android:foreground="@color/colorSurface_2dp"
-                    android:minHeight="?actionBarSize"
                     android:visibility="gone"
-                    app:tabIndicatorColor="?colorPrimary"
                     app:tabMode="auto"
-                    app:tabSelectedTextColor="?colorPrimary"
-                    app:tabTextColor="?android:textColorPrimary"
                     tools:visibility="visible" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

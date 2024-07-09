@@ -72,7 +72,7 @@ internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> 
 
 internal fun BaseFragment<*, *>.dispatchCanRefresh() {
     (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
-        !canRefreshDisabled && !isScrolled
+        !canRefreshDisabled && !isScrolled && getSyncParams() != null
 }
 
 internal class AppBarColorAnimator(

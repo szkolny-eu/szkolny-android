@@ -37,11 +37,15 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
      */
     protected open var savedPageSelection = -1
 
+    protected val currentFragment: BaseFragment<*, *>?
+        get() = fragmentCache[getViewPager().currentItem] as? BaseFragment<*, *>
+
     override fun getAppBars() = super.getAppBars() + listOf(
         getTabLayout(),
     )
 
     final override fun getScrollingView() = null
+    override fun getSyncParams() = currentFragment?.getSyncParams()
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (savedPageSelection == -1)
@@ -70,7 +74,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
                         return
                     }
                     // take child fragment's values
-                    val fragment = fragmentCache[it.currentItem] as? BaseFragment<*, *>
+                    val fragment = currentFragment
                     canRefreshDisabled = fragment?.canRefreshDisabled == true
                     isScrolled = fragment?.isScrolled == true
                 }

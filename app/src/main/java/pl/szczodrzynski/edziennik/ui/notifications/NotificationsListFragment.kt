@@ -27,6 +27,7 @@ class NotificationsListFragment : BaseFragment<NotificationsListFragmentBinding,
     inflater = NotificationsListFragmentBinding::inflate,
 ) {
 
+    override fun getScrollingView() = b.list
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_remove_notifications)
