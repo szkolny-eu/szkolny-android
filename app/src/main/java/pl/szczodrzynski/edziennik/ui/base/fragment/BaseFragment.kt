@@ -92,7 +92,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
-        setupCanRefresh()
+        setupScrollingView()
         (activity as? MainActivity)?.let(::setupMainActivity)
         (activity as? LoginActivity)?.let(::setupLoginActivity)
         // let the UI transition for a moment
