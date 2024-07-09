@@ -77,7 +77,7 @@ internal fun BaseFragment<*, *>.dispatchCanRefresh() {
 
 internal class AppBarColorAnimator(
     context: Context,
-    private val bars: List<View>,
+    private val bars: Set<View>,
 ) : ValueAnimator.AnimatorUpdateListener {
     companion object {
         // keep track of the current animation value applied globally to the view

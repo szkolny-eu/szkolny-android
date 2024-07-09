@@ -65,6 +65,12 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
             dispatchCanRefresh()
         }
 
+    /**
+     * A list of views (usually app bars) that should have their
+     * background color elevated when the fragment is scrolled.
+     */
+    internal var appBars = mutableSetOf<View>()
+
     private var job = Job()
     final override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -85,7 +91,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
             ?: return null
         isViewReady = false // reinitialize the view in onResume()
         inState = savedInstanceState // save the instance state for onResume()
-        appBarAnimator = AppBarColorAnimator(activity, getAppBars())
+        appBarAnimator = AppBarColorAnimator(activity, appBars)
         return b.root
     }
 
@@ -95,6 +101,10 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
+        // setup the activity (bottom sheet, FAB, etc.)
+        // run before setupScrollListener {} to populate appBars
+        (activity as? MainActivity)?.let(::setupMainActivity)
+        (activity as? LoginActivity)?.let(::setupLoginActivity)
         // listen to scroll state changes
         var first = true
         setupScrollListener {
@@ -102,9 +112,6 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
                 isScrolled = it
             first = false
         }
-        // setup the activity (bottom sheet, FAB, etc.)
-        (activity as? MainActivity)?.let(::setupMainActivity)
-        (activity as? LoginActivity)?.let(::setupLoginActivity)
         // let the UI transition for a moment
         startCoroutineTimer(100L) {
             if (!isAdded)
@@ -148,15 +155,6 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         parent: ViewGroup?,
         attachToParent: Boolean,
     ): B? = null
-
-    /**
-     * Called to retrieve the list of views (usually app bars)
-     * that should have their background color elevated when
-     * the fragment is scrolled.
-     */
-    open fun getAppBars(): List<View> = listOfNotNull(
-        (activity as? MainActivity)?.navView?.toolbar,
-    )
 
     /**
      * Called to retrieve the scrolling view contained in the fragment.

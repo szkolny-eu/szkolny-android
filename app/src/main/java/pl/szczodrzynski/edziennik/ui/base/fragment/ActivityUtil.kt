@@ -50,6 +50,8 @@ internal fun BaseFragment<*, *>.setupMainActivity(activity: MainActivity) {
             }
         }
     }
+
+    appBars += activity.navView.toolbar
 }
 
 internal fun BaseFragment<*, *>.setupLoginActivity(activity: LoginActivity) {}
