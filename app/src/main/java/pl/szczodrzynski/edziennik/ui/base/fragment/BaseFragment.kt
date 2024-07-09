@@ -40,27 +40,22 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
     private var inState: Bundle? = null
 
     /**
-     * Enables or disables the activity's SwipeRefreshLayout.
-     * Use only if [getRefreshScrollingView] is not used.
-     *
-     * The [PagerFragment] manages its [canRefresh] state
-     * based on the value of the currently selected page.
+     * Whether the view is currently being scrolled
+     * or is left scrolled away from the top.
      */
-    internal var canRefresh = false
-        set(value) {
-            field = value
-            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
-                !canRefreshDisabled && value
-        }
+    internal var isScrolled = false
+        private set
 
     /**
-     * Forcefully disables the activity's SwipeRefreshLayout
-     * if [getRefreshScrollingView] is used.
+     * Forcefully disables the activity's SwipeRefreshLayout.
+     *
+     * The [PagerFragment] manages its [canRefreshDisabled] state
+     * based on the value of the currently selected page.
      */
     internal var canRefreshDisabled = false
         set(value) {
             field = value
-            canRefresh = canRefresh
+            dispatchCanRefresh()
         }
 
     private var job = Job()
@@ -92,7 +87,10 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
-        setupScrollingView()
+        setupScrollingView {
+            isScrolled = it
+            dispatchCanRefresh()
+        }
         (activity as? MainActivity)?.let(::setupMainActivity)
         (activity as? LoginActivity)?.let(::setupLoginActivity)
         // let the UI transition for a moment

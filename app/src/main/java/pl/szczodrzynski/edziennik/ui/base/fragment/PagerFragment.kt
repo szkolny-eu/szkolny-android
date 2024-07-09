@@ -58,15 +58,12 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
             it.setCurrentItem(savedPageSelection, false)
             it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
-                    canRefresh = when (state) {
-                        ViewPager2.SCROLL_STATE_IDLE -> {
-                            val fragment =
-                                fragmentCache[it.currentItem] as? BaseFragment<*, *>
-                            fragment != null && !fragment.canRefreshDisabled && fragment.canRefresh
-                        }
-
-                        else -> false
-                    }
+                    val fragment =
+                        fragmentCache[it.currentItem] as? BaseFragment<*, *>
+                    canRefreshDisabled =
+                        state != ViewPager2.SCROLL_STATE_IDLE
+                        || fragment?.canRefreshDisabled == true
+                        || fragment?.isScrolled == true
                 }
 
                 override fun onPageSelected(position: Int) {
