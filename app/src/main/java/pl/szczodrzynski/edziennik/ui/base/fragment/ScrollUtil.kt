@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.base.fragment
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.MainActivity
 
 @SuppressLint("ClickableViewAccessibility")
-internal fun BaseFragment<*, *>.setupScrollingView(setIsScrolled: (Boolean) -> Unit) {
+internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> Unit) {
     when (val view = getRefreshScrollingView()) {
         is RecyclerView -> {
             setIsScrolled(view.canScrollVertically(-1))
@@ -52,4 +53,20 @@ internal fun BaseFragment<*, *>.setupScrollingView(setIsScrolled: (Boolean) -> U
 internal fun BaseFragment<*, *>.dispatchCanRefresh() {
     (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
         !canRefreshDisabled && !isScrolled
+}
+
+internal class AppBarColorAnimator(
+    private val bars: List<View>,
+) : ValueAnimator.AnimatorUpdateListener {
+
+    private var animator: ValueAnimator? = null
+
+    context(BaseFragment<*, *>)
+    fun dispatchLiftOnScroll() {
+
+    }
+
+    override fun onAnimationUpdate(animation: ValueAnimator) {
+
+    }
 }

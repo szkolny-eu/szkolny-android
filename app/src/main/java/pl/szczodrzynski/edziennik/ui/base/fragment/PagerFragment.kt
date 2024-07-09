@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.base.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -36,6 +37,10 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
      * to provide a one-time default.
      */
     protected open var savedPageSelection = -1
+
+    override fun getAppBars() = super.getAppBars() + listOf(
+        getTabLayout(),
+    )
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (savedPageSelection == -1)

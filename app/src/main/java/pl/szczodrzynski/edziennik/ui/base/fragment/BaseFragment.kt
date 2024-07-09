@@ -87,10 +87,15 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
-        setupScrollingView {
+        // create a value animator for the app bar color
+        val animator = AppBarColorAnimator(getAppBars())
+        // listen to scroll state changes
+        setupScrollListener {
             isScrolled = it
-            dispatchCanRefresh()
+            dispatchCanRefresh() // update swipe-to-refresh enabled state
+            animator.dispatchLiftOnScroll() // update app bar color
         }
+        // setup the activity (bottom sheet, FAB, etc.)
         (activity as? MainActivity)?.let(::setupMainActivity)
         (activity as? LoginActivity)?.let(::setupLoginActivity)
         // let the UI transition for a moment
@@ -136,6 +141,15 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         parent: ViewGroup?,
         attachToParent: Boolean,
     ): B? = null
+
+    /**
+     * Called to retrieve the list of views (usually app bars)
+     * that should have their background color elevated when
+     * the fragment is scrolled.
+     */
+    open fun getAppBars(): List<View> = listOfNotNull(
+        (activity as? MainActivity)?.navView?.toolbar,
+    )
 
     /**
      * Called to retrieve the scrolling view contained in the fragment.
