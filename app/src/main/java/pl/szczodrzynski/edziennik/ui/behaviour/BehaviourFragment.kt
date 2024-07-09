@@ -20,7 +20,7 @@ class BehaviourFragment : BaseFragment<FragmentBehaviourBinding, MainActivity>(
     inflater = FragmentBehaviourBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.noticesView
+    override fun getScrollingView() = b.noticesView
     override fun getMarkAsReadType() = MetadataType.NOTICE
     
     private var displayMode = MODE_YEAR

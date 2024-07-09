@@ -41,6 +41,8 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
         getTabLayout(),
     )
 
+    final override fun getScrollingView() = null
+
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (savedPageSelection == -1)
             savedPageSelection = savedInstanceState?.getInt("pageSelection") ?: 0

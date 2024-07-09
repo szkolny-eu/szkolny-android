@@ -29,7 +29,7 @@ class AttendanceListFragment : BaseFragment<AttendanceListFragmentBinding, MainA
     inflater = AttendanceListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
 
     private var viewType = AttendanceFragment.VIEW_DAYS
     private var expandSubjectId = 0L

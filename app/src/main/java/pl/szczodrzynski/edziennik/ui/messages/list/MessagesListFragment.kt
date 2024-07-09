@@ -27,7 +27,7 @@ class MessagesListFragment : BaseFragment<MessagesListFragmentBinding, MainActiv
     inflater = MessagesListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
 
     private lateinit var adapter: MessagesAdapter
     private val manager

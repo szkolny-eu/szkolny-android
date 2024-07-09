@@ -101,7 +101,7 @@ class TimetableDayFragment : BaseFragment<TimetableDayFragmentBinding, MainActiv
     }
     private val dayView by dayViewDelegate
 
-    override fun getRefreshScrollingView() = b.scrollView
+    override fun getScrollingView() = b.scrollView
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         this.inflater = AsyncLayoutInflater(requireContext())

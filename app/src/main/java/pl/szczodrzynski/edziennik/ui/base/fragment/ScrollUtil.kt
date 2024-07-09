@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.ext.resolveAttr
 
 @SuppressLint("ClickableViewAccessibility")
 internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> Unit) {
-    when (val view = getRefreshScrollingView()) {
+    when (val view = getScrollingView()) {
         is RecyclerView -> {
             setIsScrolled(view.canScrollVertically(-1))
             view.addOnScrollListener(object : RecyclerView.OnScrollListener() {

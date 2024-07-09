@@ -45,7 +45,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      * or is left scrolled away from the top.
      */
     internal var isScrolled = false
-        set(value) {
+        set(value) { // cannot be private - PagerFragment onPageScrollStateChanged
             field = value
             dispatchCanRefresh()
             appBarAnimator?.dispatchLiftOnScroll()
@@ -58,7 +58,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      * based on the value of the currently selected page.
      */
     internal var canRefreshDisabled = false
-        set(value) {
+        set(value) { // cannot be private - PagerFragment onPageScrollStateChanged
             field = value
             dispatchCanRefresh()
         }
@@ -158,9 +158,10 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     /**
      * Called to retrieve the scrolling view contained in the fragment.
-     * The scrolling view is configured to act nicely with the SwipeRefreshLayout.
+     * The scrolling view is configured to work nicely with the app bars
+     * and the SwipeRefreshLayout.
      */
-    open fun getRefreshScrollingView(): View? = null
+    open fun getScrollingView(): View? = null
 
     /**
      * Called to retrieve the FAB label resource and the icon.

@@ -20,7 +20,7 @@ class HomeworkListFragment : BaseFragment<HomeworkListFragmentBinding, MainActiv
     inflater = HomeworkListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
