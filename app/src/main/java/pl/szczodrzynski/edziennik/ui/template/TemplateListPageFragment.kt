@@ -18,7 +18,7 @@ class TemplateListPageFragment : BaseFragment<TemplateListPageFragmentBinding, M
     inflater = TemplateListPageFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val adapter = TemplateAdapter(activity)

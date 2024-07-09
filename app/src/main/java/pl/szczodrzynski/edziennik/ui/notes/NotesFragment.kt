@@ -24,6 +24,7 @@ class NotesFragment : BaseFragment<NotesFragmentBinding, MainActivity>(
     inflater = NotesFragmentBinding::inflate,
 ) {
 
+    override fun getScrollingView() = b.list
     override fun getFab() =
         R.string.notes_action_add to CommunityMaterial.Icon3.cmd_text_box_plus_outline
 

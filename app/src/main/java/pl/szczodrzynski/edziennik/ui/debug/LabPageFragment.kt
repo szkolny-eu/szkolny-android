@@ -39,7 +39,7 @@ class LabPageFragment : BaseFragment<LabFragmentBinding, AppCompatActivity>(
     inflater = LabFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.scrollView
+    override fun getScrollingView() = b.scrollView
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         b.app = app

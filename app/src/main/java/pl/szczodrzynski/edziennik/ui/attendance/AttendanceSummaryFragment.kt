@@ -43,7 +43,7 @@ class AttendanceSummaryFragment : BaseFragment<AttendanceSummaryFragmentBinding,
         private var periodSelection = 0
     }
 
-    override fun getRefreshScrollingView() = b.scrollView
+    override fun getScrollingView() = b.scrollView
 
     private val manager
         get() = app.attendanceManager

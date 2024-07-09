@@ -17,7 +17,7 @@ class LabPlaygroundFragment : BaseFragment<LabPlaygroundBinding, AppCompatActivi
     inflater = LabPlaygroundBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.root
+    override fun getScrollingView() = b.root
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         Timber.d("textColorSecondary: ${android.R.attr.textColorSecondary.resolveAttr(activity)}")

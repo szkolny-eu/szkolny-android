@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.core.manager.GradesManager
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
@@ -38,8 +39,9 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
     inflater = GradesListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
     override fun getMarkAsReadType() = MetadataType.GRADE
+    override fun getSyncParams() = FeatureType.GRADES to null
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_grades_config)

@@ -78,7 +78,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainActivity>(
         }
     }
 
-    override fun getRefreshScrollingView() = b.scrollView
+    override fun getScrollingView() = b.scrollView
+    override fun getSyncParams() = null to null
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_add_remove_cards)

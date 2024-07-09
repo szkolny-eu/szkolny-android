@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
@@ -45,6 +46,7 @@ class AgendaFragment : BaseFragment<ViewBinding, MainActivity>(
 
     override fun getFab() = R.string.add to CommunityMaterial.Icon3.cmd_plus
     override fun getMarkAsReadType() = MetadataType.EVENT
+    override fun getSyncParams() = FeatureType.AGENDA to null
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_add_event)
@@ -114,6 +116,7 @@ class AgendaFragment : BaseFragment<ViewBinding, MainActivity>(
     private suspend fun createDefaultAgendaView(b: FragmentAgendaDefaultBinding) {
         if (!isAdded)
             return
+        canRefreshDisabled = true
         checkEventTypes()
         delay(500)
 

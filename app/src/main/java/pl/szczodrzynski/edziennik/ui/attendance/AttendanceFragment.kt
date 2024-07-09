@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.attendance
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.BasePagerFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
@@ -32,6 +33,7 @@ class AttendanceFragment : PagerFragment<BasePagerFragmentBinding, MainActivity>
         }
 
     override fun getMarkAsReadType() = MetadataType.ATTENDANCE
+    override fun getSyncParams() = FeatureType.ATTENDANCE to null
     override fun getBottomSheetItems() = listOf(
         BottomSheetPrimaryItem(true)
             .withTitle(R.string.menu_attendance_config)

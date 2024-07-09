@@ -29,7 +29,7 @@ class LabProfileFragment : BaseFragment<TemplateListPageFragmentBinding, AppComp
         private const val TAG = "LabProfileFragment"
     }
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
 
     private lateinit var adapter: LabJsonAdapter
     private val loginStore by lazy {

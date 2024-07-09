@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.NavTarget
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
@@ -27,16 +28,24 @@ class MessagesListFragment : BaseFragment<MessagesListFragmentBinding, MainActiv
     inflater = MessagesListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
+    override fun getSyncParams() = when (messageType) {
+        Message.TYPE_RECEIVED -> FeatureType.MESSAGES_INBOX to null
+        Message.TYPE_SENT -> FeatureType.MESSAGES_SENT to null
+        else -> null
+    }
 
     private lateinit var adapter: MessagesAdapter
     private val manager
         get() = app.messageManager
     var teachers = listOf<Teacher>()
 
+    private val messageType by lazy {
+        arguments.getInt("messageType", Message.TYPE_RECEIVED)
+    }
+
     @SuppressLint("RestrictedApi")
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
-        val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
         var recyclerViewState =
             savedInstanceState?.getParcelable<LinearLayoutManager.SavedState>("recyclerViewState")
         val searchText = savedInstanceState?.getString("searchText")
@@ -74,9 +83,6 @@ class MessagesListFragment : BaseFragment<MessagesListFragmentBinding, MainActiv
                     }
                 }
             }
-
-            if (messageType != Message.TYPE_RECEIVED && messageType != Message.TYPE_SENT)
-                canRefreshDisabled = true
 
             // show/hide relevant views
             b.progressBar.isVisible = false

@@ -23,8 +23,8 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
     inflater: ((inflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean) -> B)?,
 ) : BaseFragment<B, A>(inflater) {
 
-    private lateinit var pages: List<Pair<Fragment, String>>
-    private val fragmentCache = mutableMapOf<Int, Fragment>()
+    private lateinit var pages: List<Pair<BaseFragment<*, *>, String>>
+    private val fragmentCache = mutableMapOf<Int, BaseFragment<*, *>>()
 
     /**
      * Stores the default page index that is activated when
@@ -37,6 +37,18 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
      */
     protected open var savedPageSelection = -1
 
+    protected val currentFragment: BaseFragment<*, *>?
+        get() = fragmentCache[getViewPager().currentItem]
+
+    final override fun getScrollingView() = null
+    override fun getSyncParams() = currentFragment?.getSyncParams()
+
+    override fun onResume() {
+        // add TabLayout before super's setupScrollListener {}
+        appBars += getTabLayout()
+        super.onResume()
+    }
+
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         if (savedPageSelection == -1)
             savedPageSelection = savedInstanceState?.getInt("pageSelection") ?: 0
@@ -47,6 +59,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
             override fun getItemCount() = getPageCount()
             override fun createFragment(position: Int): Fragment {
                 val fragment = getPageFragment(position)
+                fragment.appBars += getTabLayout()
                 fragmentCache[position] = fragment
                 return fragment
             }
@@ -58,15 +71,15 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
             it.setCurrentItem(savedPageSelection, false)
             it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
-                    canRefresh = when (state) {
-                        ViewPager2.SCROLL_STATE_IDLE -> {
-                            val fragment =
-                                fragmentCache[it.currentItem] as? BaseFragment<*, *>
-                            fragment != null && !fragment.canRefreshDisabled && fragment.canRefresh
-                        }
-
-                        else -> false
+                    if (state != ViewPager2.SCROLL_STATE_IDLE) {
+                        // disable swipe-to-refresh during scrolling
+                        canRefreshDisabled = true
+                        return
                     }
+                    // take child fragment's values
+                    val fragment = currentFragment
+                    canRefreshDisabled = fragment?.canRefreshDisabled == true
+                    isScrolled = fragment?.isScrolled == true
                 }
 
                 override fun onPageSelected(position: Int) {
@@ -125,7 +138,7 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
      * Only used with the default implementation of [getPageCount], [getPageFragment]
      * and [getPageTitle].
      */
-    open suspend fun onCreatePages() = listOf<Pair<Fragment, String>>()
+    open suspend fun onCreatePages() = listOf<Pair<BaseFragment<*, *>, String>>()
 
     open fun getPageCount() = pages.size
     open fun getPageFragment(position: Int) = pages[position].first

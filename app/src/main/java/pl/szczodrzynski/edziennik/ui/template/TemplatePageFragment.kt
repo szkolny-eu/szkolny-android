@@ -18,11 +18,11 @@ class TemplatePageFragment : BaseFragment<TemplatePageFragmentBinding, MainActiv
         b.text.text = "Fragment VIEW READY"
         b.editText.setText(savedInstanceState.getString("editText", "default"))
 
-        canRefresh = true
+        canRefreshDisabled = false
         b.button.addOnCheckedChangeListener { button, isChecked ->
-            canRefresh = isChecked
+            canRefreshDisabled = !isChecked
         }
-        b.button.isChecked = canRefresh
+        b.button.isChecked = !canRefreshDisabled
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

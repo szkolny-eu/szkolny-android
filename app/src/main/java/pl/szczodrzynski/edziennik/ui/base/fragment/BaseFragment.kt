@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.registerSafe
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
@@ -38,30 +40,36 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     private var isViewReady: Boolean = false
     private var inState: Bundle? = null
+    private var appBarAnimator: AppBarColorAnimator? = null
 
     /**
-     * Enables or disables the activity's SwipeRefreshLayout.
-     * Use only if [getRefreshScrollingView] is not used.
-     *
-     * The [PagerFragment] manages its [canRefresh] state
-     * based on the value of the currently selected page.
+     * Whether the view is currently being scrolled
+     * or is left scrolled away from the top.
      */
-    internal var canRefresh = false
-        set(value) {
+    internal var isScrolled = false
+        set(value) { // cannot be private - PagerFragment onPageScrollStateChanged
             field = value
-            (activity as? MainActivity)?.swipeRefreshLayout?.isEnabled =
-                !canRefreshDisabled && value
+            dispatchCanRefresh()
+            appBarAnimator?.dispatchLiftOnScroll()
         }
 
     /**
-     * Forcefully disables the activity's SwipeRefreshLayout
-     * if [getRefreshScrollingView] is used.
+     * Forcefully disables the activity's SwipeRefreshLayout.
+     *
+     * The [PagerFragment] manages its [canRefreshDisabled] state
+     * based on the value of the currently selected page.
      */
     internal var canRefreshDisabled = false
         set(value) {
             field = value
-            canRefresh = canRefresh
+            dispatchCanRefresh()
         }
+
+    /**
+     * A list of views (usually app bars) that should have their
+     * background color elevated when the fragment is scrolled.
+     */
+    internal var appBars = mutableSetOf<View>()
 
     private var job = Job()
     final override val coroutineContext: CoroutineContext
@@ -83,6 +91,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
             ?: return null
         isViewReady = false // reinitialize the view in onResume()
         inState = savedInstanceState // save the instance state for onResume()
+        appBarAnimator = AppBarColorAnimator(activity, appBars)
         return b.root
     }
 
@@ -92,9 +101,17 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
-        setupCanRefresh()
+        // setup the activity (bottom sheet, FAB, etc.)
+        // run before setupScrollListener {} to populate appBars
         (activity as? MainActivity)?.let(::setupMainActivity)
         (activity as? LoginActivity)?.let(::setupLoginActivity)
+        // listen to scroll state changes
+        var first = true
+        setupScrollListener {
+            if (isScrolled != it || first)
+                isScrolled = it
+            first = false
+        }
         // let the UI transition for a moment
         startCoroutineTimer(100L) {
             if (!isAdded)
@@ -141,9 +158,10 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     /**
      * Called to retrieve the scrolling view contained in the fragment.
-     * The scrolling view is configured to act nicely with the SwipeRefreshLayout.
+     * The scrolling view is configured to work nicely with the app bars
+     * and the SwipeRefreshLayout.
      */
-    open fun getRefreshScrollingView(): View? = null
+    open fun getScrollingView(): View? = null
 
     /**
      * Called to retrieve the FAB label resource and the icon.
@@ -156,6 +174,22 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
      * If provided, a "mark as read" item is added to the bottom sheet.
      */
     open fun getMarkAsReadType(): MetadataType? = null
+
+    /**
+     * Called to retrieve the [FeatureType] this fragment is associated with.
+     * May also return arguments for the sync task.
+     *
+     * If not provided, swipe-to-refresh is disabled and the manual sync dialog
+     * selects all features by default.
+     *
+     * If [FeatureType] is null, all features are synced (and selected by the
+     * manual sync dialog).
+     *
+     * It is important to return the desired [FeatureType] from the first
+     * call of this method, which runs before [onViewReady]. Otherwise,
+     * swipe-to-refresh will not be enabled unless the view is scrolled.
+     */
+    open fun getSyncParams(): Pair<FeatureType?, JsonObject?>? = null
 
     /**
      * Called to retrieve any extra bottom sheet items that should be displayed.

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.HomeworkListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ui.base.fragment.BaseFragment
@@ -20,7 +21,8 @@ class HomeworkListFragment : BaseFragment<HomeworkListFragmentBinding, MainActiv
     inflater = HomeworkListFragmentBinding::inflate,
 ) {
 
-    override fun getRefreshScrollingView() = b.list
+    override fun getScrollingView() = b.list
+    override fun getSyncParams() = FeatureType.HOMEWORK to null
 
     override suspend fun onViewReady(savedInstanceState: Bundle?) {
         val homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
