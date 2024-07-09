@@ -31,6 +31,11 @@ internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> 
                     else if (newState == RecyclerView.SCROLL_STATE_IDLE)
                         setIsScrolled(false)
                 }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (recyclerView.canScrollVertically(-1))
+                        setIsScrolled(true)
+                }
             })
         }
 
