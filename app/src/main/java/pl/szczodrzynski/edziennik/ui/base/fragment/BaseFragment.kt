@@ -38,13 +38,18 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
 
     private var isViewReady: Boolean = false
     private var inState: Bundle? = null
+    private var appBarAnimator: AppBarColorAnimator? = null
 
     /**
      * Whether the view is currently being scrolled
      * or is left scrolled away from the top.
      */
     internal var isScrolled = false
-        private set
+        set(value) {
+            field = value
+            dispatchCanRefresh()
+            appBarAnimator?.dispatchLiftOnScroll()
+        }
 
     /**
      * Forcefully disables the activity's SwipeRefreshLayout.
@@ -78,6 +83,7 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
             ?: return null
         isViewReady = false // reinitialize the view in onResume()
         inState = savedInstanceState // save the instance state for onResume()
+        appBarAnimator = AppBarColorAnimator(activity, getAppBars())
         return b.root
     }
 
@@ -87,13 +93,12 @@ abstract class BaseFragment<B : ViewBinding, A : AppCompatActivity>(
         if (!isAdded || isViewReady)
             return
         isViewReady = true
-        // create a value animator for the app bar color
-        val animator = AppBarColorAnimator(getAppBars())
         // listen to scroll state changes
+        var first = true
         setupScrollListener {
-            isScrolled = it
-            dispatchCanRefresh() // update swipe-to-refresh enabled state
-            animator.dispatchLiftOnScroll() // update app bar color
+            if (isScrolled != it || first)
+                isScrolled = it
+            first = false
         }
         // setup the activity (bottom sheet, FAB, etc.)
         (activity as? MainActivity)?.let(::setupMainActivity)

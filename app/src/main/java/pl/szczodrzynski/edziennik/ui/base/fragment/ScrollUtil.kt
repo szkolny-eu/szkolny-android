@@ -6,10 +6,18 @@ package pl.szczodrzynski.edziennik.ui.base.fragment
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.ColorStateList
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.motion.MotionUtils
+import com.google.android.material.shape.MaterialShapeDrawable
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 
 @SuppressLint("ClickableViewAccessibility")
 internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> Unit) {
@@ -56,17 +64,51 @@ internal fun BaseFragment<*, *>.dispatchCanRefresh() {
 }
 
 internal class AppBarColorAnimator(
+    context: Context,
     private val bars: List<View>,
 ) : ValueAnimator.AnimatorUpdateListener {
+    companion object {
+        // keep track of the current animation value applied globally to the view
+        private var currentValue = 0.0f
+    }
 
-    private var animator: ValueAnimator? = null
+    private lateinit var animator: ValueAnimator
+
+    private val barColor = R.attr.colorSurface.resolveAttr(context)
+    private val liftColor = R.attr.colorSurfaceContainer.resolveAttr(context)
 
     context(BaseFragment<*, *>)
     fun dispatchLiftOnScroll() {
-
+        if (::animator.isInitialized)
+            animator.cancel()
+        animator = ValueAnimator.ofFloat(
+            currentValue,
+            if (isScrolled) 1.0f else 0.0f,
+        )
+        animator.duration = MotionUtils.resolveThemeDuration(
+            activity,
+            R.attr.motionDurationMedium2,
+            resources.getInteger(R.integer.app_bar_elevation_anim_duration),
+        ).toLong()
+        animator.interpolator = MotionUtils.resolveThemeInterpolator(
+            activity,
+            R.attr.motionEasingStandardInterpolator,
+            LinearInterpolator(),
+        )
+        animator.addUpdateListener(this)
+        animator.start()
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
-
+        currentValue = animation.animatedValue as Float
+        val mixedColor = MaterialColors.layer(
+            barColor,
+            liftColor,
+            currentValue,
+        )
+        for (bar in bars) {
+            (bar.background as? MaterialShapeDrawable)?.fillColor =
+                ColorStateList.valueOf(mixedColor)
+        }
     }
 }

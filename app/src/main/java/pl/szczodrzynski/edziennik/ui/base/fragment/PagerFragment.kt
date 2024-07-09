@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.base.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -63,12 +62,15 @@ abstract class PagerFragment<B : ViewBinding, A : AppCompatActivity>(
             it.setCurrentItem(savedPageSelection, false)
             it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
-                    val fragment =
-                        fragmentCache[it.currentItem] as? BaseFragment<*, *>
-                    canRefreshDisabled =
-                        state != ViewPager2.SCROLL_STATE_IDLE
-                        || fragment?.canRefreshDisabled == true
-                        || fragment?.isScrolled == true
+                    if (state != ViewPager2.SCROLL_STATE_IDLE) {
+                        // disable swipe-to-refresh during scrolling
+                        canRefreshDisabled = true
+                        return
+                    }
+                    // take child fragment's values
+                    val fragment = fragmentCache[it.currentItem] as? BaseFragment<*, *>
+                    canRefreshDisabled = fragment?.canRefreshDisabled == true
+                    isScrolled = fragment?.isScrolled == true
                 }
 
                 override fun onPageSelected(position: Int) {
