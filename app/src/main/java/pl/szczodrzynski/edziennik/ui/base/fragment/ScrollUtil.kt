@@ -11,6 +11,7 @@ import android.content.res.ColorStateList
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.motion.MotionUtils
@@ -26,14 +27,14 @@ internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> 
             setIsScrolled(view.canScrollVertically(-1))
             view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (recyclerView.canScrollVertically(-1))
+                    if (view.canScrollVertically(-1))
                         setIsScrolled(true)
                     else if (newState == RecyclerView.SCROLL_STATE_IDLE)
                         setIsScrolled(false)
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (recyclerView.canScrollVertically(-1))
+                    if (view.canScrollVertically(-1))
                         setIsScrolled(true)
                 }
             })
@@ -54,9 +55,15 @@ internal fun BaseFragment<*, *>.setupScrollListener(setIsScrolled: (Boolean) -> 
                     setIsScrolled(false)
                 false
             }
+            (view as? NestedScrollView)?.setOnScrollChangeListener(
+                NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
+                    if (!isTouched && !view.canScrollVertically(-1))
+                        setIsScrolled(false)
+                }
+            )
         }
 
-        else -> {
+        else -> { // null
             // dispatch the default value to the activity
             setIsScrolled(false)
         }
