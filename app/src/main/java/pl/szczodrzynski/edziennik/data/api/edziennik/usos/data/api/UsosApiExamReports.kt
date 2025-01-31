@@ -33,6 +33,8 @@ class UsosApiExamReports(
         const val TAG = "UsosApiExamReports"
     }
 
+    private val missingTermNames = mutableSetOf<String>()
+
     init {
         apiRequest<JsonObject>(
             tag = TAG,
@@ -64,12 +66,16 @@ class UsosApiExamReports(
 
             data.toRemove.add(DataRemoveModel.Grades.all())
             data.setSyncNext(ENDPOINT_USOS_API_EXAM_REPORTS, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_USOS_API_EXAM_REPORTS)
+
+            if (missingTermNames.isEmpty())
+                onSuccess(ENDPOINT_USOS_API_EXAM_REPORTS)
+            else
+                UsosApiTerms(data, lastSync, onSuccess, missingTermNames)
         }
     }
 
     private fun processResponse(json: JsonObject): Boolean {
-        for ((_, courseEditionEl) in json.entrySet()) {
+        for ((termId, courseEditionEl) in json.entrySet()) {
             if (!courseEditionEl.isJsonObject)
                 continue
             for ((courseId, examReportsEl) in courseEditionEl.asJsonObject.entrySet()) {
@@ -79,14 +85,14 @@ class UsosApiExamReports(
                     if (!examReportEl.isJsonObject)
                         continue
                     val examReport = examReportEl.asJsonObject
-                    processExamReport(courseId, examReport)
+                    processExamReport(termId, courseId, examReport)
                 }
             }
         }
         return true
     }
 
-    private fun processExamReport(courseId: String, examReport: JsonObject) {
+    private fun processExamReport(termId: String, courseId: String, examReport: JsonObject) {
         val typeDescription = examReport.getLangString("type_description")
         val courseUnit = examReport.getJsonObject("course_unit")
             ?: return
@@ -119,6 +125,10 @@ class UsosApiExamReports(
             val classType = gradeCategory?.columns?.get(0)
             val value = valueSymbol.toFloatOrNull() ?: 0.0f
 
+            if (termId !in data.termNames) {
+                missingTermNames.add(termId)
+            }
+
             val gradeObject = Grade(
                 profileId = profileId,
                 id = examId * 10L + sessionNumber,
@@ -127,7 +137,7 @@ class UsosApiExamReports(
                 value = value,
                 weight = if (countsIntoAverage == "T") gradeCategory?.weight ?: 0.0f else 0.0f,
                 color = (if (passes == true) 0xFF465FB3 else 0xFFB71C1C).toInt(),
-                category = typeDescription,
+                category = "$termId$$typeDescription",
                 description = listOfNotNull(classType, sessionDescription).join(" - "),
                 comment = comment,
                 semester = 1,

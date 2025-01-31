@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos
 
+import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
@@ -73,4 +74,9 @@ class DataUsos(
         get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
         set(value) { profile["studentId"] = value; mStudentId = value }
     private var mStudentId: Int? = null
+
+    var termNames: Map<String, String> = mapOf()
+        get() { mTermNames = mTermNames ?: profile?.getStudentData("termNames", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mTermNames ?: mapOf() }
+        set(value) { profile["termNames"] = app.gson.toJson(value); mTermNames = value }
+    private var mTermNames: Map<String, String>? = null
 }
