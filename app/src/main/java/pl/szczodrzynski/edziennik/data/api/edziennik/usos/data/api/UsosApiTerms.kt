@@ -35,24 +35,38 @@ class UsosApiTerms(
                 return@apiRequest
             }
 
-            data.setSyncNext(ENDPOINT_USOS_API_TERMS, 7 * DAY)
+            data.setSyncNext(ENDPOINT_USOS_API_TERMS, 2 * DAY)
             onSuccess(ENDPOINT_USOS_API_TERMS)
         }
     }
 
     private fun processResponse(json: JsonArray): Boolean {
+        val profile = profile ?: return false
         val today = Date.getToday()
         for (term in json.asJsonObjectList()) {
             if (!term.getBoolean("is_active", false))
                 continue
             val startDate = term.getString("start_date")?.let { Date.fromY_m_d(it) } ?: continue
             val finishDate = term.getString("finish_date")?.let { Date.fromY_m_d(it) } ?: continue
-            if (today in startDate..finishDate) {
-                profile?.studentSchoolYearStart = startDate.year
-                profile?.dateSemester1Start = startDate
-                profile?.dateSemester2Start = finishDate
-            }
+            if (today !in startDate..finishDate)
+                continue
+
+            if (startDate.month >= 8)
+                profile.dateSemester1Start = startDate
+            else
+                profile.dateSemester2Start = startDate
+
+            if (finishDate.month >= 8)
+                profile.dateYearEnd = finishDate
+            else
+                profile.dateSemester2Start = finishDate
         }
+        // update school year start
+        profile.studentSchoolYearStart = profile.dateSemester1Start.year
+        // update year end date if there is a new year
+        if (profile.dateYearEnd <= profile.dateSemester1Start)
+            profile.dateYearEnd =
+                profile.dateSemester1Start.clone().setYear(profile.dateSemester1Start.year + 1)
         return true
     }
 }
