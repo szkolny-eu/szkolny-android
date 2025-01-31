@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.enums.SchoolType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.get
@@ -158,6 +159,19 @@ class GradesManager(val app: App) : CoroutineScope {
                     }
                 }
             type == TYPE_NORMAL && defColor -> grade.color and 0xffffff
+            type == TYPE_NORMAL && app.profile.loginStoreType.schoolType == SchoolType.UNIVERSITY -> {
+                when (grade.name.lowercase()) {
+                    "zal" -> 0x4caf50
+                    "nb", "nk" -> 0xff7043
+                    "2.0", "nzal" -> 0xff3d00
+                    "3.0" -> 0xffff00
+                    "3.5" -> 0xc6ff00
+                    "4.0" -> 0x76ff03
+                    "4.5" -> 0x64dd17
+                    "5.0" -> 0x00c853
+                    else -> grade.color and 0xffffff
+                }
+            }
             type in TYPE_NORMAL..TYPE_YEAR_FINAL -> {
                 when (grade.name.lowercase()) {
                     "+", "++", "+++" -> 0x4caf50
