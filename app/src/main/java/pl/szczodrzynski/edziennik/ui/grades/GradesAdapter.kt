@@ -134,6 +134,7 @@ class GradesAdapter(
         if (model.state == STATE_CLOSED) {
 
             val subItems = when {
+                model is GradesSubject && manager.isUniversity -> listOf()
                 model is GradesSemester && model.grades.isEmpty() ->
                     listOf(GradesEmpty())
                 model is GradesSemester && manager.hideImproved ->
@@ -147,10 +148,12 @@ class GradesAdapter(
                 if (notifyAdapter) notifyItemInserted(position)
             }
 
-            position++
             model.state = STATE_OPENED
-            items.addAll(position, subItems.filterNotNull())
-            if (notifyAdapter) notifyItemRangeInserted(position, subItems.size)
+            if (subItems.isNotEmpty()) {
+                position++
+                items.addAll(position, subItems.filterNotNull())
+                if (notifyAdapter) notifyItemRangeInserted(position, subItems.size)
+            }
 
             if (model is GradesSubject) {
                 // auto expand first semester

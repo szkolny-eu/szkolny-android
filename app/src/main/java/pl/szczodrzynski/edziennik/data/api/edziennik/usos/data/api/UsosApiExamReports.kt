@@ -153,7 +153,9 @@ class UsosApiExamReports(
             if (sessionNumber > 1) {
                 val origId = examId * 10L + sessionNumber - 1
                 val grades = data.gradeList.filter { it.id == origId }
-                grades.firstOrNull()?.parentId = gradeObject.id
+                val improvedGrade = grades.firstOrNull()
+                improvedGrade?.parentId = gradeObject.id
+                improvedGrade?.weight = 0.0f
                 gradeObject.isImprovement = true
             }
 

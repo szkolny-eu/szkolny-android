@@ -258,7 +258,39 @@ class GradesListFragment : Fragment(), CoroutineScope {
             subject.lastAddedDate = max(subject.lastAddedDate, grade.addedDate)
         }
 
+        when (manager.orderBy) {
+            GradesManager.ORDER_BY_DATE_DESC -> items.sortByDescending { it.lastAddedDate }
+            GradesManager.ORDER_BY_DATE_ASC -> items.sortBy { it.lastAddedDate }
+        }
+
         val stats = GradesStats()
+
+        if (manager.isUniversity) {
+            val semesterSum = mutableListOf<Float>()
+            val semesterCount = mutableListOf<Float>()
+            val totalSum = mutableListOf<Float>()
+            val totalCount = mutableListOf<Float>()
+            val ectsPoints = mutableMapOf<Long, Float>()
+            for (grade in grades) {
+                if (grade.value == 0.0f || grade.weight == 0.0f)
+                    continue
+                totalSum.add(grade.value * grade.weight)
+                totalCount.add(grade.weight)
+                if (grade.value < 3.0)
+                    // exam not passed, reset points for this subject
+                    ectsPoints[grade.subjectId] = 0.0f
+                else if (grade.subjectId !in ectsPoints)
+                    // no points for this subject, simply assign
+                    ectsPoints[grade.subjectId] = grade.weight
+
+                semesterSum.add(grade.value * grade.weight)
+                semesterCount.add(grade.weight)
+            }
+            stats.universitySem = semesterSum.sum() / semesterCount.sum()
+            stats.universityTotal = totalSum.sum() / totalCount.sum()
+            stats.universityEcts = ectsPoints.values.sum()
+            return (items + stats).toMutableList()
+        }
 
         val sem1Expected = mutableListOf<Float>()
         val sem2Expected = mutableListOf<Float>()
@@ -329,11 +361,6 @@ class GradesListFragment : Fragment(), CoroutineScope {
         stats.pointSem1 = sem1Point.averageOrNull()?.toFloat() ?: 0f
         stats.pointSem2 = sem2Point.averageOrNull()?.toFloat() ?: 0f
         stats.pointYearly = yearlyPoint.averageOrNull()?.toFloat() ?: 0f
-
-        when (manager.orderBy) {
-            GradesManager.ORDER_BY_DATE_DESC -> items.sortByDescending { it.lastAddedDate }
-            GradesManager.ORDER_BY_DATE_ASC -> items.sortBy { it.lastAddedDate }
-        }
 
         return (items + stats).toMutableList()
     }

@@ -70,6 +70,8 @@ class GradesManager(val app: App) : CoroutineScope {
         get() = app.profile.config.grades.hideImproved
     val averageWithoutWeight
         get() = app.profile.config.grades.averageWithoutWeight
+    val isUniversity
+        get() = app.profile.loginStoreType.schoolType == SchoolType.UNIVERSITY
 
 
     fun getOrderByString() = when (orderBy) {
