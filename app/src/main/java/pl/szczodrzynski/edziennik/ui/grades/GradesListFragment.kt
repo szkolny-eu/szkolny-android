@@ -18,6 +18,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
@@ -305,18 +306,24 @@ class GradesListFragment : Fragment(), CoroutineScope {
             val semesterCount = mutableListOf<Float>()
             val totalSum = mutableListOf<Float>()
             val totalCount = mutableListOf<Float>()
-            val ectsPoints = mutableMapOf<Long, Float>()
+            val ectsPoints = mutableMapOf<Pair<Long, String?>, Float>()
             for (grade in grades) {
+                val pointsPair = grade.subjectId to grade.comment
+                if (grade.type == TYPE_NO_GRADE)
+                    // reset points if there's an exam that isn't passed yet
+                    ectsPoints[pointsPair] = 0.0f
+
                 if (grade.value == 0.0f || grade.weight == 0.0f)
                     continue
                 totalSum.add(grade.value * grade.weight)
                 totalCount.add(grade.weight)
+
                 if (grade.value < 3.0)
                     // exam not passed, reset points for this subject
-                    ectsPoints[grade.subjectId] = 0.0f
-                else if (grade.subjectId !in ectsPoints)
+                    ectsPoints[pointsPair] = 0.0f
+                else if (pointsPair !in ectsPoints)
                     // no points for this subject, simply assign
-                    ectsPoints[grade.subjectId] = grade.weight
+                    ectsPoints[pointsPair] = grade.weight
 
                 if (filterTermId != null && grade.comment != filterTermId)
                     continue

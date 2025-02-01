@@ -500,6 +500,7 @@
     <string name="grades_value_format">wartość: %s</string>
     <string name="grades_weight_format">waga %s</string>
     <string name="grades_weight_not_counted">nie liczona do śr.</string>
+    <string name="grades_weight_no_grade">brak oceny</string>
     <string name="grades_year_average_format">koniec roku: %s</string>
     <string name="grades_year_average_percent_format">koniec roku: %s%%</string>
     <string name="grades_year_average_point_format">koniec roku: %spkt</string>

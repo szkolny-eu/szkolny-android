@@ -16,6 +16,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
@@ -235,10 +236,13 @@ class GradesAdapter(
             }
         }
 
-        if (item !is GradeFull || onGradeClick != null)
+        if (item !is GradeFull || (onGradeClick != null && item.type != TYPE_NO_GRADE)) {
             holder.itemView.setOnClickListener(onClickListener)
-        else
+            holder.itemView.isEnabled = true
+        } else {
             holder.itemView.setOnClickListener(null)
+            holder.itemView.isEnabled = false
+        }
     }
 
     fun notifyItemChanged(model: Any) {

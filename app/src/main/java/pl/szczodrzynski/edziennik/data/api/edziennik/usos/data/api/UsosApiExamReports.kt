@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
@@ -40,13 +41,13 @@ class UsosApiExamReports(
             tag = TAG,
             service = "examrep/user2",
             fields = listOf(
+                "id",
                 "type_description",
                 "course_unit" to listOf("id", "course_name"),
                 "sessions" to listOf(
+                    "number",
                     "description",
                     "issuer_grades" to listOf(
-                        "exam_id",
-                        "exam_session_number",
                         "value_symbol",
                         // "value_description",
                         "passes",
@@ -93,6 +94,8 @@ class UsosApiExamReports(
     }
 
     private fun processExamReport(termId: String, courseId: String, examReport: JsonObject) {
+        val examId = examReport.getString("id")?.toIntOrNull()
+            ?: return
         val typeDescription = examReport.getLangString("type_description")
         val courseUnit = examReport.getJsonObject("course_unit")
             ?: return
@@ -103,16 +106,26 @@ class UsosApiExamReports(
         val sessions = examReport.getJsonArray("sessions")
             ?: return
 
+        val gradeCategory = data.gradeCategories[courseUnitId]
+        val classType = gradeCategory?.columns?.get(0)
+
+        val subject = data.getSubject(
+            id = null,
+            name = courseName,
+            shortName = courseId,
+        )
+
+        var hasGrade = false
+
         for (sessionEl in sessions) {
             if (!sessionEl.isJsonObject)
                 continue
             val session = sessionEl.asJsonObject
 
+            val sessionNumber = session.getInt("number") ?: continue
             val sessionDescription = session.getLangString("description")
-            val issuerGrade = session.getJsonObject("issuer_grades") ?: continue
+            val issuerGrade = session.getJsonObject("issuer_grades")
 
-            val examId = issuerGrade.getInt("exam_id") ?: continue
-            val sessionNumber = issuerGrade.getInt("exam_session_number") ?: continue
             val valueSymbol = issuerGrade.getString("value_symbol") ?: continue
             val passes = issuerGrade.getBoolean("passes")
             val countsIntoAverage = issuerGrade.getString("counts_into_average") ?: "T"
@@ -121,8 +134,6 @@ class UsosApiExamReports(
                 ?.getLong("id") ?: -1L
             val comment = issuerGrade.getString("comment")
 
-            val gradeCategory = data.gradeCategories[courseUnitId]
-            val classType = gradeCategory?.columns?.get(0)
             val value = valueSymbol.toFloatOrNull() ?: 0.0f
 
             if (termId !in data.termNames) {
@@ -142,13 +153,10 @@ class UsosApiExamReports(
                 comment = termId,
                 semester = 1,
                 teacherId = modificationAuthorId,
-                subjectId = data.getSubject(
-                    id = null,
-                    name = courseName,
-                    shortName = courseId,
-                ).id,
+                subjectId = subject.id,
                 addedDate = Date.fromIso(dateModified),
             )
+            hasGrade = true
 
             if (sessionNumber > 1) {
                 val origId = examId * 10L + sessionNumber - 1
@@ -167,6 +175,36 @@ class UsosApiExamReports(
                     gradeObject.id,
                     profile?.empty ?: false,
                     profile?.empty ?: false,
+                )
+            )
+        }
+
+        if (!hasGrade) {
+            // add an "empty" grade for the exam
+            val gradeObject = Grade(
+                profileId = profileId,
+                id = examId * 10L,
+                name = "...",
+                type = TYPE_NO_GRADE,
+                value = 0.0f,
+                weight = 0.0f,
+                color = 0xFFBABABD.toInt(),
+                category = typeDescription,
+                description = classType,
+                comment = termId,
+                semester = 1,
+                teacherId = -1L,
+                subjectId = subject.id,
+                addedDate = 0,
+            )
+            data.gradeList.add(gradeObject)
+            data.metadataList.add(
+                Metadata(
+                    profileId,
+                    MetadataType.GRADE,
+                    gradeObject.id,
+                    true,
+                    true,
                 )
             )
         }

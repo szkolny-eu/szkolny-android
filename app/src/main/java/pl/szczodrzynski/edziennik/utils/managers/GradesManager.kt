@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
@@ -90,6 +91,7 @@ class GradesManager(val app: App) : CoroutineScope {
             else
                 context.getString(R.string.grades_weight_format, format.format(grade.weight))
         TYPE_POINT_AVG -> context.getString(R.string.grades_max_points_format, format.format(grade.valueMax))
+        TYPE_NO_GRADE -> context.getString(R.string.grades_weight_no_grade)
         else -> null
     }
 
