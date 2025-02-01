@@ -445,6 +445,8 @@
     <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
     <string name="grades_config_dont_count_placeholder">Podaj oceny…</string>
     <string name="grades_config_dont_show_improved">Ukrywaj oceny poprawione z listy</string>
+    <string name="grades_config_ects_in_progress">Licz ECTS przed zaliczeniem całego przedmiotu</string>
+    <string name="grades_config_hide_no_grade">Ukrywaj pozycje \"brak oceny\"</string>
     <string name="grades_config_minus_value">Własna wartość minusa</string>
     <string name="grades_config_plus_value">Własna wartość plusa</string>
     <string name="grades_config_title">Konfiguracja ocen</string>
@@ -695,6 +697,7 @@
     <string name="menu_grades_config">Ustawienia ocen</string>
     <string name="menu_grades_editor">Symulator edycji ocen</string>
     <string name="menu_grades_sort_mode">Sortuj oceny</string>
+    <string name="menu_grades_university_average_mode">Sposób obliczania średniej za studia</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_home_page">Strona główna</string>
     <string name="menu_homework">Zadania domowe</string>
@@ -976,6 +979,8 @@
     <string name="settings_register_dont_count_zero_text">Nie wliczaj oceny 0 do średniej</string>
     <string name="settings_register_login_not_implemented_text">Ten e-dziennik nie został jeszcze zaimplementowany w aplikacji.</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
+    <string name="settings_register_university_avg_mode_0">Średnia arytmetyczna ocen</string>
+    <string name="settings_register_university_avg_mode_1">Średnia ważona ocen (ECTS = waga)</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
     <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Dni wolne klasy</string>

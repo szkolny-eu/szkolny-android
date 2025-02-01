@@ -31,6 +31,8 @@ import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_ECTS
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_SIMPLE
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
@@ -222,13 +224,18 @@ class GradesListFragment : Fragment(), CoroutineScope {
         val isUniversity = manager.isUniversity
         val filterTermId = b.semesterDropdown.selected?.tag
 
-        val hideImproved = manager.hideImproved
+        val hideNoGrade = app.profile.config.grades.hideNoGrade
+        val countEctsInProgress = app.profile.config.grades.countEctsInProgress
+        val universityAverageMode = app.profile.config.grades.universityAverageMode
 
         // grades returned by the query are ordered
         // by the subject ID, so it's easier and probably
         // a bit faster to build all the models
         for (grade in grades) {
             if (isUniversity && filterTermId != null && grade.comment != filterTermId)
+                continue
+
+            if (hideNoGrade && grade.type == TYPE_NO_GRADE)
                 continue
 
             /*if (grade.parentId != null && grade.parentId != -1L)
@@ -309,13 +316,16 @@ class GradesListFragment : Fragment(), CoroutineScope {
             val ectsPoints = mutableMapOf<Pair<Long, String?>, Float>()
             for (grade in grades) {
                 val pointsPair = grade.subjectId to grade.comment
-                if (grade.type == TYPE_NO_GRADE)
+                if (grade.type == TYPE_NO_GRADE && !countEctsInProgress)
                     // reset points if there's an exam that isn't passed yet
                     ectsPoints[pointsPair] = 0.0f
 
                 if (grade.value == 0.0f || grade.weight == 0.0f)
                     continue
-                totalSum.add(grade.value * grade.weight)
+                if (universityAverageMode == UNIVERSITY_AVERAGE_MODE_ECTS)
+                    totalSum.add(grade.value * grade.weight)
+                else
+                    totalSum.add(grade.value)
                 totalCount.add(grade.weight)
 
                 if (grade.value < 3.0)
@@ -328,11 +338,22 @@ class GradesListFragment : Fragment(), CoroutineScope {
                 if (filterTermId != null && grade.comment != filterTermId)
                     continue
 
-                semesterSum.add(grade.value * grade.weight)
+                if (universityAverageMode == UNIVERSITY_AVERAGE_MODE_ECTS)
+                    semesterSum.add(grade.value * grade.weight)
+                else
+                    semesterSum.add(grade.value)
                 semesterCount.add(grade.weight)
             }
-            stats.universitySem = semesterSum.sum() / semesterCount.sum()
-            stats.universityTotal = totalSum.sum() / totalCount.sum()
+            when (universityAverageMode) {
+                UNIVERSITY_AVERAGE_MODE_SIMPLE -> {
+                    stats.universitySem = semesterSum.sum() / semesterCount.size
+                    stats.universityTotal = totalSum.sum() / totalCount.size
+                }
+                UNIVERSITY_AVERAGE_MODE_ECTS -> {
+                    stats.universitySem = semesterSum.sum() / semesterCount.sum()
+                    stats.universityTotal = totalSum.sum() / totalCount.sum()
+                }
+            }
             stats.universityEcts = ectsPoints.values.sum()
             return (items + stats).toMutableList()
         }

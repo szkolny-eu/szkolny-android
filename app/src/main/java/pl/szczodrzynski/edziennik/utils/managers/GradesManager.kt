@@ -44,6 +44,8 @@ class GradesManager(val app: App) : CoroutineScope {
         const val YEAR_ALL_GRADES = 4
         const val COLOR_MODE_DEFAULT = 0
         const val COLOR_MODE_WEIGHTED = 1
+        const val UNIVERSITY_AVERAGE_MODE_SIMPLE = 0
+        const val UNIVERSITY_AVERAGE_MODE_ECTS = 1
     }
 
     private val job = Job()

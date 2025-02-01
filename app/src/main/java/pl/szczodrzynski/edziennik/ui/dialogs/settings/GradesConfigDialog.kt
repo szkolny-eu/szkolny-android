@@ -21,6 +21,8 @@ import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_M
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_SUBJECT_ASC
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_ECTS
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_SIMPLE
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
@@ -47,6 +49,8 @@ class GradesConfigDialog(
 
     @SuppressLint("SetTextI18n")
     override suspend fun loadConfig() {
+        b.isUniversity = app.gradesManager.isUniversity
+
         b.customPlusCheckBox.isChecked = app.profile.config.grades.plusValue != null
         b.customPlusValue.isVisible = b.customPlusCheckBox.isChecked
         b.customMinusCheckBox.isChecked = app.profile.config.grades.minusValue != null
@@ -76,10 +80,18 @@ class GradesConfigDialog(
             else -> null
         }?.isChecked = true
 
+        when (app.profile.config.grades.universityAverageMode) {
+            UNIVERSITY_AVERAGE_MODE_ECTS -> b.gradeUniversityAverageMode1
+            UNIVERSITY_AVERAGE_MODE_SIMPLE -> b.gradeUniversityAverageMode0
+            else -> null
+        }?.isChecked = true
+
         b.dontCountGrades.isChecked =
             app.profile.config.grades.dontCountEnabled && app.profile.config.grades.dontCountGrades.isNotEmpty()
         b.hideImproved.isChecked = app.profile.config.grades.hideImproved
+        b.hideNoGrade.isChecked = app.profile.config.grades.hideNoGrade
         b.averageWithoutWeight.isChecked = app.profile.config.grades.averageWithoutWeight
+        b.countEctsInProgress.isChecked = app.profile.config.grades.countEctsInProgress
 
         if (app.profile.config.grades.dontCountGrades.isEmpty()) {
             b.dontCountGradesText.setText("nb, 0, bz, bd")
@@ -149,9 +161,20 @@ class GradesConfigDialog(
             app.profile.config.grades.yearAverageMode = YEAR_1_SEM_2_SEM
         }
 
+        b.gradeUniversityAverageMode1.setOnSelectedListener {
+            app.profile.config.grades.universityAverageMode = UNIVERSITY_AVERAGE_MODE_ECTS
+        }
+        b.gradeUniversityAverageMode0.setOnSelectedListener {
+            app.profile.config.grades.universityAverageMode = UNIVERSITY_AVERAGE_MODE_SIMPLE
+        }
+
         b.hideImproved.onChange { _, isChecked -> app.profile.config.grades.hideImproved = isChecked }
+        b.hideNoGrade.onChange { _, isChecked -> app.profile.config.grades.hideNoGrade = isChecked }
         b.averageWithoutWeight.onChange { _, isChecked ->
             app.profile.config.grades.averageWithoutWeight = isChecked
+        }
+        b.countEctsInProgress.onChange { _, isChecked ->
+            app.profile.config.grades.countEctsInProgress = isChecked
         }
 
         b.averageWithoutWeightHelp.onClick {
