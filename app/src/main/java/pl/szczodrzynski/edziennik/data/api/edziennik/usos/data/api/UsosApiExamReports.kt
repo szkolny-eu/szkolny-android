@@ -137,9 +137,9 @@ class UsosApiExamReports(
                 value = value,
                 weight = if (countsIntoAverage == "T") gradeCategory?.weight ?: 0.0f else 0.0f,
                 color = (if (passes == true) 0xFF465FB3 else 0xFFB71C1C).toInt(),
-                category = "$termId$$typeDescription",
-                description = listOfNotNull(classType, sessionDescription).join(" - "),
-                comment = comment,
+                category = typeDescription,
+                description = listOfNotNull(classType, sessionDescription, comment).join(" - "),
+                comment = termId,
                 semester = 1,
                 teacherId = modificationAuthorId,
                 subjectId = data.getSubject(

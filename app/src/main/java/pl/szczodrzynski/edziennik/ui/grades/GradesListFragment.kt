@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
+import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
@@ -83,6 +84,35 @@ class GradesListFragment : Fragment(), CoroutineScope {
             val items = when {
                 app.profile.config.grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
                 else -> grades
+            }
+
+            if (manager.isUniversity) {
+                val termIds = grades.map { it.comment }.toSet().toMutableList()
+                val termNames: MutableMap<String, String> = mutableMapOf()
+                // deserialize to a map of termId to (orderKey, termName)
+                val terms = app.profile.getStudentData("termNames", null)
+                    ?.let { app.gson.fromJson(it, termNames::class.java) }
+                    ?.mapValues { (_, value) -> value.split('$', limit = 2) }
+                    ?.mapValues { (_, value) -> Pair(value[0].toIntOrNull() ?: 0, value[1]) }
+                    ?: mapOf()
+                // sort by order key
+                termIds.sortByDescending { termId -> terms[termId]?.first ?: 0 }
+                // populate the dropdown
+                b.semesterLayout.isVisible = true
+                b.semesterDropdown.items = termIds.mapIndexed { id, termId ->
+                    TextInputDropDown.Item(
+                        id.toLong(),
+                        terms[termId]?.second ?: termId ?: "-",
+                        tag = termId,
+                    )
+                }.toMutableList()
+                b.semesterDropdown.select(index = 0)
+                b.semesterDropdown.setOnChangeListener { item ->
+                    b.semesterDropdown.select(item)
+                    adapter.items = processGrades(items)
+                    adapter.notifyDataSetChanged()
+                    return@setOnChangeListener true
+                }
             }
 
             // load & configure the adapter
@@ -188,6 +218,8 @@ class GradesListFragment : Fragment(), CoroutineScope {
         var semesterNumber = 0
         var subject = GradesSubject(subjectId, "")
         var semester = GradesSemester(0, 1)
+        val isUniversity = manager.isUniversity
+        val filterTermId = b.semesterDropdown.selected?.tag
 
         val hideImproved = manager.hideImproved
 
@@ -195,6 +227,9 @@ class GradesListFragment : Fragment(), CoroutineScope {
         // by the subject ID, so it's easier and probably
         // a bit faster to build all the models
         for (grade in grades) {
+            if (isUniversity && filterTermId != null && grade.comment != filterTermId)
+                continue
+
             /*if (grade.parentId != null && grade.parentId != -1L)
                 continue // the grade is hidden as a new, improved one is available*/
             if (grade.subjectId != subjectId) {
@@ -265,7 +300,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
 
         val stats = GradesStats()
 
-        if (manager.isUniversity) {
+        if (isUniversity) {
             val semesterSum = mutableListOf<Float>()
             val semesterCount = mutableListOf<Float>()
             val totalSum = mutableListOf<Float>()
@@ -282,6 +317,9 @@ class GradesListFragment : Fragment(), CoroutineScope {
                 else if (grade.subjectId !in ectsPoints)
                     // no points for this subject, simply assign
                     ectsPoints[grade.subjectId] = grade.weight
+
+                if (filterTermId != null && grade.comment != filterTermId)
+                    continue
 
                 semesterSum.add(grade.value * grade.weight)
                 semesterCount.add(grade.weight)
