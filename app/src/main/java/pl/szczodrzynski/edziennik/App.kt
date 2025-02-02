@@ -241,6 +241,14 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             withContext(Dispatchers.Default) {
                 config.migrate(this@App)
 
+                if (config.appVersionCore < BuildConfig.VERSION_CODE) {
+                    // force syncing all endpoints on update
+                    db.endpointTimerDao().clear()
+                    config.sync.lastAppSync = 0L
+                    config.hash = "invalid"
+                    config.appVersionCore = BuildConfig.VERSION_CODE
+                }
+
                 SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 
                 if (config.devModePassword != null)
