@@ -114,6 +114,11 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             }
         }
 
+        if (profile?.empty == true) {
+            // force app sync on first login
+            app.config.sync.lastAppSync = 0L
+        }
+
         edziennikInterface = when (loginStore.type) {
             LoginType.LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             LoginType.MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)

@@ -17,6 +17,8 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.core.manager.GradesManager
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.data.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.enums.MetadataType
@@ -32,6 +34,10 @@ import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
+import pl.szczodrzynski.edziennik.utils.TextInputDropDown
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_ECTS
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_SIMPLE
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import kotlin.math.max
 
@@ -76,6 +82,35 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
             val items = when {
                 app.profile.config.grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
                 else -> grades
+            }
+
+            if (manager.isUniversity) {
+                val termIds = grades.map { it.comment }.toSet().toMutableList()
+                val termNames: MutableMap<String, String> = mutableMapOf()
+                // deserialize to a map of termId to (orderKey, termName)
+                val terms = app.profile.getStudentData("termNames", null)
+                    ?.let { app.gson.fromJson(it, termNames::class.java) }
+                    ?.mapValues { (_, value) -> value.split('$', limit = 2) }
+                    ?.mapValues { (_, value) -> Pair(value[0].toIntOrNull() ?: 0, value[1]) }
+                    ?: mapOf()
+                // sort by order key
+                termIds.sortByDescending { termId -> terms[termId]?.first ?: 0 }
+                // populate the dropdown
+                b.semesterLayout.isVisible = true
+                b.semesterDropdown.items = termIds.mapIndexed { id, termId ->
+                    TextInputDropDown.Item(
+                        id.toLong(),
+                        terms[termId]?.second ?: termId ?: "-",
+                        tag = termId,
+                    )
+                }.toMutableList()
+                b.semesterDropdown.select(index = 0)
+                b.semesterDropdown.setOnChangeListener { item ->
+                    b.semesterDropdown.select(item)
+                    adapter.items = processGrades(items)
+                    adapter.notifyDataSetChanged()
+                    return@setOnChangeListener true
+                }
             }
 
             // load & configure the adapter
@@ -160,13 +195,23 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
         var semesterNumber = 0
         var subject = GradesSubject(subjectId, "")
         var semester = GradesSemester(0, 1)
+        val isUniversity = manager.isUniversity
+        val filterTermId = b.semesterDropdown.selected?.tag
 
-        val hideImproved = manager.hideImproved
+        val hideNoGrade = app.profile.config.grades.hideNoGrade
+        val countEctsInProgress = app.profile.config.grades.countEctsInProgress
+        val universityAverageMode = app.profile.config.grades.universityAverageMode
 
         // grades returned by the query are ordered
         // by the subject ID, so it's easier and probably
         // a bit faster to build all the models
         for (grade in grades) {
+            if (isUniversity && filterTermId != null && grade.comment != filterTermId)
+                continue
+
+            if (hideNoGrade && grade.type == TYPE_NO_GRADE)
+                continue
+
             /*if (grade.parentId != null && grade.parentId != -1L)
                 continue // the grade is hidden as a new, improved one is available*/
             if (grade.subjectId != subjectId) {
@@ -230,7 +275,62 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
             subject.lastAddedDate = max(subject.lastAddedDate, grade.addedDate)
         }
 
+        when (manager.orderBy) {
+            GradesManager.ORDER_BY_DATE_DESC -> items.sortByDescending { it.lastAddedDate }
+            GradesManager.ORDER_BY_DATE_ASC -> items.sortBy { it.lastAddedDate }
+        }
+
         val stats = GradesStats()
+
+        if (isUniversity) {
+            val semesterSum = mutableListOf<Float>()
+            val semesterCount = mutableListOf<Float>()
+            val totalSum = mutableListOf<Float>()
+            val totalCount = mutableListOf<Float>()
+            val ectsPoints = mutableMapOf<Pair<Long, String?>, Float>()
+            for (grade in grades) {
+                val pointsPair = grade.subjectId to grade.comment
+                if (grade.type == TYPE_NO_GRADE && !countEctsInProgress)
+                    // reset points if there's an exam that isn't passed yet
+                    ectsPoints[pointsPair] = 0.0f
+
+                if (grade.value == 0.0f || grade.weight == 0.0f)
+                    continue
+                if (universityAverageMode == UNIVERSITY_AVERAGE_MODE_ECTS)
+                    totalSum.add(grade.value * grade.weight)
+                else
+                    totalSum.add(grade.value)
+                totalCount.add(grade.weight)
+
+                if (grade.value < 3.0)
+                    // exam not passed, reset points for this subject
+                    ectsPoints[pointsPair] = 0.0f
+                else if (pointsPair !in ectsPoints)
+                    // no points for this subject, simply assign
+                    ectsPoints[pointsPair] = grade.weight
+
+                if (filterTermId != null && grade.comment != filterTermId)
+                    continue
+
+                if (universityAverageMode == UNIVERSITY_AVERAGE_MODE_ECTS)
+                    semesterSum.add(grade.value * grade.weight)
+                else
+                    semesterSum.add(grade.value)
+                semesterCount.add(grade.weight)
+            }
+            when (universityAverageMode) {
+                UNIVERSITY_AVERAGE_MODE_SIMPLE -> {
+                    stats.universitySem = semesterSum.sum() / semesterCount.size
+                    stats.universityTotal = totalSum.sum() / totalCount.size
+                }
+                UNIVERSITY_AVERAGE_MODE_ECTS -> {
+                    stats.universitySem = semesterSum.sum() / semesterCount.sum()
+                    stats.universityTotal = totalSum.sum() / totalCount.sum()
+                }
+            }
+            stats.universityEcts = ectsPoints.values.sum()
+            return (items + stats).toMutableList()
+        }
 
         val sem1Expected = mutableListOf<Float>()
         val sem2Expected = mutableListOf<Float>()
@@ -301,11 +401,6 @@ class GradesListFragment : BaseFragment<GradesListFragmentBinding, MainActivity>
         stats.pointSem1 = sem1Point.averageOrNull()?.toFloat() ?: 0f
         stats.pointSem2 = sem2Point.averageOrNull()?.toFloat() ?: 0f
         stats.pointYearly = yearlyPoint.averageOrNull()?.toFloat() ?: 0f
-
-        when (manager.orderBy) {
-            GradesManager.ORDER_BY_DATE_DESC -> items.sortByDescending { it.lastAddedDate }
-            GradesManager.ORDER_BY_DATE_ASC -> items.sortBy { it.lastAddedDate }
-        }
 
         return (items + stats).toMutableList()
     }

@@ -31,8 +31,34 @@ class StatsViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: GradesStats, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
+        val isUniversity = manager.isUniversity
         val showAverages = mutableListOf<Int>()
         val showPoint = mutableListOf<Int>()
+
+        b.universityTitle.isVisible = isUniversity
+        b.universityLayout.isVisible = isUniversity
+        b.universityDivider.isVisible = isUniversity
+
+        if (isUniversity) {
+            val format = DecimalFormat("#.00")
+
+            b.normalTitle.isVisible = false
+            b.normalLayout.isVisible = false
+            b.normalDivider.isVisible = false
+            b.helpButton.isVisible = false
+            b.pointTitle.isVisible = false
+            b.pointLayout.isVisible = false
+            b.pointDivider.isVisible = false
+            b.noData.isVisible = false
+            b.disclaimer.isVisible = true
+            b.customValueDivider.isVisible = false
+            b.customValueLayout.isVisible = false
+
+            b.universitySemester.text = format.format(item.universitySem)
+            b.universityTotal.text = format.format(item.universityTotal)
+            b.universityEcts.text = format.format(item.universityEcts)
+            return
+        }
 
         getSemesterString(app, item.normalSem1, item.normalSem1Proposed, item.normalSem1Final, item.sem1NotAllFinal).let { (average, notice) ->
             b.normalSemester1Layout.isVisible = average != null

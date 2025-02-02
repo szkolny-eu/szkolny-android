@@ -60,6 +60,7 @@ class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
     var appRateSnackbarTime by config<Long>(0L)
     var lastLogCleanupTime by config<Long>(0L)
     var appVersion by config<Int>(BuildConfig.VERSION_CODE)
+    var appVersionCore by config<Int>(0)
     var validation by config<String?>(null, "buildValidation")
 
     var archiverEnabled by config<Boolean>(true)

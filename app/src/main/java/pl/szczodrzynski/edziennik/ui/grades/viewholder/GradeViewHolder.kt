@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesItemGradeBinding
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
@@ -59,9 +60,12 @@ class GradeViewHolder(
         b.gradeWeight.isVisible = weightText != null
 
         b.gradeTeacherName.text = grade.teacherName
-        b.gradeAddedDate.text = Date.fromMillis(grade.addedDate).let {
-            it.getRelativeString(app, 5) ?: it.formattedStringShort
-        }
+        if (grade.addedDate == 0L || grade.type == TYPE_NO_GRADE)
+            b.gradeAddedDate.text = null
+        else
+            b.gradeAddedDate.text = Date.fromMillis(grade.addedDate).let {
+                it.getRelativeString(app, 5) ?: it.formattedStringShort
+            }
 
         b.unread.isVisible = grade.showAsUnseen
         if (!grade.seen) {

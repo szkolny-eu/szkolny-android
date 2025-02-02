@@ -24,4 +24,7 @@ interface EndpointTimerDao {
 
     @Query("DELETE FROM endpointTimers WHERE profileId = :profileId")
     fun clear(profileId: Int)
+
+    @Query("DELETE FROM endpointTimers")
+    fun clear()
 }

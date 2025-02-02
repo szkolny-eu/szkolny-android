@@ -32,7 +32,8 @@ class UsosApiUser(
                     "last_name",
                     "student_number",
                     "student_programmes" to listOf(
-                        "programme" to listOf("id"),
+                        "id",
+                        "programme" to listOf("id", "description"),
                     ),
                 ),
             ),
@@ -40,9 +41,11 @@ class UsosApiUser(
         ) { json, response ->
             val programmes = json.getJsonArray("student_programmes")
             if (programmes.isNullOrEmpty()) {
-                data.error(ApiError(TAG, ERROR_USOS_NO_STUDENT_PROGRAMMES)
-                    .withApiResponse(json)
-                    .withResponse(response))
+                data.error(
+                    ApiError(TAG, ERROR_USOS_NO_STUDENT_PROGRAMMES)
+                        .withApiResponse(json)
+                        .withResponse(response)
+                )
                 return@apiRequest
             }
 
@@ -50,13 +53,19 @@ class UsosApiUser(
             val lastName = json.getString("last_name")
             val studentName = buildFullName(firstName, lastName)
 
+            val studentProgrammeId = programmes.getJsonObject(0)
+                .getString("id")
+            val programmeId = programmes.getJsonObject(0)
+                .getJsonObject("programme")
+                .getString("id")
+
             data.studentId = json.getInt("id") ?: data.studentId
             profile?.studentNameLong = studentName
             profile?.studentNameShort = studentName.getShortName()
             profile?.studentNumber = json.getString("student_number")?.replace(Regex("[^0-9]"), "")?.toIntOrNull() ?: -1
-            profile?.studentClassName = programmes.getJsonObject(0).getJsonObject("programme").getString("id")
+            profile?.studentClassName = programmeId
 
-            profile?.studentClassName?.let {
+            val team = programmeId?.let {
                 data.getTeam(
                     id = null,
                     name = it,
@@ -64,6 +73,7 @@ class UsosApiUser(
                     isTeamClass = true,
                 )
             }
+            team?.code = "${data.schoolId}:${studentProgrammeId}:${programmeId}"
 
             data.setSyncNext(ENDPOINT_USOS_API_USER, 4 * DAY)
             onSuccess(ENDPOINT_USOS_API_USER)

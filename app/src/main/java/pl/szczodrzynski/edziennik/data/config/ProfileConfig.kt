@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAUL
 import pl.szczodrzynski.edziennik.data.enums.NotificationType
 import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.COLOR_MODE_WEIGHTED
+import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.UNIVERSITY_AVERAGE_MODE_ECTS
 import pl.szczodrzynski.edziennik.core.manager.GradesManager.Companion.YEAR_ALL_GRADES
 
 class ProfileConfig(
@@ -46,10 +47,13 @@ class ProfileConfig(
         var dontCountEnabled by config<Boolean>(false)
         var dontCountGrades by config<List<String>> { listOf() }
         var hideImproved by config<Boolean>(false)
+        var hideNoGrade by base.config<Boolean>(false)
         var hideSticksFromOld by config<Boolean>(false)
         var minusValue by config<Float?>(null)
         var plusValue by config<Float?>(null)
         var yearAverageMode by config<Int>(YEAR_ALL_GRADES)
+        var universityAverageMode by config<Int>(UNIVERSITY_AVERAGE_MODE_ECTS)
+        var countEctsInProgress by config<Boolean>(false)
     }
 
     inner class UI {

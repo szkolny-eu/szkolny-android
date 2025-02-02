@@ -60,9 +60,24 @@ class SubjectViewHolder(
 
         val firstSemester = item.semesters.firstOrNull() ?: return
 
-        b.yearSummary.text = manager.getYearSummaryString(app, item.semesters.map { it.grades.size }.sum(), item.averages)
+        if (manager.isUniversity) {
+            val ectsPoints = item.semesters.firstOrNull()?.grades?.maxOf { it.weight }
+            b.yearSummary.text = if (ectsPoints != null)
+                contextWrapper.getString(
+                    R.string.grades_ects_points_format,
+                    ectsPoints
+                )
+            else
+                null
+        } else {
+            b.yearSummary.text = manager.getYearSummaryString(
+                app,
+                item.semesters.map { it.grades.size }.sum(),
+                item.averages
+            )
+        }
 
-        if (firstSemester.number != item.semester) {
+        if (firstSemester.number != item.semester && !manager.isUniversity) {
             b.gradesContainer.addView(TextView(activity).apply {
                 setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
                 setText(R.string.grades_preview_other_semester, firstSemester.number)
@@ -90,16 +105,18 @@ class SubjectViewHolder(
             ))
         }
 
-        b.previewContainer.addView(TextView(activity).apply {
-            setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
-            text = manager.getAverageString(app, firstSemester.averages, nameSemester = true, showSemester = firstSemester.number)
-            //gravity = Gravity.END
-            layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-                setMargins(0, 0, 8.dp, 0)
-            }
-            maxLines = 1
-            ellipsize = TextUtils.TruncateAt.END
-        })
+        if (!manager.isUniversity) {
+            b.previewContainer.addView(TextView(activity).apply {
+                setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
+                text = manager.getAverageString(app, firstSemester.averages, nameSemester = true, showSemester = firstSemester.number)
+                //gravity = Gravity.END
+                layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                    setMargins(0, 0, 8.dp, 0)
+                }
+                maxLines = 1
+                ellipsize = TextUtils.TruncateAt.END
+            })
+        }
 
         // add the topmost semester's grades to preview container (collapsed)
         firstSemester.proposedGrade?.let {
@@ -137,7 +154,7 @@ class SubjectViewHolder(
         }
 
         // if showing semester 2, add yearly grades to preview container (collapsed)
-        if (firstSemester.number == item.semester) {
+        if (firstSemester.number == item.semester && !manager.isUniversity) {
             b.previewContainer.addView(TextView(activity).apply {
                 text = manager.getAverageString(app, item.averages, nameSemester = true)
                 layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {

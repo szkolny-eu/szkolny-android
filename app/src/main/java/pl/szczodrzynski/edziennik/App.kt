@@ -243,6 +243,14 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             loggingManager.cleanupHyperLogDatabase()
             notificationManager.registerAllChannels()
             shortcutManager.createShortcuts()
+            
+            if (config.appVersionCore < BuildConfig.VERSION_CODE) {
+                // force syncing all endpoints on update
+                db.endpointTimerDao().clear()
+                config.sync.lastAppSync = 0L
+                config.hash = "invalid"
+                config.appVersionCore = BuildConfig.VERSION_CODE
+            }
 
             SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 

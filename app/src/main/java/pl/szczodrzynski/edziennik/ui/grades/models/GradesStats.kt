@@ -22,4 +22,8 @@ class GradesStats {
     var pointSem1 = 0f
     var pointSem2 = 0f
     var pointYearly = 0f
+
+    var universitySem = 0f
+    var universityTotal = 0f
+    var universityEcts = 0f
 }

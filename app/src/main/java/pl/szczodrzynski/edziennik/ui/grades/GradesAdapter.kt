@@ -16,6 +16,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
@@ -134,6 +135,7 @@ class GradesAdapter(
         if (model.state == STATE_CLOSED) {
 
             val subItems = when {
+                model is GradesSubject && manager.isUniversity -> listOf()
                 model is GradesSemester && model.grades.isEmpty() ->
                     listOf(GradesEmpty())
                 model is GradesSemester && manager.hideImproved ->
@@ -147,10 +149,12 @@ class GradesAdapter(
                 if (notifyAdapter) notifyItemInserted(position)
             }
 
-            position++
             model.state = STATE_OPENED
-            items.addAll(position, subItems.filterNotNull())
-            if (notifyAdapter) notifyItemRangeInserted(position, subItems.size)
+            if (subItems.isNotEmpty()) {
+                position++
+                items.addAll(position, subItems.filterNotNull())
+                if (notifyAdapter) notifyItemRangeInserted(position, subItems.size)
+            }
 
             if (model is GradesSubject) {
                 // auto expand first semester
@@ -232,10 +236,13 @@ class GradesAdapter(
             }
         }
 
-        if (item !is GradeFull || onGradeClick != null)
+        if (item !is GradeFull || (onGradeClick != null && item.type != TYPE_NO_GRADE)) {
             holder.itemView.setOnClickListener(onClickListener)
-        else
+            holder.itemView.isEnabled = true
+        } else {
             holder.itemView.setOnClickListener(null)
+            holder.itemView.isEnabled = false
+        }
     }
 
     fun notifyItemChanged(model: Any) {

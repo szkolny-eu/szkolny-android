@@ -7,6 +7,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="isUniversity"
+            type="boolean" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -29,7 +36,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:isVisible="@{!isUniversity}">
 
                 <CheckBox
                     android:id="@+id/customPlusCheckBox"
@@ -54,7 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:isVisible="@{!isUniversity}">
 
                 <CheckBox
                     android:id="@+id/customMinusCheckBox"
@@ -79,14 +88,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="8dp"
-                android:background="@drawable/divider" />
+                android:background="@drawable/divider"
+                android:isVisible="@{!isUniversity}" />
 
             <CheckBox
                 android:id="@+id/dontCountGrades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
-                android:text="@string/grades_config_dont_count_grades" />
+                android:text="@string/grades_config_dont_count_grades"
+                android:isVisible="@{!isUniversity}" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="?textInputOutlinedDenseStyle"
@@ -95,7 +106,8 @@
                 android:layout_marginTop="8dp"
                 android:enabled="@{dontCountGrades.checked}"
                 android:hint="@string/grades_config_dont_count_hint"
-                app:placeholderText="@string/grades_config_dont_count_placeholder">
+                app:placeholderText="@string/grades_config_dont_count_placeholder"
+                android:isVisible="@{!isUniversity}">
 
                 <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/dontCountGradesText"
@@ -112,11 +124,20 @@
                 android:minHeight="32dp"
                 android:text="@string/grades_config_dont_show_improved" />
 
+            <CheckBox
+                android:id="@+id/hideNoGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grades_config_hide_no_grade"
+                android:isVisible="@{isUniversity}" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:isVisible="@{!isUniversity}">
 
                 <CheckBox
                     android:id="@+id/averageWithoutWeight"
@@ -137,6 +158,14 @@
                     app:iiv_size="24dp"
                     tools:src="@android:drawable/ic_menu_help" />
             </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/countEctsInProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:text="@string/grades_config_ects_in_progress"
+                android:isVisible="@{isUniversity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -197,12 +226,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/menu_grades_average_mode"
-                android:textAppearance="?textAppearanceTitleMedium" />
+                android:textAppearance="?textAppearanceTitleMedium"
+                android:isVisible="@{!isUniversity}" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:isVisible="@{!isUniversity}">
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode4"
@@ -238,6 +269,35 @@
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_3" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_grades_university_average_mode"
+                android:isVisible="@{isUniversity}" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:isVisible="@{isUniversity}">
+
+                <RadioButton
+                    android:id="@+id/gradeUniversityAverageMode1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/settings_register_university_avg_mode_1"/>
+
+                <RadioButton
+                    android:id="@+id/gradeUniversityAverageMode0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="@string/settings_register_university_avg_mode_0"/>
             </RadioGroup>
         </LinearLayout>
     </ScrollView>

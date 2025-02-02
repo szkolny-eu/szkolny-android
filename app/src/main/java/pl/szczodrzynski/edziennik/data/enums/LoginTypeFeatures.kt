@@ -93,6 +93,7 @@ internal val FEATURES_PODLASIE = setOf(
 internal val FEATURES_USOS = setOf(
     TIMETABLE,
     AGENDA,
+    GRADES,
 
     STUDENT_INFO,
     STUDENT_NUMBER,
