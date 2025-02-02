@@ -66,9 +66,7 @@ class AttendanceBar : View {
     }
 
     @SuppressLint("DrawAllocation", "CanvasSize")
-    override fun onDraw(canvas: Canvas?) {
-        canvas ?: return
-
+    override fun onDraw(canvas: Canvas) {
         val sum = attendancesList.sumOf { it.count }
         if (sum == 0) {
             return
