@@ -72,8 +72,7 @@ fun Profile.getAppData() =
     if (App.profileId == this.id) App.data else AppData.get(this.loginStoreType)
 
 fun Profile.shouldArchive(): Boolean {
-    if (loginStoreType == LoginType.DEMO)
-        return false
+    return false
     // vulcan hotfix
     if (dateYearEnd.month > 6) {
         dateYearEnd.month = 6

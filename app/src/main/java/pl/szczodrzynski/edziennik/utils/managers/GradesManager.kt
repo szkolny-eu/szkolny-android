@@ -12,9 +12,11 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NO_GRADE
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.enums.SchoolType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.ext.asColoredSpannable
 import pl.szczodrzynski.edziennik.ext.get
@@ -42,6 +44,8 @@ class GradesManager(val app: App) : CoroutineScope {
         const val YEAR_ALL_GRADES = 4
         const val COLOR_MODE_DEFAULT = 0
         const val COLOR_MODE_WEIGHTED = 1
+        const val UNIVERSITY_AVERAGE_MODE_SIMPLE = 0
+        const val UNIVERSITY_AVERAGE_MODE_ECTS = 1
     }
 
     private val job = Job()
@@ -69,6 +73,8 @@ class GradesManager(val app: App) : CoroutineScope {
         get() = app.profile.config.grades.hideImproved
     val averageWithoutWeight
         get() = app.profile.config.grades.averageWithoutWeight
+    val isUniversity
+        get() = app.profile.loginStoreType.schoolType == SchoolType.UNIVERSITY
 
 
     fun getOrderByString() = when (orderBy) {
@@ -87,6 +93,7 @@ class GradesManager(val app: App) : CoroutineScope {
             else
                 context.getString(R.string.grades_weight_format, format.format(grade.weight))
         TYPE_POINT_AVG -> context.getString(R.string.grades_max_points_format, format.format(grade.valueMax))
+        TYPE_NO_GRADE -> context.getString(R.string.grades_weight_no_grade)
         else -> null
     }
 
@@ -158,6 +165,19 @@ class GradesManager(val app: App) : CoroutineScope {
                     }
                 }
             type == TYPE_NORMAL && defColor -> grade.color and 0xffffff
+            type == TYPE_NORMAL && app.profile.loginStoreType.schoolType == SchoolType.UNIVERSITY -> {
+                when (grade.name.lowercase()) {
+                    "zal" -> 0x4caf50
+                    "nb", "nk" -> 0xff7043
+                    "2.0", "nzal" -> 0xff3d00
+                    "3.0" -> 0xffff00
+                    "3.5" -> 0xc6ff00
+                    "4.0" -> 0x76ff03
+                    "4.5" -> 0x64dd17
+                    "5.0" -> 0x00c853
+                    else -> grade.color and 0xffffff
+                }
+            }
             type in TYPE_NORMAL..TYPE_YEAR_FINAL -> {
                 when (grade.name.lowercase()) {
                     "+", "++", "+++" -> 0x4caf50

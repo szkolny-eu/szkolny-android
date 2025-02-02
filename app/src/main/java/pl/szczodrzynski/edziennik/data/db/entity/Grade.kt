@@ -55,6 +55,7 @@ open class Grade(
         const val TYPE_DESCRIPTIVE = 30
         const val TYPE_DESCRIPTIVE_TEXT = 31
         const val TYPE_TEXT = 40
+        const val TYPE_NO_GRADE = 100
     }
 
     @ColumnInfo(name = "gradeValueMax")

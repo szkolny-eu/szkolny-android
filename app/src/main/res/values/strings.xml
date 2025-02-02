@@ -445,9 +445,12 @@
     <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
     <string name="grades_config_dont_count_placeholder">Podaj oceny…</string>
     <string name="grades_config_dont_show_improved">Ukrywaj oceny poprawione z listy</string>
+    <string name="grades_config_ects_in_progress">Licz ECTS przed zaliczeniem całego przedmiotu</string>
+    <string name="grades_config_hide_no_grade">Ukrywaj pozycje \"brak oceny\"</string>
     <string name="grades_config_minus_value">Własna wartość minusa</string>
     <string name="grades_config_plus_value">Własna wartość plusa</string>
     <string name="grades_config_title">Konfiguracja ocen</string>
+    <string name="grades_ects_points_format">Punkty ECTS: %#.2f</string>
     <string name="grades_editor_add_grade">Dodaj ocenę</string>
     <string name="grades_editor_add_grade_title">Dodawanie oceny</string>
     <string name="grades_editor_add_grade_weight">Podaj wagę oceny</string>
@@ -474,9 +477,11 @@
     <string name="grades_semester_average_point_format">semestr %d: %spkt</string>
     <string name="grades_semester_format">Semestr %d</string>
     <string name="grades_semester_header_format">Semestr %d</string>
+    <string name="grades_stats_all_grades">wszystkie oceny</string>
     <string name="grades_stats_custom_config_notice">Aktualne ustawienia ocen mogą wpływać na średnią. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
     <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
     <string name="grades_stats_disclaimer">*średnie ocen są poglądowe i mogą się różnić, w zależności od ustawień szkoły</string>
+    <string name="grades_stats_ects_points">punkty ECTS</string>
     <string name="grades_stats_expected">*przewidywana średnia</string>
     <string name="grades_stats_from_final">*z ocen końcowych\nPrzewidywana: %s</string>
     <string name="grades_stats_from_final_no_expected">*z ocen końcowych</string>
@@ -490,11 +495,14 @@
     <string name="grades_stats_proposed_avg">Śr. ocen proponowanych:\n%s</string>
     <string name="grades_stats_semester_1">semestr 1</string>
     <string name="grades_stats_semester_2">semestr 2</string>
+    <string name="grades_stats_this_semester">ten semestr</string>
     <string name="grades_stats_title">Statystyka ocen</string>
+    <string name="grades_stats_university">Średnia ocen za studia</string>
     <string name="grades_stats_yearly">całoroczna</string>
     <string name="grades_value_format">wartość: %s</string>
     <string name="grades_weight_format">waga %s</string>
     <string name="grades_weight_not_counted">nie liczona do śr.</string>
+    <string name="grades_weight_no_grade">brak oceny</string>
     <string name="grades_year_average_format">koniec roku: %s</string>
     <string name="grades_year_average_percent_format">koniec roku: %s%%</string>
     <string name="grades_year_average_point_format">koniec roku: %spkt</string>
@@ -689,6 +697,7 @@
     <string name="menu_grades_config">Ustawienia ocen</string>
     <string name="menu_grades_editor">Symulator edycji ocen</string>
     <string name="menu_grades_sort_mode">Sortuj oceny</string>
+    <string name="menu_grades_university_average_mode">Sposób obliczania średniej za studia</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_home_page">Strona główna</string>
     <string name="menu_homework">Zadania domowe</string>
@@ -970,6 +979,8 @@
     <string name="settings_register_dont_count_zero_text">Nie wliczaj oceny 0 do średniej</string>
     <string name="settings_register_login_not_implemented_text">Ten e-dziennik nie został jeszcze zaimplementowany w aplikacji.</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
+    <string name="settings_register_university_avg_mode_0">Średnia arytmetyczna ocen</string>
+    <string name="settings_register_university_avg_mode_1">Średnia ważona ocen (ECTS = waga)</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
     <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Dni wolne klasy</string>

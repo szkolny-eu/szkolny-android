@@ -183,7 +183,7 @@ jobs:
         run: python $GITHUB_WORKSPACE/.github/utils/webhook_discord.py $GITHUB_WORKSPACE >> $GITHUB_OUTPUT
 
       - name: Upload workflow artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ${{ steps.changelog.outputs.appVersionName }}

@@ -10,10 +10,12 @@ import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 
-const val ENDPOINT_USOS_API_USER        = 7000
-const val ENDPOINT_USOS_API_TERMS       = 7010
-const val ENDPOINT_USOS_API_COURSES     = 7020
-const val ENDPOINT_USOS_API_TIMETABLE   = 7030
+const val ENDPOINT_USOS_API_USER            = 7000
+const val ENDPOINT_USOS_API_TERMS           = 7010
+const val ENDPOINT_USOS_API_COURSES         = 7020
+const val ENDPOINT_USOS_API_TIMETABLE       = 7030
+const val ENDPOINT_USOS_API_ECTS_POINTS     = 7040
+const val ENDPOINT_USOS_API_EXAM_REPORTS    = 7050
 
 val UsosFeatures = listOf(
     /*
@@ -38,5 +40,13 @@ val UsosFeatures = listOf(
      */
     Feature(LoginType.USOS, FeatureType.TIMETABLE, listOf(
         ENDPOINT_USOS_API_TIMETABLE to LoginMethod.USOS_API,
+    )),
+
+    /*
+     * Grades
+     */
+    Feature(LoginType.USOS, FeatureType.GRADES, listOf(
+        ENDPOINT_USOS_API_ECTS_POINTS to LoginMethod.USOS_API,
+        ENDPOINT_USOS_API_EXAM_REPORTS to LoginMethod.USOS_API,
     )),
 )
