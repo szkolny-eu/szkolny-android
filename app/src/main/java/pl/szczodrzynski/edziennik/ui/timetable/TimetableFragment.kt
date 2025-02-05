@@ -14,6 +14,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -90,8 +92,18 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
     override fun onResume() {
         super.onResume()
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
-        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
+        ActivityCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_SCROLL_TO_DATE),
+            ContextCompat.RECEIVER_EXPORTED
+        )
+        ActivityCompat.registerReceiver(
+            activity,
+            broadcastReceiver,
+            IntentFilter(ACTION_RELOAD_PAGES),
+            ContextCompat.RECEIVER_EXPORTED
+        )
     }
     override fun onPause() {
         super.onPause()
