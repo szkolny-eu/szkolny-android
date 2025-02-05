@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.widgets.timetable
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -395,7 +396,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             }
         }
         headerIntent.putExtras("fragmentId" to NavTarget.TIMETABLE)
-        val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, pendingIntentMutable())
+        val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, FLAG_UPDATE_CURRENT or pendingIntentMutable())
         views.setOnClickPendingIntent(R.id.widgetTimetableHeader, headerPendingIntent)
 
         timetables!!.put(appWidgetId, models)
@@ -409,7 +410,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
         // create an intent used to display the lesson details dialog
         val itemIntent = Intent(app, LessonDialogActivity::class.java)
         itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK/* or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
-        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, pendingIntentMutable())
+        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, FLAG_UPDATE_CURRENT or pendingIntentMutable())
         views.setPendingIntentTemplate(R.id.widgetTimetableListView, itemPendingIntent)
 
         if (!unified)
