@@ -15,6 +15,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
@@ -829,7 +831,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
-        registerReceiver(intentReceiver, filter)
+        ActivityCompat.registerReceiver(
+            this,
+            intentReceiver,
+            filter,
+            ContextCompat.RECEIVER_EXPORTED,
+        )
         EventBus.getDefault().register(this)
         super.onResume()
     }
