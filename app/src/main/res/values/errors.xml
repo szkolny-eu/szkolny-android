@@ -120,6 +120,7 @@
     <string name="error_187" translatable="false">ERROR_LOGIN_LIBRUS_API_INVALID_REQUEST</string>
     <string name="error_188" translatable="false">ERROR_LIBRUS_MESSAGES_ATTACHMENT_NOT_FOUND</string>
     <string name="error_189" translatable="false">ERROR_LOGIN_LIBRUS_MESSAGES_TIMEOUT</string>
+    <string name="error_190" translatable="false">ERROR_LIBRUS_API_TEACHER_FREE_DAYS_NOT_PUBLIC</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
