@@ -26,7 +26,7 @@
 
             <com.hootsuite.nachos.NachoTextView
                 android:id="@+id/recipients"
-                style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
+                style="@style/Widget.Material4.TextInputEditText.FilledBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"

@@ -28,27 +28,27 @@
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Black">
+    <style name="AppTheme.M4.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Red.Black">
+    <style name="AppTheme.M4.Red.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Green.Black">
+    <style name="AppTheme.M4.Green.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Blue.Black">
+    <style name="AppTheme.M4.Blue.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Purple.Black">
+    <style name="AppTheme.M4.Purple.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 
-    <style name="AppTheme.M3.Teal.Black">
+    <style name="AppTheme.M4.Teal.Black">
         <item name="android:colorBackground">#FF000000</item>
     </style>
 

@@ -4,7 +4,7 @@
 
 <resources>
 
-    <style name="AppTheme.M3" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
+    <style name="AppTheme.M4" parent="Theme.Material4.DynamicColors.DayNight.NoActionBar">
         <item name="android:textColorSecondary">?android:textColorHint</item>
         <item name="android:textViewStyle">@style/AppStyle.TextView</item>
 
@@ -14,30 +14,30 @@
         <item name="nvNavigationBarBackground">#ff00ff</item>
 
         <item name="materialButtonSecondaryStyle">
-            @style/Widget.Material3.Button.TonalButton
+            @style/Widget.Material4.Button.TonalButton
         </item>
         <item name="materialIconButtonSecondaryStyle">
-            @style/Widget.Material3.Button.IconButton.Filled.Tonal
+            @style/Widget.Material4.Button.IconButton.Filled.Tonal
         </item>
         <item name="materialIconButtonContainerStyle">
-            @style/AppStyle.M3.Button.IconButton.Filled.Container
+            @style/AppStyle.M4.Button.IconButton.Filled.Container
         </item>
         <item name="materialAlertDialogMonospaceTheme">
-            @style/AppStyle.M3.MaterialAlertDialog.Monospace
+            @style/AppStyle.M4.MaterialAlertDialog.Monospace
         </item>
 
-        <item name="textAppearanceHeadlineLarge">@style/AppStyle.M3.HeadlineLarge</item>
-        <item name="textAppearanceHeadlineMedium">@style/AppStyle.M3.HeadlineMedium</item>
-        <item name="textAppearanceHeadlineSmall">@style/AppStyle.M3.HeadlineSmall</item>
-        <item name="textAppearanceTitleLarge">@style/AppStyle.M3.TitleLarge</item>
-        <item name="textAppearanceTitleMedium">@style/AppStyle.M3.TitleMedium</item>
-        <item name="textAppearanceTitleSmall">@style/AppStyle.M3.TitleSmall</item>
-        <item name="textAppearanceLabelLarge">@style/AppStyle.M3.LabelLarge</item>
-        <item name="textAppearanceLabelMedium">@style/AppStyle.M3.LabelMedium</item>
-        <item name="textAppearanceLabelSmall">@style/AppStyle.M3.LabelSmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/AppStyle.M4.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/AppStyle.M4.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/AppStyle.M4.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/AppStyle.M4.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/AppStyle.M4.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/AppStyle.M4.TitleSmall</item>
+        <item name="textAppearanceLabelLarge">@style/AppStyle.M4.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/AppStyle.M4.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/AppStyle.M4.LabelSmall</item>
     </style>
 
-    <style name="AppTheme.M3.Red">
+    <style name="AppTheme.M4.Red">
         <item name="colorPrimary">@color/app_red_primary</item>
         <item name="colorOnPrimary">@color/app_red_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_red_primaryContainer</item>
@@ -86,7 +86,7 @@
         <item name="colorSurfaceContainerHighest">@color/app_red_surfaceContainerHighest</item>
     </style>
 
-    <style name="AppTheme.M3.Green">
+    <style name="AppTheme.M4.Green">
         <item name="colorPrimary">@color/app_green_primary</item>
         <item name="colorOnPrimary">@color/app_green_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_green_primaryContainer</item>
@@ -135,7 +135,7 @@
         <item name="colorSurfaceContainerHighest">@color/app_green_surfaceContainerHighest</item>
     </style>
 
-    <style name="AppTheme.M3.Blue">
+    <style name="AppTheme.M4.Blue">
         <item name="colorPrimary">@color/app_blue_primary</item>
         <item name="colorOnPrimary">@color/app_blue_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_blue_primaryContainer</item>
@@ -184,7 +184,7 @@
         <item name="colorSurfaceContainerHighest">@color/app_blue_surfaceContainerHighest</item>
     </style>
 
-    <style name="AppTheme.M3.Purple">
+    <style name="AppTheme.M4.Purple">
         <item name="colorPrimary">@color/app_purple_primary</item>
         <item name="colorOnPrimary">@color/app_purple_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_purple_primaryContainer</item>
@@ -233,7 +233,7 @@
         <item name="colorSurfaceContainerHighest">@color/app_purple_surfaceContainerHighest</item>
     </style>
 
-    <style name="AppTheme.M3.Teal">
+    <style name="AppTheme.M4.Teal">
         <item name="colorPrimary">@color/app_teal_primary</item>
         <item name="colorOnPrimary">@color/app_teal_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_teal_primaryContainer</item>
@@ -282,12 +282,12 @@
         <item name="colorSurfaceContainerHighest">@color/app_teal_surfaceContainerHighest</item>
     </style>
 
-    <style name="AppTheme.M3.Red.Classic">
+    <style name="AppTheme.M4.Red.Classic">
         <item name="android:colorBackground">@color/windowBackgroundRed</item>
         <item name="colorSurface">@color/colorSurfaceRed</item>
     </style>
 
-    <style name="AppTheme.M3.Red.Full">
+    <style name="AppTheme.M4.Red.Full">
         <item name="android:colorBackground">@color/windowBackgroundRedFull</item>
         <item name="colorSurface">@color/colorSurfaceRedFull</item>
         <item name="colorTertiary">?colorSurface</item>
@@ -295,12 +295,12 @@
         <item name="colorSecondaryContainer">?colorSurface</item>
     </style>
 
-    <style name="AppTheme.M3.Green.Classic">
+    <style name="AppTheme.M4.Green.Classic">
         <item name="android:colorBackground">@color/windowBackgroundGreen</item>
         <item name="colorSurface">@color/colorSurfaceGreen</item>
     </style>
 
-    <style name="AppTheme.M3.Green.Full">
+    <style name="AppTheme.M4.Green.Full">
         <item name="android:colorBackground">@color/windowBackgroundGreenFull</item>
         <item name="colorSurface">@color/colorSurfaceGreenFull</item>
         <item name="colorTertiary">?colorSurface</item>
@@ -308,12 +308,12 @@
         <item name="colorSecondaryContainer">?colorSurface</item>
     </style>
 
-    <style name="AppTheme.M3.Blue.Classic">
+    <style name="AppTheme.M4.Blue.Classic">
         <item name="android:colorBackground">@color/windowBackgroundBlue</item>
         <item name="colorSurface">@color/colorSurfaceBlue</item>
     </style>
 
-    <style name="AppTheme.M3.Blue.Full">
+    <style name="AppTheme.M4.Blue.Full">
         <item name="android:colorBackground">@color/windowBackgroundBlueFull</item>
         <item name="colorSurface">@color/colorSurfaceBlueFull</item>
         <item name="colorTertiary">?colorSurface</item>
@@ -321,12 +321,12 @@
         <item name="colorSecondaryContainer">?colorSurface</item>
     </style>
 
-    <style name="AppTheme.M3.Purple.Classic">
+    <style name="AppTheme.M4.Purple.Classic">
         <item name="android:colorBackground">@color/windowBackgroundPurple</item>
         <item name="colorSurface">@color/colorSurfacePurple</item>
     </style>
 
-    <style name="AppTheme.M3.Purple.Full">
+    <style name="AppTheme.M4.Purple.Full">
         <item name="android:colorBackground">@color/windowBackgroundPurpleFull</item>
         <item name="colorSurface">@color/colorSurfacePurpleFull</item>
         <item name="colorTertiary">?colorSurface</item>
@@ -334,12 +334,12 @@
         <item name="colorSecondaryContainer">?colorSurface</item>
     </style>
 
-    <style name="AppTheme.M3.Teal.Classic">
+    <style name="AppTheme.M4.Teal.Classic">
         <item name="android:colorBackground">@color/windowBackgroundTeal</item>
         <item name="colorSurface">@color/colorSurfaceTeal</item>
     </style>
 
-    <style name="AppTheme.M3.Teal.Full">
+    <style name="AppTheme.M4.Teal.Full">
         <item name="android:colorBackground">@color/windowBackgroundTealFull</item>
         <item name="colorSurface">@color/colorSurfaceTealFull</item>
         <item name="colorTertiary">?colorSurface</item>

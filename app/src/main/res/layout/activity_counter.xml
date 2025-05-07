@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textAppearance="@style/TextAppearance.Material4.HeadlineLarge"
             tools:text="urządzenia techniki komputerowej" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.Material3.DisplayMedium"
+            android:textAppearance="@style/TextAppearance.Material4.DisplayMedium"
             tools:text="Zostało 2341 sekund" />
     </LinearLayout>
 </FrameLayout>

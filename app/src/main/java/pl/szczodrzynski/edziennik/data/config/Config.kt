@@ -69,7 +69,7 @@ class Config(app: App) : BaseConfig<Config>(app, profileId = null) {
 
     inner class UI {
         var themeColor by config<Theme>(Theme.DEFAULT)
-        var themeType by config<Theme.Type>(Theme.Type.M3)
+        var themeType by config<Theme.Type>(Theme.Type.M4)
         var themeMode by config<Theme.Mode>(Theme.Mode.DAYNIGHT)
         var themeNightMode by config<Boolean?>(null)
         var themeBlackMode by config<Boolean>(false)

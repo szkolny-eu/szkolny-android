@@ -13,4 +13,4 @@
     android:clickable="true"
     android:focusable="true"
     android:padding="16dp"
-    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraLarge" />
+    app:shapeAppearance="@style/ShapeAppearance.Material4.Corner.ExtraLarge" />

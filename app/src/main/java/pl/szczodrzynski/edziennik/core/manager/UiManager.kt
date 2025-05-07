@@ -52,19 +52,19 @@ class UiManager(val app: App) {
         val themeRes = if (noDisplay) {
             when (type) {
                 Type.M2 -> R.style.AppTheme_M2_NoDisplay
-                Type.M3 -> R.style.AppTheme_M3_NoDisplay
+                Type.M4 -> R.style.AppTheme_M4_NoDisplay
             }
         } else {
             var color = app.config.ui.themeColor
             if (
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.S
                 && color == Theme.DEFAULT
-                && type == Type.M3
+                && type == Type.M4
             ) {
                 color = Theme.BLUE
             }
             Timber.d("Applying theme $color($type, $mode)")
-            color.styleRes[type to mode] ?: color.styleRes[Type.M3 to Mode.DAYNIGHT]!!
+            color.styleRes[type to mode] ?: color.styleRes[Type.M4 to Mode.DAYNIGHT]!!
         }
         activity.setTheme(themeRes)
 

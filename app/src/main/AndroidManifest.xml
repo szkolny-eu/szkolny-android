@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.M3.Blue"
+        android:theme="@style/AppTheme.M4.Blue"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
 
@@ -67,7 +67,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.M3.NoDisplay">
+            android:theme="@style/AppTheme.M4.NoDisplay">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -91,7 +91,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:exported="true"
-            android:theme="@style/AppTheme.M3.NoDisplay" />
+            android:theme="@style/AppTheme.M4.NoDisplay" />
         <!-- NOTIFICATIONS -->
         <receiver android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
             android:label="@string/widget_notifications_title"
@@ -139,18 +139,18 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:exported="false"
-            android:theme="@style/AppTheme.M3" />
+            android:theme="@style/AppTheme.M4" />
         <activity android:name=".ui.home.CounterActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.M3" />
+            android:theme="@style/AppTheme.M4" />
         <activity android:name=".ui.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme.M3" />
+            android:theme="@style/AppTheme.M4" />
         <activity android:name=".ui.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme.M3" />
+            android:theme="@style/AppTheme.M4" />
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"

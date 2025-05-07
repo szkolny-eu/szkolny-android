@@ -16,7 +16,7 @@ import pl.szczodrzynski.edziennik.data.enums.Theme.Mode.FULL
 import pl.szczodrzynski.edziennik.data.enums.Theme.PURPLE
 import pl.szczodrzynski.edziennik.data.enums.Theme.RED
 import pl.szczodrzynski.edziennik.data.enums.Theme.TEAL
-import pl.szczodrzynski.edziennik.data.enums.Theme.Type.M3
+import pl.szczodrzynski.edziennik.data.enums.Theme.Type.M4
 import pl.szczodrzynski.edziennik.ext.toJsonArray
 
 class ConfigMigration14 : BaseMigration<Config>() {
@@ -38,7 +38,7 @@ class ConfigMigration14 : BaseMigration<Config>() {
                 6 -> TEAL
                 else -> DEFAULT
             }
-            ui.themeType = M3
+            ui.themeType = M4
             ui.themeMode = when (it) {
                 // Light, Dark, Black, Red, Amber
                 0, 1, 2, 13, 16 -> DAYNIGHT

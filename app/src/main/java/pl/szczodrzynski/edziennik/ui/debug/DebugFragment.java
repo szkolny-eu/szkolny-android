@@ -210,7 +210,7 @@ public class DebugFragment extends Fragment {
                 mRecyclerView.bindJson(result);
             }
             catch (Exception e) {
-                new MaterialAlertDialogBuilder(getActivity(), R.style.AppStyle_M3_MaterialAlertDialog_Monospace)
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AppStyle_M4_MaterialAlertDialog_Monospace)
                         .setTitle("Result")
                         .setMessage(result)
                         .setPositiveButton(R.string.ok, null)

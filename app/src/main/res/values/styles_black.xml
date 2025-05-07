@@ -16,16 +16,16 @@
 
     <style name="AppTheme.M2.Teal.Black" />
 
-    <style name="AppTheme.M3.Black" />
+    <style name="AppTheme.M4.Black" />
 
-    <style name="AppTheme.M3.Red.Black" />
+    <style name="AppTheme.M4.Red.Black" />
 
-    <style name="AppTheme.M3.Green.Black" />
+    <style name="AppTheme.M4.Green.Black" />
 
-    <style name="AppTheme.M3.Blue.Black" />
+    <style name="AppTheme.M4.Blue.Black" />
 
-    <style name="AppTheme.M3.Purple.Black" />
+    <style name="AppTheme.M4.Purple.Black" />
 
-    <style name="AppTheme.M3.Teal.Black" />
+    <style name="AppTheme.M4.Teal.Black" />
 
 </resources>

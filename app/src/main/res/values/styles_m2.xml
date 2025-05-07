@@ -20,7 +20,7 @@
             @style/AppStyle.M2.Button.IconButton.Secondary
         </item>
         <item name="materialIconButtonContainerStyle">
-            @style/Widget.Material3.Button.IconButton.Filled.Tonal
+            @style/Widget.Material4.Button.IconButton.Filled.Tonal
         </item>
         <item name="materialAlertDialogMonospaceTheme">
             @style/AppStyle.M2.MaterialAlertDialog.Monospace
