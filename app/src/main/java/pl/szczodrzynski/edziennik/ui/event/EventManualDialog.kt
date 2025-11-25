@@ -122,7 +122,7 @@ class EventManualDialog(
 
     override suspend fun onShow() {
         val data = withContext(Dispatchers.IO) {
-            val profile = app.db.profileDao().getByIdSuspend(profileId) ?: return@withContext null
+            val profile = app.db.profileDao().getByIdNow(profileId) ?: return@withContext null
             AppData.get(profile.loginStoreType)
         }
         if (data?.uiConfig?.eventManualShowSubjectDropdown == true) {

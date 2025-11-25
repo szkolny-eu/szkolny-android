@@ -25,7 +25,7 @@ object Signing {
         with(context) {
         try {
             val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in packageInfo.signatures) {
+            for (signature in packageInfo.signatures ?: arrayOf()) {
                 val signatureBytes = signature.toByteArray()
                 val md = MessageDigest.getInstance("SHA")
                 md.update(signatureBytes)

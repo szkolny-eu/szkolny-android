@@ -10,6 +10,8 @@ apply from: 'git-info.gradle'
 android {
     compileSdkVersion setup.compileSdk
 
+    namespace 'pl.szczodrzynski.edziennik'
+
     defaultConfig {
         applicationId 'pl.szczodrzynski.edziennik'
         minSdkVersion setup.minSdk

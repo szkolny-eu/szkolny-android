@@ -49,7 +49,7 @@ inline fun <reified E : Enum<E>> Int.toEnum() = when (E::class.java) {
     else -> enumValues<E>()[this]
 } as E
 
-fun <E : Enum<E>> Int.toEnum(type: Class<*>) = when (type) {
+fun <E : Enum<E>> Int.toEnum(type: Class<*>): Enum<E> = when (type) {
     // this is used for Config so all enums are here
     FeatureType::class.java -> this.asFeatureType()
     LoginMethod::class.java -> this.asLoginMethod()
