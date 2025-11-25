@@ -212,7 +212,7 @@ dependencies {
     implementation "cat.ereza:customactivityoncrash:2.3.0"
     implementation "com.android.volley:volley:1.2.1"
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-    implementation "com.github.Applandeo:Material-Calendar-View:15de569cbc" // https://github.com/Applandeo/Material-Calendar-View
+    implementation "com.github.Applandeo:Material-Calendar-View:8abaf10496" // https://github.com/Applandeo/Material-Calendar-View
     implementation "com.github.CanHub:Android-Image-Cropper:2.2.2" // https://github.com/CanHub/Android-Image-Cropper
     implementation "com.github.ChuckerTeam.Chucker:library:3.5.2" // https://github.com/ChuckerTeam/chucker
     implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2" // https://github.com/antonKozyriatskyi/CircularProgressIndicator

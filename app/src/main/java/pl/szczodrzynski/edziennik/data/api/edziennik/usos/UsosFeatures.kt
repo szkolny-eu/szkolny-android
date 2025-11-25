@@ -16,6 +16,7 @@ const val ENDPOINT_USOS_API_COURSES         = 7020
 const val ENDPOINT_USOS_API_TIMETABLE       = 7030
 const val ENDPOINT_USOS_API_ECTS_POINTS     = 7040
 const val ENDPOINT_USOS_API_EXAM_REPORTS    = 7050
+const val ENDPOINT_USOS_API_EXAMS           = 7060
 
 val UsosFeatures = listOf(
     /*
@@ -40,6 +41,13 @@ val UsosFeatures = listOf(
      */
     Feature(LoginType.USOS, FeatureType.TIMETABLE, listOf(
         ENDPOINT_USOS_API_TIMETABLE to LoginMethod.USOS_API,
+    )),
+
+    /*
+     * Agenda
+     */
+    Feature(LoginType.USOS, FeatureType.AGENDA, listOf(
+        ENDPOINT_USOS_API_EXAMS to LoginMethod.USOS_API,
     )),
 
     /*

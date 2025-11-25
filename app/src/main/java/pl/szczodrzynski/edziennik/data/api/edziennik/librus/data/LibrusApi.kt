@@ -69,6 +69,7 @@ open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
                         "NoticeboardProblem" -> ERROR_LIBRUS_API_NOTICEBOARD_PROBLEM
                         "DeviceRegistered" -> ERROR_LIBRUS_API_DEVICE_REGISTERED
                         "Maintenance" -> ERROR_LIBRUS_API_MAINTENANCE
+                        "TeacherFreeDaysIsNotActive" -> ERROR_LIBRUS_API_TEACHER_FREE_DAYS_NOT_PUBLIC
                         else -> ERROR_LIBRUS_API_OTHER
                     }.let { errorCode ->
                         if (errorCode !in ignoreErrors) {

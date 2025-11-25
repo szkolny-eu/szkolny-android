@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiCourses
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiEctsPoints
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiExamReports
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiExams
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiTerms
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiTimetable
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiUser
@@ -67,6 +68,10 @@ class UsosData(val data: DataUsos, val onSuccess: () -> Unit) {
             ENDPOINT_USOS_API_EXAM_REPORTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 UsosApiExamReports(data, lastSync, onSuccess)
+            }
+            ENDPOINT_USOS_API_EXAMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_exams)
+                UsosApiExams(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }

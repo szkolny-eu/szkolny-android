@@ -84,7 +84,7 @@
     <string name="card_action_move_up">Move down</string>
     <string name="card_events_header_title">Upcoming events</string>
     <string name="card_grades_button">Go to grades</string>
-    <string name="card_grades_header_title">Grades - last 7 days</string>
+    <string name="card_grades_header_title">Latest grades</string>
     <string name="card_grades_no_data">No grades to show</string>
     <string name="card_lucky_number_not_set">Click to set your number.</string>
     <string name="card_lucky_number_set_text">Type in your number from the school register:</string>

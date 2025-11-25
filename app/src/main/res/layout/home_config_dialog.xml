@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/home_config_title"/>
+
+            <CheckBox
+                android:id="@+id/lockCards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="0dp"
+                android:text="@string/home_config_lock_cards" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/home_config_lock_cards_hint"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/configureCards"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:minHeight="0dp"
+                android:text="@string/home_configure_add_remove" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/home_events_config_title"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:text="@string/home_config_events_limit" />
+
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/eventsLimit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:picker_min="1"
+                    app:picker_max="20"
+                    app:picker_stepSize="1"
+                    app:picker_disableGestures="true"
+                    app:picker_orientation="horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:text="@string/home_config_events_weeks" />
+
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/eventsWeeks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:picker_min="1"
+                    app:picker_max="16"
+                    app:picker_stepSize="1"
+                    app:picker_disableGestures="true"
+                    app:picker_orientation="horizontal" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/home_grades_config_title"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:text="@string/home_config_grades_weeks" />
+
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/gradesWeeks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:picker_min="1"
+                    app:picker_max="16"
+                    app:picker_stepSize="1"
+                    app:picker_disableGestures="true"
+                    app:picker_orientation="horizontal" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

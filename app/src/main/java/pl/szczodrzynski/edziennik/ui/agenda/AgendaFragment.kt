@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.EventDay
+import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
@@ -178,16 +181,22 @@ class AgendaFragment : Fragment(), CoroutineScope {
         }
 
         b.agendaCalendarView.setEvents(dayList)
-        b.agendaCalendarView.setOnDayClickListener { day -> this@AgendaFragment.launch {
-            val date = Date.fromCalendar(day.calendar)
+        b.agendaCalendarView.setOnCalendarDayClickListener(object : OnCalendarDayClickListener {
+            override fun onClick(day: CalendarDay) {
+                this@AgendaFragment.launch {
+                    val date = Date.fromCalendar(day.calendar)
 
-            if (date.value in unreadEventDates) {
-                withContext(Dispatchers.Default) { app.db.eventDao().setSeenByDate(app.profileId, date, true) }
-                unreadEventDates.remove(date.value)
+                    if (date.value in unreadEventDates) {
+                        withContext(Dispatchers.Default) {
+                            app.db.eventDao().setSeenByDate(app.profileId, date, true)
+                        }
+                        unreadEventDates.remove(date.value)
+                    }
+
+                    DayDialog(activity, app.profileId, date).show()
+                }
             }
-
-            DayDialog(activity, app.profileId, date).show()
-        }}
+        })
 
         b.progressBar.visibility = View.GONE
     }}}

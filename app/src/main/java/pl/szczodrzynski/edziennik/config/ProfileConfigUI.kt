@@ -20,6 +20,10 @@ class ProfileConfigUI(base: ProfileConfig) {
     var agendaElearningGroup by base.config<Boolean>(true)
 
     var homeCards by base.config<List<HomeCardModel>> { listOf() }
+    var homeCardsLocked by base.config<Boolean>(false)
+    var homeEventsLimit by base.config<Int>(4)
+    var homeEventsWeeks by base.config<Int>(4)
+    var homeGradesWeeks by base.config<Int>(1)
 
     var messagesGreetingOnCompose by base.config<Boolean>(true)
     var messagesGreetingOnReply by base.config<Boolean>(true)

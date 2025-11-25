@@ -15,14 +15,14 @@ import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_NOTES
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_TIMETABLE
 
-class HomeConfigDialog(
+class HomeCardsDialog(
     activity: AppCompatActivity,
     private val reloadOnDismiss: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
-    override val TAG = "HomeConfigDialog"
+    override val TAG = "HomeCardsDialog"
 
     override fun getTitleRes() = R.string.home_configure_add_remove
     override fun getPositiveButtonText() = R.string.ok

@@ -204,40 +204,27 @@ public class Date implements Comparable<Date>, Noteable {
 
     @NonNull
     public Date stepForward(int years, int months, int days) {
-        this.day += days;
-        if (day <= 0) {
-            month--;
-            if(month <= 0) {
-                month += 12;
-                year--;
-            }
-            day += daysInMonth();
-        }
-        if (day > daysInMonth()) {
-            day -= daysInMonth();
-            month++;
-        }
-        this.month += months;
-        if(month <= 0) {
-            month += 12;
-            year--;
-        }
-        if (month > 12) {
-            month -= 12;
-            year++;
-        }
         this.year += years;
-        /*Calendar c = Calendar.getInstance();
-        int newMonth = month + months;
-        if (newMonth > 12) {
-            newMonth = 1;
-            years++;
+        this.month += months;
+        this.day += days;
+
+        while (this.day <= 0) {
+            this.month--;
+            this.day += daysInMonth();
         }
-        c.set(year + years, newMonth - 1, day);
-        c.setTimeInMillis(c.getTimeInMillis() + days * 24 * 60 * 60 * 1000);
-        this.year = c.get(Calendar.YEAR);
-        this.month = c.get(Calendar.MONTH) + 1;
-        this.day = c.get(Calendar.DAY_OF_MONTH);*/
+        while (this.day > daysInMonth()) {
+            this.day -= daysInMonth();
+            this.month++;
+        }
+
+        while (this.month <= 0) {
+            this.year--;
+            this.month += 12;
+        }
+        while (this.month > 12) {
+            this.year++;
+            this.month -= 12;
+        }
         return this;
     }
 
