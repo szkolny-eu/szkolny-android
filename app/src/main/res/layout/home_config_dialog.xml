@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     app:picker_min="1"
-                    app:picker_max="8"
+                    app:picker_max="16"
                     app:picker_stepSize="1"
                     app:picker_disableGestures="true"
                     app:picker_orientation="horizontal" />
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     app:picker_min="1"
-                    app:picker_max="8"
+                    app:picker_max="16"
                     app:picker_stepSize="1"
                     app:picker_disableGestures="true"
                     app:picker_orientation="horizontal" />

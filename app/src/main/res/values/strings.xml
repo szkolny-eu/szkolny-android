@@ -1572,7 +1572,7 @@
     <string name="home_config_lock_cards_hint">Zapobiega przypadkowemu usunięciu lub przemieszczeniu kart</string>
     <string name="home_config_events_limit">Liczba najbliższych wydarzeń</string>
     <string name="home_config_events_weeks">Czas najbliższych wydarzeń (tygodnie)</string>
-    <string name="home_config_grades_weeks">Czas najbliższych ocen (tygodnie)</string>
+    <string name="home_config_grades_weeks">Czas ostatnich ocen (tygodnie)</string>
     <string name="home_grades_config_title">Karta ocen</string>
     <string name="menu_home_config">Ustawienia strony głównej</string>
     <string name="home_configure_settings">Ustawienia</string>
