@@ -2,7 +2,10 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2019-11-29
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,4 +37,13 @@
             android:orientation="vertical">
         </LinearLayout>
     </LinearLayout>
-</layout>
+
+    <ImageView
+        android:id="@+id/settings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="12dp"
+        tools:src="@sample/settings" />
+</FrameLayout>

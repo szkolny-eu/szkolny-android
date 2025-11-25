@@ -19,6 +19,9 @@ import android.widget.TextView
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +34,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeGradesBinding
 import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.HomeConfigDialog
 import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
@@ -39,6 +44,7 @@ import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel
+import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class HomeGradesCard(
@@ -65,6 +71,16 @@ class HomeGradesCard(
             setMargins(8.dp)
         }
         holder.root += b.root
+
+        b.settings.setImageDrawable(
+            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_cog_outline).apply {
+                colorAttr(activity, R.attr.colorIcon)
+                sizeDp = 24
+            }
+        )
+        b.settings.onClick {
+            HomeConfigDialog(activity, reloadOnDismiss = true).show()
+        }
 
         val days = app.profile.config.ui.homeGradesWeeks * 7
         val fromDate = Date.getToday().stepForward(0, 0, -days)
