@@ -5,8 +5,15 @@
 package pl.szczodrzynski.edziennik.ui.login
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +26,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import kotlin.coroutines.CoroutineContext
@@ -98,6 +106,15 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         b = LoginActivityBinding.inflate(layoutInflater)
         setContentView(b.root)
         errorSnackbar.setCoordinator(b.coordinator, b.snackbarAnchor)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            ViewCompat.setOnApplyWindowInsetsListener(b.root) { view: View, insets: WindowInsetsCompat ->
+                val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+                insets
+            }
+        }
 
         app.buildManager.validateBuild(this)
 
