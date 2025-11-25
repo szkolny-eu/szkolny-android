@@ -106,7 +106,7 @@
     <string name="card_action_move_up">Przesuń w górę</string>
     <string name="card_events_header_title">Najbliższe wydarzenia</string>
     <string name="card_grades_button">Przejdź do ocen</string>
-    <string name="card_grades_header_title">Oceny - ostatnie 7 dni</string>
+    <string name="card_grades_header_title">Najnowsze oceny</string>
     <string name="card_grades_no_data">Brak ocen do wyświetlenia</string>
     <string name="card_lucky_number_not_set">Kliknij, aby ustawić swój numerek.</string>
     <string name="card_lucky_number_set_text">Ustaw swój numer w dzienniku szkolnym:</string>
@@ -1566,4 +1566,15 @@
     <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
     <string name="login_type_demo">Użyj bez logowania</string>
     <string name="login_mode_demo">Wersja demonstracyjna</string>
+    <string name="home_events_config_title">Karta wydarzeń</string>
+    <string name="home_config_title">Konfiguracja strony głównej</string>
+    <string name="home_config_lock_cards">Zablokuj karty</string>
+    <string name="home_config_lock_cards_hint">Zapobiega przypadkowemu usunięciu lub przemieszczeniu kart</string>
+    <string name="home_config_events_limit">Liczba najbliższych wydarzeń</string>
+    <string name="home_config_events_weeks">Czas najbliższych wydarzeń (tygodnie)</string>
+    <string name="home_config_grades_weeks">Czas najbliższych ocen (tygodnie)</string>
+    <string name="home_grades_config_title">Karta ocen</string>
+    <string name="menu_home_config">Ustawienia strony głównej</string>
+    <string name="home_configure_settings">Ustawienia</string>
+    <string name="home_configure_locked">Zmiana ułożenia kart została zablokowana w Ustawieniach</string>
 </resources>

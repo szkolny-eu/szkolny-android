@@ -84,7 +84,7 @@
     <string name="card_action_move_up">Nach oben bewegen</string>
     <string name="card_events_header_title">Kommende Ereignisse</string>
     <string name="card_grades_button">Gehe zu Noten</string>
-    <string name="card_grades_header_title">Noten - letzte 7 Tage</string>
+    <string name="card_grades_header_title">Aktuelle Noten</string>
     <string name="card_grades_no_data">Keine Noten zu zeigen</string>
     <string name="card_lucky_number_not_set">Klicken Sie, um Ihre Nummer zu einstellen</string>
     <string name="card_lucky_number_set_text">Geben Sie Ihre Nummer aus dem Schulregister ein:</string>

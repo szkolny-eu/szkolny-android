@@ -20,7 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
@@ -29,8 +33,15 @@ import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ext.hasUIFeature
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.HomeConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
-import pl.szczodrzynski.edziennik.ui.home.cards.*
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeArchiveCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeAvailabilityCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeEventsCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeGradesCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeLuckyNumberCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeNotesCard
+import pl.szczodrzynski.edziennik.ui.home.cards.HomeTimetableCard
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
@@ -108,6 +119,13 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withIcon(Icon.cmd_card_bulleted_settings_outline)
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
+                            HomeCardsDialog(activity, reloadOnDismiss = true).show()
+                        }),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_home_config)
+                        .withIcon(Icon.cmd_cog_outline)
+                        .withOnClickListener(OnClickListener {
+                            activity.bottomSheet.close()
                             HomeConfigDialog(activity, reloadOnDismiss = true).show()
                         }),
                 BottomSheetPrimaryItem(true)
@@ -136,8 +154,17 @@ class HomeFragment : Fragment(), CoroutineScope {
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )
+
+        val homeCardsLocked = app.profile.config.ui.homeCardsLocked
+        if (homeCardsLocked) {
+            b.configHintText.setText(R.string.home_configure_locked)
+            b.configureCards.setText(R.string.home_configure_settings)
+        }
         b.configureCards.onClick {
-            HomeConfigDialog(activity, reloadOnDismiss = true).show()
+            if (homeCardsLocked)
+                HomeConfigDialog(activity, reloadOnDismiss = true).show()
+            else
+                HomeCardsDialog(activity, reloadOnDismiss = true).show()
         }
 
         b.scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
@@ -180,44 +207,47 @@ class HomeFragment : Fragment(), CoroutineScope {
         }
 
         val adapter = HomeCardAdapter(items)
-        val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
-        adapter.itemTouchHelper = itemTouchHelper
         b.list.layoutManager = LinearLayoutManager(activity)
         b.list.adapter = adapter
-        b.list.setAccessibilityDelegateCompat(object : RecyclerViewAccessibilityDelegate(b.list) {
-            override fun getItemDelegate(): AccessibilityDelegateCompat {
-                return object : ItemDelegate(this) {
-                    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
-                        super.onInitializeAccessibilityNodeInfo(host, info)
-                        val position: Int = b.list.getChildLayoutPosition(host)
-                        if (position != 0) {
-                            info.addAction(AccessibilityActionCompat(
-                                    R.id.move_card_up_action,
-                                    host.resources.getString(R.string.card_action_move_up)
-                            ))
-                        }
-                        if (position != adapter.itemCount - 1) {
-                            info.addAction(AccessibilityActionCompat(
-                                    R.id.move_card_down_action,
-                                    host.resources.getString(R.string.card_action_move_down)
-                            ))
-                        }
-                    }
 
-                    override fun performAccessibilityAction(host: View, action: Int, args: Bundle?): Boolean {
-                        val fromPosition: Int = b.list.getChildLayoutPosition(host)
-                        if (action == R.id.move_card_down_action) {
-                            swapCards(fromPosition, fromPosition + 1, adapter)
-                            return true
-                        } else if (action == R.id.move_card_up_action) {
-                            swapCards(fromPosition, fromPosition - 1, adapter)
-                            return true
+        if (!homeCardsLocked) {
+            val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))
+            adapter.itemTouchHelper = itemTouchHelper
+            b.list.setAccessibilityDelegateCompat(object : RecyclerViewAccessibilityDelegate(b.list) {
+                override fun getItemDelegate(): AccessibilityDelegateCompat {
+                    return object : ItemDelegate(this) {
+                        override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                            super.onInitializeAccessibilityNodeInfo(host, info)
+                            val position: Int = b.list.getChildLayoutPosition(host)
+                            if (position != 0) {
+                                info.addAction(AccessibilityActionCompat(
+                                        R.id.move_card_up_action,
+                                        host.resources.getString(R.string.card_action_move_up)
+                                ))
+                            }
+                            if (position != adapter.itemCount - 1) {
+                                info.addAction(AccessibilityActionCompat(
+                                        R.id.move_card_down_action,
+                                        host.resources.getString(R.string.card_action_move_down)
+                                ))
+                            }
                         }
-                        return super.performAccessibilityAction(host, action, args)
+
+                        override fun performAccessibilityAction(host: View, action: Int, args: Bundle?): Boolean {
+                            val fromPosition: Int = b.list.getChildLayoutPosition(host)
+                            if (action == R.id.move_card_down_action) {
+                                swapCards(fromPosition, fromPosition + 1, adapter)
+                                return true
+                            } else if (action == R.id.move_card_up_action) {
+                                swapCards(fromPosition, fromPosition - 1, adapter)
+                                return true
+                            }
+                            return super.performAccessibilityAction(host, action, args)
+                        }
                     }
                 }
-            }
-        })
-        itemTouchHelper.attachToRecyclerView(b.list)
+            })
+            itemTouchHelper.attachToRecyclerView(b.list)
+        }
     }
 }

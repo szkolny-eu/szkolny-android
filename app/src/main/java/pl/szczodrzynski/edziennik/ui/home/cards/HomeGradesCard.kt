@@ -66,9 +66,10 @@ class HomeGradesCard(
         }
         holder.root += b.root
 
-        val sevenDaysAgo = Date.getToday().stepForward(0, 0, -7)
+        val days = app.profile.config.ui.homeGradesWeeks * 7
+        val fromDate = Date.getToday().stepForward(0, 0, -days)
 
-        app.db.gradeDao().getAllFromDate(profile.id, sevenDaysAgo).observe(fragment, Observer {
+        app.db.gradeDao().getAllFromDate(profile.id, fromDate).observe(fragment, Observer {
             grades.apply {
                 clear()
                 addAll(it.filter { it.type != TYPE_NO_GRADE })

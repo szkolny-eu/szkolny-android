@@ -83,7 +83,13 @@ class HomeEventsCard(
                 }
         )
 
-        app.db.eventDao().getNearestNotDone(profile.id, Date.getToday(), 4).observe(activity, Observer { events ->
+        val limit = app.profile.config.ui.homeEventsLimit
+        val days = app.profile.config.ui.homeEventsWeeks * 7
+        val toDate = Date.getToday().stepForward(0, 0, days)
+
+        app.db.eventDao().getNearestNotDone(profile.id, Date.getToday(), limit).observe(activity, Observer { eventsAll ->
+            val events = eventsAll.filter { it.date <= toDate }
+
             events.forEach {
                 it.filterNotes()
             }
