@@ -13,12 +13,16 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -145,6 +149,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Profile is valid, inflating views")
 
         setContentView(b.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            ViewCompat.setOnApplyWindowInsetsListener(b.rootFrame) { view: View, insets: WindowInsetsCompat ->
+                val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(bars.left, bars.top, bars.right, 0)
+                b.navView.bottomSheet.setPadding(0, 0, 0, bars.bottom)
+                b.swipeRefreshLayout.setPadding(0, 0, 0, bars.bottom)
+                b.nightlyText.updateLayoutParams<FrameLayout.LayoutParams> {
+                    this.bottomMargin = 8.dp + bars.bottom
+                }
+                insets
+            }
+        }
 
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)

@@ -25,7 +25,7 @@ object Signing {
         with(context) {
         try {
             val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in packageInfo.signatures) {
+            for (signature in packageInfo.signatures ?: arrayOf()) {
                 val signatureBytes = signature.toByteArray()
                 val md = MessageDigest.getInstance("SHA")
                 md.update(signatureBytes)
@@ -46,6 +46,6 @@ object Signing {
 
     /*fun provideKey(param1: String, param2: Long): ByteArray {*/
     fun pleaseStopRightNow(param1: String, param2: Long): ByteArray {
-        return "$param1.MTIzNDU2Nzg5MD6Qm2vQ4e===.$param2".sha256()
+        return "$param1.MTIzNDU2Nzg5MDkUJ74VXs===.$param2".sha256()
     }
 }
