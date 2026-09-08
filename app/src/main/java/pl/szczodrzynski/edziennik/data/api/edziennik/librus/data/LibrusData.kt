@@ -90,6 +90,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 LibrusApiTimetables(data, lastSync, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_EXTRA_TIMETABLES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_extra_timetable)
+                LibrusApiExtraTimetables(data, lastSync, onSuccess)
+            }
 
             ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)

@@ -339,6 +339,7 @@
     <string name="edziennik_progress_endpoint_teachers">Pobieranie listy nauczycieli…</string>
     <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych…</string>
     <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji…</string>
+    <string name="edziennik_progress_endpoint_extra_timetable">Pobieranie zajęć dodatkowych…</string>
     <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce…</string>
     <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
     <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości LIBRUS®</string>
