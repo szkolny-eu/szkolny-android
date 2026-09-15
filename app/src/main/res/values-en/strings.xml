@@ -305,6 +305,7 @@
     <string name="edziennik_progress_endpoint_teachers">Syncing teachers…</string>
     <string name="edziennik_progress_endpoint_teams">Syncing class groups…</string>
     <string name="edziennik_progress_endpoint_timetable">Syncing timetable…</string>
+    <string name="edziennik_progress_endpoint_extra_timetable">Syncing extra curricular activities…</string>
     <string name="edziennik_progress_endpoint_units">Syncing unit info…</string>
     <string name="edziennik_progress_login_librus_api">Logging in to the API…</string>
     <string name="edziennik_progress_login_librus_messages">Logging in to LIBRUS® messages…</string>
