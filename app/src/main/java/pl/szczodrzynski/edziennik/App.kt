@@ -27,6 +27,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
+import com.qifan.powerpermission.PowerPermission
 import im.wangchao.mhttp.MHttp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -191,6 +192,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
           \___/|_| |_|\_____|_|  \___|\__,_|\__\__*/
     override fun onCreate() {
         super.onCreate()
+        // FragmentManager may restore PowerPermission's fragment before any permission is requested.
+        PowerPermission.init()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
