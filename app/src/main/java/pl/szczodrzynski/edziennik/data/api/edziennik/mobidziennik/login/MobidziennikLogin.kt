@@ -7,11 +7,19 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
         private const val TAG = "MobidziennikLogin"
+
+        fun loginWeb(data: DataMobidziennik, onSuccess: () -> Unit) {
+            if (data.loginStore.mode == LoginMode.MOBIDZIENNIK_FORM)
+                MobidziennikLoginForm(data, onSuccess)
+            else
+                MobidziennikLoginWeb(data, onSuccess)
+        }
     }
 
     private var cancelled = false
@@ -47,7 +55,7 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
         when (loginMethod) {
             LoginMethod.MOBIDZIENNIK_WEB -> {
                 data.startProgress(R.string.edziennik_progress_login_mobidziennik_web)
-                MobidziennikLoginWeb(data) { onSuccess(loginMethod) }
+                loginWeb(data) { onSuccess(loginMethod) }
             }
             LoginMethod.MOBIDZIENNIK_API2 -> {
                 data.startProgress(R.string.edziennik_progress_login_mobidziennik_api2)
