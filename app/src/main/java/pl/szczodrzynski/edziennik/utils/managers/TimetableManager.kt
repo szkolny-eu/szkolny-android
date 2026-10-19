@@ -70,6 +70,7 @@ class TimetableManager(val app: App) : CoroutineScope {
                                 R.string.timetable_lesson_change_format,
                                 lesson.oldTeacherName ?: "?"
                         )
+                    lesson.isClassroomChangeOnly -> annotation.setText(R.string.timetable_lesson_classroom_change)
                     else -> annotation.setText(R.string.timetable_lesson_change)
                 }
 

@@ -10,7 +10,9 @@ import im.wangchao.mhttp.callback.FileCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.HtmlParsers
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.io.File
 
@@ -75,7 +77,8 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
                     return
                 }
                 if (text == "Nie jestes zalogowany"
-                        || text.contains("przypomnij_haslo_email")) {
+                        || text.contains("przypomnij_haslo_email")
+                        || data.loginStore.mode == LoginMode.MOBIDZIENNIK_FORM && HtmlParsers.isLoginPage(text)) {
                     data.error(ApiError(TAG, ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED)
                             .withResponse(response))
                     return

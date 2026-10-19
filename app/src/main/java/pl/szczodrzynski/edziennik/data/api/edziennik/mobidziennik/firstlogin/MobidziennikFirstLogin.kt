@@ -3,7 +3,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.firstlogin
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
-import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLogin
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
@@ -22,7 +22,7 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
     init {
         var firstProfileId = data.loginStore.id
 
-        MobidziennikLoginWeb(data) {
+        MobidziennikLogin.loginWeb(data) {
             web.webGet(TAG, "/api/zrzutbazy") { text ->
                 val tables = text.split("T@B#LA")
 

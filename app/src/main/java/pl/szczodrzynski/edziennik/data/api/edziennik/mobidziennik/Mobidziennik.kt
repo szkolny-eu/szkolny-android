@@ -11,6 +11,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.firstlogin.MobidziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLogin
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlFeatures
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlFirstLogin
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlGetHomework
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlGetMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlGetRecipientList
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.MobidziennikHtmlSendMessage
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
@@ -20,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -31,6 +38,9 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
         const val API_KEY = "szkolny_eu_72c7dbc8b97f1e5dd2d118cacf51c2b8543d15c0f65b7a59979adb0a1296b235d7febb826dd2a28688def6efe0811b924b04d7f3c7b7d005354e06dc56815d57"
     }
+
+    private val isHtmlMode
+        get() = loginStore.mode == LoginMode.MOBIDZIENNIK_FORM
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataMobidziennik
@@ -58,7 +68,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
                                           |__*/
     override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(MobidziennikFeatures, featureTypes, onlyEndpoints)
+        data.prepare(if (isHtmlMode) MobidziennikHtmlFeatures else MobidziennikFeatures, featureTypes, onlyEndpoints)
         login()
     }
 
@@ -88,6 +98,12 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     override fun getMessage(message: MessageFull) {
         login(LoginMethod.MOBIDZIENNIK_WEB) {
+            if (isHtmlMode) {
+                MobidziennikHtmlGetMessage(data, message) {
+                    completed()
+                }
+                return@login
+            }
             MobidziennikWebGetMessage(data, message) {
                 completed()
             }
@@ -96,6 +112,12 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {
         login(LoginMethod.MOBIDZIENNIK_WEB) {
+            if (isHtmlMode) {
+                MobidziennikHtmlSendMessage(data, recipients, subject, text) {
+                    completed()
+                }
+                return@login
+            }
             MobidziennikWebSendMessage(data, recipients, subject, text) {
                 completed()
             }
@@ -115,6 +137,12 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     override fun getRecipientList() {
         login(LoginMethod.MOBIDZIENNIK_WEB) {
+            if (isHtmlMode) {
+                MobidziennikHtmlGetRecipientList(data) {
+                    completed()
+                }
+                return@login
+            }
             MobidziennikWebGetRecipientList(data) {
                 completed()
             }
@@ -123,6 +151,17 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     override fun getEvent(eventFull: EventFull) {
         login(LoginMethod.MOBIDZIENNIK_WEB) {
+            if (isHtmlMode) {
+                if (eventFull.isHomework) {
+                    MobidziennikHtmlGetHomework(data, eventFull) {
+                        completed()
+                    }
+                }
+                else {
+                    completed()
+                }
+                return@login
+            }
             if (eventFull.isHomework) {
                 MobidziennikWebGetHomework(data, eventFull) {
                     completed()
@@ -136,7 +175,12 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         }
     }
 
-    override fun firstLogin() { MobidziennikFirstLogin(data) { completed() } }
+    override fun firstLogin() {
+        if (isHtmlMode)
+            MobidziennikHtmlFirstLogin(data) { completed() }
+        else
+            MobidziennikFirstLogin(data) { completed() }
+    }
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()

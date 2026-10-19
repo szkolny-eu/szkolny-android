@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api.MobidziennikApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api2.MobidziennikApi2Main
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.html.*
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
@@ -87,6 +88,42 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE-> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 MobidziennikWebTimetable(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                MobidziennikHtmlGrades(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_TIMETABLE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_timetable)
+                MobidziennikHtmlTimetable(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_AGENDA -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_calendar)
+                MobidziennikHtmlAgenda(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_data)
+                MobidziennikHtmlHomework(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_BEHAVIOUR -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_data)
+                MobidziennikHtmlBehaviour(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_ATTENDANCE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_attendance)
+                MobidziennikHtmlAttendance(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_MESSAGES_INBOX -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
+                MobidziennikHtmlMessagesInbox(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                MobidziennikHtmlMessagesSent(data, lastSync, onSuccess)
+            }
+            ENDPOINT_MOBIDZIENNIK_HTML_ANNOUNCEMENTS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_data)
+                MobidziennikHtmlAnnouncements(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }
