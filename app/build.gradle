@@ -214,7 +214,7 @@ dependencies {
     implementation "cat.ereza:customactivityoncrash:2.3.0"
     implementation "com.android.volley:volley:1.2.1"
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-    implementation "com.github.Applandeo:Material-Calendar-View:8abaf10496" // https://github.com/Applandeo/Material-Calendar-View
+    implementation "com.applandeo:material-calendar-view:1.9.0"
     implementation "com.github.CanHub:Android-Image-Cropper:2.2.2" // https://github.com/CanHub/Android-Image-Cropper
     implementation "com.github.ChuckerTeam.Chucker:library:3.5.2" // https://github.com/ChuckerTeam/chucker
     implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2" // https://github.com/antonKozyriatskyi/CircularProgressIndicator
@@ -223,7 +223,8 @@ dependencies {
     implementation "com.github.smuyyh:JsonViewer:V1.0.6" // https://github.com/smuyyh/JsonViewer
     implementation "com.github.underwindfall.PowerPermission:powerpermission-coroutines:1.4.0" // https://github.com/underwindfall/PowerPermission
     implementation "com.github.underwindfall.PowerPermission:powerpermission:1.4.0" // https://github.com/underwindfall/PowerPermission
-    implementation "com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31" // https://github.com/wulkanowy/uonet-request-signer
+    implementation "eu.szkolny:x509-generator:1.0.0"
+    implementation "com.brsanthu:migbase64:2.2"
     implementation "com.jaredrummler:colorpicker:1.1.0"
     implementation "io.coil-kt:coil:1.1.1"
     implementation "me.dm7.barcodescanner:zxing:1.9.8"
