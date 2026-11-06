@@ -15,10 +15,7 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
         private const val TAG = "MobidziennikLogin"
 
         fun loginWeb(data: DataMobidziennik, onSuccess: () -> Unit) {
-            if (data.loginStore.mode == LoginMode.MOBIDZIENNIK_FORM)
-                MobidziennikLoginForm(data, onSuccess)
-            else
-                MobidziennikLoginWeb(data, onSuccess)
+            MobidziennikLoginForm(data, onSuccess)
         }
     }
 

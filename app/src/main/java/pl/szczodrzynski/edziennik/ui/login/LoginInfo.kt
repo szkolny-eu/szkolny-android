@@ -271,21 +271,11 @@ object LoginInfo {
                 registerLogo = R.drawable.login_logo_mobidziennik,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LoginMode.MOBIDZIENNIK_WEB,
-                        name = R.string.login_mode_mobidziennik_web,
-                        icon = R.drawable.login_mode_mobidziennik_web,
-                        hintText = R.string.login_mode_mobidziennik_web_hint,
-                        guideText = R.string.login_mode_mobidziennik_web_guide,
-                        credentials = getMobidziennikCredentials(),
-                        errorCodes = mobidziennikErrorCodes
-                    ),
-                    Mode(
                         loginMode = LoginMode.MOBIDZIENNIK_FORM,
                         name = R.string.login_mode_mobidziennik_form,
                         icon = R.drawable.login_mode_mobidziennik_web,
                         hintText = R.string.login_mode_mobidziennik_form_hint,
                         guideText = R.string.login_mode_mobidziennik_form_guide,
-                        isTesting = true,
                         credentials = getMobidziennikCredentials(),
                         errorCodes = mobidziennikErrorCodes
                     )

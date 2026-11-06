@@ -78,7 +78,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
                 }
                 if (text == "Nie jestes zalogowany"
                         || text.contains("przypomnij_haslo_email")
-                        || data.loginStore.mode == LoginMode.MOBIDZIENNIK_FORM && HtmlParsers.isLoginPage(text)) {
+                        || HtmlParsers.isLoginPage(text)) {
                     data.error(ApiError(TAG, ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED)
                             .withResponse(response))
                     return

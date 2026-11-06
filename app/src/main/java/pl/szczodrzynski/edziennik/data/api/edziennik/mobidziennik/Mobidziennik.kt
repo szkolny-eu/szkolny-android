@@ -40,7 +40,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     private val isHtmlMode
-        get() = loginStore.mode == LoginMode.MOBIDZIENNIK_FORM
+        get() = true
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataMobidziennik
