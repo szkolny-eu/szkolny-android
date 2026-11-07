@@ -136,6 +136,7 @@ class LessonChangesAdapter(
                                 R.string.timetable_lesson_change_format,
                                 lesson.oldTeacherName ?: "?"
                         )
+                    lesson.isClassroomChangeOnly -> b.annotation.setText(R.string.timetable_lesson_classroom_change)
                     else -> b.annotation.setText(R.string.timetable_lesson_change)
                 }
 

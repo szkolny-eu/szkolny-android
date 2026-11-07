@@ -45,6 +45,53 @@ object LoginInfo {
         hideText = true
     )
 
+    private fun getMobidziennikCredentials() = listOf(
+        FormField(
+            keyName = "username",
+            name = R.string.login_hint_login_email,
+            icon = CommunityMaterial.Icon.cmd_account_outline,
+            emptyText = R.string.login_error_no_login,
+            invalidText = R.string.login_error_incorrect_login,
+            errorCodes = mapOf(),
+            isRequired = true,
+            validationRegex = "^[a-z0-9_\\-@+.]+$",
+            caseMode = FormField.CaseMode.LOWER_CASE
+        ),
+        FormField(
+            keyName = "password",
+            name = R.string.login_hint_password,
+            icon = CommunityMaterial.Icon2.cmd_lock_outline,
+            emptyText = R.string.login_error_no_password,
+            invalidText = R.string.login_error_incorrect_login_or_password,
+            errorCodes = mapOf(
+                ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD to R.string.login_error_old_password
+            ),
+            isRequired = true,
+            validationRegex = ".*",
+            hideText = true
+        ),
+        FormField(
+            keyName = "serverName",
+            name = R.string.login_hint_address,
+            icon = CommunityMaterial.Icon3.cmd_web,
+            emptyText = R.string.login_error_no_address,
+            invalidText = R.string.login_error_incorrect_address,
+            errorCodes = mapOf(
+                ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS to R.string.login_error_incorrect_address
+            ),
+            prefix = R.string.login_mobidziennik_server_prefix,
+            suffix = R.string.login_mobidziennik_server_suffix,
+            isRequired = true,
+            validationRegex = "^[a-z0-9_\\-]+\$",
+            caseMode = FormField.CaseMode.LOWER_CASE
+        )
+    )
+
+    private val mobidziennikErrorCodes = mapOf(
+        ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
+        ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED to R.string.sync_error_archived
+    )
+
     val list by lazy {
         listOf(
             Register(
@@ -224,56 +271,13 @@ object LoginInfo {
                 registerLogo = R.drawable.login_logo_mobidziennik,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LoginMode.MOBIDZIENNIK_WEB,
-                        name = R.string.login_mode_mobidziennik_web,
+                        loginMode = LoginMode.MOBIDZIENNIK_FORM,
+                        name = R.string.login_mode_mobidziennik_form,
                         icon = R.drawable.login_mode_mobidziennik_web,
-                        hintText = R.string.login_mode_mobidziennik_web_hint,
-                        guideText = R.string.login_mode_mobidziennik_web_guide,
-                        credentials = listOf(
-                            FormField(
-                                keyName = "username",
-                                name = R.string.login_hint_login_email,
-                                icon = CommunityMaterial.Icon.cmd_account_outline,
-                                emptyText = R.string.login_error_no_login,
-                                invalidText = R.string.login_error_incorrect_login,
-                                errorCodes = mapOf(),
-                                isRequired = true,
-                                validationRegex = "^[a-z0-9_\\-@+.]+$",
-                                caseMode = FormField.CaseMode.LOWER_CASE
-                            ),
-                            FormField(
-                                keyName = "password",
-                                name = R.string.login_hint_password,
-                                icon = CommunityMaterial.Icon2.cmd_lock_outline,
-                                emptyText = R.string.login_error_no_password,
-                                invalidText = R.string.login_error_incorrect_login_or_password,
-                                errorCodes = mapOf(
-                                    ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD to R.string.login_error_old_password
-                                ),
-                                isRequired = true,
-                                validationRegex = ".*",
-                                hideText = true
-                            ),
-                            FormField(
-                                keyName = "serverName",
-                                name = R.string.login_hint_address,
-                                icon = CommunityMaterial.Icon3.cmd_web,
-                                emptyText = R.string.login_error_no_address,
-                                invalidText = R.string.login_error_incorrect_address,
-                                errorCodes = mapOf(
-                                    ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS to R.string.login_error_incorrect_address
-                                ),
-                                prefix = R.string.login_mobidziennik_server_prefix,
-                                suffix = R.string.login_mobidziennik_server_suffix,
-                                isRequired = true,
-                                validationRegex = "^[a-z0-9_\\-]+\$",
-                                caseMode = FormField.CaseMode.LOWER_CASE
-                            )
-                        ),
-                        errorCodes = mapOf(
-                            ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
-                            ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED to R.string.sync_error_archived
-                        )
+                        hintText = R.string.login_mode_mobidziennik_form_hint,
+                        guideText = R.string.login_mode_mobidziennik_form_guide,
+                        credentials = getMobidziennikCredentials(),
+                        errorCodes = mobidziennikErrorCodes
                     )
                 )
             ),

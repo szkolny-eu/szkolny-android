@@ -29,10 +29,11 @@ private def getGit() {
                 .readEnvironment()
                 .findGitDir(project.projectDir)
                 .build()
-    } catch (IllegalArgumentException | RepositoryNotFoundException ignore) {
-        def logger = LoggerFactory.getLogger("androidGitVersion")
-        logger.error("No git repository reachable from ${project.projectDir}")
-        return results
+    } catch (Exception ignore) {
+        return null
+    }
+    if (repo?.directory == null) {
+        return null
     }
     return Git.wrap(repo)
 }
@@ -71,11 +72,27 @@ private static def getLastTag(Repository repo, Git git, Ref head) {
         revCount++
     }
 
+    if (!commitTags) {
+        return ["", "v0.0.0", revCount]
+    }
     return commitTags.last()
 }
 
 private def buildGitInfo() {
     Git git = getGit()
+    if (git == null || git.repository == null || git.repository.directory == null) {
+        return [
+                hash         : "unknown",
+                branch       : "unknown",
+                dirty        : false,
+                remotes      : "",
+                unstaged     : "",
+                tag          : "v4.15.1",
+                revCount     : 0,
+                version      : "4.15.1-zip",
+                versionSuffix: "zip"
+        ]
+    }
     Repository repo = git.repository
 
     def head = repo.findRef(Constants.HEAD).target

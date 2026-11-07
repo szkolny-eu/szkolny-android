@@ -87,9 +87,13 @@ class LessonFull(
             return teacherId ?: oldTeacherId
         }
 
+    val isClassroomChangeOnly: Boolean
+        get() = type == TYPE_CHANGE && oldSubjectId != null && subjectId == oldSubjectId
+                && teacherId == oldTeacherId && classroom != null && classroom != oldClassroom
+
     fun getDisplayChangeType(context: Context): String {
         return context.getString(when (type) {
-            TYPE_CHANGE -> R.string.lesson_change
+            TYPE_CHANGE -> if (isClassroomChangeOnly) R.string.lesson_classroom_change else R.string.lesson_change
             TYPE_CANCELLED -> R.string.lesson_cancelled
             TYPE_SHIFTED_TARGET, TYPE_SHIFTED_SOURCE -> R.string.lesson_shifted
             else -> R.string.lesson_timetable_change

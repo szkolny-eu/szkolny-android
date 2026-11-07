@@ -564,6 +564,7 @@
     <string name="lesson_break">Przerwa</string>
     <string name="lesson_cancelled">Lekcja odwołana</string>
     <string name="lesson_change">Zastępstwo</string>
+    <string name="lesson_classroom_change">Zmiana sali</string>
     <string name="lesson_shifted">Lekcja przeniesiona</string>
     <string name="lesson_timetable_change">Zmiana planu</string>
     <string name="lessons_finished">Nie ma dzisiaj więcej lekcji!</string>
@@ -1222,6 +1223,7 @@
     <string name="timetable_generate_success_title">Gotowe</string>
     <string name="timetable_lesson_cancelled">Lekcja odwołana</string>
     <string name="timetable_lesson_change">Zastępstwo</string>
+    <string name="timetable_lesson_classroom_change">Zmiana sali</string>
     <string name="timetable_lesson_change_format">Zastępstwo: zamiast %s</string>
     <string name="timetable_lesson_shifted">Lekcja przeniesiona na inny termin</string>
     <string name="timetable_lesson_shifted_from">Lekcja przeniesiona z innego terminu</string>
@@ -1339,6 +1341,8 @@
     <string name="login_type_mobidziennik" translatable="false">MobiDziennik</string>
     <string name="login_mode_mobidziennik_web">Zaloguj nazwą serwera, loginem i hasłem</string>
     <string name="login_mode_mobidziennik_web_hint">Podaj dane, których używasz na stronie e-dziennika</string>
+    <string name="login_mode_mobidziennik_form">Zaloguj metodą webscraping</string>
+    <string name="login_mode_mobidziennik_form_hint">Tak, jak w przeglądarce.</string>
     <string name="login_platform_list_title">W jaki sposób się logujesz do dziennika?</string>
     <string name="login_platform_list_subtitle">Wybierz, który obrazek odpowiada temu, który widzisz podczas logowania na stronie internetowej swojego dziennika.\n\nJeżeli Twoja szkoła nie korzysta z żadnej z tych platform miejskich, wybierz pierwszą opcję.</string>
     <string name="login_platform_list_loading">Ładowanie listy e-dzienników…</string>
@@ -1350,6 +1354,7 @@
     <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika VULCAN® na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>
     <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN® lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
+    <string name="login_mode_mobidziennik_form_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Aplikacja zaloguje się tym samym formularzem co przeglądarka. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
     <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika VULCAN®...</string>
     <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
     <string name="login_mode_podlasie_api">Zaloguj używając tokenu</string>
