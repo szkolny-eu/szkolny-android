@@ -54,6 +54,7 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.utils.EdgeToEdgeInsets
 import pl.szczodrzynski.edziennik.utils.DebugLogFormat
 import pl.szczodrzynski.edziennik.utils.PermissionChecker
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -191,6 +192,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
           \___/|_| |_|\_____|_|  \___|\__,_|\__\__*/
     override fun onCreate() {
         super.onCreate()
+        EdgeToEdgeInsets.register(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)

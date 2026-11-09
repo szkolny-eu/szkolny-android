@@ -120,13 +120,23 @@ class PermissionManager(val app: App) : CoroutineScope {
         @StringRes permissionMessage: Int,
         isRequired: Boolean = true,
         onSuccess: suspend CoroutineScope.() -> Unit
-    ) = requestPermission(
-        activity,
-        permissionMessage,
-        isRequired,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        onSuccess
-    )
+    ) {
+        // Since Android 10 files are saved in the app-specific directory
+        // (see Utils.initializeStorageDir()), which needs no permission.
+        // Since Android 13 WRITE_EXTERNAL_STORAGE is always denied,
+        // so requesting it would block downloading attachments.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            launch { onSuccess() }
+            return
+        }
+        requestPermission(
+            activity,
+            permissionMessage,
+            isRequired,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            onSuccess
+        )
+    }
 
     fun requestCameraPermission(
         activity: AppCompatActivity,
