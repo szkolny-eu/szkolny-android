@@ -223,7 +223,7 @@ dependencies {
     implementation "com.github.smuyyh:JsonViewer:V1.0.6" // https://github.com/smuyyh/JsonViewer
     implementation "com.github.underwindfall.PowerPermission:powerpermission-coroutines:1.4.0" // https://github.com/underwindfall/PowerPermission
     implementation "com.github.underwindfall.PowerPermission:powerpermission:1.4.0" // https://github.com/underwindfall/PowerPermission
-    implementation "com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31" // https://github.com/wulkanowy/uonet-request-signer
+    // hebe-jvm signer is vendored in app/src/main/java/io/github/wulkanowy/signer/hebe (JitPack artifact no longer available)
     implementation "com.jaredrummler:colorpicker:1.1.0"
     implementation "io.coil-kt:coil:1.1.1"
     implementation "me.dm7.barcodescanner:zxing:1.9.8"
