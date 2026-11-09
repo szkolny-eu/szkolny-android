@@ -165,19 +165,19 @@ public abstract class MetadataDao {
 
 
 
-    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND seen = 0")
+    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId))")
     public abstract LiveData<Integer> countUnseen(int profileId, MetadataType thingType);
 
-    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND seen = 0")
+    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId))")
     public abstract Integer countUnseenNow(int profileId, MetadataType thingType);
 
-    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND seen = 0")
+    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId))")
     public abstract LiveData<Integer> countUnseen(int profileId);
 
-    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND seen = 0")
+    @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId))")
     public abstract Integer countUnseenNow(int profileId);
 
-    @Query("SELECT count() FROM metadata WHERE seen = 0")
+    @Query("SELECT count() FROM metadata WHERE seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId))")
     public abstract LiveData<Integer> countUnseen();
 
 
@@ -190,7 +190,7 @@ public abstract class MetadataDao {
 
 
 
-    @Query("SELECT profileId, thingType, COUNT(thingId) AS count FROM metadata WHERE seen = 0 GROUP BY profileId, thingType")
+    @Query("SELECT profileId, thingType, COUNT(thingId) AS count FROM metadata WHERE seen = 0 AND (thingType != 6 OR EXISTS (SELECT 1 FROM timetable WHERE timetable.profileId = metadata.profileId AND timetable.id = metadata.thingId)) GROUP BY profileId, thingType")
     public abstract LiveData<List<UnreadCounter>> getUnreadCounts();
 
 
